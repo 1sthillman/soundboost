@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Sound\'ST Boost</string>
+    
+    <!-- Main Screen -->
+    <string name="volume_boost">Ses Yükseltici</string>
+    <string name="equalizer">Ekolayzer</string>
+    <string name="settings">Ayarlar</string>
+    <string name="themes">Temalar</string>
+    
+    <!-- Volume -->
+    <string name="master_volume">ANA SES SEVİYESİ</string>
+    <string name="boost_off">KAPALI</string>
+    <string name="boost_on">AÇIK</string>
+    <string name="max_volume">MAKSİMUM SES</string>
+    <string name="preset_60">%60</string>
+    <string name="preset_100">%100</string>
+    <string name="preset_160">%160</string>
+    <string name="preset_max">MAKS</string>
+    
+    <!-- Equalizer -->
+    <string name="bass">Bas</string>
+    <string name="mid">Orta</string>
+    <string name="treble">Tiz</string>
+    <string name="bass_boost">Bas Güçlendirme</string>
+    <string name="virtualizer">3D Sanal Alan</string>
+    
+    <!-- Settings -->
+    <string name="auto_start">Yeniden başlayınca otomatik başlat</string>
+    <string name="auto_start_desc">Cihaz yeniden başladığında boost otomatik devam eder</string>
+    <string name="about">Hakkında</string>
+    <string name="about_desc">Sound\'ST Boost, Android\'in resmi ses efekti API\'lerini kullanır. Efekt gücü cihaz donanımına göre değişebilir.</string>
+    <string name="microphone_permission">Mikrofon İzni</string>
+    <string name="microphone_permission_desc">Gerçek zamanlı ses görselleştirme için gerekli</string>
+    
+    <!-- Themes -->
+    <string name="theme_neon_dark">Neon Karanlık</string>
+    <string name="theme_ocean_blue">Okyanus Mavisi</string>
+    <string name="theme_sunset_orange">Gün Batımı Turuncu</string>
+    <string name="theme_forest_green">Orman Yeşili</string>
+    <string name="theme_royal_purple">Kraliyet Moru</string>
+    
+    <!-- Colors -->
+    <string name="color_cyan">Camgöbeği</string>
+    <string name="color_pink">Pembe</string>
+    <string name="color_orange">Turuncu</string>
+    <string name="color_green">Yeşil</string>
+    <string name="color_purple">Mor</string>
+    
+    <!-- Notification -->
+    <string name="notification_title">Ses Yükseltici Aktif</string>
+    <string name="notification_text">Ses: %%%1$d • Bas: %%%2$d</string>
+    
+    <!-- Language -->
+    <string name="language">Dil</string>
+    <string name="language_system">Otomatik (Sistem)</string>
+    <string name="language_english">English</string>
+    <string name="language_turkish">Türkçe</string>
+    <string name="language_german">Deutsch</string>
+    <string name="language_spanish">Español</string>
+    <string name="language_french">Français</string>
+    <string name="language_russian">Русский</string>
+    <string name="language_chinese">中文</string>
+    <string name="language_japanese">日本語</string>
+    <string name="language_korean">한국어</string>
+    <string name="language_arabic">العربية</string>
+    <string name="tap_to_start">Başlatmak İçin Ortaya Çift Dokunun</string>
+    <string name="drag_to_adjust">Ses Ayarı İçin Sürükleyin</string>
+    <string name="theme_customization">Tema Özelleştirme</string>
+    <string name="language_info_title">ℹ️ Dil Değişimi</string>
+    <string name="language_info_desc">Uygulama otomatik olarak seçtiğiniz dilde içeriği gösterecektir.</string>
+    <string name="language_system_desc">Cihazın dilini otomatik olarak algılar</string>
+    <string name="status_active">AÇIK</string>
+    <string name="status_double_tap">ÇİFT DOKUN</string>
+    <string name="instruction_drag">Ayarlamak için yukarı/aşağı sürükleyin</string>
+    <string name="instruction_double_tap">Başlatmak için çift dokunun</string>
+    <string name="welcome_title">Hoş Geldiniz!</string>
+    <string name="instruction_1_title">Çift Tıklayın</string>
+    <string name="instruction_1_desc">Ses yükselticiyi başlatmak için ortadaki kontrole çift dokunun</string>
+    <string name="instruction_2_title">Sürükle &amp; Ayarla</string>
+    <string name="instruction_2_desc">Parmağınızı dairesel hareket ettirerek veya yukarı/aşağı sürükleyerek ses seviyesini ayarlayın</string>
+    <string name="instruction_3_title">Tema Seç</string>
+    <string name="instruction_3_desc">Üstteki yuvarlak butonlardan farklı temaları seçerek görünümü değiştirin</string>
+    <string name="got_it">Anladım!</string>
+    <string name="training_welcome_title">Hoş Geldiniz!</string>
+    <string name="training_welcome_desc">Size Sound\'ST Boost\'u nasıl kullanacağınızı gösterelim</string>
+    <string name="training_start">Başlayalım</string>
+    <string name="training_double_tap_title">Adım 1: Çift Tıklayın</string>
+    <string name="training_double_tap_desc">Ses yükselticiyi açmak için ortadaki büyük kontrole ÇİFT DOKUNUN</string>
+    <string name="training_understood">Anladım</string>
+    <string name="training_waiting_double_tap">Şimdi çift tıklayın...</string>
+    <string name="training_drag_title">Adım 2: Sürükleyin</string>
+    <string name="training_drag_desc">Parmağınızı daire şeklinde veya yukarı/aşağı hareket ettirerek ses seviyesini ayarlayın</string>
+    <string name="training_try_it">Deneyelim</string>
+    <string name="training_drag_to_continue">Şimdi sürükleyerek ayarlayın...</string>
+    <string name="training_theme_title">Adım 3: Temalar</string>
+    <string name="training_theme_desc">Üstteki yuvarlak butonlardan farklı temaları seçebilirsiniz</string>
+    <string name="training_finish">Tamamlandı!</string>
+</resources>

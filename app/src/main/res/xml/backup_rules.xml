@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+   Sound'ST Boost hiçbir hassas veri saklamaz; DataStore'daki ayarlar
+   (slider konumları vb.) cihazda yerel olarak tutulur ve yedeklenebilir.
+-->
+<full-backup-content>
+    <include domain="sharedpref" path="." />
+</full-backup-content>

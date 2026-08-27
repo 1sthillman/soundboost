@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Sound\'ST Boost</string>
+    <string name="volume_boost">볼륨 부스트</string>
+    <string name="equalizer">이퀄라이저</string>
+    <string name="settings">설정</string>
+    <string name="themes">테마</string>
+    <string name="master_volume">마스터 볼륨</string>
+    <string name="boost_off">끄기</string>
+    <string name="boost_on">켜기</string>
+    <string name="max_volume">최대 볼륨</string>
+    <string name="preset_60">60%</string>
+    <string name="preset_100">100%</string>
+    <string name="preset_160">160%</string>
+    <string name="preset_max">최대</string>
+    <string name="bass">저음</string>
+    <string name="mid">중음</string>
+    <string name="treble">고음</string>
+    <string name="bass_boost">저음 부스트</string>
+    <string name="virtualizer">3D 가상화</string>
+    <string name="auto_start">부팅 시 자동 시작</string>
+    <string name="auto_start_desc">장치가 재시작되면 부스트가 자동으로 재개됩니다</string>
+    <string name="about">정보</string>
+    <string name="about_desc">Sound\'ST Boost는 Android의 공식 오디오 효과 API를 사용합니다. 효과 강도는 장치 하드웨어에 따라 다를 수 있습니다.</string>
+    <string name="microphone_permission">마이크 권한</string>
+    <string name="microphone_permission_desc">실시간 오디오 시각화에 필요</string>
+    <string name="theme_neon_dark">네온 다크</string>
+    <string name="theme_ocean_blue">오션 블루</string>
+    <string name="theme_sunset_orange">선셋 오렌지</string>
+    <string name="theme_forest_green">포레스트 그린</string>
+    <string name="theme_royal_purple">로얄 퍼플</string>
+    <string name="color_cyan">시안</string>
+    <string name="color_pink">핑크</string>
+    <string name="color_orange">오렌지</string>
+    <string name="color_green">그린</string>
+    <string name="color_purple">퍼플</string>
+    <string name="notification_title">볼륨 부스트 활성화</string>
+    <string name="notification_text">볼륨: %1$d%% • 저음: %2$d%%</string>
+    <string name="language">언어</string>
+    <string name="language_system">자동 (시스템)</string>
+</resources>

@@ -1,0 +1,24 @@
+*.iml
+.gradle
+/local.properties
+/.idea/
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+local.properties
+*.apk
+*.aab
+/app/build
+/app/release
+
+# JDK folders - don't commit
+jdk-*/
+jdk8*/
+jdk11*/
+jdk17*/
+
+# Large files
+jdk17.zip
+*.zip

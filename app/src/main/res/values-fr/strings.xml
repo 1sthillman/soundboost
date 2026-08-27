@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Sound\'ST Boost</string>
+    <string name="volume_boost">Amplificateur de Volume</string>
+    <string name="equalizer">Égaliseur</string>
+    <string name="settings">Paramètres</string>
+    <string name="themes">Thèmes</string>
+    <string name="master_volume">VOLUME PRINCIPAL</string>
+    <string name="boost_off">DÉSACTIVÉ</string>
+    <string name="boost_on">ACTIVÉ</string>
+    <string name="max_volume">VOLUME MAX</string>
+    <string name="preset_60">60%</string>
+    <string name="preset_100">100%</string>
+    <string name="preset_160">160%</string>
+    <string name="preset_max">MAX</string>
+    <string name="bass">Graves</string>
+    <string name="mid">Médiums</string>
+    <string name="treble">Aigus</string>
+    <string name="bass_boost">Amplification des Graves</string>
+    <string name="virtualizer">Virtualiseur 3D</string>
+    <string name="auto_start">Démarrage automatique</string>
+    <string name="auto_start_desc">Le boost reprendra automatiquement au redémarrage de l\'appareil</string>
+    <string name="about">À propos</string>
+    <string name="about_desc">Sound\'ST Boost utilise les API officielles d\'effets audio d\'Android. L\'intensité des effets peut varier selon le matériel de l\'appareil.</string>
+    <string name="microphone_permission">Autorisation Microphone</string>
+    <string name="microphone_permission_desc">Requis pour la visualisation audio en temps réel</string>
+    <string name="theme_neon_dark">Néon Sombre</string>
+    <string name="theme_ocean_blue">Bleu Océan</string>
+    <string name="theme_sunset_orange">Orange Coucher de Soleil</string>
+    <string name="theme_forest_green">Vert Forêt</string>
+    <string name="theme_royal_purple">Violet Royal</string>
+    <string name="color_cyan">Cyan</string>
+    <string name="color_pink">Rose</string>
+    <string name="color_orange">Orange</string>
+    <string name="color_green">Vert</string>
+    <string name="color_purple">Violet</string>
+    <string name="notification_title">Amplification Sonore Active</string>
+    <string name="notification_text">Volume : %1$d%% • Basses : %2$d%%</string>
+    <string name="language">Langue</string>
+    <string name="language_system">Automatique (Système)</string>
+</resources>

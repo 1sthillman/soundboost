@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Sound\'ST Boost</string>
+    <string name="volume_boost">تعزيز الصوت</string>
+    <string name="equalizer">المعادل</string>
+    <string name="settings">الإعدادات</string>
+    <string name="themes">السمات</string>
+    <string name="master_volume">مستوى الصوت الرئيسي</string>
+    <string name="boost_off">إيقاف</string>
+    <string name="boost_on">تشغيل</string>
+    <string name="max_volume">الحد الأقصى للصوت</string>
+    <string name="preset_60">60%</string>
+    <string name="preset_100">100%</string>
+    <string name="preset_160">160%</string>
+    <string name="preset_max">الأقصى</string>
+    <string name="bass">الجهير</string>
+    <string name="mid">المتوسط</string>
+    <string name="treble">الحاد</string>
+    <string name="bass_boost">تعزيز الجهير</string>
+    <string name="virtualizer">المحاكي ثلاثي الأبعاد</string>
+    <string name="auto_start">البدء التلقائي عند التشغيل</string>
+    <string name="auto_start_desc">سيستأنف التعزيز تلقائيًا عند إعادة تشغيل الجهاز</string>
+    <string name="about">حول</string>
+    <string name="about_desc">يستخدم Sound\'ST Boost واجهات برمجة تطبيقات التأثيرات الصوتية الرسمية من Android. قد تختلف قوة التأثير حسب أجهزة الجهاز.</string>
+    <string name="microphone_permission">إذن الميكروفون</string>
+    <string name="microphone_permission_desc">مطلوب للتصور الصوتي في الوقت الفعلي</string>
+    <string name="theme_neon_dark">نيون داكن</string>
+    <string name="theme_ocean_blue">أزرق المحيط</string>
+    <string name="theme_sunset_orange">برتقالي غروب الشمس</string>
+    <string name="theme_forest_green">أخضر الغابة</string>
+    <string name="theme_royal_purple">أرجواني ملكي</string>
+    <string name="color_cyan">سماوي</string>
+    <string name="color_pink">وردي</string>
+    <string name="color_orange">برتقالي</string>
+    <string name="color_green">أخضر</string>
+    <string name="color_purple">بنفسجي</string>
+    <string name="notification_title">تعزيز الصوت نشط</string>
+    <string name="notification_text">الصوت: %1$d%% • الجهير: %2$d%%</string>
+    <string name="language">اللغة</string>
+    <string name="language_system">تلقائي (النظام)</string>
+</resources>

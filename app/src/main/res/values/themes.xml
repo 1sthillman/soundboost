@@ -1,0 +1,6 @@
+<resources>
+    <style name="Theme.SoundSTBoost" parent="android:Theme.Material.NoActionBar">
+        <item name="android:statusBarColor">@color/deep_black</item>
+        <item name="android:windowBackground">@color/deep_black</item>
+    </style>
+</resources>

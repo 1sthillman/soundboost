@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Sound\'ST Boost</string>
+    <string name="volume_boost">Усилитель Громкости</string>
+    <string name="equalizer">Эквалайзер</string>
+    <string name="settings">Настройки</string>
+    <string name="themes">Темы</string>
+    <string name="master_volume">ОСНОВНАЯ ГРОМКОСТЬ</string>
+    <string name="boost_off">ВЫКЛ</string>
+    <string name="boost_on">ВКЛ</string>
+    <string name="max_volume">МАКС ГРОМКОСТЬ</string>
+    <string name="preset_60">60%</string>
+    <string name="preset_100">100%</string>
+    <string name="preset_160">160%</string>
+    <string name="preset_max">МАКС</string>
+    <string name="bass">Бас</string>
+    <string name="mid">Средние</string>
+    <string name="treble">Высокие</string>
+    <string name="bass_boost">Усиление Баса</string>
+    <string name="virtualizer">3D Виртуализатор</string>
+    <string name="auto_start">Автозапуск при загрузке</string>
+    <string name="auto_start_desc">Усиление возобновится автоматически при перезагрузке устройства</string>
+    <string name="about">О программе</string>
+    <string name="about_desc">Sound\'ST Boost использует официальные API звуковых эффектов Android. Сила эффекта может различаться в зависимости от оборудования устройства.</string>
+    <string name="microphone_permission">Разрешение Микрофона</string>
+    <string name="microphone_permission_desc">Требуется для визуализации звука в реальном времени</string>
+    <string name="theme_neon_dark">Неоновый Темный</string>
+    <string name="theme_ocean_blue">Океанский Синий</string>
+    <string name="theme_sunset_orange">Закатный Оранжевый</string>
+    <string name="theme_forest_green">Лесной Зеленый</string>
+    <string name="theme_royal_purple">Королевский Фиолетовый</string>
+    <string name="color_cyan">Голубой</string>
+    <string name="color_pink">Розовый</string>
+    <string name="color_orange">Оранжевый</string>
+    <string name="color_green">Зеленый</string>
+    <string name="color_purple">Фиолетовый</string>
+    <string name="notification_title">Усиление Звука Активно</string>
+    <string name="notification_text">Громкость: %1$d%% • Бас: %2$d%%</string>
+    <string name="language">Язык</string>
+    <string name="language_system">Автоматически (Система)</string>
+</resources>

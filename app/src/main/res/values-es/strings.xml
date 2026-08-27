@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Sound\'ST Boost</string>
+    <string name="volume_boost">Amplificador de Volumen</string>
+    <string name="equalizer">Ecualizador</string>
+    <string name="settings">Ajustes</string>
+    <string name="themes">Temas</string>
+    <string name="master_volume">VOLUMEN PRINCIPAL</string>
+    <string name="boost_off">APAGADO</string>
+    <string name="boost_on">ENCENDIDO</string>
+    <string name="max_volume">VOLUMEN MÁXIMO</string>
+    <string name="preset_60">60%</string>
+    <string name="preset_100">100%</string>
+    <string name="preset_160">160%</string>
+    <string name="preset_max">MÁX</string>
+    <string name="bass">Graves</string>
+    <string name="mid">Medios</string>
+    <string name="treble">Agudos</string>
+    <string name="bass_boost">Amplificación de Graves</string>
+    <string name="virtualizer">Virtualizador 3D</string>
+    <string name="auto_start">Inicio automático al arrancar</string>
+    <string name="auto_start_desc">El refuerzo se reanudará automáticamente cuando se reinicie el dispositivo</string>
+    <string name="about">Acerca de</string>
+    <string name="about_desc">Sound\'ST Boost utiliza las APIs oficiales de efectos de audio de Android. La intensidad del efecto puede variar según el hardware del dispositivo.</string>
+    <string name="microphone_permission">Permiso de Micrófono</string>
+    <string name="microphone_permission_desc">Requerido para visualización de audio en tiempo real</string>
+    <string name="theme_neon_dark">Neón Oscuro</string>
+    <string name="theme_ocean_blue">Azul Océano</string>
+    <string name="theme_sunset_orange">Naranja Atardecer</string>
+    <string name="theme_forest_green">Verde Bosque</string>
+    <string name="theme_royal_purple">Púrpura Real</string>
+    <string name="color_cyan">Cian</string>
+    <string name="color_pink">Rosa</string>
+    <string name="color_orange">Naranja</string>
+    <string name="color_green">Verde</string>
+    <string name="color_purple">Púrpura</string>
+    <string name="notification_title">Refuerzo de Sonido Activo</string>
+    <string name="notification_text">Volumen: %1$d%% • Graves: %2$d%%</string>
+    <string name="language">Idioma</string>
+    <string name="language_system">Automático (Sistema)</string>
+</resources>

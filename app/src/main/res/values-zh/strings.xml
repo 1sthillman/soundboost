@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Sound\'ST Boost</string>
+    <string name="volume_boost">音量增强</string>
+    <string name="equalizer">均衡器</string>
+    <string name="settings">设置</string>
+    <string name="themes">主题</string>
+    <string name="master_volume">主音量</string>
+    <string name="boost_off">关闭</string>
+    <string name="boost_on">开启</string>
+    <string name="max_volume">最大音量</string>
+    <string name="preset_60">60%</string>
+    <string name="preset_100">100%</string>
+    <string name="preset_160">160%</string>
+    <string name="preset_max">最大</string>
+    <string name="bass">低音</string>
+    <string name="mid">中音</string>
+    <string name="treble">高音</string>
+    <string name="bass_boost">低音增强</string>
+    <string name="virtualizer">3D虚拟器</string>
+    <string name="auto_start">开机自动启动</string>
+    <string name="auto_start_desc">设备重启时增强将自动恢复</string>
+    <string name="about">关于</string>
+    <string name="about_desc">Sound\'ST Boost使用Android官方音频效果API。效果强度可能因设备硬件而异。</string>
+    <string name="microphone_permission">麦克风权限</string>
+    <string name="microphone_permission_desc">实时音频可视化所需</string>
+    <string name="theme_neon_dark">霓虹暗黑</string>
+    <string name="theme_ocean_blue">海洋蓝</string>
+    <string name="theme_sunset_orange">日落橙</string>
+    <string name="theme_forest_green">森林绿</string>
+    <string name="theme_royal_purple">皇家紫</string>
+    <string name="color_cyan">青色</string>
+    <string name="color_pink">粉色</string>
+    <string name="color_orange">橙色</string>
+    <string name="color_green">绿色</string>
+    <string name="color_purple">紫色</string>
+    <string name="notification_title">音量增强已激活</string>
+    <string name="notification_text">音量：%1$d%% • 低音：%2$d%%</string>
+    <string name="language">语言</string>
+    <string name="language_system">自动（系统）</string>
+</resources>
