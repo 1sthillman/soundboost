@@ -7,7 +7,7 @@
 Dosya Adı: SoundSTBoost-v1.0.0-release.aab
 Konum: app\build\outputs\bundle\release\SoundSTBoost-v1.0.0-release.aab
 Boyut: 2.32 MB
-Oluşturma Tarihi: 27.08.2026 23:43:00
+Oluşturma Tarihi: 28.08.2026 00:03:23
 
 ✅ İMZALANDI ve DOĞRULANDI (jar verified)
 
@@ -23,6 +23,10 @@ Password: SoundST2024!
 📋 UYGULAMA BİLGİLERİ
 ======================
 Package Name: com.soundboost ✅ (Google Play gereksinimi karşılandı!)
+Version Code: 1
+Version Name: 1.0.0
+Min SDK: 24 (Android 7.0)
+Target SDK: 34 (Android 14) ✅ Google Play uyumlu!
 Version Code: 1
 Version Name: 1.0.0
 Min SDK: 24 (Android 7.0)
