@@ -1,0 +1,210 @@
+===========================================
+GOOGLE PLAY STORE LİSTİNG BİLGİLERİ
+===========================================
+
+📱 UYGULAMA ADI (30 karakter max)
+----------------------------------
+Sound'ST Boost - Volume++
+
+
+📝 KISA AÇIKLAMA (80 karakter max)
+----------------------------------
+5 tema, ekolayzer ve bas güçlendirmeli güçlü ses yükseltici uygulama.
+
+
+📄 TAM AÇIKLAMA (4000 karakter max)
+-----------------------------------
+
+🎵 Sound'ST Boost - Mükemmel Ses İyileştirme Deneyimi
+
+Play Store'daki en güzel ve güçlü ses yükseltici ile sesinizi dönüştürün! Sound'ST Boost, profesyonel ses efektlerini muhteşem görsel temalarla birleştirerek ses ayarlamayı keyifli bir deneyime dönüştürür.
+
+---
+
+## ✨ ANA ÖZELLİKLER
+
+### 🔊 Profesyonel Ses Efektleri
+• Ses Yükseltme: %200'e kadar güçlendirme
+• 10 Bantlı Ekolayzer: Her frekansı hassas ayarlayın
+• Bas Güçlendirme: Derin, zengin bas iyileştirmesi
+• 3D Virtualizer: Sürükleyici surround ses efekti
+• Gerçek Zamanlı Ses Görselleştirici: Müziğinizin canlanmasını izleyin
+
+### 🎨 5 Muhteşem Görsel Tema
+Her tema benzersiz animasyon ve etkileşimler sunar:
+
+NEON DARK - Parlayan efektlerle fütüristik halkalar
+OCEAN BLUE - Kabarcık animasyonları ile akan dalgalar
+SUNSET ORANGE - Altıgen kristal tasarım
+FOREST GREEN - Organik akan şekiller
+ROYAL PURPLE - 3D piramit kristal efekti
+
+Her tema tüm uygulamayı dönüştürür - düğmeler, kaydırıcılar, görselleştiriciler ve animasyonlar mükemmel uyum sağlar!
+
+### 🌍 10 Dil Desteği
+• Türkçe
+• İngilizce
+• Almanca
+• İspanyolca
+• Fransızca
+• Rusça
+• Çince
+• Japonca
+• Korece
+• Arapça
+
+Cihaz dilinizi otomatik algılar!
+
+### 🎯 Akıllı ve Kullanımı Kolay
+• Basit Hareketler: Ses ayarlamak için yukarı/aşağı sürükleyin
+• Çift Dokunma: Anında açıp kapatın
+• Arka Plan Servisi: Ekran kapalıyken bile çalışır
+• Otomatik Başlat: Cihaz açılışında başlatma seçeneği
+• Kalıcı Bildirim: Boost durumunuzu her zaman bilin
+
+---
+
+## 🔒 GİZLİLİK ÖNCELİKLİ
+
+Gizliliğiniz önemli!
+✓ Veri toplama YOK
+✓ İnternet gerekmiyor
+✓ Reklam YOK
+✓ Takip YOK
+✓ %100 Açık Kaynak
+
+Tüm ayarlar cihazınızda kalır. Kişisel bilgilerinize asla erişmez, saklamaz veya paylaşmayız.
+
+---
+
+## 💡 NASIL KULLANILIR
+
+1. Boost'u Etkinleştir: Merkez kontrole çift dokunun
+2. Sesi Ayarla: Artırmak için yukarı, azaltmak için aşağı sürükleyin (%60 - %200)
+3. İnce Ayar: Hassas kontrol için ekolayzere erişin
+4. Özelleştir: Favori temanızı seçin
+5. Keyfini Çıkarın: Kristal berraklığında, güçlü ses deneyimleyin!
+
+---
+
+## 🎼 MÜKEMMEL ŞU DURUMLARDA
+
+• Düşük ses seviyeli müzik kayıtlarını dinlerken
+• Sessiz ses içeren film veya video izlerken
+• Telefon görüşmelerini daha net yapmak için
+• Sürükleyici sesle oyun oynarken
+• Podcast'ler ve sesli kitaplar için
+• Güçlendirmeye ihtiyaç duyan her türlü ses için!
+
+---
+
+## ⚡ TEKNİK ÖZELLİKLER
+
+• Kotlin & Jetpack Compose: Modern, akıcı UI
+• Material Design 3: Güzel, sezgisel arayüz
+• Gelişmiş DSP: Profesyonel ses işleme
+• Pil Optimize: Verimli arka plan çalışması
+• Root Gerekmez: Her Android cihazda çalışır
+
+---
+
+## 📱 SİSTEM GEREKSİNİMLERİ
+
+• Android 7.0 (Nougat) veya üstü
+• ~15 MB depolama alanı
+• En iyi deneyim için kulaklık veya hoparlör önerilir
+
+---
+
+## 🆓 TAMAMEN ÜCRETSİZ
+
+Sound'ST Boost reklamsız, uygulama içi satın alma olmadan ve premium özellikler kilitlenmeden %100 ücretsizdir. Harika sesin herkes için erişilebilir olması gerektiğine inanıyoruz!
+
+---
+
+## 🛠️ AÇIK KAYNAK
+
+Şeffaflık bizim için önemli! Kaynak kodumuzu görüntüleyin:
+github.com/1sthillman/soundboost
+
+---
+
+## 📧 DESTEK VE GERİ BİLDİRİM
+
+Sorularınız veya önerileriniz mi var? Sizden haber almak isteriz!
+GitHub Issues: github.com/1sthillman/soundboost/issues
+
+---
+
+Sound'ST Boost'u şimdi indirin ve sesi hiç olmadığı gibi deneyimleyin! 🎵✨
+
+
+📊 KATEGORİ
+-----------
+Ana Kategori: Müzik ve Ses
+İkincil Kategori: Araçlar
+
+
+🏷️ ETİKETLER / ANAHTAR KELİMELER
+--------------------------------
+ses yükseltici, ses geliştirici, ekolayzer, bas güçlendirme, ses amplifikatörü, ses efektleri, müzik güçlendirici, hoparlör güçlendirme, yüksek ses, ses iyileştirici, ses kontrolü, ses seviyesi kontrolü, müzik ekolayzeri, bas geliştirici, 3D ses, surround ses, ses görselleştirici, ses amplifikatörü, ses boost
+
+
+🎯 İÇERİK DERECELENDİRMESİ
+--------------------------
+Herkes
+
+
+🆕 YENİ SÜRÜMDE NELER VAR (v1.0.3)
+-----------------------------------
+🎉 Güncel Sürüm!
+
+✨ Özellikler:
+• 5 benzersiz görsel tema
+• Profesyonel ses efektleri
+• 10 dil desteği
+• Gerçek zamanlı ses görselleştirici
+• Arka plan servisi
+• Gizlilik odaklı (veri toplama yok)
+• Android 15 (API 35) desteği
+
+🎵 Sound'ST Boost ile ses deneyiminizi mükemmelleştirin!
+
+
+📸 EKRAN GÖRÜNTÜLERİ GEREKSİNİMLERİ
+-------------------------------------
+Telefon Ekran Görüntüleri: En az 2 (8'e kadar)
+- Minimum çözünürlük: 320px
+- Maksimum çözünürlük: 3840px
+- En boy oranı: 16:9 veya 9:16
+
+Tablet Ekran Görüntüleri (Opsiyonel): En az 2 (8'e kadar)
+- Minimum çözünürlük: 1024px (küçük kenar)
+- En boy oranı: 16:9, 16:10 veya 3:2
+
+Öne Çıkan Grafik (ZORUNLU):
+- Boyutlar: 1024 x 500 piksel
+- JPG veya 24-bit PNG (alpha yok)
+
+Uygulama İkonu (Otomatik oluşturulur):
+- 512 x 512 piksel (mevcut: play_store_icon_512.png)
+
+
+🔐 GİZLİLİK POLİTİKASI URL'İ
+-----------------------------
+Henüz yüklenmedi - PRIVACY_POLICY.md dosyasını GitHub Pages'e yüklemen gerekiyor
+
+Örnek URL:
+https://1sthillman.github.io/soundboost/privacy-policy.html
+
+veya
+
+https://raw.githubusercontent.com/1sthillman/soundboost/main/PRIVACY_POLICY.md
+
+
+📧 İLETİŞİM BİLGİLERİ
+----------------------
+E-posta: [Kendi e-posta adresini ekle]
+Web sitesi (opsiyonel): https://github.com/1sthillman/soundboost
+
+===========================================
