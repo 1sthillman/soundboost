@@ -4,10 +4,10 @@
 
 📦 DOSYA BİLGİLERİ
 ==================
-Dosya Adı: SoundSTBoost-v1.0.1-release.aab
-Konum: app\build\outputs\bundle\release\SoundSTBoost-v1.0.1-release.aab
+Dosya Adı: SoundSTBoost-v1.0.2-release.aab
+Konum: app\build\outputs\bundle\release\SoundSTBoost-v1.0.2-release.aab
 Boyut: 2.32 MB
-Oluşturma Tarihi: 28.08.2026 00:06:49
+Oluşturma Tarihi: 28.08.2026 00:12:00
 
 ✅ İMZALANDI ve DOĞRULANDI (jar verified)
 
@@ -22,11 +22,25 @@ Password: SoundST2024!
 
 📋 UYGULAMA BİLGİLERİ
 ======================
-Package Name: com.soundboost ✅ (Google Play gereksinimi karşılandı!)
-Version Code: 2 ✅ (Güncel sürüm)
-Version Name: 1.0.1
+Package Name: com.soundboost ✅
+Version Code: 3 ✅
+Version Name: 1.0.2
 Min SDK: 24 (Android 7.0)
-Target SDK: 34 (Android 14) ✅ Google Play uyumlu!
+Target SDK: 34 (Android 14) ✅
+
+⚠️ 2026 GOOGLE PLAY GEREKSİNİMLERİ HAKKINDA
+============================================
+31 Ağustos 2026'dan itibaren:
+- Yeni uygulamalar Android 16 (API 36) hedeflemek zorunda
+- Mevcut uygulamalar Android 15 (API 35) hedeflemeli
+
+ŞU ANDA GEÇERLI:
+- API 34 31 Ağustos 2026'ya kadar yüklenebilir
+- 2026'dan önce API 35/36'ya güncellemen gerekecek
+- Extension (uzatma) talep edebilirsin: 1 Kasım 2026'ya kadar
+
+KAYNAK:
+https://support.google.com/googleplay/android-developer/answer/11926878
 
 🚀 GOOGLE PLAY CONSOLE'A YÜKLEMEYE HAZIR!
 =========================================
