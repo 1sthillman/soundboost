@@ -22,3 +22,8 @@ jdk17*/
 # Large files
 jdk17.zip
 *.zip
+
+# Release signing
+*.jks
+*.keystore
+key.properties
