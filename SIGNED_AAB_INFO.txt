@@ -1,13 +1,13 @@
 ========================================
-İMZALI AAB DOSYASI - GOOGLE PLAY İÇİN HAZIR
+İMZALI AAB DOSYASI - KAPALI TEST İÇİN HAZIR
 ========================================
 
 📦 DOSYA BİLGİLERİ
 ==================
-Dosya Adı: SoundSTBoost-v1.0.3-release.aab
-Konum: app\build\outputs\bundle\release\SoundSTBoost-v1.0.3-release.aab
+Dosya Adı: SoundSTBoost-v1.0.4-release.aab
+Konum: app\build\outputs\bundle\release\SoundSTBoost-v1.0.4-release.aab
 Boyut: 2.30 MB
-Oluşturma Tarihi: 28.08.2026 00:25:44
+Oluşturma Tarihi: 28.08.2026 00:48:13
 
 ✅ İMZALANDI ve DOĞRULANDI (jar verified)
 
@@ -23,28 +23,34 @@ Password: SoundST2024!
 📋 UYGULAMA BİLGİLERİ
 ======================
 Package Name: com.soundboost ✅
-Version Code: 4 ✅
-Version Name: 1.0.3
+Version Code: 5 ✅ (Kapalı test için artırıldı)
+Version Name: 1.0.4
 Min SDK: 24 (Android 7.0)
-Target SDK: 35 (Android 15) ✅✅✅ GOOGLE PLAY 2026 UYUMLU!
+Target SDK: 35 (Android 15) ✅ Google Play 2026 uyumlu!
+
+🧪 KAPALI TEST SÜRÜMÜ
+=====================
+Bu sürüm özellikle kapalı test için oluşturuldu.
+
+Adımlar:
+1. Play Console > Test edin ve yayınlayın > Kapalı test
+2. Yeni sürüm oluştur
+3. Bu AAB'yi yükle
+4. Test kullanıcıları ekle
+5. Yayınla
+
+Detaylı adımlar için: CLOSED_TESTING_INFO.md
 
 ✅ 2026 GOOGLE PLAY GEREKSİNİMLERİ KARŞILANDI!
 ==============================================
 ✅ API 35 (Android 15) hedefleniyor
-✅ 31 Ağustos 2026'ya kadar geçerli
-✅ Mevcut uygulamalar için minimum gereksinim karşılandı
-✅ Yeni uygulamalar için 31 Ağustos 2026'ya kadar kabul edilir
+✅ Package name: com.soundboost
+✅ İmzalı ve doğrulanmış
+✅ 10 dil desteği hazır
+✅ Store listing hazır (CSV formatında)
 
-BU AAB GOOGLE PLAY'E YÜKLENEBİLİR!
-
-🚀 GOOGLE PLAY CONSOLE'A YÜKLEMEYE HAZIR!
-=========================================
-
-1. Play Console'a git: https://play.google.com/console
-2. Uygulamayı oluştur
-3. Bu AAB dosyasını yükle (API 35 hatası gitmeli!)
-4. Store listing'i doldur
-5. Privacy Policy'yi ekle
-6. Review'a gönder!
+🚀 KAPALI TESTE YÜKLEMEYE HAZIR!
+=================================
+Bu AAB dosyasını Google Play Console'da "Kapalı test" bölümüne yükleyebilirsin!
 
 ========================================
