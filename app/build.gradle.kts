@@ -14,14 +14,14 @@ if (keystorePropertiesFile.exists()) {
 
 android {
     namespace = "com.soundboost"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.soundboost"
         minSdk = 24
-        targetSdk = 34
-        versionCode = 3
-        versionName = "1.0.2"
+        targetSdk = 35
+        versionCode = 4
+        versionName = "1.0.3"
         
         setProperty("archivesBaseName", "SoundSTBoost-v$versionName")
     }
@@ -63,7 +63,7 @@ android {
     }
     
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.3"
+        kotlinCompilerExtensionVersion = "1.5.3"
     }
 }
 

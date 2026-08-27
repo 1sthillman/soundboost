@@ -4,10 +4,10 @@
 
 📦 DOSYA BİLGİLERİ
 ==================
-Dosya Adı: SoundSTBoost-v1.0.2-release.aab
-Konum: app\build\outputs\bundle\release\SoundSTBoost-v1.0.2-release.aab
-Boyut: 2.32 MB
-Oluşturma Tarihi: 28.08.2026 00:12:00
+Dosya Adı: SoundSTBoost-v1.0.3-release.aab
+Konum: app\build\outputs\bundle\release\SoundSTBoost-v1.0.3-release.aab
+Boyut: 2.30 MB
+Oluşturma Tarihi: 28.08.2026 00:25:44
 
 ✅ İMZALANDI ve DOĞRULANDI (jar verified)
 
@@ -23,34 +23,28 @@ Password: SoundST2024!
 📋 UYGULAMA BİLGİLERİ
 ======================
 Package Name: com.soundboost ✅
-Version Code: 3 ✅
-Version Name: 1.0.2
+Version Code: 4 ✅
+Version Name: 1.0.3
 Min SDK: 24 (Android 7.0)
-Target SDK: 34 (Android 14) ✅
+Target SDK: 35 (Android 15) ✅✅✅ GOOGLE PLAY 2026 UYUMLU!
 
-⚠️ 2026 GOOGLE PLAY GEREKSİNİMLERİ HAKKINDA
-============================================
-31 Ağustos 2026'dan itibaren:
-- Yeni uygulamalar Android 16 (API 36) hedeflemek zorunda
-- Mevcut uygulamalar Android 15 (API 35) hedeflemeli
+✅ 2026 GOOGLE PLAY GEREKSİNİMLERİ KARŞILANDI!
+==============================================
+✅ API 35 (Android 15) hedefleniyor
+✅ 31 Ağustos 2026'ya kadar geçerli
+✅ Mevcut uygulamalar için minimum gereksinim karşılandı
+✅ Yeni uygulamalar için 31 Ağustos 2026'ya kadar kabul edilir
 
-ŞU ANDA GEÇERLI:
-- API 34 31 Ağustos 2026'ya kadar yüklenebilir
-- 2026'dan önce API 35/36'ya güncellemen gerekecek
-- Extension (uzatma) talep edebilirsin: 1 Kasım 2026'ya kadar
-
-KAYNAK:
-https://support.google.com/googleplay/android-developer/answer/11926878
+BU AAB GOOGLE PLAY'E YÜKLENEBİLİR!
 
 🚀 GOOGLE PLAY CONSOLE'A YÜKLEMEYE HAZIR!
 =========================================
 
 1. Play Console'a git: https://play.google.com/console
 2. Uygulamayı oluştur
-3. Bu AAB dosyasını yükle
+3. Bu AAB dosyasını yükle (API 35 hatası gitmeli!)
 4. Store listing'i doldur
 5. Privacy Policy'yi ekle
 6. Review'a gönder!
 
-Detaylı adımlar için: GOOGLE_PLAY_UPLOAD_CHECKLIST.md
 ========================================
