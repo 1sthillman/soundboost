@@ -13,11 +13,11 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    namespace = "com.stdev.soundstboost"
+    namespace = "com.soundboost"
     compileSdk = 33
 
     defaultConfig {
-        applicationId = "com.stdev.soundstboost"
+        applicationId = "com.soundboost"
         minSdk = 24
         targetSdk = 33
         versionCode = 1
