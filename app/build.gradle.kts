@@ -3,6 +3,15 @@ plugins {
     id("org.jetbrains.kotlin.android")
 }
 
+import java.util.Properties
+import java.io.FileInputStream
+
+val keystorePropertiesFile = rootProject.file("key.properties")
+val keystoreProperties = Properties()
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+}
+
 android {
     namespace = "com.stdev.soundstboost"
     compileSdk = 33
@@ -19,12 +28,12 @@ android {
     
     signingConfigs {
         create("release") {
-            // Keystore bilgileri key.properties dosyasından okunacak
-            // Veya manuel olarak girilecek
-            // storeFile = file("soundst-release-key.jks")
-            // storePassword = "YOUR_KEYSTORE_PASSWORD"
-            // keyAlias = "soundst-key"
-            // keyPassword = "YOUR_KEY_PASSWORD"
+            if (keystoreProperties["storeFile"] != null) {
+                storeFile = file(keystoreProperties["storeFile"] as String)
+                storePassword = keystoreProperties["storePassword"] as String
+                keyAlias = keystoreProperties["keyAlias"] as String
+                keyPassword = keystoreProperties["keyPassword"] as String
+            }
         }
     }
 
@@ -32,11 +41,11 @@ android {
         getByName("release") {
             isMinifyEnabled = true
             isShrinkResources = true
+            signingConfig = signingConfigs.getByName("release")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            // signingConfig = signingConfigs.getByName("release")
         }
     }
 

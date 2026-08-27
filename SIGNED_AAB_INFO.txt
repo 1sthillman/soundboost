@@ -1,0 +1,42 @@
+========================================
+İMZALI AAB DOSYASI - GOOGLE PLAY İÇİN HAZIR
+========================================
+
+📦 DOSYA BİLGİLERİ
+==================
+Dosya Adı: SoundSTBoost-v1.0.0-release.aab
+Konum: app\build\outputs\bundle\release\SoundSTBoost-v1.0.0-release.aab
+Boyut: 2.44 MB
+Oluşturma Tarihi: 27.08.2026 23:29:15
+
+✅ İMZALANDI ve DOĞRULANDI (jar verified)
+
+🔑 KEYSTORE BİLGİLERİ (GÜVENLİ SAKLA!)
+=======================================
+Keystore Dosyası: soundst-release-key.jks
+Alias: soundst-key
+Password: SoundST2024!
+
+⚠️ ÖNEMLİ: Bu şifreyi ve keystore dosyasını GÜVENLİ bir yerde sakla!
+   Kaybedersen uygulamayı bir daha güncelleyemezsin!
+
+📋 UYGULAMA BİLGİLERİ
+======================
+Package Name: com.stdev.soundstboost
+Version Code: 1
+Version Name: 1.0.0
+Min SDK: 24 (Android 7.0)
+Target SDK: 33 (Android 13)
+
+🚀 GOOGLE PLAY CONSOLE'A YÜKLEMEYE HAZIR!
+=========================================
+
+1. Play Console'a git: https://play.google.com/console
+2. Uygulamayı oluştur
+3. Bu AAB dosyasını yükle
+4. Store listing'i doldur
+5. Privacy Policy'yi ekle
+6. Review'a gönder!
+
+Detaylı adımlar için: GOOGLE_PLAY_UPLOAD_CHECKLIST.md
+========================================
