@@ -240,6 +240,7 @@ fun WebViewHomeScreen(
                             "ar" -> "ar"
                             "ja" -> "ja"
                             "zh" -> "zh"
+                            "ko" -> "ko"
                             "system" -> com.soundboost.data.LanguageManager.getSystemLanguage(ctx)
                             else -> "en"
                         }
