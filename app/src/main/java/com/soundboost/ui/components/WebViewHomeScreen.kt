@@ -43,8 +43,12 @@ fun WebViewHomeScreen(
     var lastThemeFromKotlin by remember { mutableStateOf<com.soundboost.ui.theme.AppTheme?>(null) }
     
     // CRITICAL: Sync language IMMEDIATELY when it changes (no waiting for navigation!)
+    // This handles both: 1) returning from language screen, 2) activity recreation after language change
     LaunchedEffect(currentLanguage, isWebViewReady) {
-        if (!isWebViewReady) return@LaunchedEffect
+        if (!isWebViewReady) {
+            android.util.Log.d("WebViewHomeScreen", "⏳ WebView not ready yet, skipping language sync")
+            return@LaunchedEffect
+        }
         
         val langCode = when (currentLanguage.code) {
             "tr" -> "tr"
@@ -61,9 +65,16 @@ fun WebViewHomeScreen(
             else -> "en"
         }
         
-        android.util.Log.d("WebViewHomeScreen", "🌐 IMMEDIATE Language sync! Code: $langCode")
+        android.util.Log.d("WebViewHomeScreen", "🌐 IMMEDIATE Language sync! Code: $langCode from ${currentLanguage.code}")
         cachedWebView.value?.evaluateJavascript(
-            "if(window.setLanguage) { console.log('📢 INSTANT language change: $langCode'); window.setLanguage('$langCode'); }",
+            """
+            if(window.setLanguage) { 
+                console.log('📢 INSTANT language change: $langCode'); 
+                window.setLanguage('$langCode'); 
+            } else {
+                console.error('❌ setLanguage function not found in window');
+            }
+            """.trimIndent(),
             null
         )
     }

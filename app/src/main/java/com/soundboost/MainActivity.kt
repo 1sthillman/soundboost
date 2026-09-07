@@ -149,7 +149,9 @@ fun MainScreen(viewModel: MainViewModel) {
     val audioLevels by viewModel.audioLevels.collectAsState()
     val themeColors = getThemeColors(uiState.theme, uiState.colorAccent)
     val context = androidx.compose.ui.platform.LocalContext.current
-    val currentLanguage = remember { mutableStateOf(viewModel.getCurrentLanguage(context)) }
+    
+    // CRITICAL: Track language as state to trigger immediate WebView updates
+    var currentLanguage by remember { mutableStateOf(viewModel.getCurrentLanguage(context)) }
     
     var showRateDialog by remember { mutableStateOf(false) }
     var showShareDialog by remember { mutableStateOf(false) }
@@ -183,7 +185,7 @@ fun MainScreen(viewModel: MainViewModel) {
                         onNavigateToEqualizer = { navController.navigate("equalizer") },
                         onNavigateToLanguage = { navController.navigate("language") },
                         cachedWebView = cachedWebView,
-                        currentLanguage = currentLanguage.value  // CRITICAL: Pass current language for immediate sync
+                        currentLanguage = currentLanguage  // CRITICAL: Pass current language for immediate sync
                     )
                 }
             )
@@ -224,9 +226,10 @@ fun MainScreen(viewModel: MainViewModel) {
             composable("language") {
                 LanguageScreen(
                     state = uiState,
-                    currentLanguage = currentLanguage.value,
+                    currentLanguage = currentLanguage,
                     onLanguageSelected = { language ->
-                        currentLanguage.value = language
+                        android.util.Log.d("MainActivity", "🌐 Language selected: ${language.code}")
+                        currentLanguage = language  // CRITICAL: Update state immediately
                         viewModel.onLanguageChanged(language, context)
                     },
                     onBack = { navController.popBackStack() }

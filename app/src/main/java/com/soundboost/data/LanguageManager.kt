@@ -47,17 +47,15 @@ object LanguageManager {
         // Apply language using AppCompat for proper system integration
         applyLanguageWithAppCompat(language)
         
-        // Also update configuration for immediate effect
+        // Update configuration for immediate effect
         updateConfiguration(context, language)
         
-        // CRITICAL FIX: Don't recreate activity to preserve WebView state
-        // WebView will be notified of language change via JavaScript bridge
-        // Activity will apply language on next natural restart
-        
-        // OLD CODE (causes WebView layout to break):
-        // if (context is Activity) {
-        //     context.recreate()
-        // }
+        // CRITICAL FIX: Recreate activity to apply language changes immediately
+        // This ensures all string resources are updated without app restart
+        if (context is Activity) {
+            android.util.Log.d("LanguageManager", "🔄 Recreating activity for immediate language change")
+            context.recreate()
+        }
     }
     
     /**
