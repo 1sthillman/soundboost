@@ -123,8 +123,12 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     
     fun onLanguageChanged(language: com.soundboost.data.AppLanguage, context: android.content.Context) {
         viewModelScope.launch {
+            android.util.Log.d("MainViewModel", "🌐 Language changed to: ${language.code}")
             com.soundboost.data.LanguageManager.setLanguage(context, language)
-            // Language manager already handles recreation
+            
+            // CRITICAL: Notify UI that language changed
+            // This triggers recomposition and WebView will sync in DisposableEffect
+            android.util.Log.d("MainViewModel", "Language saved, UI will update via state flow")
         }
     }
     

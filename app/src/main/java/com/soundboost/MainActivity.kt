@@ -182,7 +182,8 @@ fun MainScreen(viewModel: MainViewModel) {
                         onNavigateToSettings = { navController.navigate("settings") },
                         onNavigateToEqualizer = { navController.navigate("equalizer") },
                         onNavigateToLanguage = { navController.navigate("language") },
-                        cachedWebView = cachedWebView
+                        cachedWebView = cachedWebView,
+                        currentLanguage = currentLanguage.value  // CRITICAL: Pass current language for immediate sync
                     )
                 }
             )

@@ -32,7 +32,8 @@ fun WebViewHomeScreen(
     onNavigateToSettings: () -> Unit,
     onNavigateToEqualizer: () -> Unit,
     onNavigateToLanguage: () -> Unit,
-    cachedWebView: androidx.compose.runtime.MutableState<WebView?>
+    cachedWebView: androidx.compose.runtime.MutableState<WebView?>,
+    currentLanguage: com.soundboost.data.AppLanguage  // NEW: Current language for immediate sync
 ) {
     val context = androidx.compose.ui.platform.LocalContext.current
     val systemInDarkTheme = androidx.compose.foundation.isSystemInDarkTheme()
@@ -40,6 +41,32 @@ fun WebViewHomeScreen(
     
     var isWebViewReady by remember { mutableStateOf(false) }
     var lastThemeFromKotlin by remember { mutableStateOf<com.soundboost.ui.theme.AppTheme?>(null) }
+    
+    // CRITICAL: Sync language IMMEDIATELY when it changes (no waiting for navigation!)
+    LaunchedEffect(currentLanguage, isWebViewReady) {
+        if (!isWebViewReady) return@LaunchedEffect
+        
+        val langCode = when (currentLanguage.code) {
+            "tr" -> "tr"
+            "en" -> "en"
+            "de" -> "de"
+            "fr" -> "fr"
+            "es" -> "es"
+            "ru" -> "ru"
+            "ar" -> "ar"
+            "ja" -> "ja"
+            "zh" -> "zh"
+            "ko" -> "ko"
+            "system" -> com.soundboost.data.LanguageManager.getSystemLanguage(context)
+            else -> "en"
+        }
+        
+        android.util.Log.d("WebViewHomeScreen", "🌐 IMMEDIATE Language sync! Code: $langCode")
+        cachedWebView.value?.evaluateJavascript(
+            "if(window.setLanguage) { console.log('📢 INSTANT language change: $langCode'); window.setLanguage('$langCode'); }",
+            null
+        )
+    }
     
     // Keep WebView alive when navigating away
     DisposableEffect(Unit) {
