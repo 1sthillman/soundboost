@@ -36,6 +36,9 @@ object LanguageManager {
     /**
      * Set application language and persist the choice.
      * Automatically detects system language when SYSTEM is selected.
+     * 
+     * CRITICAL: Does NOT recreate activity to preserve WebView state.
+     * Language changes are applied via JavaScript bridge to WebView.
      */
     fun setLanguage(context: Context, language: AppLanguage) {
         // Save preference
@@ -50,12 +53,10 @@ object LanguageManager {
         // Update configuration for immediate effect
         updateConfiguration(context, language)
         
-        // CRITICAL FIX: Recreate activity to apply language changes immediately
-        // This ensures all string resources are updated without app restart
-        if (context is Activity) {
-            android.util.Log.d("LanguageManager", "🔄 Recreating activity for immediate language change")
-            context.recreate()
-        }
+        // CRITICAL: Do NOT recreate activity - it breaks WebView state!
+        // WebView language is updated via JavaScript bridge (window.setLanguage)
+        // Activity will pick up new language on next natural restart
+        android.util.Log.d("LanguageManager", "✅ Language changed to ${language.code} without recreating activity")
     }
     
     /**
