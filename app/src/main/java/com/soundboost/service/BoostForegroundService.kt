@@ -48,6 +48,9 @@ class BoostForegroundService : Service() {
         serviceScope.launch {
             val settings = prefs.settings.firstOrNull() ?: return@launch
             
+            android.util.Log.d("BoostService", "🔊 START_BOOST: masterGain=${settings.masterGainPercent}, bass=${settings.bassBoostPercent}")
+            android.util.Log.d("BoostService", "Loudness supported: ${audioEffects.isLoudnessSupported}")
+            
             audioEffects.setMasterGain(settings.masterGainPercent)
             audioEffects.setBassBoost(settings.bassBoostPercent)
             audioEffects.setVirtualizer(settings.virtualizerPercent)
@@ -67,6 +70,8 @@ class BoostForegroundService : Service() {
     private fun updateEffects() {
         serviceScope.launch {
             val settings = prefs.settings.firstOrNull() ?: return@launch
+            
+            android.util.Log.d("BoostService", "🔄 UPDATE_EFFECTS: masterGain=${settings.masterGainPercent}, bass=${settings.bassBoostPercent}")
             
             audioEffects.setMasterGain(settings.masterGainPercent)
             audioEffects.setBassBoost(settings.bassBoostPercent)

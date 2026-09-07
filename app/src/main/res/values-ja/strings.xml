@@ -38,4 +38,114 @@
     <string name="notification_text">音量：%1$d%% • 低音：%2$d%%</string>
     <string name="language">言語</string>
     <string name="language_system">自動（システム）</string>
+    <string name="language_english">English</string>
+    <string name="language_turkish">Türkçe</string>
+    <string name="language_german">Deutsch</string>
+    <string name="language_spanish">Español</string>
+    <string name="language_french">Français</string>
+    <string name="language_russian">Русский</string>
+    <string name="language_chinese">中文</string>
+    <string name="language_japanese">日本語</string>
+    <string name="language_korean">한국어</string>
+    <string name="language_arabic">العربية</string>
+    <string name="tap_to_start">中央をダブルタップして開始</string>
+    <string name="drag_to_adjust">ドラッグして音量を調整</string>
+    <string name="theme_customization">テーマのカスタマイズ</string>
+    <string name="language_info_title">ℹ️ 言語変更</string>
+    <string name="language_info_desc">アプリは選択した言語でコンテンツを表示するように自動的に更新されます。</string>
+    <string name="language_system_desc">デバイスの言語を自動的に検出します</string>
+    <string name="status_active">有効</string>
+    <string name="status_double_tap">ダブルタップ</string>
+    <string name="instruction_drag">上下にドラッグして調整</string>
+    <string name="instruction_double_tap">ダブルタップして開始</string>
+    <string name="welcome_title">ようこそ！</string>
+    <string name="instruction_1_title">ダブルタップ</string>
+    <string name="instruction_1_desc">中央のコントロールをダブルタップして音量ブースターを起動します</string>
+    <string name="instruction_2_title">ドラッグ &amp; 調整</string>
+    <string name="instruction_2_desc">指を円を描くように動かすか、上下にドラッグして音量レベルを調整します</string>
+    <string name="instruction_3_title">テーマを選択</string>
+    <string name="instruction_3_desc">上部の丸いボタンから異なるテーマを選択して外観を変更します</string>
+    <string name="got_it">わかりました！</string>
+    <string name="training_welcome_title">ようこそ！</string>
+    <string name="training_welcome_desc">Sound\'ST Boostの使い方をご紹介します</string>
+    <string name="training_start">始めましょう</string>
+    <string name="training_double_tap_title">ステップ 1：ダブルタップ</string>
+    <string name="training_double_tap_desc">大きな中央のコントロールをダブルタップして音量ブースターをオンにします</string>
+    <string name="training_understood">わかりました</string>
+    <string name="training_waiting_double_tap">今ダブルタップしてください...</string>
+    <string name="training_drag_title">ステップ 2：ドラッグ</string>
+    <string name="training_drag_desc">指を円を描くように動かすか、上下に動かして音量レベルを調整します</string>
+    <string name="training_try_it">試してみてください</string>
+    <string name="training_drag_to_continue">今ドラッグして調整してください...</string>
+    <string name="training_theme_title">ステップ 3：テーマ</string>
+    <string name="training_theme_desc">上部の丸いボタンから異なるテーマを選択できます</string>
+    <string name="training_finish">完了！</string>
+    
+    <!-- Help & FAQ -->
+    <string name="help_and_faq">ヘルプとFAQ</string>
+    <string name="faq_how_to_use">アプリの使い方は？</string>
+    <string name="faq_how_to_use_answer">中央のダイヤルをダブルタップして音量ブースターをオンにします。音量レベルを調整するには、上下にドラッグするか、円を描くように動かします。低音ブーストと3Dエフェクトにはスライダーを使用します。</string>
+    <string name="faq_not_working">ブーストが機能しないのはなぜですか？</string>
+    <string name="faq_not_working_answer">オーディオエフェクトのサポートはデバイスによって異なります。一部のメーカーはオーディオエフェクト機能を制限しています。異なるブーストレベルを試し、デバイスの音量がゼロでないことを確認してください。</string>
+    <string name="faq_background_work">バックグラウンドで動作しますか？</string>
+    <string name="faq_background_work_answer">はい！有効にすると、他のアプリに切り替えたり画面をロックしたりしても、ブーストは動作し続けます。有効な間、通知が表示されます。</string>
+    <string name="faq_battery">バッテリーを消費しますか？</string>
+    <string name="faq_battery_answer">アプリは最小限のバッテリー電力を使用します。効率的なフォアグラウンドサービスとして実行され、ブーストがアクティブな場合のみオーディオを処理します。</string>
+    <string name="faq_audio_quality">スピーカーを損傷しますか？</string>
+    <string name="faq_audio_quality_answer">アプリは安全制限を考慮して設計されています。ただし、最大レベルでの長時間の使用は、スピーカーにストレスを与える可能性があります。長時間のリスニングには、適度なブーストレベルの使用をお勧めします。</string>
+    <string name="faq_device_support">どのデバイスがサポートされていますか？</string>
+    <string name="faq_device_support_answer">すべてのAndroid 7.0+デバイスがサポートされています。エフェクトの強度は、デバイスのハードウェアとメーカーのオーディオ実装によって異なる場合があります。</string>
+    
+    <!-- Rate App -->
+    <string name="rate_your_app">アプリを評価</string>
+    <string name="rate_app_title">Sound\'ST Boostをお楽しみですか？</string>
+    <string name="rate_app_description">あなたのサポートは私たちにとってすべてです</string>
+    <string name="rate_app_message">あなたの評価は、より多くのユーザーに届くのに役立ち、新しい機能を追加するモチベーションになります！⭐</string>
+    <string name="rate">評価</string>
+    <string name="later">後で</string>
+    <string name="rate_now">今すぐ評価</string>
+    <string name="maybe_later">また後で</string>
+    
+    <!-- Share App -->
+    <string name="share_app">アプリを共有</string>
+    <string name="share_app_title">友達と共有しよう！</string>
+    <string name="share_app_message">友達もオーディオ体験を向上させましょう！</string>
+    <string name="share_now">今すぐ共有</string>
+    <string name="share_text">Sound\'ST Boostをチェック - 最高の音量ブースターアプリ！🎧🔊\n\n%1$s</string>
+    <string name="share_via">共有方法</string>
+    <string name="cancel">キャンセル</string>
+    
+    <!-- Theme Names -->
+    <string name="theme_system">システム（自動）</string>
+    <string name="theme_neon_light">ネオンライト</string>
+    <string name="themes_label">テーマ</string>
+    
+    <!-- Theme Display Names -->
+    <string name="theme_water">水</string>
+    <string name="theme_forest">森</string>
+    <string name="theme_sun">太陽</string>
+    <string name="theme_royal">ロイヤル</string>
+    <string name="theme_neon">ネオン</string>
+    <string name="theme_midnight">ミッドナイト</string>
+    <string name="theme_coral">コーラル</string>
+    <string name="theme_ice">氷</string>
+    <string name="theme_lava">溶岩</string>
+    <string name="theme_galaxy">銀河</string>
+    <string name="theme_vinyl">レコード</string>
+    <string name="theme_synth">シンセウェーブ</string>
+    
+    <!-- Volume Presets -->
+    <string name="preset_50">50%</string>
+    <string name="preset_70">70%</string>
+    <string name="preset_150">150%</string>
+    <string name="preset_200_max">200% 最大</string>
+    
+    <!-- Accessibility -->
+    <string name="accessibility_features">アクセシビリティ機能</string>
+    <string name="visual_feedback">視覚的フィードバック</string>
+    <string name="visual_feedback_desc">オーディオ変更のための強化された視覚的インジケーター</string>
+    <string name="haptic_feedback">触覚フィードバック</string>
+    <string name="haptic_feedback_desc">コントロールを調整する際の振動</string>
+    <string name="high_contrast">ハイコントラストモード</string>
+    <string name="high_contrast_desc">より良い可読性のための改善された視認性</string>
 </resources>

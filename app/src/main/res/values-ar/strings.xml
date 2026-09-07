@@ -38,4 +38,114 @@
     <string name="notification_text">الصوت: %1$d%% • الجهير: %2$d%%</string>
     <string name="language">اللغة</string>
     <string name="language_system">تلقائي (النظام)</string>
+    <string name="language_english">English</string>
+    <string name="language_turkish">Türkçe</string>
+    <string name="language_german">Deutsch</string>
+    <string name="language_spanish">Español</string>
+    <string name="language_french">Français</string>
+    <string name="language_russian">Русский</string>
+    <string name="language_chinese">中文</string>
+    <string name="language_japanese">日本語</string>
+    <string name="language_korean">한국어</string>
+    <string name="language_arabic">العربية</string>
+    <string name="tap_to_start">انقر مرتين على المركز للبدء</string>
+    <string name="drag_to_adjust">اسحب لضبط مستوى الصوت</string>
+    <string name="theme_customization">تخصيص السمة</string>
+    <string name="language_info_title">ℹ️ تغيير اللغة</string>
+    <string name="language_info_desc">سيتم تحديث التطبيق تلقائيًا لعرض المحتوى باللغة التي اخترتها.</string>
+    <string name="language_system_desc">يكتشف لغة جهازك تلقائيًا</string>
+    <string name="status_active">نشط</string>
+    <string name="status_double_tap">انقر مرتين</string>
+    <string name="instruction_drag">اسحب لأعلى/لأسفل للضبط</string>
+    <string name="instruction_double_tap">انقر مرتين للبدء</string>
+    <string name="welcome_title">مرحبًا!</string>
+    <string name="instruction_1_title">انقر مرتين</string>
+    <string name="instruction_1_desc">انقر مرتين على عنصر التحكم المركزي لبدء معزز مستوى الصوت</string>
+    <string name="instruction_2_title">السحب &amp; الضبط</string>
+    <string name="instruction_2_desc">حرك إصبعك بحركة دائرية أو اسحب لأعلى/لأسفل لضبط مستوى الصوت</string>
+    <string name="instruction_3_title">اختر السمة</string>
+    <string name="instruction_3_desc">حدد سمات مختلفة من الأزرار الدائرية أعلاه لتغيير المظهر</string>
+    <string name="got_it">فهمت!</string>
+    <string name="training_welcome_title">مرحبًا!</string>
+    <string name="training_welcome_desc">دعنا نوضح لك كيفية استخدام Sound\'ST Boost</string>
+    <string name="training_start">لنبدأ</string>
+    <string name="training_double_tap_title">الخطوة 1: انقر مرتين</string>
+    <string name="training_double_tap_desc">انقر مرتين على عنصر التحكم المركزي الكبير لتشغيل معزز مستوى الصوت</string>
+    <string name="training_understood">فهمت</string>
+    <string name="training_waiting_double_tap">الآن انقر مرتين...</string>
+    <string name="training_drag_title">الخطوة 2: السحب</string>
+    <string name="training_drag_desc">حرك إصبعك بحركة دائرية أو لأعلى/لأسفل لضبط مستوى الصوت</string>
+    <string name="training_try_it">جربه</string>
+    <string name="training_drag_to_continue">الآن اسحب للضبط...</string>
+    <string name="training_theme_title">الخطوة 3: السمات</string>
+    <string name="training_theme_desc">يمكنك تحديد سمات مختلفة من الأزرار الدائرية أعلاه</string>
+    <string name="training_finish">انتهى!</string>
+    
+    <!-- Help & FAQ -->
+    <string name="help_and_faq">المساعدة والأسئلة الشائعة</string>
+    <string name="faq_how_to_use">كيف أستخدم التطبيق؟</string>
+    <string name="faq_how_to_use_answer">انقر نقرًا مزدوجًا على القرص المركزي لتشغيل معزز مستوى الصوت. اسحب لأعلى/لأسفل أو بحركة دائرية لضبط مستوى الصوت. استخدم أشرطة التمرير لتعزيز الجهير والتأثيرات ثلاثية الأبعاد.</string>
+    <string name="faq_not_working">لماذا لا يعمل التعزيز؟</string>
+    <string name="faq_not_working_answer">يختلف دعم المؤثرات الصوتية حسب الجهاز. يحد بعض المصنعين من قدرات المؤثرات الصوتية. جرب مستويات تعزيز مختلفة وتأكد من أن مستوى صوت جهازك ليس صفرًا.</string>
+    <string name="faq_background_work">هل يعمل في الخلفية؟</string>
+    <string name="faq_background_work_answer">نعم! بمجرد التنشيط، يستمر التعزيز في العمل حتى عند التبديل إلى تطبيقات أخرى أو قفل الشاشة. سترى إشعارًا أثناء نشاطه.</string>
+    <string name="faq_battery">هل يستنزف البطارية؟</string>
+    <string name="faq_battery_answer">يستخدم التطبيق الحد الأدنى من طاقة البطارية. يعمل كخدمة أمامية فعالة ويعالج الصوت فقط عندما يكون التعزيز نشطًا.</string>
+    <string name="faq_audio_quality">هل سيضر بمكبرات الصوت؟</string>
+    <string name="faq_audio_quality_answer">التطبيق مصمم مع حدود الأمان. ومع ذلك، قد يؤدي الاستخدام المطول عند المستويات القصوى إلى إجهاد مكبرات الصوت. نوصي باستخدام مستويات تعزيز معتدلة للاستماع الممتد.</string>
+    <string name="faq_device_support">ما هي الأجهزة المدعومة؟</string>
+    <string name="faq_device_support_answer">جميع أجهزة Android 7.0+ مدعومة. قد تختلف قوة التأثير بناءً على أجهزة الجهاز وتطبيقات الصوت من الشركة المصنعة.</string>
+    
+    <!-- Rate App -->
+    <string name="rate_your_app">قيم التطبيق</string>
+    <string name="rate_app_title">هل تستمتع بـ Sound\'ST Boost؟</string>
+    <string name="rate_app_description">دعمك يعني لنا العالم</string>
+    <string name="rate_app_message">تقييمك يساعدنا في الوصول إلى المزيد من المستخدمين ويبقينا متحمسين لإضافة ميزات جديدة! ⭐</string>
+    <string name="rate">قيم</string>
+    <string name="later">لاحقًا</string>
+    <string name="rate_now">قيم الآن</string>
+    <string name="maybe_later">ربما لاحقًا</string>
+    
+    <!-- Share App -->
+    <string name="share_app">مشاركة التطبيق</string>
+    <string name="share_app_title">شارك مع الأصدقاء!</string>
+    <string name="share_app_message">ساعد أصدقاءك على تعزيز تجربتهم الصوتية أيضًا!</string>
+    <string name="share_now">شارك الآن</string>
+    <string name="share_text">تحقق من Sound\'ST Boost - أفضل تطبيق لتعزيز مستوى الصوت! 🎧🔊\n\n%1$s</string>
+    <string name="share_via">مشاركة عبر</string>
+    <string name="cancel">إلغاء</string>
+    
+    <!-- Theme Names -->
+    <string name="theme_system">النظام (تلقائي)</string>
+    <string name="theme_neon_light">نيون فاتح</string>
+    <string name="themes_label">السمات</string>
+    
+    <!-- Theme Display Names -->
+    <string name="theme_water">ماء</string>
+    <string name="theme_forest">غابة</string>
+    <string name="theme_sun">شمس</string>
+    <string name="theme_royal">ملكي</string>
+    <string name="theme_neon">نيون</string>
+    <string name="theme_midnight">منتصف الليل</string>
+    <string name="theme_coral">مرجان</string>
+    <string name="theme_ice">جليد</string>
+    <string name="theme_lava">حمم بركانية</string>
+    <string name="theme_galaxy">مجرة</string>
+    <string name="theme_vinyl">فينيل</string>
+    <string name="theme_synth">موجة التوليف</string>
+    
+    <!-- Volume Presets -->
+    <string name="preset_50">50%</string>
+    <string name="preset_70">70%</string>
+    <string name="preset_150">150%</string>
+    <string name="preset_200_max">200% الأقصى</string>
+    
+    <!-- Accessibility -->
+    <string name="accessibility_features">ميزات إمكانية الوصول</string>
+    <string name="visual_feedback">ردود الفعل البصرية</string>
+    <string name="visual_feedback_desc">مؤشرات بصرية محسنة لتغييرات الصوت</string>
+    <string name="haptic_feedback">ردود الفعل اللمسية</string>
+    <string name="haptic_feedback_desc">اهتزاز عند ضبط عناصر التحكم</string>
+    <string name="high_contrast">وضع التباين العالي</string>
+    <string name="high_contrast_desc">رؤية محسنة لقراءة أفضل</string>
 </resources>

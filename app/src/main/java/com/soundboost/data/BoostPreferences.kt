@@ -13,15 +13,17 @@ private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(na
 
 data class BoostSettings(
     val isBoostEnabled: Boolean = false,
-    val masterGainPercent: Int = 100,
+    val masterGainPercent: Int = 150,  // 150 = +10dB audible boost
     val bassBoostPercent: Int = 0,
     val virtualizerPercent: Int = 0,
     val eqLowGain: Float = 0f,
     val eqMidGain: Float = 0f,
     val eqHighGain: Float = 0f,
     val autoStartOnBoot: Boolean = false,
-    val theme: AppTheme = AppTheme.NEON_DARK,
-    val colorAccent: ColorAccent = ColorAccent.CYAN
+    val theme: AppTheme = AppTheme.SUMI,
+    val colorAccent: ColorAccent = ColorAccent.SUMI_RED,
+    val sensitivity: Int = 45,  // Visualizer sensitivity (0-100)
+    val isDarkMode: Boolean? = null  // null = follow system, true/false = force mode
 )
 
 class BoostPreferences(private val context: Context) {
@@ -37,12 +39,22 @@ class BoostPreferences(private val context: Context) {
         val AUTO_START = booleanPreferencesKey("auto_start_on_boot")
         val THEME = stringPreferencesKey("app_theme")
         val COLOR_ACCENT = stringPreferencesKey("color_accent")
+        val HAS_RATED_APP = booleanPreferencesKey("has_rated_app")
+        val SENSITIVITY = intPreferencesKey("sensitivity")
+        val IS_DARK_MODE = stringPreferencesKey("is_dark_mode")  // "system", "light", "dark"
     }
     
     val settings: Flow<BoostSettings> = context.dataStore.data.map { prefs ->
+        val darkModeStr = prefs[Keys.IS_DARK_MODE] ?: "system"
+        val isDarkMode = when (darkModeStr) {
+            "dark" -> true
+            "light" -> false
+            else -> null  // "system" or not set
+        }
+        
         BoostSettings(
             isBoostEnabled = prefs[Keys.IS_BOOST_ENABLED] ?: false,
-            masterGainPercent = prefs[Keys.MASTER_GAIN] ?: 100,
+            masterGainPercent = prefs[Keys.MASTER_GAIN] ?: 150,  // Default to +10dB
             bassBoostPercent = prefs[Keys.BASS_BOOST] ?: 0,
             virtualizerPercent = prefs[Keys.VIRTUALIZER] ?: 0,
             eqLowGain = prefs[Keys.EQ_LOW] ?: 0f,
@@ -50,15 +62,17 @@ class BoostPreferences(private val context: Context) {
             eqHighGain = prefs[Keys.EQ_HIGH] ?: 0f,
             autoStartOnBoot = prefs[Keys.AUTO_START] ?: false,
             theme = try {
-                AppTheme.valueOf(prefs[Keys.THEME] ?: AppTheme.NEON_DARK.name)
+                AppTheme.valueOf(prefs[Keys.THEME] ?: AppTheme.SUMI.name)
             } catch (e: Exception) {
-                AppTheme.NEON_DARK
+                AppTheme.SUMI
             },
             colorAccent = try {
-                ColorAccent.valueOf(prefs[Keys.COLOR_ACCENT] ?: ColorAccent.CYAN.name)
+                ColorAccent.valueOf(prefs[Keys.COLOR_ACCENT] ?: ColorAccent.SUMI_RED.name)
             } catch (e: Exception) {
-                ColorAccent.CYAN
-            }
+                ColorAccent.SUMI_RED
+            },
+            sensitivity = prefs[Keys.SENSITIVITY] ?: 45,
+            isDarkMode = isDarkMode
         )
     }
     
@@ -96,5 +110,23 @@ class BoostPreferences(private val context: Context) {
     
     suspend fun setColorAccent(accent: ColorAccent) {
         context.dataStore.edit { it[Keys.COLOR_ACCENT] = accent.name }
+    }
+    
+    suspend fun setHasRatedApp(rated: Boolean) {
+        context.dataStore.edit { it[Keys.HAS_RATED_APP] = rated }
+    }
+    
+    suspend fun setSensitivity(value: Int) {
+        context.dataStore.edit { it[Keys.SENSITIVITY] = value.coerceIn(0, 100) }
+    }
+    
+    suspend fun setDarkMode(isDark: Boolean?) {
+        context.dataStore.edit { 
+            it[Keys.IS_DARK_MODE] = when (isDark) {
+                true -> "dark"
+                false -> "light"
+                null -> "system"
+            }
+        }
     }
 }

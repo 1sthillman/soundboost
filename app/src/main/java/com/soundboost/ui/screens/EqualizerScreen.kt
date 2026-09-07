@@ -1,5 +1,8 @@
 package com.soundboost.ui.screens
 
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.spring
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -10,14 +13,14 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.soundboost.R
 import com.soundboost.data.BoostSettings
-import com.soundboost.ui.components.ModernSlider
-import com.soundboost.ui.theme.getThemeColors
+import com.soundboost.ui.components.*
+import com.soundboost.ui.theme.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -37,7 +40,8 @@ fun EqualizerScreen(
                     Text(
                         stringResource(R.string.equalizer),
                         fontWeight = FontWeight.Black,
-                        fontSize = 20.sp
+                        fontSize = TextStyles.titleMedium,
+                        letterSpacing = TextStyles.spacingWide
                     )
                 },
                 navigationIcon = {
@@ -56,142 +60,208 @@ fun EqualizerScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .padding(horizontal = 24.dp)
+                .padding(horizontal = Spacing.lg)
                 .verticalScroll(rememberScrollState()),
-            verticalArrangement = Arrangement.spacedBy(20.dp)
+            verticalArrangement = Arrangement.spacedBy(Spacing.md)
         ) {
-            Spacer(Modifier.height(8.dp))
+            Spacer(Modifier.height(Spacing.xs))
             
             // Bass Boost Card
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(24.dp),
-                colors = CardDefaults.cardColors(containerColor = themeColors.surface)
-            ) {
-                Column(
-                    modifier = Modifier.padding(24.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
-                ) {
-                    Text(
-                        stringResource(R.string.bass_boost),
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = themeColors.onSurface
-                    )
-                    
-                    ModernSlider(
-                        value = state.bassBoostPercent.toFloat(),
-                        onValueChange = { onBassBoostChanged(it.toInt()) },
-                        valueRange = 0f..100f,
-                        valueLabel = "${state.bassBoostPercent}%",
-                        accentColor = themeColors.accent1,
-                        surfaceColor = themeColors.background
-                    )
-                }
-            }
+            EffectCard(
+                title = stringResource(R.string.bass_boost),
+                value = state.bassBoostPercent,
+                accentColor = themeColors.accent1,
+                surfaceColor = themeColors.surface,
+                textColor = themeColors.onSurface,
+                onValueChange = { onBassBoostChanged(it.toInt()) }
+            )
             
             // Virtualizer Card
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(24.dp),
-                colors = CardDefaults.cardColors(containerColor = themeColors.surface)
-            ) {
-                Column(
-                    modifier = Modifier.padding(24.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
-                ) {
-                    Text(
-                        stringResource(R.string.virtualizer),
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = themeColors.onSurface
-                    )
-                    
-                    ModernSlider(
-                        value = state.virtualizerPercent.toFloat(),
-                        onValueChange = { onVirtualizerChanged(it.toInt()) },
-                        valueRange = 0f..100f,
-                        valueLabel = "${state.virtualizerPercent}%",
-                        accentColor = themeColors.accent2,
-                        surfaceColor = themeColors.background
-                    )
-                }
-            }
+            EffectCard(
+                title = stringResource(R.string.virtualizer),
+                value = state.virtualizerPercent,
+                accentColor = themeColors.accent2,
+                surfaceColor = themeColors.surface,
+                textColor = themeColors.onSurface,
+                onValueChange = { onVirtualizerChanged(it.toInt()) }
+            )
             
-            // 3-Band Equalizer Card
+            // 3-Band EQ Card
+            val isLightTheme = androidx.compose.foundation.isSystemInDarkTheme().not()
+            
             Card(
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(24.dp),
-                colors = CardDefaults.cardColors(containerColor = themeColors.surface)
+                shape = RoundedCornerShape(Corners.xl),
+                colors = CardDefaults.cardColors(
+                    containerColor = if (isLightTheme) {
+                        Color.Black.copy(alpha = 0.08f)
+                    } else {
+                        themeColors.surface.copy(alpha = 0.4f)
+                    }
+                ),
+                elevation = CardDefaults.cardElevation(defaultElevation = Elevation.level2)
             ) {
                 Column(
-                    modifier = Modifier.padding(24.dp),
-                    verticalArrangement = Arrangement.spacedBy(20.dp)
+                    modifier = Modifier.padding(Spacing.lg),
+                    verticalArrangement = Arrangement.spacedBy(Spacing.md)
                 ) {
                     Text(
                         "3-BAND EQUALIZER",
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = themeColors.onSurface
+                        fontSize = TextStyles.bodyMedium,
+                        fontWeight = FontWeight.Black,
+                        color = themeColors.onSurface,
+                        letterSpacing = TextStyles.spacingExtraWide
                     )
                     
-                    // Bass
-                    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                        Text(
-                            stringResource(R.string.bass),
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.Medium,
-                            color = themeColors.onSurface.copy(alpha = 0.7f)
-                        )
-                        ModernSlider(
-                            value = state.eqLowGain,
-                            onValueChange = { onEqChanged(it, state.eqMidGain, state.eqHighGain) },
-                            valueRange = -15f..15f,
-                            valueLabel = "${state.eqLowGain.toInt()} dB",
-                            accentColor = themeColors.accent1,
-                            surfaceColor = themeColors.background
-                        )
-                    }
+                    EQBand(
+                        label = stringResource(R.string.bass),
+                        value = state.eqLowGain,
+                        onValueChange = { onEqChanged(it, state.eqMidGain, state.eqHighGain) },
+                        accentColor = themeColors.accent1,
+                        surfaceColor = themeColors.surface.copy(alpha = 0.3f),
+                        textColor = themeColors.onSurface
+                    )
                     
-                    // Mid
-                    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                        Text(
-                            stringResource(R.string.mid),
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.Medium,
-                            color = themeColors.onSurface.copy(alpha = 0.7f)
-                        )
-                        ModernSlider(
-                            value = state.eqMidGain,
-                            onValueChange = { onEqChanged(state.eqLowGain, it, state.eqHighGain) },
-                            valueRange = -15f..15f,
-                            valueLabel = "${state.eqMidGain.toInt()} dB",
-                            accentColor = themeColors.accent1,
-                            surfaceColor = themeColors.background
-                        )
-                    }
+                    EQBand(
+                        label = stringResource(R.string.mid),
+                        value = state.eqMidGain,
+                        onValueChange = { onEqChanged(state.eqLowGain, it, state.eqHighGain) },
+                        accentColor = themeColors.accent1,
+                        surfaceColor = themeColors.surface.copy(alpha = 0.3f),
+                        textColor = themeColors.onSurface
+                    )
                     
-                    // Treble
-                    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                        Text(
-                            stringResource(R.string.treble),
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.Medium,
-                            color = themeColors.onSurface.copy(alpha = 0.7f)
-                        )
-                        ModernSlider(
-                            value = state.eqHighGain,
-                            onValueChange = { onEqChanged(state.eqLowGain, state.eqMidGain, it) },
-                            valueRange = -15f..15f,
-                            valueLabel = "${state.eqHighGain.toInt()} dB",
-                            accentColor = themeColors.accent1,
-                            surfaceColor = themeColors.background
-                        )
-                    }
+                    EQBand(
+                        label = stringResource(R.string.treble),
+                        value = state.eqHighGain,
+                        onValueChange = { onEqChanged(state.eqLowGain, state.eqMidGain, it) },
+                        accentColor = themeColors.accent1,
+                        surfaceColor = themeColors.surface.copy(alpha = 0.3f),
+                        textColor = themeColors.onSurface
+                    )
                 }
             }
             
-            Spacer(Modifier.height(24.dp))
+            Spacer(Modifier.height(Spacing.lg))
         }
+    }
+}
+
+@Composable
+private fun EffectCard(
+    title: String,
+    value: Int,
+    accentColor: Color,
+    surfaceColor: Color,
+    textColor: Color,
+    onValueChange: (Float) -> Unit
+) {
+    val scale by animateFloatAsState(
+        targetValue = if (value > 0) 1f else 0.98f,
+        animationSpec = spring(dampingRatio = 0.7f),
+        label = "effectCardScale"
+    )
+    
+    val isLightTheme = androidx.compose.foundation.isSystemInDarkTheme().not()
+    
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .scale(scale),
+        shape = RoundedCornerShape(Corners.xl),
+        colors = CardDefaults.cardColors(
+            containerColor = if (isLightTheme) {
+                Color.Black.copy(alpha = 0.08f)
+            } else {
+                surfaceColor.copy(alpha = 0.4f)
+            }
+        ),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = if (value > 0) Elevation.level2 else Elevation.level1
+        )
+    ) {
+        Column(
+            modifier = Modifier.padding(Spacing.lg),
+            verticalArrangement = Arrangement.spacedBy(Spacing.md)
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    title,
+                    fontSize = TextStyles.titleSmall,
+                    fontWeight = FontWeight.Black,
+                    color = textColor,
+                    letterSpacing = TextStyles.spacingWide
+                )
+                Text(
+                    "$value%",
+                    fontSize = TextStyles.displaySmall,
+                    fontWeight = FontWeight.Black,
+                    color = accentColor
+                )
+            }
+            
+            ModernSlider(
+                value = value.toFloat(),
+                onValueChange = onValueChange,
+                valueRange = 0f..100f,
+                valueLabel = "$value%",
+                accentColor = accentColor,
+                surfaceColor = if (isLightTheme) {
+                    Color.Black.copy(alpha = 0.1f)
+                } else {
+                    surfaceColor.copy(alpha = 0.3f)
+                }
+            )
+        }
+    }
+}
+
+@Composable
+private fun EQBand(
+    label: String,
+    value: Float,
+    onValueChange: (Float) -> Unit,
+    accentColor: Color,
+    surfaceColor: Color,
+    textColor: Color
+) {
+    val isLightTheme = androidx.compose.foundation.isSystemInDarkTheme().not()
+    
+    Column(verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                label,
+                fontSize = TextStyles.bodyMedium,
+                fontWeight = FontWeight.Bold,
+                color = textColor,
+                letterSpacing = TextStyles.spacingWide
+            )
+            Text(
+                "${value.toInt()} dB",
+                fontSize = TextStyles.titleMedium,
+                fontWeight = FontWeight.Black,
+                color = accentColor
+            )
+        }
+        ModernSlider(
+            value = value,
+            onValueChange = onValueChange,
+            valueRange = -15f..15f,
+            valueLabel = "${value.toInt()} dB",
+            accentColor = accentColor,
+            surfaceColor = if (isLightTheme) {
+                Color.Black.copy(alpha = 0.1f)
+            } else {
+                surfaceColor
+            }
+        )
     }
 }

@@ -38,4 +38,114 @@
     <string name="notification_text">Громкость: %1$d%% • Бас: %2$d%%</string>
     <string name="language">Язык</string>
     <string name="language_system">Автоматически (Система)</string>
+    <string name="language_english">English</string>
+    <string name="language_turkish">Türkçe</string>
+    <string name="language_german">Deutsch</string>
+    <string name="language_spanish">Español</string>
+    <string name="language_french">Français</string>
+    <string name="language_russian">Русский</string>
+    <string name="language_chinese">中文</string>
+    <string name="language_japanese">日本語</string>
+    <string name="language_korean">한국어</string>
+    <string name="language_arabic">العربية</string>
+    <string name="tap_to_start">Двойное нажатие в центре для запуска</string>
+    <string name="drag_to_adjust">Перетащите, чтобы настроить громкость</string>
+    <string name="theme_customization">Настройка Темы</string>
+    <string name="language_info_title">ℹ️ Смена Языка</string>
+    <string name="language_info_desc">Приложение автоматически обновится, чтобы отображать контент на выбранном языке.</string>
+    <string name="language_system_desc">Автоматически определяет язык вашего устройства</string>
+    <string name="status_active">АКТИВНО</string>
+    <string name="status_double_tap">ДВОЙНОЕ НАЖАТИЕ</string>
+    <string name="instruction_drag">Перетащите вверх/вниз для настройки</string>
+    <string name="instruction_double_tap">Двойное нажатие для запуска</string>
+    <string name="welcome_title">Добро пожаловать!</string>
+    <string name="instruction_1_title">Двойное Нажатие</string>
+    <string name="instruction_1_desc">Дважды нажмите на центральный элемент управления, чтобы запустить усилитель громкости</string>
+    <string name="instruction_2_title">Перетащить &amp; Настроить</string>
+    <string name="instruction_2_desc">Перемещайте палец круговым движением или вверх/вниз, чтобы настроить уровень громкости</string>
+    <string name="instruction_3_title">Выбрать Тему</string>
+    <string name="instruction_3_desc">Выберите различные темы из круглых кнопок сверху, чтобы изменить внешний вид</string>
+    <string name="got_it">Понятно!</string>
+    <string name="training_welcome_title">Добро пожаловать!</string>
+    <string name="training_welcome_desc">Позвольте нам показать вам, как использовать Sound\'ST Boost</string>
+    <string name="training_start">Начнем</string>
+    <string name="training_double_tap_title">Шаг 1: Двойное Нажатие</string>
+    <string name="training_double_tap_desc">ДВАЖДЫ НАЖМИТЕ на большой центральный элемент управления, чтобы включить усилитель громкости</string>
+    <string name="training_understood">Понятно</string>
+    <string name="training_waiting_double_tap">Теперь дважды нажмите...</string>
+    <string name="training_drag_title">Шаг 2: Перетаскивание</string>
+    <string name="training_drag_desc">Перемещайте палец круговым движением или вверх/вниз, чтобы настроить уровень громкости</string>
+    <string name="training_try_it">Попробуйте</string>
+    <string name="training_drag_to_continue">Теперь перетащите для настройки...</string>
+    <string name="training_theme_title">Шаг 3: Темы</string>
+    <string name="training_theme_desc">Вы можете выбрать различные темы из круглых кнопок сверху</string>
+    <string name="training_finish">Готово!</string>
+    
+    <!-- Help & FAQ -->
+    <string name="help_and_faq">Помощь и FAQ</string>
+    <string name="faq_how_to_use">Как пользоваться приложением?</string>
+    <string name="faq_how_to_use_answer">Дважды нажмите на центральный диск, чтобы включить усилитель громкости. Перетаскивайте вверх/вниз или круговым движением, чтобы настроить уровень громкости. Используйте ползунки для усиления баса и 3D-эффектов.</string>
+    <string name="faq_not_working">Почему усиление не работает?</string>
+    <string name="faq_not_working_answer">Поддержка аудиоэффектов различается в зависимости от устройства. Некоторые производители ограничивают возможности аудиоэффектов. Попробуйте разные уровни усиления и убедитесь, что громкость вашего устройства не равна нулю.</string>
+    <string name="faq_background_work">Работает ли он в фоновом режиме?</string>
+    <string name="faq_background_work_answer">Да! После активации усиление продолжает работать, даже когда вы переключаетесь на другие приложения или блокируете экран. Вы увидите уведомление, пока оно активно.</string>
+    <string name="faq_battery">Разряжает ли он батарею?</string>
+    <string name="faq_battery_answer">Приложение использует минимальную мощность батареи. Оно работает как эффективная служба переднего плана и обрабатывает звук только при активном усилении.</string>
+    <string name="faq_audio_quality">Повредит ли это мои динамики?</string>
+    <string name="faq_audio_quality_answer">Приложение разработано с учетом безопасности. Однако длительное использование на максимальных уровнях может нагружать динамики. Мы рекомендуем использовать умеренные уровни усиления для продолжительного прослушивания.</string>
+    <string name="faq_device_support">Какие устройства поддерживаются?</string>
+    <string name="faq_device_support_answer">Поддерживаются все устройства Android 7.0+. Сила эффекта может варьироваться в зависимости от аппаратного обеспечения устройства и аудио-реализаций производителя.</string>
+    
+    <!-- Rate App -->
+    <string name="rate_your_app">Оцените Приложение</string>
+    <string name="rate_app_title">Вам нравится Sound\'ST Boost?</string>
+    <string name="rate_app_description">Ваша поддержка для нас очень важна</string>
+    <string name="rate_app_message">Ваша оценка помогает нам достичь большего числа пользователей и мотивирует нас добавлять новые функции! ⭐</string>
+    <string name="rate">Оценить</string>
+    <string name="later">Позже</string>
+    <string name="rate_now">Оценить сейчас</string>
+    <string name="maybe_later">Может быть позже</string>
+    
+    <!-- Share App -->
+    <string name="share_app">Поделиться Приложением</string>
+    <string name="share_app_title">Поделитесь с Друзьями!</string>
+    <string name="share_app_message">Помогите своим друзьям улучшить их аудио опыт тоже!</string>
+    <string name="share_now">Поделиться сейчас</string>
+    <string name="share_text">Посмотрите Sound\'ST Boost - лучшее приложение для усиления громкости! 🎧🔊\n\n%1$s</string>
+    <string name="share_via">Поделиться через</string>
+    <string name="cancel">Отмена</string>
+    
+    <!-- Theme Names -->
+    <string name="theme_system">Система (Авто)</string>
+    <string name="theme_neon_light">Неоновый Светлый</string>
+    <string name="themes_label">ТЕМЫ</string>
+    
+    <!-- Theme Display Names -->
+    <string name="theme_water">Вода</string>
+    <string name="theme_forest">Лес</string>
+    <string name="theme_sun">Солнце</string>
+    <string name="theme_royal">Королевский</string>
+    <string name="theme_neon">Неон</string>
+    <string name="theme_midnight">Полночь</string>
+    <string name="theme_coral">Коралл</string>
+    <string name="theme_ice">Лед</string>
+    <string name="theme_lava">Лава</string>
+    <string name="theme_galaxy">Галактика</string>
+    <string name="theme_vinyl">Винил</string>
+    <string name="theme_synth">Синтвейв</string>
+    
+    <!-- Volume Presets -->
+    <string name="preset_50">50%</string>
+    <string name="preset_70">70%</string>
+    <string name="preset_150">150%</string>
+    <string name="preset_200_max">200% МАКС</string>
+    
+    <!-- Accessibility -->
+    <string name="accessibility_features">Функции Доступности</string>
+    <string name="visual_feedback">Визуальная Обратная Связь</string>
+    <string name="visual_feedback_desc">Улучшенные визуальные индикаторы для изменений звука</string>
+    <string name="haptic_feedback">Тактильная Обратная Связь</string>
+    <string name="haptic_feedback_desc">Вибрация при настройке элементов управления</string>
+    <string name="high_contrast">Режим Высокой Контрастности</string>
+    <string name="high_contrast_desc">Улучшенная видимость для лучшей читаемости</string>
 </resources>

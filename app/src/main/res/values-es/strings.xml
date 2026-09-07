@@ -38,4 +38,114 @@
     <string name="notification_text">Volumen: %1$d%% • Graves: %2$d%%</string>
     <string name="language">Idioma</string>
     <string name="language_system">Automático (Sistema)</string>
+    <string name="language_english">English</string>
+    <string name="language_turkish">Türkçe</string>
+    <string name="language_german">Deutsch</string>
+    <string name="language_spanish">Español</string>
+    <string name="language_french">Français</string>
+    <string name="language_russian">Русский</string>
+    <string name="language_chinese">中文</string>
+    <string name="language_japanese">日本語</string>
+    <string name="language_korean">한국어</string>
+    <string name="language_arabic">العربية</string>
+    <string name="tap_to_start">Toca dos veces el centro para comenzar</string>
+    <string name="drag_to_adjust">Arrastra para ajustar el volumen</string>
+    <string name="theme_customization">Personalización de Tema</string>
+    <string name="language_info_title">ℹ️ Cambio de Idioma</string>
+    <string name="language_info_desc">La aplicación se actualizará automáticamente para mostrar el contenido en el idioma seleccionado.</string>
+    <string name="language_system_desc">Detecta el idioma del dispositivo automáticamente</string>
+    <string name="status_active">ACTIVO</string>
+    <string name="status_double_tap">DOBLE TOQUE</string>
+    <string name="instruction_drag">Arrastra arriba/abajo para ajustar</string>
+    <string name="instruction_double_tap">Toca dos veces para comenzar</string>
+    <string name="welcome_title">¡Bienvenido!</string>
+    <string name="instruction_1_title">Doble Toque</string>
+    <string name="instruction_1_desc">Toca dos veces el control central para iniciar el amplificador de volumen</string>
+    <string name="instruction_2_title">Arrastrar &amp; Ajustar</string>
+    <string name="instruction_2_desc">Mueve tu dedo en un movimiento circular o arrastra arriba/abajo para ajustar el nivel de volumen</string>
+    <string name="instruction_3_title">Elegir Tema</string>
+    <string name="instruction_3_desc">Selecciona diferentes temas de los botones redondos de arriba para cambiar la apariencia</string>
+    <string name="got_it">¡Entendido!</string>
+    <string name="training_welcome_title">¡Bienvenido!</string>
+    <string name="training_welcome_desc">Permítenos mostrarte cómo usar Sound\'ST Boost</string>
+    <string name="training_start">Empecemos</string>
+    <string name="training_double_tap_title">Paso 1: Doble Toque</string>
+    <string name="training_double_tap_desc">TOCA DOS VECES el gran control central para activar el amplificador de volumen</string>
+    <string name="training_understood">Entendido</string>
+    <string name="training_waiting_double_tap">Ahora toca dos veces...</string>
+    <string name="training_drag_title">Paso 2: Arrastrar</string>
+    <string name="training_drag_desc">Mueve tu dedo en un movimiento circular o arriba/abajo para ajustar el nivel de volumen</string>
+    <string name="training_try_it">Pruébalo</string>
+    <string name="training_drag_to_continue">Ahora arrastra para ajustar...</string>
+    <string name="training_theme_title">Paso 3: Temas</string>
+    <string name="training_theme_desc">Puedes seleccionar diferentes temas de los botones redondos de arriba</string>
+    <string name="training_finish">¡Terminado!</string>
+    
+    <!-- Help & FAQ -->
+    <string name="help_and_faq">Ayuda y Preguntas Frecuentes</string>
+    <string name="faq_how_to_use">¿Cómo uso la aplicación?</string>
+    <string name="faq_how_to_use_answer">Toca dos veces el dial central para activar el amplificador de volumen. Arrastra arriba/abajo o en movimiento circular para ajustar el nivel de volumen. Usa los deslizadores para la amplificación de graves y efectos 3D.</string>
+    <string name="faq_not_working">¿Por qué no funciona el refuerzo?</string>
+    <string name="faq_not_working_answer">El soporte de efectos de audio varía según el dispositivo. Algunos fabricantes limitan las capacidades de efectos de audio. Prueba diferentes niveles de refuerzo y asegúrate de que el volumen de tu dispositivo no esté en cero.</string>
+    <string name="faq_background_work">¿Funciona en segundo plano?</string>
+    <string name="faq_background_work_answer">¡Sí! Una vez activado, el refuerzo continúa funcionando incluso cuando cambias a otras aplicaciones o bloqueas tu pantalla. Verás una notificación mientras esté activo.</string>
+    <string name="faq_battery">¿Consume batería?</string>
+    <string name="faq_battery_answer">La aplicación usa mínima energía de batería. Funciona como un servicio de primer plano eficiente y solo procesa audio cuando el refuerzo está activo.</string>
+    <string name="faq_audio_quality">¿Dañará mis altavoces?</string>
+    <string name="faq_audio_quality_answer">La aplicación está diseñada con límites de seguridad. Sin embargo, el uso prolongado a niveles máximos puede estresar los altavoces. Recomendamos usar niveles de refuerzo moderados para escuchar prolongado.</string>
+    <string name="faq_device_support">¿Qué dispositivos son compatibles?</string>
+    <string name="faq_device_support_answer">Todos los dispositivos Android 7.0+ son compatibles. La intensidad del efecto puede variar según el hardware del dispositivo y las implementaciones de audio del fabricante.</string>
+    
+    <!-- Rate App -->
+    <string name="rate_your_app">Califica Tu Aplicación</string>
+    <string name="rate_app_title">¿Disfrutando Sound\'ST Boost?</string>
+    <string name="rate_app_description">Tu apoyo significa el mundo para nosotros</string>
+    <string name="rate_app_message">¡Tu calificación nos ayuda a llegar a más usuarios y nos mantiene motivados para agregar nuevas características! ⭐</string>
+    <string name="rate">Calificar</string>
+    <string name="later">Más tarde</string>
+    <string name="rate_now">Calificar ahora</string>
+    <string name="maybe_later">Tal vez más tarde</string>
+    
+    <!-- Share App -->
+    <string name="share_app">Compartir Aplicación</string>
+    <string name="share_app_title">¡Comparte con Amigos!</string>
+    <string name="share_app_message">¡Ayuda a tus amigos a mejorar su experiencia de audio también!</string>
+    <string name="share_now">Compartir ahora</string>
+    <string name="share_text">Mira Sound\'ST Boost - ¡la mejor aplicación de amplificador de volumen! 🎧🔊\n\n%1$s</string>
+    <string name="share_via">Compartir a través de</string>
+    <string name="cancel">Cancelar</string>
+    
+    <!-- Theme Names -->
+    <string name="theme_system">Sistema (Auto)</string>
+    <string name="theme_neon_light">Neón Claro</string>
+    <string name="themes_label">TEMAS</string>
+    
+    <!-- Theme Display Names -->
+    <string name="theme_water">Agua</string>
+    <string name="theme_forest">Bosque</string>
+    <string name="theme_sun">Sol</string>
+    <string name="theme_royal">Real</string>
+    <string name="theme_neon">Neón</string>
+    <string name="theme_midnight">Medianoche</string>
+    <string name="theme_coral">Coral</string>
+    <string name="theme_ice">Hielo</string>
+    <string name="theme_lava">Lava</string>
+    <string name="theme_galaxy">Galaxia</string>
+    <string name="theme_vinyl">Vinilo</string>
+    <string name="theme_synth">Synthwave</string>
+    
+    <!-- Volume Presets -->
+    <string name="preset_50">50%</string>
+    <string name="preset_70">70%</string>
+    <string name="preset_150">150%</string>
+    <string name="preset_200_max">200% MÁX</string>
+    
+    <!-- Accessibility -->
+    <string name="accessibility_features">Características de Accesibilidad</string>
+    <string name="visual_feedback">Retroalimentación Visual</string>
+    <string name="visual_feedback_desc">Indicadores visuales mejorados para cambios de audio</string>
+    <string name="haptic_feedback">Retroalimentación Háptica</string>
+    <string name="haptic_feedback_desc">Vibración al ajustar controles</string>
+    <string name="high_contrast">Modo de Alto Contraste</string>
+    <string name="high_contrast_desc">Visibilidad mejorada para mejor legibilidad</string>
 </resources>

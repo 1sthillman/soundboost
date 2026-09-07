@@ -177,11 +177,14 @@ fun ColorCircle(
     modifier: Modifier = Modifier
 ) {
     val color = when (accent) {
-        ColorAccent.CYAN -> Color(0xFF00F5FF)
-        ColorAccent.PINK -> Color(0xFFFF1493)
-        ColorAccent.ORANGE -> Color(0xFFFF6B35)
-        ColorAccent.GREEN -> Color(0xFF00FF88)
-        ColorAccent.PURPLE -> Color(0xFFAB47BC)
+        ColorAccent.SUMI_RED -> Color(0xFFc1442c)
+        ColorAccent.AURORA_CYAN -> Color(0xFF4fd8b0)
+        ColorAccent.NOVA_PINK -> Color(0xFFff3d7a)
+        ColorAccent.MYCEL_GREEN -> Color(0xFF6dffb0)
+        ColorAccent.REEF_CYAN -> Color(0xFF12e0bd)
+        ColorAccent.MONSOON_BLUE -> Color(0xFF9cc2ff)
+        ColorAccent.MUREKKEP_GOLD -> Color(0xFFc9a227)
+        ColorAccent.COL_ORANGE -> Color(0xFFffb454)
     }
     
     Box(
@@ -210,10 +213,13 @@ fun ColorCircle(
 @Composable
 fun getThemeName(theme: AppTheme): String {
     return when (theme) {
-        AppTheme.NEON_DARK -> stringResource(R.string.theme_neon_dark)
-        AppTheme.OCEAN_BLUE -> stringResource(R.string.theme_ocean_blue)
-        AppTheme.SUNSET_ORANGE -> stringResource(R.string.theme_sunset_orange)
-        AppTheme.FOREST_GREEN -> stringResource(R.string.theme_forest_green)
-        AppTheme.ROYAL_PURPLE -> stringResource(R.string.theme_royal_purple)
+        AppTheme.SUMI -> "Sumi-e"
+        AppTheme.AURORA -> "Kutup Şafağı"
+        AppTheme.NOVA -> "Nova"
+        AppTheme.MYCEL -> "Miselyum"
+        AppTheme.REEF -> "Derin Işıltı"
+        AppTheme.MONSOON -> "Muson"
+        AppTheme.MUREKKEP -> "Mürekkep"
+        AppTheme.COL -> "Çöl"
     }
 }

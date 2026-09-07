@@ -1,38 +1,47 @@
 package com.soundboost.ui.screens
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.slideInVertically
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.VolumeUp
-import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.soundboost.data.BoostSettings
-import com.soundboost.ui.components.BoostDial
-import com.soundboost.ui.components.EqualizerVisualizer
-import com.soundboost.ui.components.NeonSlider
-import com.soundboost.ui.theme.NeonCyan
-import com.soundboost.ui.theme.NeonGreen
-import com.soundboost.ui.theme.NeonPink
-import com.soundboost.ui.theme.NeonPurple
+import com.soundboost.ui.components.*
+import com.soundboost.ui.theme.*
+import kotlinx.coroutines.delay
 
+/**
+ * HomeScreen - CS2-Inspired Tactical Audio Control
+ * 
+ * Design DNA:
+ * - Asymmetric bento layout (taste-skill Section 4.7)
+ * - Premium glassmorphism components
+ * - Motion choreography (MOTION_INTENSITY: 8)
+ * - Color consistency lock (NeonOrange accent)
+ * - Max 1 eyebrow per 3 sections (taste-skill Section 4.7)
+ * 
+ * Layout violations FIXED:
+ * ❌ Centered hero → ✅ Asymmetric left-aligned
+ * ❌ Generic stacked cards → ✅ Bento grid
+ * ❌ No motion → ✅ Staggered entrance animations
+ * ❌ Eyebrow overuse → ✅ 1 eyebrow total
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
@@ -45,100 +54,263 @@ fun HomeScreen(
     onMaximizeVolume: () -> Unit,
     onOpenSettings: () -> Unit
 ) {
+    // Staggered entrance animations (taste-skill Section 5.C)
+    var isVisible by remember { mutableStateOf(false) }
+    LaunchedEffect(Unit) {
+        delay(50)
+        isVisible = true
+    }
+    
     Scaffold(
         topBar = {
-            CenterAlignedTopAppBar(
-                title = { Text("Sound'ST Boost", fontWeight = FontWeight.Black) },
+            TopAppBar(
+                title = { 
+                    Text(
+                        "SoundSTBoost",
+                        style = MaterialTheme.typography.titleLarge.copy(
+                            fontWeight = FontWeight.Black
+                        )
+                    ) 
+                },
                 actions = {
                     IconButton(onClick = onOpenSettings) {
                         Icon(Icons.Filled.Settings, contentDescription = "Ayarlar")
                     }
-                }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = DeepBlack
+                )
             )
-        }
+        },
+        containerColor = DeepBlack
     ) { padding ->
         Column(
             modifier = Modifier
+                .fillMaxSize()
                 .padding(padding)
-                .padding(horizontal = 20.dp)
-                .verticalScroll(rememberScrollState()),
-            horizontalAlignment = Alignment.CenterHorizontally
+                .verticalScroll(rememberScrollState())
+                .padding(horizontal = 16.dp)
         ) {
-            Spacer(Modifier.height(12.dp))
-            EqualizerVisualizer(isActive = state.isBoostEnabled, modifier = Modifier.fillMaxWidth())
-            Spacer(Modifier.height(20.dp))
-
-            BoostDial(
-                isActive = state.isBoostEnabled,
-                progressPercent = ((state.masterGainPercent - 100) * 100 / 200).coerceIn(0, 100),
-                onClick = onToggleBoost
-            )
-
-            Spacer(Modifier.height(28.dp))
-
-            NeonSlider(
-                label = "ANA GÜÇ",
-                value = state.masterGainPercent.toFloat(),
-                valueRange = 100f..300f,
-                accentColor = NeonCyan,
-                valueLabel = "+${(state.masterGainPercent - 100) * 20 / 200} dB",
-                onValueChange = { onMasterGainChanged(it.toInt()) }
-            )
-
-            NeonSlider(
-                label = "BAS BOOST",
-                value = state.bassBoostPercent.toFloat(),
-                valueRange = 0f..100f,
-                accentColor = NeonPink,
-                valueLabel = "%${state.bassBoostPercent}",
-                onValueChange = { onBassBoostChanged(it.toInt()) }
-            )
-
-            NeonSlider(
-                label = "3D ALAN (VIRTUALIZER)",
-                value = state.virtualizerPercent.toFloat(),
-                valueRange = 0f..100f,
-                accentColor = NeonPurple,
-                valueLabel = "%${state.virtualizerPercent}",
-                onValueChange = { onVirtualizerChanged(it.toInt()) }
-            )
-
-            Spacer(Modifier.height(8.dp))
-            Text("EKOLAYZER", style = MaterialTheme.typography.labelLarge)
-
-            NeonSlider(
-                label = "Bas",
-                value = state.eqLowGain,
-                valueRange = -15f..15f,
-                accentColor = NeonGreen,
-                valueLabel = "${state.eqLowGain.toInt()} dB",
-                onValueChange = { onEqChanged(it, state.eqMidGain, state.eqHighGain) }
-            )
-            NeonSlider(
-                label = "Orta",
-                value = state.eqMidGain,
-                valueRange = -15f..15f,
-                accentColor = NeonGreen,
-                valueLabel = "${state.eqMidGain.toInt()} dB",
-                onValueChange = { onEqChanged(state.eqLowGain, it, state.eqHighGain) }
-            )
-            NeonSlider(
-                label = "Tiz",
-                value = state.eqHighGain,
-                valueRange = -15f..15f,
-                accentColor = NeonGreen,
-                valueLabel = "${state.eqHighGain.toInt()} dB",
-                onValueChange = { onEqChanged(state.eqLowGain, state.eqMidGain, it) }
-            )
-
-            Spacer(Modifier.height(20.dp))
-
-            OutlinedButton(onClick = onMaximizeVolume, modifier = Modifier.fillMaxWidth()) {
-                Icon(Icons.Filled.VolumeUp, contentDescription = null)
-                Spacer(Modifier.width(8.dp))
-                Text("Donanım Sesini Maksimuma Çıkar")
+            Spacer(Modifier.height(16.dp))
+            
+            // HERO: CS2 Visualizer (full-width, glowing)
+            AnimatedVisibility(
+                visible = isVisible,
+                enter = slideInVertically(
+                    initialOffsetY = { -it / 3 },
+                    animationSpec = spring(
+                        dampingRatio = Spring.DampingRatioMediumBouncy,
+                        stiffness = Spring.StiffnessMedium
+                    )
+                ) + fadeIn()
+            ) {
+                CyberCard(
+                    backgroundColor = PanelDark,
+                    borderColor = if (state.isBoostEnabled) NeonOrange else null
+                ) {
+                    CS2Visualizer(
+                        isActive = state.isBoostEnabled,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
             }
-
+            
+            Spacer(Modifier.height(24.dp))
+            
+            // TACTICAL BOOST DIAL (hero element, asymmetric)
+            AnimatedVisibility(
+                visible = isVisible,
+                enter = slideInVertically(
+                    initialOffsetY = { it / 2 },
+                    animationSpec = spring(
+                        dampingRatio = Spring.DampingRatioMediumBouncy,
+                        stiffness = Spring.StiffnessMedium
+                    )
+                ) + fadeIn()
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Start
+                ) {
+                    TacticalBoostDial(
+                        boostLevel = state.masterGainPercent.toFloat(),
+                        isActive = state.isBoostEnabled,
+                        onToggle = onToggleBoost
+                    )
+                }
+            }
+            
+            Spacer(Modifier.height(8.dp))
+            
+            // AUDIO ENHANCERS (single eyebrow, 1 of 3 sections)
+            AnimatedVisibility(
+                visible = isVisible,
+                enter = fadeIn()
+            ) {
+                Column {
+                    Text(
+                        text = "AUDIO ENHANCERS",
+                        style = MaterialTheme.typography.labelMedium,
+                        color = TextSecondary,
+                        modifier = Modifier.padding(start = 4.dp, bottom = 12.dp)
+                    )
+                    
+                    // Asymmetric bento grid (taste-skill: NO three equal cards)
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        // Master gain (60% width, accent)
+                        CyberCard(
+                            modifier = Modifier.weight(0.6f),
+                            backgroundColor = PanelDarkElevated,
+                            borderColor = CyberBlue
+                        ) {
+                            PremiumNeonSlider(
+                                label = "MASTER",
+                                value = state.masterGainPercent.toFloat(),
+                                valueRange = 100f..300f,
+                                accentColor = CyberBlue,
+                                valueLabel = "+${(state.masterGainPercent - 100) * 20 / 200}dB",
+                                onValueChange = { onMasterGainChanged(it.toInt()) },
+                                isAudioActive = state.isBoostEnabled
+                            )
+                        }
+                        
+                        // Bass boost (40% width)
+                        CyberCard(
+                            modifier = Modifier.weight(0.4f),
+                            backgroundColor = PanelDarkElevated
+                        ) {
+                            Column {
+                                Text(
+                                    "BASS",
+                                    style = MaterialTheme.typography.labelSmall,
+                                    color = TextSecondary
+                                )
+                                Spacer(Modifier.height(8.dp))
+                                Text(
+                                    "${state.bassBoostPercent}%",
+                                    style = MonoTypography.statsMedium,
+                                    color = BassIndicator
+                                )
+                                Spacer(Modifier.height(12.dp))
+                                Slider(
+                                    value = state.bassBoostPercent.toFloat(),
+                                    onValueChange = { onBassBoostChanged(it.toInt()) },
+                                    valueRange = 0f..100f,
+                                    colors = SliderDefaults.colors(
+                                        thumbColor = BassIndicator,
+                                        activeTrackColor = BassIndicator.copy(alpha = 0.8f),
+                                        inactiveTrackColor = BassIndicator.copy(alpha = 0.2f)
+                                    )
+                                )
+                            }
+                        }
+                    }
+                    
+                    Spacer(Modifier.height(12.dp))
+                    
+                    // Virtualizer (full width)
+                    CyberCard(
+                        backgroundColor = PanelDarkElevated
+                    ) {
+                        PremiumNeonSlider(
+                            label = "3D SPATIAL",
+                            value = state.virtualizerPercent.toFloat(),
+                            valueRange = 0f..100f,
+                            accentColor = CyberBlue,
+                            valueLabel = "${state.virtualizerPercent}%",
+                            onValueChange = { onVirtualizerChanged(it.toInt()) },
+                            isAudioActive = state.isBoostEnabled
+                        )
+                    }
+                }
+            }
+            
+            Spacer(Modifier.height(32.dp))
+            
+            // EQUALIZER (NO eyebrow, section 2 of 3)
+            AnimatedVisibility(
+                visible = isVisible,
+                enter = fadeIn()
+            ) {
+                CyberCard(
+                    backgroundColor = PanelDark,
+                    borderColor = NeonGreen.copy(alpha = 0.3f)
+                ) {
+                    Text(
+                        "EQUALIZER",
+                        style = MaterialTheme.typography.titleMedium.copy(
+                            fontWeight = FontWeight.Bold
+                        ),
+                        color = TextPrimary
+                    )
+                    Spacer(Modifier.height(16.dp))
+                    
+                    PremiumNeonSlider(
+                        label = "BASS",
+                        value = state.eqLowGain,
+                        valueRange = -15f..15f,
+                        accentColor = BassIndicator,
+                        valueLabel = "${state.eqLowGain.toInt()}dB",
+                        onValueChange = { onEqChanged(it, state.eqMidGain, state.eqHighGain) },
+                        isAudioActive = state.isBoostEnabled
+                    )
+                    
+                    PremiumNeonSlider(
+                        label = "MID",
+                        value = state.eqMidGain,
+                        valueRange = -15f..15f,
+                        accentColor = MidIndicator,
+                        valueLabel = "${state.eqMidGain.toInt()}dB",
+                        onValueChange = { onEqChanged(state.eqLowGain, it, state.eqHighGain) },
+                        isAudioActive = state.isBoostEnabled
+                    )
+                    
+                    PremiumNeonSlider(
+                        label = "TREBLE",
+                        value = state.eqHighGain,
+                        valueRange = -15f..15f,
+                        accentColor = TrebleIndicator,
+                        valueLabel = "${state.eqHighGain.toInt()}dB",
+                        onValueChange = { onEqChanged(state.eqLowGain, state.eqMidGain, it) },
+                        isAudioActive = state.isBoostEnabled
+                    )
+                }
+            }
+            
+            Spacer(Modifier.height(24.dp))
+            
+            // SYSTEM VOLUME (NO eyebrow, section 3 of 3)
+            AnimatedVisibility(
+                visible = isVisible,
+                enter = fadeIn()
+            ) {
+                Button(
+                    onClick = onMaximizeVolume,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(56.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = NeonOrange.copy(alpha = 0.2f),
+                        contentColor = NeonOrange
+                    ),
+                    shape = RoundedCornerShape(12.dp)
+                ) {
+                    Icon(
+                        Icons.Filled.VolumeUp,
+                        contentDescription = null,
+                        modifier = Modifier.size(24.dp)
+                    )
+                    Spacer(Modifier.width(12.dp))
+                    Text(
+                        "MAXIMIZE SYSTEM VOLUME",
+                        style = MaterialTheme.typography.labelLarge
+                    )
+                }
+            }
+            
             Spacer(Modifier.height(32.dp))
         }
     }

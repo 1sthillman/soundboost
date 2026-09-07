@@ -92,13 +92,18 @@ class AudioEffectsManager {
     fun setMasterGain(masterGainPercent: Int) {
         val clamped = masterGainPercent.coerceIn(60, 200)
         val mB = (((clamped - 100) / 100f) * MAX_LOUDNESS_GAIN_MB).toInt()
+        val enabled = clamped > 100
+        
+        Log.d(TAG, "🔊 setMasterGain: percent=$masterGainPercent, clamped=$clamped, mB=$mB, enabled=$enabled")
+        
         try {
             loudnessEnhancer?.let {
                 it.setTargetGain(mB)
-                it.enabled = clamped > 100
-            }
+                it.enabled = enabled
+                Log.d(TAG, "✅ LoudnessEnhancer applied: gain=${it.targetGain}mB, enabled=${it.enabled}")
+            } ?: Log.w(TAG, "❌ LoudnessEnhancer is null!")
         } catch (e: Exception) {
-            Log.w(TAG, "setMasterGain başarısız: ${e.message}")
+            Log.e(TAG, "❌ setMasterGain başarısız: ${e.message}", e)
         }
     }
 

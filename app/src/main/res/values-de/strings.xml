@@ -38,4 +38,114 @@
     <string name="notification_text">Lautstärke: %1$d%% • Bass: %2$d%%</string>
     <string name="language">Sprache</string>
     <string name="language_system">Automatisch (System)</string>
+    <string name="language_english">English</string>
+    <string name="language_turkish">Türkçe</string>
+    <string name="language_german">Deutsch</string>
+    <string name="language_spanish">Español</string>
+    <string name="language_french">Français</string>
+    <string name="language_russian">Русский</string>
+    <string name="language_chinese">中文</string>
+    <string name="language_japanese">日本語</string>
+    <string name="language_korean">한국어</string>
+    <string name="language_arabic">العربية</string>
+    <string name="tap_to_start">Doppeltippen Sie auf die Mitte zum Starten</string>
+    <string name="drag_to_adjust">Ziehen Sie, um die Lautstärke anzupassen</string>
+    <string name="theme_customization">Themen-Anpassung</string>
+    <string name="language_info_title">ℹ️ Sprachwechsel</string>
+    <string name="language_info_desc">Die App wird automatisch aktualisiert, um Inhalte in Ihrer gewählten Sprache anzuzeigen.</string>
+    <string name="language_system_desc">Erkennt Ihre Gerätesprache automatisch</string>
+    <string name="status_active">AKTIV</string>
+    <string name="status_double_tap">DOPPELTIPPEN</string>
+    <string name="instruction_drag">Ziehen Sie hoch/runter zum Anpassen</string>
+    <string name="instruction_double_tap">Doppeltippen zum Starten</string>
+    <string name="welcome_title">Willkommen!</string>
+    <string name="instruction_1_title">Doppeltippen</string>
+    <string name="instruction_1_desc">Doppeltippen Sie auf das mittlere Steuerelement, um den Lautstärkeverstärker zu starten</string>
+    <string name="instruction_2_title">Ziehen &amp; Anpassen</string>
+    <string name="instruction_2_desc">Bewegen Sie Ihren Finger in einer kreisförmigen Bewegung oder ziehen Sie hoch/runter, um die Lautstärke anzupassen</string>
+    <string name="instruction_3_title">Thema Wählen</string>
+    <string name="instruction_3_desc">Wählen Sie verschiedene Themen aus den runden Schaltflächen oben, um das Aussehen zu ändern</string>
+    <string name="got_it">Verstanden!</string>
+    <string name="training_welcome_title">Willkommen!</string>
+    <string name="training_welcome_desc">Lassen Sie uns Ihnen zeigen, wie Sie Sound\'ST Boost verwenden</string>
+    <string name="training_start">Los geht\'s</string>
+    <string name="training_double_tap_title">Schritt 1: Doppeltippen</string>
+    <string name="training_double_tap_desc">DOPPELTIPPEN Sie auf das große mittlere Steuerelement, um den Lautstärkeverstärker einzuschalten</string>
+    <string name="training_understood">Verstanden</string>
+    <string name="training_waiting_double_tap">Jetzt doppeltippen...</string>
+    <string name="training_drag_title">Schritt 2: Ziehen</string>
+    <string name="training_drag_desc">Bewegen Sie Ihren Finger kreisförmig oder hoch/runter, um die Lautstärke anzupassen</string>
+    <string name="training_try_it">Probieren Sie es aus</string>
+    <string name="training_drag_to_continue">Jetzt ziehen zum Anpassen...</string>
+    <string name="training_theme_title">Schritt 3: Themen</string>
+    <string name="training_theme_desc">Sie können verschiedene Themen aus den runden Schaltflächen oben auswählen</string>
+    <string name="training_finish">Fertig!</string>
+    
+    <!-- Help & FAQ -->
+    <string name="help_and_faq">Hilfe &amp; FAQ</string>
+    <string name="faq_how_to_use">Wie verwende ich die App?</string>
+    <string name="faq_how_to_use_answer">Doppeltippen Sie auf das mittlere Rad, um den Lautstärkeverstärker einzuschalten. Ziehen Sie hoch/runter oder in einer kreisförmigen Bewegung, um die Lautstärke anzupassen. Verwenden Sie Schieberegler für Bass-Boost und 3D-Effekte.</string>
+    <string name="faq_not_working">Warum funktioniert der Boost nicht?</string>
+    <string name="faq_not_working_answer">Die Unterstützung für Audioeffekte variiert je nach Gerät. Einige Hersteller begrenzen die Fähigkeiten von Audioeffekten. Probieren Sie verschiedene Boost-Stufen aus und stellen Sie sicher, dass Ihre Gerätelautstärke nicht null ist.</string>
+    <string name="faq_background_work">Funktioniert es im Hintergrund?</string>
+    <string name="faq_background_work_answer">Ja! Nach der Aktivierung funktioniert der Boost weiter, auch wenn Sie zu anderen Apps wechseln oder Ihren Bildschirm sperren. Sie sehen eine Benachrichtigung, während er aktiv ist.</string>
+    <string name="faq_battery">Entleert es die Batterie?</string>
+    <string name="faq_battery_answer">Die App verbraucht minimale Batterieleistung. Sie läuft als effizienter Vordergrunddienst und verarbeitet Audio nur, wenn der Boost aktiv ist.</string>
+    <string name="faq_audio_quality">Wird es meine Lautsprecher beschädigen?</string>
+    <string name="faq_audio_quality_answer">Die App ist mit Sicherheitslimits entwickelt. Eine längere Nutzung bei maximalen Pegeln kann jedoch die Lautsprecher belasten. Wir empfehlen die Verwendung moderater Boost-Stufen für längeres Hören.</string>
+    <string name="faq_device_support">Welche Geräte werden unterstützt?</string>
+    <string name="faq_device_support_answer">Alle Android 7.0+ Geräte werden unterstützt. Die Effektstärke kann je nach Gerätehardware und Audio-Implementierungen des Herstellers variieren.</string>
+    
+    <!-- Rate App -->
+    <string name="rate_your_app">Bewerten Sie Ihre App</string>
+    <string name="rate_app_title">Gefällt Ihnen Sound\'ST Boost?</string>
+    <string name="rate_app_description">Ihre Unterstützung bedeutet uns die Welt</string>
+    <string name="rate_app_message">Ihre Bewertung hilft uns, mehr Benutzer zu erreichen und motiviert uns, neue Funktionen hinzuzufügen! ⭐</string>
+    <string name="rate">Bewerten</string>
+    <string name="later">Später</string>
+    <string name="rate_now">Jetzt bewerten</string>
+    <string name="maybe_later">Vielleicht später</string>
+    
+    <!-- Share App -->
+    <string name="share_app">App teilen</string>
+    <string name="share_app_title">Mit Freunden teilen!</string>
+    <string name="share_app_message">Helfen Sie Ihren Freunden, ihre Audioerfahrung zu verbessern!</string>
+    <string name="share_now">Jetzt teilen</string>
+    <string name="share_text">Schauen Sie sich Sound\'ST Boost an - die beste Lautstärkeverstärker-App! 🎧🔊\n\n%1$s</string>
+    <string name="share_via">Teilen über</string>
+    <string name="cancel">Abbrechen</string>
+    
+    <!-- Theme Names -->
+    <string name="theme_system">System (Auto)</string>
+    <string name="theme_neon_light">Neon Hell</string>
+    <string name="themes_label">THEMEN</string>
+    
+    <!-- Theme Display Names -->
+    <string name="theme_water">Wasser</string>
+    <string name="theme_forest">Wald</string>
+    <string name="theme_sun">Sonne</string>
+    <string name="theme_royal">Königlich</string>
+    <string name="theme_neon">Neon</string>
+    <string name="theme_midnight">Mitternacht</string>
+    <string name="theme_coral">Koralle</string>
+    <string name="theme_ice">Eis</string>
+    <string name="theme_lava">Lava</string>
+    <string name="theme_galaxy">Galaxie</string>
+    <string name="theme_vinyl">Vinyl</string>
+    <string name="theme_synth">Synthwave</string>
+    
+    <!-- Volume Presets -->
+    <string name="preset_50">50%</string>
+    <string name="preset_70">70%</string>
+    <string name="preset_150">150%</string>
+    <string name="preset_200_max">200% MAX</string>
+    
+    <!-- Accessibility -->
+    <string name="accessibility_features">Barrierefreiheitsfunktionen</string>
+    <string name="visual_feedback">Visuelles Feedback</string>
+    <string name="visual_feedback_desc">Verbesserte visuelle Indikatoren für Audioänderungen</string>
+    <string name="haptic_feedback">Haptisches Feedback</string>
+    <string name="haptic_feedback_desc">Vibration beim Anpassen der Steuerelemente</string>
+    <string name="high_contrast">Hochkontrastmodus</string>
+    <string name="high_contrast_desc">Verbesserte Sichtbarkeit für bessere Lesbarkeit</string>
 </resources>

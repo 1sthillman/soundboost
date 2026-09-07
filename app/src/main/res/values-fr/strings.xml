@@ -38,4 +38,114 @@
     <string name="notification_text">Volume : %1$d%% • Basses : %2$d%%</string>
     <string name="language">Langue</string>
     <string name="language_system">Automatique (Système)</string>
+    <string name="language_english">English</string>
+    <string name="language_turkish">Türkçe</string>
+    <string name="language_german">Deutsch</string>
+    <string name="language_spanish">Español</string>
+    <string name="language_french">Français</string>
+    <string name="language_russian">Русский</string>
+    <string name="language_chinese">中文</string>
+    <string name="language_japanese">日本語</string>
+    <string name="language_korean">한국어</string>
+    <string name="language_arabic">العربية</string>
+    <string name="tap_to_start">Double-tapez au centre pour démarrer</string>
+    <string name="drag_to_adjust">Glissez pour ajuster le volume</string>
+    <string name="theme_customization">Personnalisation du Thème</string>
+    <string name="language_info_title">ℹ️ Changement de Langue</string>
+    <string name="language_info_desc">L\'application se mettra automatiquement à jour pour afficher le contenu dans la langue sélectionnée.</string>
+    <string name="language_system_desc">Détecte automatiquement la langue de votre appareil</string>
+    <string name="status_active">ACTIF</string>
+    <string name="status_double_tap">DOUBLE TAP</string>
+    <string name="instruction_drag">Glissez vers le haut/bas pour ajuster</string>
+    <string name="instruction_double_tap">Double-tapez pour démarrer</string>
+    <string name="welcome_title">Bienvenue !</string>
+    <string name="instruction_1_title">Double Tap</string>
+    <string name="instruction_1_desc">Double-tapez sur le contrôle central pour démarrer l\'amplificateur de volume</string>
+    <string name="instruction_2_title">Glisser &amp; Ajuster</string>
+    <string name="instruction_2_desc">Déplacez votre doigt en mouvement circulaire ou glissez vers le haut/bas pour ajuster le niveau de volume</string>
+    <string name="instruction_3_title">Choisir un Thème</string>
+    <string name="instruction_3_desc">Sélectionnez différents thèmes parmi les boutons ronds ci-dessus pour changer l\'apparence</string>
+    <string name="got_it">Compris !</string>
+    <string name="training_welcome_title">Bienvenue !</string>
+    <string name="training_welcome_desc">Laissez-nous vous montrer comment utiliser Sound\'ST Boost</string>
+    <string name="training_start">Commençons</string>
+    <string name="training_double_tap_title">Étape 1 : Double Tap</string>
+    <string name="training_double_tap_desc">DOUBLE-TAPEZ sur le grand contrôle central pour activer l\'amplificateur de volume</string>
+    <string name="training_understood">Compris</string>
+    <string name="training_waiting_double_tap">Maintenant double-tapez...</string>
+    <string name="training_drag_title">Étape 2 : Glisser</string>
+    <string name="training_drag_desc">Déplacez votre doigt en mouvement circulaire ou vers le haut/bas pour ajuster le niveau de volume</string>
+    <string name="training_try_it">Essayez-le</string>
+    <string name="training_drag_to_continue">Maintenant glissez pour ajuster...</string>
+    <string name="training_theme_title">Étape 3 : Thèmes</string>
+    <string name="training_theme_desc">Vous pouvez sélectionner différents thèmes parmi les boutons ronds ci-dessus</string>
+    <string name="training_finish">Terminé !</string>
+    
+    <!-- Help & FAQ -->
+    <string name="help_and_faq">Aide &amp; FAQ</string>
+    <string name="faq_how_to_use">Comment utiliser l\'application ?</string>
+    <string name="faq_how_to_use_answer">Double-tapez sur le cadran central pour activer l\'amplificateur de volume. Glissez vers le haut/bas ou en mouvement circulaire pour ajuster le niveau de volume. Utilisez les curseurs pour l\'amplification des graves et les effets 3D.</string>
+    <string name="faq_not_working">Pourquoi le boost ne fonctionne-t-il pas ?</string>
+    <string name="faq_not_working_answer">Le support des effets audio varie selon l\'appareil. Certains fabricants limitent les capacités des effets audio. Essayez différents niveaux de boost et assurez-vous que le volume de votre appareil n\'est pas à zéro.</string>
+    <string name="faq_background_work">Fonctionne-t-il en arrière-plan ?</string>
+    <string name="faq_background_work_answer">Oui ! Une fois activé, le boost continue de fonctionner même lorsque vous passez à d\'autres applications ou verrouillez votre écran. Vous verrez une notification pendant qu\'il est actif.</string>
+    <string name="faq_battery">Est-ce qu\'il vide la batterie ?</string>
+    <string name="faq_battery_answer">L\'application utilise une puissance de batterie minimale. Elle fonctionne comme un service de premier plan efficace et ne traite l\'audio que lorsque le boost est actif.</string>
+    <string name="faq_audio_quality">Va-t-il endommager mes haut-parleurs ?</string>
+    <string name="faq_audio_quality_answer">L\'application est conçue avec des limites de sécurité. Cependant, une utilisation prolongée à des niveaux maximaux peut stresser les haut-parleurs. Nous recommandons d\'utiliser des niveaux de boost modérés pour une écoute prolongée.</string>
+    <string name="faq_device_support">Quels appareils sont pris en charge ?</string>
+    <string name="faq_device_support_answer">Tous les appareils Android 7.0+ sont pris en charge. L\'intensité des effets peut varier en fonction du matériel de l\'appareil et des implémentations audio du fabricant.</string>
+    
+    <!-- Rate App -->
+    <string name="rate_your_app">Évaluez Votre Application</string>
+    <string name="rate_app_title">Vous appréciez Sound\'ST Boost ?</string>
+    <string name="rate_app_description">Votre soutien signifie tout pour nous</string>
+    <string name="rate_app_message">Votre évaluation nous aide à atteindre plus d\'utilisateurs et nous motive à ajouter de nouvelles fonctionnalités ! ⭐</string>
+    <string name="rate">Évaluer</string>
+    <string name="later">Plus tard</string>
+    <string name="rate_now">Évaluer maintenant</string>
+    <string name="maybe_later">Peut-être plus tard</string>
+    
+    <!-- Share App -->
+    <string name="share_app">Partager l\'Application</string>
+    <string name="share_app_title">Partagez avec vos Amis !</string>
+    <string name="share_app_message">Aidez vos amis à améliorer leur expérience audio aussi !</string>
+    <string name="share_now">Partager maintenant</string>
+    <string name="share_text">Découvrez Sound\'ST Boost - la meilleure application d\'amplificateur de volume ! 🎧🔊\n\n%1$s</string>
+    <string name="share_via">Partager via</string>
+    <string name="cancel">Annuler</string>
+    
+    <!-- Theme Names -->
+    <string name="theme_system">Système (Auto)</string>
+    <string name="theme_neon_light">Néon Clair</string>
+    <string name="themes_label">THÈMES</string>
+    
+    <!-- Theme Display Names -->
+    <string name="theme_water">Eau</string>
+    <string name="theme_forest">Forêt</string>
+    <string name="theme_sun">Soleil</string>
+    <string name="theme_royal">Royal</string>
+    <string name="theme_neon">Néon</string>
+    <string name="theme_midnight">Minuit</string>
+    <string name="theme_coral">Corail</string>
+    <string name="theme_ice">Glace</string>
+    <string name="theme_lava">Lave</string>
+    <string name="theme_galaxy">Galaxie</string>
+    <string name="theme_vinyl">Vinyle</string>
+    <string name="theme_synth">Synthwave</string>
+    
+    <!-- Volume Presets -->
+    <string name="preset_50">50%</string>
+    <string name="preset_70">70%</string>
+    <string name="preset_150">150%</string>
+    <string name="preset_200_max">200% MAX</string>
+    
+    <!-- Accessibility -->
+    <string name="accessibility_features">Fonctionnalités d\'Accessibilité</string>
+    <string name="visual_feedback">Retour Visuel</string>
+    <string name="visual_feedback_desc">Indicateurs visuels améliorés pour les changements audio</string>
+    <string name="haptic_feedback">Retour Haptique</string>
+    <string name="haptic_feedback_desc">Vibration lors de l\'ajustement des contrôles</string>
+    <string name="high_contrast">Mode Contraste Élevé</string>
+    <string name="high_contrast_desc">Visibilité améliorée pour une meilleure lisibilité</string>
 </resources>

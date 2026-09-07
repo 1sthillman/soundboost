@@ -4,8 +4,8 @@ import android.app.Application
 import android.content.Intent
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.soundboost.audio.AudioVisualizer
-import com.soundboost.audio.SystemAudioCapture
+import com.soundboost.audio.AudioAnalysis
+import com.soundboost.audio.RealTimeAudioAnalyzer
 import com.soundboost.data.BoostPreferences
 import com.soundboost.data.BoostSettings
 import com.soundboost.service.BoostForegroundService
@@ -18,14 +18,20 @@ import kotlinx.coroutines.launch
 class MainViewModel(application: Application) : AndroidViewModel(application) {
     
     private val prefs = BoostPreferences(application)
-    private val audioCapture = SystemAudioCapture()
-    private var captureJob: Job? = null
+    private val audioAnalyzer = RealTimeAudioAnalyzer() // YENİ: Profesyonel analyzer
+    private var analysisJob: Job? = null
     
     val uiState: StateFlow<BoostSettings> = prefs.settings
         .stateIn(viewModelScope, SharingStarted.Eagerly, BoostSettings())
     
-    private val _audioLevels = MutableStateFlow<FloatArray?>(null)
-    val audioLevels: StateFlow<FloatArray?> = _audioLevels.asStateFlow()
+    // YENİ: Tam audio analiz verisi
+    private val _audioAnalysis = MutableStateFlow<AudioAnalysis?>(null)
+    val audioAnalysis: StateFlow<AudioAnalysis?> = _audioAnalysis.asStateFlow()
+    
+    // LEGACY: Bar seviyeler (eski visualizer'lar için)
+    val audioLevels: StateFlow<FloatArray?> = _audioAnalysis
+        .map { it?.bars }
+        .stateIn(viewModelScope, SharingStarted.Eagerly, null)
     
     fun toggleBoost() {
         viewModelScope.launch {
@@ -116,7 +122,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
     
     fun onLanguageChanged(language: com.soundboost.data.AppLanguage, context: android.content.Context) {
-        com.soundboost.data.LanguageManager.setLanguage(context, language)
+        viewModelScope.launch {
+            com.soundboost.data.LanguageManager.setLanguage(context, language)
+            // Language manager already handles recreation
+        }
     }
     
     fun getCurrentLanguage(context: android.content.Context): com.soundboost.data.AppLanguage {
@@ -131,21 +140,44 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
     
     private fun startAudioVisualization() {
-        android.util.Log.d("MainViewModel", "startAudioVisualization called")
-        captureJob?.cancel()
-        captureJob = viewModelScope.launch {
-            android.util.Log.d("MainViewModel", "Starting capture flow...")
-            audioCapture.startCapture(32).collect { levels: FloatArray ->
-                _audioLevels.value = levels
-                android.util.Log.d("MainViewModel", "Received audio levels: ${levels.take(5).joinToString()}")
+        android.util.Log.d("MainViewModel", "🎵 Starting professional audio analysis...")
+        analysisJob?.cancel()
+        analysisJob = viewModelScope.launch {
+            android.util.Log.d("MainViewModel", "Collecting real-time audio data...")
+            audioAnalyzer.startAnalysis().collect { analysis: AudioAnalysis ->
+                _audioAnalysis.value = analysis
+                
+                // Log significant events
+                if (analysis.isBeat) {
+                    android.util.Log.d("MainViewModel", "🥁 Beat! Energy: ${analysis.energy}")
+                }
             }
         }
     }
     
     private fun stopAudioVisualization() {
-        captureJob?.cancel()
-        audioCapture.stopCapture()
-        _audioLevels.value = null
+        android.util.Log.d("MainViewModel", "Stopping audio visualization")
+        analysisJob?.cancel()
+        audioAnalyzer.stopAnalysis()
+        _audioAnalysis.value = null
+    }
+    
+    fun onAppRated() {
+        viewModelScope.launch {
+            prefs.setHasRatedApp(true)
+        }
+    }
+    
+    fun onSensitivityChanged(value: Int) {
+        viewModelScope.launch {
+            prefs.setSensitivity(value)
+        }
+    }
+    
+    fun onDarkModeChanged(isDark: Boolean?) {
+        viewModelScope.launch {
+            prefs.setDarkMode(isDark)
+        }
     }
     
     override fun onCleared() {

@@ -1,5 +1,6 @@
 package com.soundboost.data
 
+import android.app.Activity
 import android.content.Context
 import android.content.res.Configuration
 import android.os.Build
@@ -32,6 +33,10 @@ object LanguageManager {
     private const val PREFS_NAME = "language_prefs"
     private const val KEY_LANGUAGE = "selected_language"
     
+    /**
+     * Set application language and persist the choice.
+     * Automatically detects system language when SYSTEM is selected.
+     */
     fun setLanguage(context: Context, language: AppLanguage) {
         // Save preference
         context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
@@ -39,28 +44,126 @@ object LanguageManager {
             .putString(KEY_LANGUAGE, language.code)
             .apply()
         
-        // Apply language
+        // Apply language using AppCompat for proper system integration
+        applyLanguageWithAppCompat(language)
+        
+        // Also update configuration for immediate effect
+        updateConfiguration(context, language)
+        
+        // CRITICAL FIX: Don't recreate activity to preserve WebView state
+        // WebView will be notified of language change via JavaScript bridge
+        // Activity will apply language on next natural restart
+        
+        // OLD CODE (causes WebView layout to break):
+        // if (context is Activity) {
+        //     context.recreate()
+        // }
+    }
+    
+    /**
+     * Apply language using AppCompatDelegate for system-level integration.
+     * This ensures proper RTL support and system language detection.
+     */
+    private fun applyLanguageWithAppCompat(language: AppLanguage) {
         val localeList = if (language == AppLanguage.SYSTEM) {
+            // Use system default - AppCompat will detect automatically
             LocaleListCompat.getEmptyLocaleList()
         } else {
+            // Use specific language
             LocaleListCompat.forLanguageTags(language.code)
         }
-        
         AppCompatDelegate.setApplicationLocales(localeList)
     }
     
+    /**
+     * Update configuration for immediate effect within the app.
+     */
+    private fun updateConfiguration(context: Context, language: AppLanguage) {
+        val locale = getLocaleForLanguage(context, language)
+        Locale.setDefault(locale)
+        
+        val config = Configuration(context.resources.configuration)
+        config.setLocale(locale)
+        
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            config.setLocales(android.os.LocaleList(locale))
+        }
+        
+        // Update resources configuration
+        @Suppress("DEPRECATION")
+        context.resources.updateConfiguration(config, context.resources.displayMetrics)
+    }
+    
+    /**
+     * Get the appropriate Locale for a given language.
+     * Automatically detects system locale when SYSTEM is selected.
+     */
+    private fun getLocaleForLanguage(context: Context, language: AppLanguage): Locale {
+        return if (language == AppLanguage.SYSTEM) {
+            // Detect system language properly
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                val systemLocales = context.resources.configuration.locales
+                if (systemLocales.size() > 0) {
+                    systemLocales[0]
+                } else {
+                    Locale.getDefault()
+                }
+            } else {
+                @Suppress("DEPRECATION")
+                context.resources.configuration.locale ?: Locale.getDefault()
+            }
+        } else {
+            Locale(language.code)
+        }
+    }
+    
+    /**
+     * Apply saved language on app start.
+     * Called from Application.onCreate()
+     */
+    fun applyLanguage(context: Context) {
+        val language = getCurrentLanguage(context)
+        
+        // Apply using AppCompat
+        applyLanguageWithAppCompat(language)
+        
+        // Update configuration
+        updateConfiguration(context, language)
+    }
+    
+    /**
+     * Get currently selected language from preferences.
+     */
     fun getCurrentLanguage(context: Context): AppLanguage {
         val code = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
             .getString(KEY_LANGUAGE, AppLanguage.SYSTEM.code) ?: AppLanguage.SYSTEM.code
         return AppLanguage.fromCode(code)
     }
     
-    fun getSystemLanguage(): String {
+    /**
+     * Get system language code for display purposes.
+     */
+    fun getSystemLanguage(context: Context): String {
         val locale = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            LocaleListCompat.getAdjustedDefault()[0]
+            val systemLocales = context.resources.configuration.locales
+            if (systemLocales.size() > 0) {
+                systemLocales[0]
+            } else {
+                Locale.getDefault()
+            }
         } else {
-            Locale.getDefault()
+            @Suppress("DEPRECATION")
+            context.resources.configuration.locale ?: Locale.getDefault()
         }
-        return locale?.language ?: "en"
+        return locale.language
+    }
+    
+    /**
+     * Get display name for system language.
+     */
+    fun getSystemLanguageDisplayName(context: Context): String {
+        val systemLangCode = getSystemLanguage(context)
+        val matchingLanguage = AppLanguage.values().find { it.code == systemLangCode }
+        return matchingLanguage?.displayName ?: "English"
     }
 }

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Rezonans Visualizer</title>
+<style>
+  :root{
+    --font-display:'Fraunces',serif;
+    --font-ui:'Space Grotesk',sans-serif;
+  }
+
+  [data-theme="sumi"]{--bg0:#080705;--bg1:#141210;--ink:#f1ece0;--ink-dim:#8d8577;--a1:#c1442c;--a2:#e9e2d0;--a3:#221f1a;--accent:#c1442c;--grain:.07;}
+  [data-theme="aurora"]{--bg0:#02040a;--bg1:#061024;--ink:#eef5ff;--ink-dim:#6f83a8;--a1:#33e6a8;--a2:#8a6bff;--a3:#0b1730;--accent:#4fd8b0;--grain:.02;}
+  [data-theme="nova"]{--bg0:#030110;--bg1:#0d0620;--ink:#f5eeff;--ink-dim:#8478ac;--a1:#ff3d7a;--a2:#ffcf6b;--a3:#160b30;--accent:#ff3d7a;--grain:.02;}
+  [data-theme="mycel"]{--bg0:#020705;--bg1:#06140c;--ink:#eafff0;--ink-dim:#5f8a70;--a1:#6dffb0;--a2:#ffd58a;--a3:#0c2016;--accent:#6dffb0;--grain:.03;}
+  [data-theme="reef"]{--bg0:#010a10;--bg1:#03151f;--ink:#d7fbff;--ink-dim:#487d88;--a1:#12e0bd;--a2:#ff6bcf;--a3:#062028;--accent:#12e0bd;--grain:.02;}
+  [data-theme="monsoon"]{--bg0:#05070c;--bg1:#0e1420;--ink:#e9eef7;--ink-dim:#727f94;--a1:#9cc2ff;--a2:#b48bff;--a3:#181f2e;--accent:#9cc2ff;--grain:.045;}
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html,body{width:100%; height:100%; overflow:hidden;}
+  body{
+    background:var(--bg0);
+    transition:background 1.1s ease;
+  }
+  canvas{display:block; width:100%; height:100%; touch-action:none;}
+</style>
+</head>
+<body data-theme="nova">
+<canvas id="canvas"></canvas>
+
+<script>
+// Bu dosya .agents/awwardstheme.html'in tam kopyası olacak
+// Sadece Android'den veri alacak şekilde modifiye edilecek
+
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+let currentTheme = 'nova';
+let audioLevels = new Array(48).fill(0);
+let sensitivity = 50;
+let playing = false;
+
+// Canvas sizing
+let W,H,DPR;
+function resize(){
+  DPR = Math.min(2, window.devicePixelRatio || 1);
+  const r = canvas.getBoundingClientRect();
+  W = r.width; H = r.height;
+  canvas.width = Math.round(W*DPR); canvas.height = Math.round(H*DPR);
+  ctx.setTransform(DPR,0,0,DPR,0,0);
+}
+window.addEventListener('resize', resize);
+resize();
+
+// CSS helper
+let cssCache = {};
+function css(v){ 
+  const val = cssCache[v] || (cssCache[v] = getComputedStyle(document.body).getPropertyValue(v).trim());
+  return val;
+}
+function alpha(colorVar, a){
+  const hex = css(colorVar);
+  const aa = Math.max(0,Math.min(1,a));
+  const h = Math.round(aa*255).toString(16).padStart(2,'0');
+  return hex.length===7 ? hex+h : hex;
+}
+
+// Theme switching
+function setTheme(name){
+  currentTheme = name;
+  document.body.dataset.theme = name;
+  cssCache = {};
+}
+
+// Update from Android
+function updateAudioLevels(levels){
+  audioLevels = levels;
+  playing = levels.some(v => v > 0.01);
+}
+
+function updateSensitivity(sens){
+  sensitivity = sens;
+}
+
+// Interface for Android
+window.setTheme = setTheme;
+window.updateAudioLevels = updateAudioLevels;
+window.updateSensitivity = updateSensitivity;
+
+// HTML'deki tüm visualizer kodunu buraya kopyala...
+// (Şimdilik basit test)
+let t = 0;
+function render(){
+  t += 0.045;
+  resize();
+  
+  // Test: Simple circle
+  ctx.fillStyle = css('--bg0');
+  ctx.fillRect(0,0,W,H);
+  
+  ctx.fillStyle = css('--a1');
+  ctx.globalAlpha = 0.5;
+  ctx.beginPath();
+  ctx.arc(W/2, H/2, 50 + Math.sin(t) * 20, 0, Math.PI*2);
+  ctx.fill();
+  ctx.globalAlpha = 1;
+  
+  requestAnimationFrame(render);
+}
+
+render();
+</script>
+</body>
+</html>

@@ -31,7 +31,16 @@
     <string name="about">Hakkında</string>
     <string name="about_desc">Sound\'ST Boost, Android\'in resmi ses efekti API\'lerini kullanır. Efekt gücü cihaz donanımına göre değişebilir.</string>
     <string name="microphone_permission">Mikrofon İzni</string>
-    <string name="microphone_permission_desc">Gerçek zamanlı ses görselleştirme için gerekli</string>
+    <string name="microphone_permission_required">Mikrofon İzni Gerekli</string>
+    <string name="microphone_permission_granted">İzin verildi - Görselleştirici aktif</string>
+    <string name="microphone_permission_desc">Gerçek zamanlı ses görselleştirme için gerekli. Ayarlara gitmek için dokunun.</string>
+    <string name="dark_mode">Karanlık Mod</string>
+    <string name="dark_mode_system">Sistemi Takip Et</string>
+    <string name="dark_mode_on">Her Zaman Karanlık</string>
+    <string name="dark_mode_off">Her Zaman Aydınlık</string>
+    <string name="dark_mode_system_desc">Sistem temasını otomatik takip eder</string>
+    <string name="dark_mode_on_desc">Karanlık tema her zaman açık</string>
+    <string name="dark_mode_off_desc">Aydınlık tema her zaman açık</string>
     
     <!-- Themes -->
     <string name="theme_neon_dark">Neon Karanlık</string>
