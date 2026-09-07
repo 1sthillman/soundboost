@@ -246,6 +246,7 @@ private fun RezonansStage(
 @Composable
 private fun RezonansTrackInfo(theme: AppTheme, themeColors: com.soundboost.ui.theme.ThemeColors) {
     val (title, subtitle) = when (theme) {
+        AppTheme.MEHTAP -> "Ay Balıkçısı" to "Durgun suda sabırla bekleyen bir sandalın hikâyesi"
         AppTheme.SUMI -> "Mürekkep Nefesi" to "Fırça darbeleriyle beliren tek çizgi"
         AppTheme.AURORA -> "Kutup Şafağı" to "Gökyüzünde süzülen ışık şeritleri"
         AppTheme.NOVA -> "Çekirdek Uyanışı" to "Bas vuruşuyla genişleyen plazma çekirdeği"

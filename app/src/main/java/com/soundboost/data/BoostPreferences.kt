@@ -20,8 +20,8 @@ data class BoostSettings(
     val eqMidGain: Float = 0f,
     val eqHighGain: Float = 0f,
     val autoStartOnBoot: Boolean = false,
-    val theme: AppTheme = AppTheme.SUMI,
-    val colorAccent: ColorAccent = ColorAccent.SUMI_RED,
+    val theme: AppTheme = AppTheme.MEHTAP,
+    val colorAccent: ColorAccent = ColorAccent.MEHTAP_GOLD,
     val sensitivity: Int = 45,  // Visualizer sensitivity (0-100)
     val isDarkMode: Boolean? = null  // null = follow system, true/false = force mode
 )
@@ -62,9 +62,9 @@ class BoostPreferences(private val context: Context) {
             eqHighGain = prefs[Keys.EQ_HIGH] ?: 0f,
             autoStartOnBoot = prefs[Keys.AUTO_START] ?: false,
             theme = try {
-                AppTheme.valueOf(prefs[Keys.THEME] ?: AppTheme.SUMI.name)
+                AppTheme.valueOf(prefs[Keys.THEME] ?: AppTheme.MEHTAP.name)
             } catch (e: Exception) {
-                AppTheme.SUMI
+                AppTheme.MEHTAP
             },
             colorAccent = try {
                 ColorAccent.valueOf(prefs[Keys.COLOR_ACCENT] ?: ColorAccent.SUMI_RED.name)

@@ -147,6 +147,7 @@ fun WebViewHomeScreen(
                 
                 // 6. Force sync theme
                 val themeName = when (state.theme) {
+                    com.soundboost.ui.theme.AppTheme.MEHTAP -> "mehtap"
                     com.soundboost.ui.theme.AppTheme.SUMI -> "sumi"
                     com.soundboost.ui.theme.AppTheme.AURORA -> "aurora"
                     com.soundboost.ui.theme.AppTheme.NOVA -> "nova"
@@ -244,6 +245,7 @@ fun WebViewHomeScreen(
         // Sadece Kotlin'den değiştirilmişse HTML'e gönder
         if (lastThemeFromKotlin != state.theme) {
             val themeName = when (state.theme) {
+                com.soundboost.ui.theme.AppTheme.MEHTAP -> "mehtap"
                 com.soundboost.ui.theme.AppTheme.SUMI -> "sumi"
                 com.soundboost.ui.theme.AppTheme.AURORA -> "aurora"
                 com.soundboost.ui.theme.AppTheme.NOVA -> "nova"
@@ -330,6 +332,7 @@ fun WebViewHomeScreen(
                         
                         // 5. Restore theme
                         val themeName = when (state.theme) {
+                            com.soundboost.ui.theme.AppTheme.MEHTAP -> "mehtap"
                             com.soundboost.ui.theme.AppTheme.SUMI -> "sumi"
                             com.soundboost.ui.theme.AppTheme.AURORA -> "aurora"
                             com.soundboost.ui.theme.AppTheme.NOVA -> "nova"
@@ -379,6 +382,7 @@ fun WebViewHomeScreen(
                         onToggleBoost = onToggleBoost,
                         onThemeChanged = { themeName ->
                             val theme = when (themeName) {
+                                "mehtap" -> com.soundboost.ui.theme.AppTheme.MEHTAP
                                 "sumi" -> com.soundboost.ui.theme.AppTheme.SUMI
                                 "aurora" -> com.soundboost.ui.theme.AppTheme.AURORA
                                 "nova" -> com.soundboost.ui.theme.AppTheme.NOVA
@@ -388,7 +392,7 @@ fun WebViewHomeScreen(
                                 "murekkep" -> com.soundboost.ui.theme.AppTheme.MUREKKEP
                                 "col" -> com.soundboost.ui.theme.AppTheme.COL
                                 "divit" -> com.soundboost.ui.theme.AppTheme.DIVIT
-                                else -> com.soundboost.ui.theme.AppTheme.SUMI
+                                else -> com.soundboost.ui.theme.AppTheme.MEHTAP  // Default
                             }
                             lastThemeFromKotlin = theme  // HTML'den geldiğini işaretle
                             onThemeChanged(theme)

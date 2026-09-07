@@ -177,6 +177,7 @@ fun ColorCircle(
     modifier: Modifier = Modifier
 ) {
     val color = when (accent) {
+        ColorAccent.MEHTAP_GOLD -> Color(0xFFf2b155)
         ColorAccent.SUMI_RED -> Color(0xFFc1442c)
         ColorAccent.AURORA_CYAN -> Color(0xFF4fd8b0)
         ColorAccent.NOVA_PINK -> Color(0xFFff3d7a)
@@ -214,6 +215,7 @@ fun ColorCircle(
 @Composable
 fun getThemeName(theme: AppTheme): String {
     return when (theme) {
+        AppTheme.MEHTAP -> "Mehtap"
         AppTheme.SUMI -> "Sumi-e"
         AppTheme.AURORA -> "Kutup Şafağı"
         AppTheme.NOVA -> "Nova"

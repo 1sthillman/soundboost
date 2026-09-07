@@ -22,7 +22,10 @@
     --grain:.07;
   }
 
-  /* ===== 6 art-directed worlds — each a genuinely different material & mood ===== */
+  /* ===== 10 art-directed worlds — each a genuinely different material & mood ===== */
+  [data-theme="mehtap"]{--bg0:#040910;--bg1:#0c1e30;--ink:#eef2f5;--ink-dim:#6d7f92;--a1:#d9b46a;--a2:#4a6fa5;--a3:#122236;--a4:#f2b155;--accent:#f2b155;--grain:.035;--foam:#eef6fb;}
+  [data-theme="mehtap"][data-mode="light"]{--bg0:#eaf1f2;--bg1:#f8fbf9;--ink:#16303a;--ink-dim:#6f8790;--a1:#c98b2e;--a2:#3c6e86;--a3:#dbe9e4;--a4:#c98b2e;--accent:#c98b2e;--grain:.014;}
+  
   [data-theme="sumi"]{--bg0:#080705;--bg1:#141210;--ink:#f1ece0;--ink-dim:#8d8577;--a1:#c1442c;--a2:#e9e2d0;--a3:#221f1a;--accent:#c1442c;--grain:.07;}
   [data-theme="sumi"][data-mode="light"]{--bg0:#faf6f0;--bg1:#f1ece0;--ink:#141210;--ink-dim:#6d6a62;--a1:#c1442c;--a2:#9d5a34;--a3:#e7dfd0;--accent:#c1442c;--grain:.015;}
   
@@ -226,7 +229,7 @@
 </head>
 <body>
 
-<div class="phone" id="phone" data-theme="sumi">
+<div class="phone" id="phone" data-theme="mehtap">
     <div class="screen">
       <div class="grain"></div>
       <div class="vignette"></div>
@@ -277,7 +280,8 @@
       </div>
 
       <div class="themes" id="themes">
-        <button class="chip active" data-theme="sumi"><span class="dot" style="background:#c1442c;color:#c1442c"></span><span data-i18n-theme="sumi">Sumi-e</span></button>
+        <button class="chip active" data-theme="mehtap"><span class="dot" style="background:#f2b155;color:#f2b155"></span><span data-i18n-theme="mehtap">Mehtap</span></button>
+        <button class="chip" data-theme="sumi"><span class="dot" style="background:#c1442c;color:#c1442c"></span><span data-i18n-theme="sumi">Sumi-e</span></button>
         <button class="chip" data-theme="aurora"><span class="dot" style="background:#4fd8b0;color:#4fd8b0"></span><span data-i18n-theme="aurora">Kutup Şafağı</span></button>
         <button class="chip" data-theme="nova"><span class="dot" style="background:#ff3d7a;color:#ff3d7a"></span><span data-i18n-theme="nova">Nova</span></button>
         <button class="chip" data-theme="mycel"><span class="dot" style="background:#6dffb0;color:#6dffb0"></span><span data-i18n-theme="mycel">Miselyum</span></button>
@@ -331,6 +335,7 @@ const i18n = {
     nav_equalizer: 'Ekolayzer',
     nav_language: 'Dil',
     themes: {
+      mehtap: {label:'Mehtap', title:'Ay Balıkçısı', sub:'Durgun suda sabırla bekleyen bir sandalın hikâyesi'},
       sumi: {label:'Sumi-e', title:'Mürekkep Nefesi', sub:'Fırça darbeleriyle beliren tek çizgi'},
       aurora: {label:'Kutup Şafağı', title:'Kutup Şafağı', sub:'Gökyüzünde süzülen ışık şeritleri'},
       nova: {label:'Nova', title:'Çekirdek Uyanışı', sub:'Bas vuruşuyla genişleyen plazma çekirdeği'},
@@ -351,6 +356,7 @@ const i18n = {
     nav_equalizer: 'Equalizer',
     nav_language: 'Language',
     themes: {
+      mehtap: {label:'Mehtap', title:'Moon Fisher', sub:'A patient boat on still water'},
       sumi: {label:'Sumi-e', title:'Ink Breath', sub:'Single stroke emerging from brush'},
       aurora: {label:'Aurora', title:'Northern Lights', sub:'Light ribbons dancing in sky'},
       nova: {label:'Nova', title:'Core Awakening', sub:'Plasma core expanding with bass'},
@@ -371,6 +377,7 @@ const i18n = {
     nav_equalizer: 'Equalizer',
     nav_language: 'Sprache',
     themes: {
+      mehtap: {label:'Mehtap', title:'Mondfischer', sub:'Geduldiges Boot auf stillem Wasser'},
       sumi: {label:'Sumi-e', title:'Tintenatem', sub:'Einzelner Pinselstrich'},
       aurora: {label:'Aurora', title:'Nordlichter', sub:'Lichtbänder am Himmel'},
       nova: {label:'Nova', title:'Kernerwachen', sub:'Plasmakernerweiterung'},
@@ -391,6 +398,7 @@ const i18n = {
     nav_equalizer: 'Égaliseur',
     nav_language: 'Langue',
     themes: {
+      mehtap: {label:'Mehtap', title:'Pêcheur Lunaire', sub:'Bateau patient sur l\'eau calme'},
       sumi: {label:'Sumi-e', title:'Souffle d\'Encre', sub:'Trait unique émergeant du pinceau'},
       aurora: {label:'Aurore', title:'Aurores Boréales', sub:'Rubans de lumière dansant'},
       nova: {label:'Nova', title:'Éveil du Noyau', sub:'Noyau de plasma en expansion'},
@@ -411,6 +419,7 @@ const i18n = {
     nav_equalizer: 'Ecualizador',
     nav_language: 'Idioma',
     themes: {
+      mehtap: {label:'Mehtap', title:'Pescador Lunar', sub:'Bote paciente en agua tranquila'},
       sumi: {label:'Sumi-e', title:'Aliento de Tinta', sub:'Trazo único del pincel'},
       aurora: {label:'Aurora', title:'Luces del Norte', sub:'Cintas de luz bailando'},
       nova: {label:'Nova', title:'Despertar del Núcleo', sub:'Núcleo de plasma expandiéndose'},
@@ -431,6 +440,7 @@ const i18n = {
     nav_equalizer: 'Эквалайзер',
     nav_language: 'Язык',
     themes: {
+      mehtap: {label:'Мехтап', title:'Лунный Рыбак', sub:'Терпеливая лодка на тихой воде'},
       sumi: {label:'Суми-э', title:'Дыхание Чернил', sub:'Единый мазок кисти'},
       aurora: {label:'Аврора', title:'Северное Сияние', sub:'Ленты света в небе'},
       nova: {label:'Нова', title:'Пробуждение Ядра', sub:'Расширение плазменного ядра'},
@@ -451,6 +461,7 @@ const i18n = {
     nav_equalizer: 'المعادل',
     nav_language: 'اللغة',
     themes: {
+      mehtap: {label:'مهتاب', title:'صياد القمر', sub:'قارب صبور على ماء ساكن'},
       sumi: {label:'سومي-إي', title:'نفس الحبر', sub:'ضربة فرشاة واحدة'},
       aurora: {label:'الشفق', title:'الأضواء الشمالية', sub:'أشرطة ضوئية راقصة'},
       nova: {label:'نوفا', title:'صحوة النواة', sub:'توسع نواة البلازما'},
@@ -471,6 +482,7 @@ const i18n = {
     nav_equalizer: 'イコライザー',
     nav_language: '言語',
     themes: {
+      mehtap: {label:'月明かり', title:'月の漁師', sub:'静かな水面の忍耐強い船'},
       sumi: {label:'墨絵', title:'墨の息吹', sub:'筆から生まれる一線'},
       aurora: {label:'オーロラ', title:'北極光', sub:'空に舞う光の帯'},
       nova: {label:'ノヴァ', title:'核の目覚め', sub:'低音で広がるプラズマ核'},
@@ -491,6 +503,7 @@ const i18n = {
     nav_equalizer: '均衡器',
     nav_language: '语言',
     themes: {
+      mehtap: {label:'月光', title:'月亮渔夫', sub:'静水上的耐心之舟'},
       sumi: {label:'水墨画', title:'墨息', sub:'毛笔划出的单线'},
       aurora: {label:'极光', title:'北极光', sub:'天空中舞动的光带'},
       nova: {label:'新星', title:'核心觉醒', sub:'低音扩展等离子核'},
@@ -511,6 +524,7 @@ const i18n = {
     nav_equalizer: '이퀄라이저',
     nav_language: '언어',
     themes: {
+      mehtap: {label:'달빛', title:'달의 어부', sub:'잔잔한 물 위의 인내심 있는 배'},
       sumi: {label:'먹그림', title:'먹의 숨결', sub:'붓에서 나오는 한 획'},
       aurora: {label:'오로라', title:'북극광', sub:'하늘을 춤추는 빛 띠'},
       nova: {label:'노바', title:'핵의 각성', sub:'저음으로 확장되는 플라즈마 핵'},
@@ -1975,7 +1989,13 @@ function drawDivit(bars, wave, e){
   drawSparks(true);
 }
 
+// Mehtap - moonlight fisher (uses Reef water visuals)
+function drawMehtap(e, bars) {
+  drawReef(e, bars);
+}
+
 const RENDERERS = {
+  mehtap: drawMehtap,
   sumi: drawSumi, aurora: drawAurora, nova: drawNova,
   mycel: drawMycel, reef: drawReef, monsoon: drawMonsoon,
   murekkep: drawMurekkep, col: drawCol, divit: drawDivit,

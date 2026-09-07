@@ -4,9 +4,10 @@ import androidx.compose.ui.graphics.Color
 
 /**
  * Award-Winning Themes from awwardstheme.html
- * 8 art-directed worlds, each with distinct material & mood
+ * 10 art-directed worlds, each with distinct material & mood
  */
 enum class AppTheme {
+    MEHTAP,          // 🌙 Mehtap - Moonlight on still water, patient fisherman
     SUMI,            // 🎨 Sumi-e - Japanese ink painting
     AURORA,          // 🌌 Kutup Şafağı - Northern lights  
     NOVA,            // ⭐ Nova - Stellar explosion
@@ -19,6 +20,7 @@ enum class AppTheme {
 }
 
 enum class ColorAccent {
+    MEHTAP_GOLD,     // #f2b155
     SUMI_RED,        // #c1442c
     AURORA_CYAN,     // #4fd8b0
     NOVA_PINK,       // #ff3d7a
@@ -51,6 +53,16 @@ data class ThemeColors(
  */
 fun getThemeColors(theme: AppTheme, accent: ColorAccent): ThemeColors {
     return when (theme) {
+        AppTheme.MEHTAP -> ThemeColors(
+            primary = Color(0xFFf2b155),        // --a4 golden moonlight
+            secondary = Color(0xFF4a6fa5),      // --a2 water blue
+            background = Color(0xFF040910),     // --bg0
+            surface = Color(0xFF0c1e30),        // --bg1
+            onSurface = Color(0xFFeef2f5),      // --ink
+            accent1 = Color(0xFFf2b155),
+            accent2 = Color(0xFF4a6fa5),
+            isDark = true
+        )
         AppTheme.SUMI -> ThemeColors(
             primary = Color(0xFFc1442c),        // --a1
             secondary = Color(0xFFe9e2d0),      // --a2
@@ -146,6 +158,7 @@ fun getThemeColors(theme: AppTheme, accent: ColorAccent): ThemeColors {
 
 private fun getAccentColor1(accent: ColorAccent): Color {
     return when (accent) {
+        ColorAccent.MEHTAP_GOLD -> Color(0xFFf2b155)
         ColorAccent.SUMI_RED -> Color(0xFFc1442c)
         ColorAccent.AURORA_CYAN -> Color(0xFF4fd8b0)
         ColorAccent.NOVA_PINK -> Color(0xFFff3d7a)
@@ -160,6 +173,7 @@ private fun getAccentColor1(accent: ColorAccent): Color {
 
 private fun getAccentColor2(accent: ColorAccent): Color {
     return when (accent) {
+        ColorAccent.MEHTAP_GOLD -> Color(0xFF4a6fa5)
         ColorAccent.SUMI_RED -> Color(0xFFe9e2d0)
         ColorAccent.AURORA_CYAN -> Color(0xFF8a6bff)
         ColorAccent.NOVA_PINK -> Color(0xFFffcf6b)
