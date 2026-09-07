@@ -33,5 +33,6 @@ fun RezonansVisualizer(
         AppTheme.MONSOON -> MonsoonVisualizer(boostedLevels, isActive, accent1, accent2, backgroundColor, modifier)
         AppTheme.MUREKKEP -> SumiVisualizer(boostedLevels, isActive, accent1, accent2, backgroundColor, modifier)  // Similar ink style
         AppTheme.COL -> NovaVisualizer(boostedLevels, isActive, accent1, accent2, backgroundColor, modifier)  // Similar heat/energy style
+        AppTheme.DIVIT -> SumiVisualizer(boostedLevels, isActive, accent1, accent2, backgroundColor, modifier)  // Ink calligraphy style
     }
 }

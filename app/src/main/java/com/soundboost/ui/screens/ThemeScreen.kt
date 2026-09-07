@@ -185,6 +185,7 @@ fun ColorCircle(
         ColorAccent.MONSOON_BLUE -> Color(0xFF9cc2ff)
         ColorAccent.MUREKKEP_GOLD -> Color(0xFFc9a227)
         ColorAccent.COL_ORANGE -> Color(0xFFffb454)
+        ColorAccent.DIVIT_GOLD -> Color(0xFFc9a35c)
     }
     
     Box(
@@ -221,5 +222,6 @@ fun getThemeName(theme: AppTheme): String {
         AppTheme.MONSOON -> "Muson"
         AppTheme.MUREKKEP -> "Mürekkep"
         AppTheme.COL -> "Çöl"
+        AppTheme.DIVIT -> "Divit"
     }
 }
