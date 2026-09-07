@@ -24,17 +24,30 @@
 
   /* ===== 6 art-directed worlds — each a genuinely different material & mood ===== */
   [data-theme="sumi"]{--bg0:#080705;--bg1:#141210;--ink:#f1ece0;--ink-dim:#8d8577;--a1:#c1442c;--a2:#e9e2d0;--a3:#221f1a;--accent:#c1442c;--grain:.07;}
+  [data-theme="sumi"][data-mode="light"]{--bg0:#faf6f0;--bg1:#f1ece0;--ink:#141210;--ink-dim:#6d6a62;--a1:#c1442c;--a2:#9d5a34;--a3:#e7dfd0;--accent:#c1442c;--grain:.015;}
+  
   [data-theme="aurora"]{--bg0:#02040a;--bg1:#061024;--ink:#eef5ff;--ink-dim:#6f83a8;--a1:#33e6a8;--a2:#8a6bff;--a3:#0b1730;--accent:#4fd8b0;--grain:.02;}
+  [data-theme="aurora"][data-mode="light"]{--bg0:#f0f8ff;--bg1:#e6f2ff;--ink:#061024;--ink-dim:#4a6380;--a1:#00c896;--a2:#6b4fd8;--a3:#d8ecff;--accent:#00c896;--grain:.008;}
+  
   [data-theme="nova"]{--bg0:#030110;--bg1:#0d0620;--ink:#f5eeff;--ink-dim:#8478ac;--a1:#ff3d7a;--a2:#ffcf6b;--a3:#160b30;--accent:#ff3d7a;--grain:.02;}
+  [data-theme="nova"][data-mode="light"]{--bg0:#fff0f8;--bg1:#ffe6f3;--ink:#0d0620;--ink-dim:#5d4a7a;--a1:#e6005c;--a2:#e6a800;--a3:#f5d8ec;--accent:#e6005c;--grain:.01;}
+  
   [data-theme="mycel"]{--bg0:#020705;--bg1:#06140c;--ink:#eafff0;--ink-dim:#5f8a70;--a1:#6dffb0;--a2:#ffd58a;--a3:#0c2016;--accent:#6dffb0;--grain:.03;}
+  [data-theme="mycel"][data-mode="light"]{--bg0:#f0fff5;--bg1:#e6faed;--ink:#06140c;--ink-dim:#3a5a48;--a1:#00d87a;--a2:#d8a000;--a3:#d8f0e0;--accent:#00d87a;--grain:.012;}
+  
   [data-theme="reef"]{--bg0:#010a10;--bg1:#03151f;--ink:#d7fbff;--ink-dim:#487d88;--a1:#12e0bd;--a2:#ff6bcf;--a3:#062028;--accent:#12e0bd;--grain:.02;}
+  [data-theme="reef"][data-mode="light"]{--bg0:#f0fcff;--bg1:#e0f8fc;--ink:#03151f;--ink-dim:#2a4d58;--a1:#00c0a0;--a2:#e6009d;--a3:#c8eff5;--accent:#00c0a0;--grain:.01;}
+  
   [data-theme="monsoon"]{--bg0:#05070c;--bg1:#0e1420;--ink:#e9eef7;--ink-dim:#727f94;--a1:#9cc2ff;--a2:#b48bff;--a3:#181f2e;--accent:#9cc2ff;--grain:.045;}
+  [data-theme="monsoon"][data-mode="light"]{--bg0:#f5f8ff;--bg1:#eaf0ff;--ink:#0e1420;--ink-dim:#4a5668;--a1:#5a8fe6;--a2:#8b5fd8;--a3:#dae4ff;--accent:#5a8fe6;--grain:.02;}
   
   /* Mürekkep — sumi ink bloomed in water, kintsugi gold veins */
   [data-theme="murekkep"]{--bg0:#0a0806;--bg1:#17120d;--ink:#f5ecd9;--ink-dim:#8a7860;--a1:#c9a227;--a2:#8b1e3f;--a3:#221a12;--a4:#c9a227;--accent:#c9a227;--grain:.04;}
+  [data-theme="murekkep"][data-mode="light"]{--bg0:#f5ecd9;--bg1:#faf3e4;--ink:#221a12;--ink-dim:#8a7860;--a1:#a8841f;--a2:#7a1a37;--a3:#ecdfc0;--a4:#a8841f;--accent:#a8841f;--grain:.015;}
   
   /* Çöl — heat drifting over dunes of sand */
   [data-theme="col"]{--bg0:#0a0704;--bg1:#1a120a;--ink:#ffe9cf;--ink-dim:#8a6a4a;--a1:#ffb454;--a2:#ff7a3d;--a3:#2b1b0c;--a4:#ff7a3d;--accent:#ffb454;--grain:.04;}
+  [data-theme="col"][data-mode="light"]{--bg0:#fff3e0;--bg1:#ffe6c2;--ink:#2b1b0c;--ink-dim:#8a6a4a;--a1:#d6832c;--a2:#c1442c;--a3:#f5d9ad;--a4:#c1442c;--accent:#d6832c;--grain:.02;}
 
   *{box-sizing:border-box;margin:0;padding:0;}
   html,body{-webkit-tap-highlight-color:transparent;width:100%;height:100%;overflow:hidden;}
@@ -174,6 +187,14 @@
   .chip.active{color:var(--ink); font-weight:700; background:color-mix(in srgb, var(--accent) 15%, transparent);}
   .chip.active .dot{transform:scale(1.3);}
 
+  /* Mode Toggle (Dark/Light Switch) */
+  .modeToggle{background:none;border:none;padding:0;cursor:pointer;display:flex;align-items:center;flex-shrink:0;position:absolute;top:12px;right:16px;z-index:10;}
+  .modeSwitch{width:38px;height:20px;border-radius:20px;background:color-mix(in srgb, var(--ink) 18%, transparent);position:relative;transition:background 1.1s ease;flex-shrink:0;}
+  .modeSwitch .thumb{position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:var(--accent);transition:transform .35s cubic-bezier(.4,0,.2,1), background 1.1s ease;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 3px rgba(0,0,0,.4);}
+  [data-mode="light"] .modeSwitch .thumb{transform:translateX(18px);}
+  .modeSwitch .thumb svg{width:10px;height:10px;color:var(--bg0);}
+  [data-mode="light"] .vignette{box-shadow:inset 0 0 70px 10px rgba(0,0,0,.08);}
+
   .navbar{
     display:flex;
     justify-content:space-around;
@@ -214,6 +235,11 @@
           <p class="now" id="clock">--:--</p>
         </div>
       </div>
+      
+      <!-- Mode Toggle (Dark/Light Switch) -->
+      <button class="modeToggle" id="modeToggle" aria-label="Tema modu">
+        <span class="modeSwitch"><span class="thumb" id="modeThumb"></span></span>
+      </button>
 
       <div class="stage" id="stage">
         <canvas id="canvas"></canvas>
@@ -516,6 +542,41 @@ function shakeStage(intensity){
   clearTimeout(shakeTimer);
   shakeTimer = setTimeout(()=>{ stageEl.style.transform=''; }, 85);
 }
+
+/* ============ DARK/LIGHT MODE TOGGLE ============ */
+const modeToggle = document.getElementById('modeToggle');
+const modeThumb = document.getElementById('modeThumb');
+
+const MOON_ICON = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 12.4A9 9 0 1111.6 3a7 7 0 009.4 9.4z"/></svg>';
+const SUN_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4" fill="currentColor" stroke="none"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg>';
+
+function setMode(mode){
+  phone.dataset.mode = mode;
+  cssCache = {};  // Clear CSS cache to reload colors for canvas
+  modeThumb.innerHTML = mode==='dark' ? MOON_ICON : SUN_ICON;
+  modeToggle.setAttribute('aria-label', mode==='dark' ? 'Karanlık mod' : 'Aydınlık mod');
+  
+  // Notify Android
+  try{
+    if(typeof AndroidBridge !== 'undefined') {
+      AndroidBridge.onModeChanged(mode);
+    }
+  }catch(e){
+    console.log('AndroidBridge not available for mode change');
+  }
+}
+
+modeToggle.addEventListener('click', ()=>{
+  setMode(phone.dataset.mode === 'dark' ? 'light' : 'dark');
+});
+
+// Android can set mode externally
+window.setModeFromAndroid = function(mode){
+  if(mode==='dark' || mode==='light') setMode(mode);
+};
+
+// Initialize with dark mode
+setMode('dark');
 
 /* ============ THEME SWITCHING ============ */
 function setTheme(name){

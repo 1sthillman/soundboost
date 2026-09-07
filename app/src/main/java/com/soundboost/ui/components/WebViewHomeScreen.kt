@@ -28,12 +28,15 @@ fun WebViewHomeScreen(
     onSensitivityChange: (Int) -> Unit,
     onToggleBoost: () -> Unit,
     onThemeChanged: (com.soundboost.ui.theme.AppTheme) -> Unit,
+    onModeChanged: (Boolean?) -> Unit,  // CRITICAL: Dark/Light mode callback
     onNavigateToSettings: () -> Unit,
     onNavigateToEqualizer: () -> Unit,
     onNavigateToLanguage: () -> Unit,
     cachedWebView: androidx.compose.runtime.MutableState<WebView?>
 ) {
     val context = androidx.compose.ui.platform.LocalContext.current
+    val systemInDarkTheme = androidx.compose.foundation.isSystemInDarkTheme()
+    val effectiveDarkMode = state.isDarkMode ?: systemInDarkTheme
     
     var isWebViewReady by remember { mutableStateOf(false) }
     var lastThemeFromKotlin by remember { mutableStateOf<com.soundboost.ui.theme.AppTheme?>(null) }
@@ -46,6 +49,13 @@ fun WebViewHomeScreen(
         // WebView DOM is still alive, just need to update from Kotlin state
         if (isWebViewReady) {
             android.util.Log.d("WebViewHomeScreen", "🔄 Returning from navigation - syncing state")
+            
+            // Force sync dark/light mode (CRITICAL)
+            val mode = if (effectiveDarkMode) "dark" else "light"
+            cachedWebView.value?.evaluateJavascript(
+                "if(window.setModeFromAndroid) { console.log('Force sync mode: $mode'); window.setModeFromAndroid('$mode'); }",
+                null
+            )
             
             // Force sync language (CRITICAL when returning from language selection)
             val currentLang = com.soundboost.data.LanguageManager.getCurrentLanguage(context)
@@ -189,6 +199,17 @@ fun WebViewHomeScreen(
         }
     }
     
+    // CRITICAL: Update dark/light mode when changed from Settings
+    LaunchedEffect(effectiveDarkMode) {
+        if (!isWebViewReady) return@LaunchedEffect
+        val mode = if (effectiveDarkMode) "dark" else "light"
+        android.util.Log.d("WebViewHomeScreen", "Syncing mode to WebView: $mode")
+        cachedWebView.value?.evaluateJavascript(
+            "if(window.setModeFromAndroid) { window.setModeFromAndroid('$mode'); }",
+            null
+        )
+    }
+    
     AndroidView(
         modifier = Modifier.fillMaxSize(),
         factory = { ctx ->
@@ -260,6 +281,14 @@ fun WebViewHomeScreen(
                             null
                         )
                         android.util.Log.d("WebViewHomeScreen", "✅ Restored theme: $themeName")
+                        
+                        // 6. CRITICAL: Restore dark/light mode
+                        val mode = if (effectiveDarkMode) "dark" else "light"
+                        evaluateJavascript(
+                            "if(window.setModeFromAndroid) { window.setModeFromAndroid('$mode'); }",
+                            null
+                        )
+                        android.util.Log.d("WebViewHomeScreen", "✅ Restored mode: $mode")
                     }
                 }
                 
@@ -299,6 +328,16 @@ fun WebViewHomeScreen(
                             lastThemeFromKotlin = theme  // HTML'den geldiğini işaretle
                             onThemeChanged(theme)
                         },
+                        onModeChanged = { mode ->
+                            // Convert "dark"/"light" string to Boolean? (null = system, true = dark, false = light)
+                            val isDarkMode = when (mode) {
+                                "dark" -> true
+                                "light" -> false
+                                else -> null  // system
+                            }
+                            android.util.Log.d("WebViewHomeScreen", "Mode changed from HTML: $mode -> isDarkMode: $isDarkMode")
+                            onModeChanged(isDarkMode)
+                        },
                         onNavigateToSettings = onNavigateToSettings,
                         onNavigateToEqualizer = onNavigateToEqualizer,
                         onNavigateToLanguage = onNavigateToLanguage
@@ -334,6 +373,7 @@ class WebViewBridge(
     private val onSensitivityChange: (Int) -> Unit,
     private val onToggleBoost: () -> Unit,
     private val onThemeChanged: (String) -> Unit,
+    private val onModeChanged: (String) -> Unit,
     private val onNavigateToSettings: () -> Unit,
     private val onNavigateToEqualizer: () -> Unit,
     private val onNavigateToLanguage: () -> Unit
@@ -358,6 +398,12 @@ class WebViewBridge(
     @android.webkit.JavascriptInterface
     fun changeTheme(themeName: String) {
         handler.post { onThemeChanged(themeName) }
+    }
+    
+    @android.webkit.JavascriptInterface
+    fun onModeChanged(mode: String) {
+        android.util.Log.d("WebViewBridge", "Mode changed from HTML: $mode")
+        handler.post { onModeChanged(mode) }
     }
     
     @android.webkit.JavascriptInterface

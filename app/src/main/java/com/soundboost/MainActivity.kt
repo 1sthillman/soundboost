@@ -178,6 +178,7 @@ fun MainScreen(viewModel: MainViewModel) {
                         onSensitivityChange = viewModel::onSensitivityChanged,
                         onToggleBoost = viewModel::toggleBoost,
                         onThemeChanged = viewModel::onThemeChanged,
+                        onModeChanged = viewModel::onDarkModeChanged,  // CRITICAL: Dark/Light mode from HTML toggle
                         onNavigateToSettings = { navController.navigate("settings") },
                         onNavigateToEqualizer = { navController.navigate("equalizer") },
                         onNavigateToLanguage = { navController.navigate("language") },
