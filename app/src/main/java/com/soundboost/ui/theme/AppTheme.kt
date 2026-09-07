@@ -14,7 +14,8 @@ enum class AppTheme {
     REEF,            // 🐠 Derin Işıltı - Deep sea bioluminescence
     MONSOON,         // ⛈️ Muson - Storm with lightning
     MUREKKEP,        // 🖋️ Mürekkep - Sumi ink bloomed in water, kintsugi gold
-    COL              // 🏜️ Çöl - Heat drifting over dunes of sand
+    COL,             // 🏜️ Çöl - Heat drifting over dunes of sand
+    DIVIT            // 🖋️ Divit - Inkwell drop blooming in water with golden capillaries
 }
 
 enum class ColorAccent {
@@ -25,7 +26,8 @@ enum class ColorAccent {
     REEF_CYAN,       // #12e0bd
     MONSOON_BLUE,    // #9cc2ff
     MUREKKEP_GOLD,   // #c9a227
-    COL_ORANGE       // #ffb454
+    COL_ORANGE,      // #ffb454
+    DIVIT_GOLD       // #c9a35c
 }
 
 data class ThemeColors(
@@ -129,6 +131,16 @@ fun getThemeColors(theme: AppTheme, accent: ColorAccent): ThemeColors {
             accent2 = Color(0xFFff7a3d),
             isDark = true
         )
+        AppTheme.DIVIT -> ThemeColors(
+            primary = Color(0xFFc9a35c),        // --a1 (golden ink)
+            secondary = Color(0xFF8f98c9),      // --a2 (purple-blue)
+            background = Color(0xFF0a0d16),     // --bg0
+            surface = Color(0xFF141a2c),        // --bg1
+            onSurface = Color(0xFFf2ede0),      // --ink
+            accent1 = Color(0xFFc9a35c),
+            accent2 = Color(0xFF8f98c9),
+            isDark = true
+        )
     }
 }
 
@@ -142,6 +154,7 @@ private fun getAccentColor1(accent: ColorAccent): Color {
         ColorAccent.MONSOON_BLUE -> Color(0xFF9cc2ff)
         ColorAccent.MUREKKEP_GOLD -> Color(0xFFc9a227)
         ColorAccent.COL_ORANGE -> Color(0xFFffb454)
+        ColorAccent.DIVIT_GOLD -> Color(0xFFc9a35c)
     }
 }
 
@@ -155,5 +168,6 @@ private fun getAccentColor2(accent: ColorAccent): Color {
         ColorAccent.MONSOON_BLUE -> Color(0xFFb48bff)
         ColorAccent.MUREKKEP_GOLD -> Color(0xFF8b1e3f)
         ColorAccent.COL_ORANGE -> Color(0xFFff7a3d)
+        ColorAccent.DIVIT_GOLD -> Color(0xFF8f98c9)
     }
 }

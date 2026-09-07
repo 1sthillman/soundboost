@@ -218,6 +218,7 @@ fun WebViewHomeScreen(
                 com.soundboost.ui.theme.AppTheme.MONSOON -> "monsoon"
                 com.soundboost.ui.theme.AppTheme.MUREKKEP -> "murekkep"
                 com.soundboost.ui.theme.AppTheme.COL -> "col"
+                com.soundboost.ui.theme.AppTheme.DIVIT -> "divit"
             }
             cachedWebView.value?.evaluateJavascript(
                 "if(window.setThemeFromAndroid) { window.setThemeFromAndroid('$themeName'); }",
@@ -303,6 +304,7 @@ fun WebViewHomeScreen(
                             com.soundboost.ui.theme.AppTheme.MONSOON -> "monsoon"
                             com.soundboost.ui.theme.AppTheme.MUREKKEP -> "murekkep"
                             com.soundboost.ui.theme.AppTheme.COL -> "col"
+                            com.soundboost.ui.theme.AppTheme.DIVIT -> "divit"
                         }
                         evaluateJavascript(
                             "if(window.setThemeFromAndroid) { window.setThemeFromAndroid('$themeName'); }",
@@ -351,6 +353,7 @@ fun WebViewHomeScreen(
                                 "monsoon" -> com.soundboost.ui.theme.AppTheme.MONSOON
                                 "murekkep" -> com.soundboost.ui.theme.AppTheme.MUREKKEP
                                 "col" -> com.soundboost.ui.theme.AppTheme.COL
+                                "divit" -> com.soundboost.ui.theme.AppTheme.DIVIT
                                 else -> com.soundboost.ui.theme.AppTheme.SUMI
                             }
                             lastThemeFromKotlin = theme  // HTML'den geldiğini işaretle

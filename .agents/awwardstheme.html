@@ -49,6 +49,10 @@
   [data-theme="col"]{--bg0:#0a0704;--bg1:#1a120a;--ink:#ffe9cf;--ink-dim:#8a6a4a;--a1:#ffb454;--a2:#ff7a3d;--a3:#2b1b0c;--a4:#ff7a3d;--accent:#ffb454;--grain:.04;}
   [data-theme="col"][data-mode="light"]{--bg0:#fff3e0;--bg1:#ffe6c2;--ink:#2b1b0c;--ink-dim:#8a6a4a;--a1:#d6832c;--a2:#c1442c;--a3:#f5d9ad;--a4:#c1442c;--accent:#d6832c;--grain:.02;}
 
+  /* Divit — inkwell drop blooming in water with golden capillaries */
+  [data-theme="divit"]{--bg0:#0a0d16;--bg1:#141a2c;--ink:#f2ede0;--ink-dim:#7a7566;--a1:#c9a35c;--a2:#8f98c9;--a3:#1c2238;--a4:#e8c77a;--accent:#c9a35c;--grain:.035;}
+  [data-theme="divit"][data-mode="light"]{--bg0:#eef0e6;--bg1:#f8f9f3;--ink:#1b2036;--ink-dim:#82806f;--a1:#93711f;--a2:#4a5490;--a3:#dee1d1;--a4:#93711f;--accent:#93711f;--grain:.014;}
+
   *{box-sizing:border-box;margin:0;padding:0;}
   html,body{-webkit-tap-highlight-color:transparent;width:100%;height:100%;overflow:hidden;}
   body{
@@ -281,6 +285,7 @@
         <button class="chip" data-theme="monsoon"><span class="dot" style="background:#9cc2ff;color:#9cc2ff"></span><span data-i18n-theme="monsoon">Muson</span></button>
         <button class="chip" data-theme="murekkep"><span class="dot" style="background:#c9a227;color:#c9a227"></span><span data-i18n-theme="murekkep">Mürekkep</span></button>
         <button class="chip" data-theme="col"><span class="dot" style="background:#ffb454;color:#ffb454"></span><span data-i18n-theme="col">Çöl</span></button>
+        <button class="chip" data-theme="divit"><span class="dot" style="background:#c9a35c;color:#c9a35c"></span><span data-i18n-theme="divit">Divit</span></button>
       </div>
 
       <div class="navbar">
@@ -333,7 +338,8 @@ const i18n = {
       reef: {label:'Derin Işıltı', title:'Derin Işıltı', sub:'Karanlıkta parıldayan biyolüminesans'},
       monsoon: {label:'Muson', title:'Fırtına Öncesi', sub:'Şimşek ve yağmurun ritmi'},
       murekkep: {label:'Mürekkep', title:'Sumi Çiçeği', sub:'Suya damlayan mürekkebin doğal deseni'},
-      col: {label:'Çöl', title:'Rüzgârın İzi', sub:'Kum tepelerinde süzülen ısı'}
+      col: {label:'Çöl', title:'Rüzgârın İzi', sub:'Kum tepelerinde süzülen ısı'},
+      divit: {label:'Divit', title:'Mürekkep Damlası', sub:'Suya düşen bir divit mürekkebinin sessiz koreografisi'}
     }
   },
   en: {
@@ -352,7 +358,8 @@ const i18n = {
       reef: {label:'Deep Glow', title:'Deep Glow', sub:'Bioluminescence glowing in darkness'},
       monsoon: {label:'Monsoon', title:'Before Storm', sub:'Rhythm of lightning and rain'},
       murekkep: {label:'Ink Bloom', title:'Sumi Blossom', sub:'Ink blooming in water with gold veins'},
-      col: {label:'Desert', title:'Wind\'s Trace', sub:'Heat drifting over sand dunes'}
+      col: {label:'Desert', title:'Wind\'s Trace', sub:'Heat drifting over sand dunes'},
+      divit: {label:'Inkwell', title:'Ink Drop', sub:'Silent choreography of inkwell drop in water'}
     }
   },
   de: {
@@ -371,7 +378,8 @@ const i18n = {
       reef: {label:'Tiefes Leuchten', title:'Tiefes Leuchten', sub:'Biolumineszenz in Dunkelheit'},
       monsoon: {label:'Monsun', title:'Vor dem Sturm', sub:'Rhythmus von Blitz und Regen'},
       murekkep: {label:'Tinte', title:'Sumi-Blüte', sub:'Tinte blüht im Wasser mit Goldadern'},
-      col: {label:'Wüste', title:'Spur des Windes', sub:'Hitze über Sanddünen'}
+      col: {label:'Wüste', title:'Spur des Windes', sub:'Hitze über Sanddünen'},
+      divit: {label:'Tintenfass', title:'Tintentropfen', sub:'Stille Choreographie des Tintentropfens im Wasser'}
     }
   },
   fr: {
@@ -390,7 +398,8 @@ const i18n = {
       reef: {label:'Lueur Profonde', title:'Lueur Profonde', sub:'Bioluminescence dans l\'obscurité'},
       monsoon: {label:'Mousson', title:'Avant la Tempête', sub:'Rythme de la foudre et pluie'},
       murekkep: {label:'Encre', title:'Fleur Sumi', sub:'Encre fleurissant dans l\'eau avec or'},
-      col: {label:'Désert', title:'Trace du Vent', sub:'Chaleur sur les dunes de sable'}
+      col: {label:'Désert', title:'Trace du Vent', sub:'Chaleur sur les dunes de sable'},
+      divit: {label:'Encrier', title:'Goutte d\'Encre', sub:'Chorégraphie silencieuse d\'une goutte d\'encrier dans l\'eau'}
     }
   },
   es: {
@@ -409,7 +418,8 @@ const i18n = {
       reef: {label:'Resplandor Profundo', title:'Resplandor Profundo', sub:'Bioluminiscencia en oscuridad'},
       monsoon: {label:'Monzón', title:'Antes de la Tormenta', sub:'Ritmo de relámpagos y lluvia'},
       murekkep: {label:'Tinta', title:'Flor Sumi', sub:'Tinta floreciendo en agua con oro'},
-      col: {label:'Desierto', title:'Rastro del Viento', sub:'Calor sobre dunas de arena'}
+      col: {label:'Desierto', title:'Rastro del Viento', sub:'Calor sobre dunas de arena'},
+      divit: {label:'Tintero', title:'Gota de Tinta', sub:'Coreografía silenciosa de gota de tintero en agua'}
     }
   },
   ru: {
@@ -428,7 +438,8 @@ const i18n = {
       reef: {label:'Глубокое Свечение', title:'Глубокое Свечение', sub:'Биолюминесценция во тьме'},
       monsoon: {label:'Муссон', title:'Перед Бурей', sub:'Ритм молнии и дождя'},
       murekkep: {label:'Чернила', title:'Суми Цветок', sub:'Чернила цветут в воде с золотом'},
-      col: {label:'Пустыня', title:'След Ветра', sub:'Жар над песчаными дюнами'}
+      col: {label:'Пустыня', title:'След Ветра', sub:'Жар над песчаными дюнами'},
+      divit: {label:'Чернильница', title:'Капля Чернил', sub:'Тихая хореография капли чернил в воде'}
     }
   },
   ar: {
@@ -447,7 +458,8 @@ const i18n = {
       reef: {label:'توهج عميق', title:'توهج عميق', sub:'إضاءة حيوية في الظلام'},
       monsoon: {label:'الموسم', title:'قبل العاصفة', sub:'إيقاع البرق والمطر'},
       murekkep: {label:'الحبر', title:'زهرة سومي', sub:'الحبر يتفتح في الماء مع الذهب'},
-      col: {label:'الصحراء', title:'أثر الرياح', sub:'الحرارة فوق الكثبان الرملية'}
+      col: {label:'الصحراء', title:'أثر الرياح', sub:'الحرارة فوق الكثبان الرملية'},
+      divit: {label:'المحبرة', title:'قطرة الحبر', sub:'رقصة صامتة لقطرة المحبرة في الماء'}
     }
   },
   ja: {
@@ -466,7 +478,8 @@ const i18n = {
       reef: {label:'深海の輝き', title:'深海の輝き', sub:'闇に光る生物発光'},
       monsoon: {label:'モンスーン', title:'嵐の前', sub:'稲妻と雨のリズム'},
       murekkep: {label:'墨', title:'墨の花', sub:'水に広がる墨と金の脈'},
-      col: {label:'砂漠', title:'風の跡', sub:'砂丘の上を漂う熱'}
+      col: {label:'砂漠', title:'風の跡', sub:'砂丘の上を漂う熱'},
+      divit: {label:'インク壺', title:'インクの滴', sub:'水の中でインクの滴が描く静かな舞'}
     }
   },
   zh: {
@@ -485,7 +498,8 @@ const i18n = {
       reef: {label:'深海辉光', title:'深海辉光', sub:'黑暗中闪耀的生物发光'},
       monsoon: {label:'季风', title:'暴风前', sub:'闪电和雨的节奏'},
       murekkep: {label:'墨水', title:'墨之花', sub:'墨水在水中绽放与金脉'},
-      col: {label:'沙漠', title:'风之痕', sub:'沙丘上飘动的热浪'}
+      col: {label:'沙漠', title:'风之痕', sub:'沙丘上飘动的热浪'},
+      divit: {label:'墨水瓶', title:'墨滴', sub:'墨滴在水中的静默编舞'}
     }
   },
   ko: {
@@ -504,7 +518,8 @@ const i18n = {
       reef: {label:'깊은 빛', title:'깊은 빛', sub:'어둠 속에서 빛나는 생물 발광'},
       monsoon: {label:'몬순', title:'폭풍 전', sub:'번개와 비의 리듬'},
       murekkep: {label:'잉크', title:'먹 꽃', sub:'물에서 피어나는 먹과 금빛 맥'},
-      col: {label:'사막', title:'바람의 흔적', sub:'모래 언덕 위를 떠도는 열기'}
+      col: {label:'사막', title:'바람의 흔적', sub:'모래 언덕 위를 떠도는 열기'},
+      divit: {label:'잉크병', title:'잉크 방울', sub:'물속에서 잉크 방울이 그리는 고요한 안무'}
     }
   }
 };
@@ -626,6 +641,7 @@ function setTheme(name){
   // New themes
   murekkepBlob = null; murekkepDrops = [];
   colDuneSeed = null; colParticles = []; colSunPulse = 0;
+  inkVeins = []; inkRipples = []; inkBlobT = 0;
 }
 document.getElementById('themes').addEventListener('click', e=>{
   const btn = e.target.closest('.chip');
@@ -1860,10 +1876,109 @@ function drawCol(bars, wave, e){
   drawSparks(true);
 }
 
+/* ---------- DİVİT — inkwell drop blooming in water with golden capillaries ---------- */
+let inkVeins = [];
+let inkRipples = [];
+let inkBlobT = 0;
+function drawDivit(bars, wave, e){
+  const g = ctx.createRadialGradient(W*0.5,H*0.42,10,W*0.5,H*0.56,W*1.1);
+  g.addColorStop(0, css('--bg1')); g.addColorStop(1, css('--bg0'));
+  ctx.fillStyle = g; ctx.fillRect(0,0,W,H);
+  
+  const cx = W*0.5, cy = H*0.5;
+  inkBlobT += 0.01 + e.energy*0.012;
+  
+  function blob(ox, oy, baseR, freqStart, freqEnd, opacity, colorVar){
+    const seg = 40;
+    ctx.beginPath();
+    for(let i=0;i<=seg;i++){
+      const p = i/seg;
+      const ang = p*Math.PI*2;
+      const bin = freqStart + Math.floor(p*(freqEnd-freqStart));
+      const v = bars[bin] || 0;
+      const wob = Math.sin(ang*3 + inkBlobT*2)*0.12 + Math.sin(ang*5 - inkBlobT*1.3)*0.06;
+      const r = baseR*(0.82 + wob + v*0.9);
+      const x = ox + Math.cos(ang)*r;
+      const y = oy + Math.sin(ang)*r*0.94;
+      if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+    }
+    ctx.closePath();
+    ctx.fillStyle = alpha(colorVar, opacity);
+    ctx.fill();
+  }
+  
+  // Main ink blob + side blobs
+  ctx.save();
+  ctx.filter = `blur(${7+e.mid*9}px)`;
+  blob(cx, cy, 44+e.sub*68, 0, 10, 0.85, '--ink');
+  blob(cx - 30 + Math.sin(t*0.3)*18, cy + 24 + Math.cos(t*0.25)*14, 24+e.lowMid*44, 8, 20, 0.5, '--ink');
+  blob(cx + 34 + Math.cos(t*0.22)*16, cy - 20 + Math.sin(t*0.31)*12, 18+e.highMid*34, 18, 30, 0.4, '--accent');
+  ctx.restore();
+  
+  // Golden capillary veins — triggered by treble
+  if(inkVeins.length < 44 && Math.random() < 0.06 + e.treble*0.32){
+    const ang = Math.random()*Math.PI*2;
+    inkVeins.push({x:cx, y:cy, ang, len:0, maxLen: 30+Math.random()*60+e.treble*60, life:1});
+  }
+  inkVeins.forEach(v=>{
+    v.len += 1.6 + e.treble*3;
+    v.life -= 0.006;
+    const x1 = v.x + Math.cos(v.ang)*v.len;
+    const y1 = v.y + Math.sin(v.ang)*v.len*0.94;
+    ctx.beginPath(); ctx.moveTo(v.x,v.y); ctx.lineTo(x1,y1);
+    ctx.strokeStyle = alpha('--a1', Math.max(0,v.life)*0.7);
+    ctx.lineWidth = 0.8;
+    ctx.stroke();
+  });
+  inkVeins = inkVeins.filter(v=>v.life>0 && v.len<v.maxLen);
+  
+  // Beat ripples + sparks
+  if(e.beat){
+    inkRipples.push({r:8, life:1});
+    burst(cx, cy, 10, '--a1', 1.3, 40, {gravity:0, drag:0.94});
+    shakeStage(0.3);
+  }
+  inkRipples.forEach(r=>{
+    r.r += 3.2+e.energy*2;
+    r.life -= 0.014;
+    ctx.beginPath();
+    for(let i=0;i<=48;i++){
+      const ang = i/48*Math.PI*2;
+      const wob = Math.sin(ang*5 + t*2)*2.5;
+      const x = cx+Math.cos(ang)*(r.r+wob), y = cy+Math.sin(ang)*(r.r+wob)*0.94;
+      if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+    }
+    ctx.closePath();
+    ctx.strokeStyle = alpha('--ink', Math.max(0,r.life)*0.35);
+    ctx.lineWidth = 1;
+    ctx.stroke();
+  });
+  inkRipples = inkRipples.filter(r=>r.life>0);
+  
+  // Frequency ring
+  ctx.save();
+  ctx.beginPath();
+  for(let i=0;i<BINS;i++){
+    const p = i/BINS;
+    const ang = p*Math.PI*2 - Math.PI/2;
+    const v = bars[i];
+    const rr = Math.min(W,H)*0.46 + v*10;
+    const x = cx+Math.cos(ang)*rr, y = cy+Math.sin(ang)*rr*0.94;
+    if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+  }
+  ctx.closePath();
+  ctx.strokeStyle = alpha('--a1', 0.32+e.treble*0.4);
+  ctx.lineWidth = 1;
+  ctx.stroke();
+  ctx.restore();
+  
+  drawSparks(true);
+}
+
 const RENDERERS = {
   sumi: drawSumi, aurora: drawAurora, nova: drawNova,
   mycel: drawMycel, reef: drawReef, monsoon: drawMonsoon,
-  murekkep: drawMurekkep, col: drawCol,
+  murekkep: drawMurekkep, col: drawCol, divit: drawDivit,
 };
 
 let lastResize = 0;
