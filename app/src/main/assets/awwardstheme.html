@@ -1989,9 +1989,106 @@ function drawDivit(bars, wave, e){
   drawSparks(true);
 }
 
-// Mehtap - moonlight fisher (uses Reef water visuals)
-function drawMehtap(e, bars) {
-  drawReef(e, bars);
+// Mehtap - simple moonlight theme (calm water with moon reflection)
+function drawMehtap(bars, wave, e) {
+  // Simple, stable moonlight scene
+  const horizonY = H * 0.6;
+  const isDark = phone.dataset.mode === 'dark';
+  
+  // Sky gradient
+  const skyGrad = ctx.createLinearGradient(0, 0, 0, horizonY);
+  if(isDark) {
+    skyGrad.addColorStop(0, '#03070d');
+    skyGrad.addColorStop(0.55, '#0a1b2c');
+    skyGrad.addColorStop(1, '#123049');
+  } else {
+    skyGrad.addColorStop(0, '#bfe0e8');
+    skyGrad.addColorStop(0.55, '#eaf3ee');
+    skyGrad.addColorStop(1, '#fbe6c4');
+  }
+  ctx.fillStyle = skyGrad;
+  ctx.fillRect(0, 0, W, horizonY);
+  
+  // Stars (dark mode only)
+  if(isDark) {
+    ctx.fillStyle = 'rgba(234, 241, 255, 0.6)';
+    for(let i=0; i<40; i++){
+      const x = (i*37.5) % W;
+      const y = (i*19.3) % horizonY;
+      const size = 0.6 + (i%3)*0.3;
+      ctx.beginPath();
+      ctx.arc(x, y, size, 0, 7);
+      ctx.fill();
+    }
+  }
+  
+  // Moon/Sun
+  const bodyX = W*0.52;
+  const bodyY = horizonY*0.26;
+  const bodyR = Math.min(W,horizonY)*0.12 + e.bass*6;
+  
+  // Glow
+  const glow = ctx.createRadialGradient(bodyX, bodyY, bodyR*0.15, bodyX, bodyY, bodyR*5);
+  if(isDark) {
+    glow.addColorStop(0, 'rgba(191, 212, 230, 0.5)');
+    glow.addColorStop(0.35, 'rgba(191, 212, 230, 0.1)');
+  } else {
+    glow.addColorStop(0, 'rgba(255, 223, 158, 0.5)');
+    glow.addColorStop(0.35, 'rgba(255, 223, 158, 0.1)');
+  }
+  glow.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.fillStyle = glow;
+  ctx.beginPath();
+  ctx.arc(bodyX, bodyY, bodyR*5, 0, 7);
+  ctx.fill();
+  
+  // Moon/Sun body
+  ctx.fillStyle = isDark ? '#dfe8ee' : '#fff2cf';
+  ctx.beginPath();
+  ctx.arc(bodyX, bodyY, bodyR, 0, 7);
+  ctx.fill();
+  
+  // Water gradient
+  const waterGrad = ctx.createLinearGradient(0, horizonY, 0, H);
+  if(isDark) {
+    waterGrad.addColorStop(0, '#0d2436');
+    waterGrad.addColorStop(1, '#030a12');
+  } else {
+    waterGrad.addColorStop(0, '#bfe4df');
+    waterGrad.addColorStop(1, '#4c8a92');
+  }
+  ctx.fillStyle = waterGrad;
+  ctx.fillRect(0, horizonY, W, H-horizonY);
+  
+  // Golden reflection bands
+  const reflectColor = isDark ? '#d9b46a' : '#c98b2e';
+  for(let i=0; i<15; i++){
+    const p = i/15;
+    const y = horizonY + 10 + p*(H-horizonY)*0.6;
+    const fade = 1 - p*0.75;
+    const w = (W*0.08) * (0.6 + e.energy*0.4) * fade;
+    const h = 1.5*fade;
+    const alpha = Math.floor(fade*50 + e.treble*50);
+    ctx.fillStyle = reflectColor + alpha.toString(16).padStart(2,'0');
+    ctx.fillRect(bodyX - w/2, y, w, h);
+  }
+  
+  // Simple wave layer
+  ctx.beginPath();
+  ctx.moveTo(0, H);
+  const waveY = horizonY + (H-horizonY)*0.1;
+  for(let i=0; i<=30; i++){
+    const p = i/30;
+    const amp = 3 + e.bass*12;
+    const y = waveY + Math.sin(p*8 + t*0.5)*amp;
+    ctx.lineTo(p*W, y);
+  }
+  ctx.lineTo(W, H);
+  ctx.closePath();
+  ctx.fillStyle = isDark ? 'rgba(13,36,54,0.7)' : 'rgba(191,228,223,0.7)';
+  ctx.fill();
+  
+  drawSparks(true);
 }
 
 const RENDERERS = {
