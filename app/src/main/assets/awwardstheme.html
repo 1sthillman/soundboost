@@ -314,17 +314,21 @@
 </div>
 
 
-<!-- Load modules in correct order -->
-<!-- 1. Internationalization -->
+<!-- ============================================ -->
+<!-- MODULAR ARCHITECTURE - 16 FOCUSED MODULES   -->
+<!-- ============================================ -->
+
+<!-- Phase 1: Internationalization -->
 <script src="modules/i18n.js"></script>
 
-<!-- 2. Core utilities -->
+<!-- Phase 2: Core Utilities -->
 <script src="modules/core.js"></script>
 
-<!-- 3. Audio engine -->
+<!-- Phase 3: Audio System -->
 <script src="modules/audio-engine.js"></script>
+<script src="modules/audio-analysis.js"></script>
 
-<!-- 4. All visualizers -->
+<!-- Phase 4: Visualizers (isolated & independent) -->
 <script src="modules/visualizers/sumi.js"></script>
 <script src="modules/visualizers/aurora.js"></script>
 <script src="modules/visualizers/nova.js"></script>
@@ -336,7 +340,8 @@
 <script src="modules/visualizers/divit.js"></script>
 <script src="modules/visualizers/mehtap.js"></script>
 
-<!-- 5. Main application loop -->
-<script src="modules/main-loop.js"></script>
+<!-- Phase 5: Application Loop -->
+<script src="modules/render-loop.js"></script>
+
 </body>
 </html>
