@@ -156,6 +156,17 @@ fun MainScreen(viewModel: MainViewModel) {
     var showRateDialog by remember { mutableStateOf(false) }
     var showShareDialog by remember { mutableStateOf(false) }
     
+    // CRITICAL: Show rate dialog on every app launch (unless already rated)
+    LaunchedEffect(Unit) {
+        kotlinx.coroutines.delay(2000)  // 2 saniye bekle (kullanıcı uygulamaya alışsın)
+        val prefs = com.soundboost.data.BoostPreferences(context)
+        val shouldShow = prefs.shouldShowRateDialog()
+        android.util.Log.d("MainActivity", "🌟 Should show rate dialog: $shouldShow")
+        if (shouldShow) {
+            showRateDialog = true
+        }
+    }
+    
     // CRITICAL FIX: Cache WebView instance at MainScreen level to survive navigation
     // This prevents WebView disposal when navigating away from home screen
     val cachedWebView = remember { mutableStateOf<android.webkit.WebView?>(null) }
@@ -282,8 +293,15 @@ fun MainScreen(viewModel: MainViewModel) {
         if (showRateDialog) {
             com.soundboost.ui.components.RateAppDialog(
                 themeColors = themeColors,
-                onDismiss = { showRateDialog = false },
-                onRated = { viewModel.onAppRated() }
+                onDismiss = { 
+                    // "Daha sonra" butonuna basıldı - hiçbir şey kaydetme
+                    showRateDialog = false 
+                },
+                onRated = { 
+                    // "Değerlendir" butonuna basıp Play Store'a gitti - bir daha gösterme
+                    viewModel.onAppRated()
+                    showRateDialog = false
+                }
             )
         }
         

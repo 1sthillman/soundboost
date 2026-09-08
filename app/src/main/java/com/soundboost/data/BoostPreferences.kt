@@ -7,6 +7,7 @@ import androidx.datastore.preferences.preferencesDataStore
 import com.soundboost.ui.theme.AppTheme
 import com.soundboost.ui.theme.ColorAccent
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "boost_settings")
@@ -39,7 +40,8 @@ class BoostPreferences(private val context: Context) {
         val AUTO_START = booleanPreferencesKey("auto_start_on_boot")
         val THEME = stringPreferencesKey("app_theme")
         val COLOR_ACCENT = stringPreferencesKey("color_accent")
-        val HAS_RATED_APP = booleanPreferencesKey("has_rated_app")
+        val HAS_RATED_APP = booleanPreferencesKey("has_rated_app")  // Play Store'a gittiyse true
+        val SHOULD_SHOW_RATE_DIALOG = booleanPreferencesKey("should_show_rate_dialog")  // Her açılışta true olur
         val SENSITIVITY = intPreferencesKey("sensitivity")
         val IS_DARK_MODE = stringPreferencesKey("is_dark_mode")  // "system", "light", "dark"
     }
@@ -114,6 +116,23 @@ class BoostPreferences(private val context: Context) {
     
     suspend fun setHasRatedApp(rated: Boolean) {
         context.dataStore.edit { it[Keys.HAS_RATED_APP] = rated }
+    }
+    
+    // Check if we should show rate dialog (her açılışta göster, SADECE rated ise gösterme)
+    suspend fun shouldShowRateDialog(): Boolean {
+        val prefs = context.dataStore.data
+        val hasRated = prefs.map { it[Keys.HAS_RATED_APP] ?: false }
+        return !hasRated.first()  // Eğer değerlendirme YAPILMADIYSA true döner
+    }
+    
+    // "Daha sonra" butonuna basıldığında - hiçbir şey kaydetme, sadece dismiss
+    suspend fun onRateLater() {
+        // Hiçbir şey kaydetme - bir sonraki açılışta tekrar gösterecek
+    }
+    
+    // "Değerlendir" butonuna basıldığında - bir daha gösterme
+    suspend fun onRatedInStore() {
+        context.dataStore.edit { it[Keys.HAS_RATED_APP] = true }
     }
     
     suspend fun setSensitivity(value: Int) {
