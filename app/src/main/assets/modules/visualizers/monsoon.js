@@ -122,3 +122,6 @@ function initMurekkepBlob(){
     murekkepBlob.push({ang:(i/n)*6.28, noise:Math.random()*6.28, speed:0.3+Math.random()*0.4});
   }
 }
+
+// Register visualizer
+RENDERERS['monsoon'] = drawMonsoon;

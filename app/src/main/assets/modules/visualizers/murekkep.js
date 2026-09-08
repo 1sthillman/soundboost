@@ -64,3 +64,6 @@ function drawMurekkep(bars, wave, e){
 /* ---------- ÇÖL — dunes drifting in shimmering heat ---------- */
 let colDuneSeed = null;
 let colParticles = [];
+
+// Register visualizer
+RENDERERS['murekkep'] = drawMurekkep;

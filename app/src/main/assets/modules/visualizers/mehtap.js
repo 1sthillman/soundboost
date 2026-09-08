@@ -330,29 +330,5 @@ function drawMehtap(bars, wave, e) {
   drawSparks(true);
 }
 
-const RENDERERS = {
-  mehtap: drawMehtap,
-  sumi: drawSumi, aurora: drawAurora, nova: drawNova,
-  mycel: drawMycel, reef: drawReef, monsoon: drawMonsoon,
-  murekkep: drawMurekkep, col: drawCol, divit: drawDivit,
-};
-
-let lastResize = 0;
-function render(){
-  // Only resize on actual window size changes (not every frame)
-  const now = Date.now();
-  if(now - lastResize > 500) { // Check every 500ms max
-    resize();
-    lastResize = now;
-  }
-  
-  t += 0.045;
-  const sensBoost = 0.55 + (parseFloat(sensEl.value)/100)*1.1;
-  const bars = getBars(sensBoost);
-  const wave = getWave();
-  const e = analyze(bars, sensBoost);
-  updateMeter(bars);
-  phone.style.setProperty('--lvl', playing || useRealAudioData ? Math.min(1, e.bass*1.3) : 0);
-  const fn = RENDERERS[currentTheme] || drawSumi;
-  fn(bars, wave, e);
-  requestAnimationFrame(render);
+// Register visualizer
+RENDERERS['mehtap'] = drawMehtap;

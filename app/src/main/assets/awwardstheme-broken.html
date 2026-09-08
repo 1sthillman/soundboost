@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rezonans â€” Sanat Serisi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles/themes.css">
+</head>
+<body>
+
+<div class="phone" id="phone" data-theme="mehtap">
+    <div class="screen">
+      <div class="grain"></div>
+      <div class="vignette"></div>
+
+      <div class="topbar">
+        <p class="brand"><span class="re">ST</span><span class="zo"> HILLMAN</span><span class="nans"> BOOST</span></p>
+        <div class="topright">
+          <div class="meter" id="meter">
+            <i></i><i></i><i></i><i></i><i></i>
+          </div>
+          <p class="now" id="clock">--:--</p>
+        </div>
+      </div>
+
+      <div class="stage" id="stage">
+        <canvas id="canvas"></canvas>
+        <p class="stage-hint" id="stageHint" data-i18n="play_hint">Oynat'a basarak canlÄ± sesi baÅŸlat</p>
+      </div>
+
+      <div class="track">
+        <div class="track-info">
+          <h2 id="trackTitle"></h2>
+          <p id="trackSub"></p>
+        </div>
+        <!-- Mode Toggle (Dark/Light Switch) - moved here next to track title -->
+        <button class="modeToggle" id="modeToggle" aria-label="Tema modu">
+          <span class="modeSwitch"><span class="thumb" id="modeThumb"></span></span>
+        </button>
+      </div>
+
+      <div class="transport">
+        <button class="playbtn" id="playBtn" aria-label="Oynat">
+          <span class="ripple" id="ripple"></span>
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+        <div class="sliders">
+          <div class="slider-row">
+            <label for="boost" data-i18n="boost">YÃ¼kseltme</label>
+            <input type="range" id="boost" min="0" max="100" value="65">
+            <span class="val" id="boostVal">65</span>
+          </div>
+          <div class="slider-row">
+            <label for="sens" data-i18n="sensitivity">Hassasiyet</label>
+            <input type="range" id="sens" min="0" max="100" value="45">
+            <span class="val" id="sensVal">45</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="themes" id="themes">
+        <button class="chip active" data-theme="mehtap"><span class="dot" style="background:#f2b155;color:#f2b155"></span><span data-i18n-theme="mehtap">Mehtap</span></button>
+        <button class="chip" data-theme="sumi"><span class="dot" style="background:#c1442c;color:#c1442c"></span><span data-i18n-theme="sumi">Sumi-e</span></button>
+        <button class="chip" data-theme="aurora"><span class="dot" style="background:#4fd8b0;color:#4fd8b0"></span><span data-i18n-theme="aurora">Kutup ÅafaÄŸÄ±</span></button>
+        <button class="chip" data-theme="nova"><span class="dot" style="background:#ff3d7a;color:#ff3d7a"></span><span data-i18n-theme="nova">Nova</span></button>
+        <button class="chip" data-theme="mycel"><span class="dot" style="background:#6dffb0;color:#6dffb0"></span><span data-i18n-theme="mycel">Miselyum</span></button>
+        <button class="chip" data-theme="reef"><span class="dot" style="background:#12e0bd;color:#12e0bd"></span><span data-i18n-theme="reef">Derin IÅŸÄ±ltÄ±</span></button>
+        <button class="chip" data-theme="monsoon"><span class="dot" style="background:#9cc2ff;color:#9cc2ff"></span><span data-i18n-theme="monsoon">Muson</span></button>
+        <button class="chip" data-theme="murekkep"><span class="dot" style="background:#c9a227;color:#c9a227"></span><span data-i18n-theme="murekkep">MÃ¼rekkep</span></button>
+        <button class="chip" data-theme="col"><span class="dot" style="background:#ffb454;color:#ffb454"></span><span data-i18n-theme="col">Ã‡Ã¶l</span></button>
+        <button class="chip" data-theme="divit"><span class="dot" style="background:#c9a35c;color:#c9a35c"></span><span data-i18n-theme="divit">Divit</span></button>
+      </div>
+
+      <div class="navbar">
+        <button class="navitem active" onclick="try { if(typeof AndroidBridge !== 'undefined') { AndroidBridge.navigateToHome(); } else { console.log('AndroidBridge not found'); } } catch(e) { console.error('Nav error:', e); }">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 11l8-7 8 7v9a1 1 0 01-1 1h-4v-6H9v6H5a1 1 0 01-1-1z"/></svg>
+          <span class="navlabel" data-i18n="nav_home">Ana Sayfa</span>
+        </button>
+        <button class="navitem" onclick="try { if(typeof AndroidBridge !== 'undefined') { AndroidBridge.navigateToSettings(); } else { console.log('AndroidBridge not found'); } } catch(e) { console.error('Nav error:', e); }">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 00.34 1.87l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.7 1.7 0 00-1.87-.34 1.7 1.7 0 00-1 1.55V21a2 2 0 11-4 0v-.09a1.7 1.7 0 00-1-1.55 1.7 1.7 0 00-1.87.34l-.06.06a2 2 0 11-2.83-2.83l.06-.06a1.7 1.7 0 00.34-1.87 1.7 1.7 0 00-1.55-1H3a2 2 0 110-4h.09a1.7 1.7 0 001.55-1 1.7 1.7 0 00-.34-1.87l-.06-.06a2 2 0 112.83-2.83l.06.06a1.7 1.7 0 001.87.34H9a1.7 1.7 0 001-1.55V3a2 2 0 114 0v.09a1.7 1.7 0 001 1.55 1.7 1.7 0 001.87-.34l.06-.06a2 2 0 112.83 2.83l-.06.06a1.7 1.7 0 00-.34 1.87V9a1.7 1.7 0 001.55 1H21a2 2 0 110 4h-.09a1.7 1.7 0 00-1.55 1z"/></svg>
+          <span class="navlabel" data-i18n="nav_settings">Ayarlar</span>
+        </button>
+        <button class="navitem" onclick="try { if(typeof AndroidBridge !== 'undefined') { AndroidBridge.navigateToEqualizer(); } else { console.log('AndroidBridge not found'); } } catch(e) { console.error('Nav error:', e); }">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 14h4v7H3zM10 6h4v15h-4zM17 11h4v10h-4z"/></svg>
+          <span class="navlabel" data-i18n="nav_equalizer">Ekolayzer</span>
+        </button>
+        <button class="navitem" onclick="try { if(typeof AndroidBridge !== 'undefined') { AndroidBridge.navigateToLanguage(); } else { console.log('AndroidBridge not found'); } } catch(e) { console.error('Nav error:', e); }">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+          <span class="navlabel" data-i18n="nav_language">Dil</span>
+        </button>
+      </div>
+    </div>
+</div>
+
+
+<!-- ============================================ -->
+<!-- MODULAR ARCHITECTURE - 16 FOCUSED MODULES   -->
+<!-- ============================================ -->
+
+<!-- Phase 1: Internationalization -->
+<script>console.log('✅ Loading i18n.js...');</script>
+<script src="modules/i18n.js"></script>
+<script>console.log('✅ i18n.js loaded');</script>
+
+<!-- Phase 2: Core Utilities -->
+<script>console.log('✅ Loading core.js...');</script>
+<script src="modules/core.js"></script>
+<script>console.log('✅ core.js loaded, RENDERERS:', typeof RENDERERS);</script>
+
+<!-- Phase 3: Audio System -->
+<script>console.log('✅ Loading audio-engine.js...');</script>
+<script src="modules/audio-engine.js"></script>
+<script>console.log('✅ audio-engine.js loaded');</script>
+<script>console.log('✅ Loading audio-analysis.js...');</script>
+<script src="modules/audio-analysis.js"></script>
+<script>console.log('✅ audio-analysis.js loaded');</script>
+
+<!-- Phase 4: Visualizers (isolated & independent) -->
+<script>console.log('✅ Loading visualizers...');</script>
+<script src="modules/visualizers/sumi.js"></script>
+<script src="modules/visualizers/aurora.js"></script>
+<script src="modules/visualizers/nova.js"></script>
+<script src="modules/visualizers/mycel.js"></script>
+<script src="modules/visualizers/reef.js"></script>
+<script src="modules/visualizers/monsoon.js"></script>
+<script src="modules/visualizers/murekkep.js"></script>
+<script src="modules/visualizers/col.js"></script>
+<script src="modules/visualizers/divit.js"></script>
+<script src="modules/visualizers/mehtap.js"></script>
+<script>console.log('✅ All visualizers loaded, RENDERERS:', RENDERERS);</script>
+
+<!-- Phase 5: Application Loop -->
+<script>console.log('✅ Loading render-loop.js...');</script>
+<script src="modules/render-loop.js"></script>
+<script>console.log('✅ render-loop.js loaded, starting app...');</script>
+
+</body>
+</html>

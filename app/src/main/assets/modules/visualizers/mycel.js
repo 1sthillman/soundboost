@@ -88,3 +88,6 @@ function drawMycel(bars, wave, e){
 /* ---------- DERİN IŞILTI (Reef) — bioluminescent deep-sea jellyfish ---------- */
 let reefParticles = null;
 let reefTentaclePhase = 0;
+
+// Register visualizer
+RENDERERS['mycel'] = drawMycel;

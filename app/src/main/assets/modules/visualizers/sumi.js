@@ -111,3 +111,6 @@ function resetSumiState() {
   inkSplats = [];
   sumiDust = null;
 }
+
+// Register visualizer
+RENDERERS['sumi'] = drawSumi;

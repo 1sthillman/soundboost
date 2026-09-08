@@ -57,3 +57,6 @@ function drawCol(bars, wave, e){
 /* ---------- DİVİT — inkwell drop blooming in water with golden capillaries ---------- */
 let inkVeins = [];
 let inkRipples = [];
+
+// Register visualizer
+RENDERERS['col'] = drawCol;

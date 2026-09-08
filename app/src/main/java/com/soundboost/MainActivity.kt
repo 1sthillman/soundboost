@@ -167,14 +167,7 @@ fun MainScreen(viewModel: MainViewModel) {
         }
     }
     
-    // CRITICAL FIX: Cache WebView instance at MainScreen level to survive navigation
-    // This prevents WebView disposal when navigating away from home screen
-    val cachedWebView = remember { mutableStateOf<android.webkit.WebView?>(null) }
-    
-    // CRITICAL: Track if we're on home screen to preserve state
-    val isOnHomeScreen = remember { mutableStateOf(true) }
-    
-    android.util.Log.d("MainActivity", "🔵 MainScreen recomposed, cachedWebView: ${cachedWebView.value != null}")
+    android.util.Log.d("MainActivity", "🔵 MainScreen recomposed")
     
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -184,10 +177,8 @@ fun MainScreen(viewModel: MainViewModel) {
             composable(
                 route = "volume",
                 content = {
-                    isOnHomeScreen.value = true
-                    // Use WebView-based home screen with awwardstheme.html
-                    // Pass cached WebView to survive navigation
-                    com.soundboost.ui.components.WebViewHomeScreen(
+                    // PROFESSIONAL SOLUTION: Use persistent WebView that never gets paused
+                    com.soundboost.ui.components.WebViewHomeScreenPersistent(
                         state = uiState,
                         audioLevels = audioLevels,
                         audioAnalysis = viewModel.audioAnalysis,
@@ -195,27 +186,22 @@ fun MainScreen(viewModel: MainViewModel) {
                         onSensitivityChange = viewModel::onSensitivityChanged,
                         onToggleBoost = viewModel::toggleBoost,
                         onThemeChanged = viewModel::onThemeChanged,
-                        onModeChanged = viewModel::onDarkModeChanged,  // CRITICAL: Dark/Light mode from HTML toggle
+                        onModeChanged = viewModel::onDarkModeChanged,
                         onNavigateToSettings = { 
-                            isOnHomeScreen.value = false
                             navController.navigate("settings")
                         },
                         onNavigateToEqualizer = { 
-                            isOnHomeScreen.value = false
                             navController.navigate("equalizer")
                         },
                         onNavigateToLanguage = { 
-                            isOnHomeScreen.value = false
                             navController.navigate("language")
                         },
-                        cachedWebView = cachedWebView,
-                        currentLanguage = currentLanguage  // CRITICAL: Pass current language for immediate sync
+                        currentLanguage = currentLanguage
                     )
                 }
             )
             
             composable("equalizer") {
-                isOnHomeScreen.value = false
                 EqualizerScreen(
                     state = uiState,
                     onBassBoostChanged = viewModel::onBassBoostChanged,
@@ -223,13 +209,11 @@ fun MainScreen(viewModel: MainViewModel) {
                     onEqChanged = viewModel::onEqChanged,
                     onBack = { 
                         navController.popBackStack()
-                        // State will sync automatically via DisposableEffect in WebViewHomeScreen
                     }
                 )
             }
             
             composable("settings") {
-                isOnHomeScreen.value = false
                 SettingsScreen(
                     state = uiState,
                     onAutoStartToggled = viewModel::onAutoStartToggled,
@@ -241,49 +225,41 @@ fun MainScreen(viewModel: MainViewModel) {
                     onDarkModeChanged = viewModel::onDarkModeChanged,
                     onBack = { 
                         navController.popBackStack()
-                        // State will sync automatically via DisposableEffect in WebViewHomeScreen
                     }
                 )
             }
             
             composable("themes") {
-                isOnHomeScreen.value = false
                 ThemeScreen(
                     state = uiState,
                     onThemeChanged = viewModel::onThemeChanged,
                     onColorAccentChanged = viewModel::onColorAccentChanged,
                     onBack = { 
                         navController.popBackStack()
-                        // State will sync automatically via DisposableEffect in WebViewHomeScreen
                     }
                 )
             }
             
             composable("language") {
-                isOnHomeScreen.value = false
                 LanguageScreen(
                     state = uiState,
                     currentLanguage = currentLanguage,
                     onLanguageSelected = { language ->
                         android.util.Log.d("MainActivity", "🌐 Language selected: ${language.code}")
-                        currentLanguage = language  // CRITICAL: Update state immediately
+                        currentLanguage = language
                         viewModel.onLanguageChanged(language, context)
-                        // Language will sync to WebView via LaunchedEffect(currentLanguage)
                     },
                     onBack = { 
                         navController.popBackStack()
-                        // State will sync automatically via DisposableEffect in WebViewHomeScreen
                     }
                 )
             }
             
             composable("help") {
-                isOnHomeScreen.value = false
                 HelpScreen(
                     state = uiState,
                     onBack = { 
                         navController.popBackStack()
-                        // State will sync automatically via DisposableEffect in WebViewHomeScreen
                     }
                 )
             }

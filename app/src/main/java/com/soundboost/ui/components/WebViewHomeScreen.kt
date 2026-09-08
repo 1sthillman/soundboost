@@ -38,9 +38,11 @@ fun WebViewHomeScreen(
     val context = androidx.compose.ui.platform.LocalContext.current
     val systemInDarkTheme = androidx.compose.foundation.isSystemInDarkTheme()
     val effectiveDarkMode = state.isDarkMode ?: systemInDarkTheme
+    val coroutineScope = androidx.compose.runtime.rememberCoroutineScope()  // NEW: For force restore
     
     var isWebViewReady by remember { mutableStateOf(false) }
     var lastThemeFromKotlin by remember { mutableStateOf<com.soundboost.ui.theme.AppTheme?>(null) }
+    var hasInitializedWebView by remember { mutableStateOf(false) }  // NEW: Track if WebView was initialized
     
     // CRITICAL: Sync language IMMEDIATELY when it changes (no waiting for navigation!)
     // This handles both: 1) returning from language screen, 2) activity recreation after language change
@@ -68,11 +70,11 @@ fun WebViewHomeScreen(
         android.util.Log.d("WebViewHomeScreen", "🌐 IMMEDIATE Language sync! Code: $langCode from ${currentLanguage.code}")
         cachedWebView.value?.evaluateJavascript(
             """
-            if(window.setLanguage) { 
+            if(typeof window.setLanguage === 'function') { 
                 console.log('📢 INSTANT language change: $langCode'); 
                 window.setLanguage('$langCode'); 
             } else {
-                console.error('❌ setLanguage function not found in window');
+                console.error('❌ window.setLanguage function not found');
             }
             """.trimIndent(),
             null
@@ -83,99 +85,218 @@ fun WebViewHomeScreen(
     DisposableEffect(Unit) {
         android.util.Log.d("WebViewHomeScreen", "💚 WebViewHomeScreen entered composition")
         
-        // CRITICAL: Sync ALL state when returning from navigation
-        // WebView DOM is still alive, we just need to update from Kotlin state
-        if (isWebViewReady && cachedWebView.value != null) {
-            android.util.Log.d("WebViewHomeScreen", "🔄 Returning from navigation - FULL STATE SYNC")
-            
-            // Give WebView a moment to be ready (it may have been paused)
-            cachedWebView.value?.post {
-                // 1. Force sync boost state (CRITICAL for play button)
-                android.util.Log.d("WebViewHomeScreen", "Syncing boost state: ${state.isBoostEnabled}")
-                cachedWebView.value?.evaluateJavascript(
-                    """
-                    if(typeof updatePlayButtonState === 'function') {
-                        console.log('🎵 Force sync play button: ${state.isBoostEnabled}');
-                        updatePlayButtonState(${state.isBoostEnabled});
-                    }
-                    """.trimIndent(),
-                    null
-                )
-                
-                // 2. Force sync dark/light mode
-                val mode = if (effectiveDarkMode) "dark" else "light"
-                android.util.Log.d("WebViewHomeScreen", "Syncing mode: $mode")
-                cachedWebView.value?.evaluateJavascript(
-                    "if(window.setModeFromAndroid) { console.log('🌓 Force sync mode: $mode'); window.setModeFromAndroid('$mode'); }",
-                    null
-                )
-                
-                // 3. Force sync language
-                val langCode = when (currentLanguage.code) {
-                    "tr" -> "tr"
-                    "en" -> "en"
-                    "de" -> "de"
-                    "fr" -> "fr"
-                    "es" -> "es"
-                    "ru" -> "ru"
-                    "ar" -> "ar"
-                    "ja" -> "ja"
-                    "zh" -> "zh"
-                    "ko" -> "ko"
-                    "system" -> com.soundboost.data.LanguageManager.getSystemLanguage(context)
-                    else -> "en"
-                }
-                android.util.Log.d("WebViewHomeScreen", "Syncing language: $langCode")
-                cachedWebView.value?.evaluateJavascript(
-                    "if(window.setLanguage) { console.log('🌐 Force sync language: $langCode'); window.setLanguage('$langCode'); }",
-                    null
-                )
-                
-                // 4. Force sync volume
-                android.util.Log.d("WebViewHomeScreen", "Syncing volume: ${state.masterGainPercent}")
-                cachedWebView.value?.evaluateJavascript(
-                    "if(window.setVolumeFromKotlin) { window.setVolumeFromKotlin(${state.masterGainPercent}); }",
-                    null
-                )
-                
-                // 5. Force sync sensitivity
-                android.util.Log.d("WebViewHomeScreen", "Syncing sensitivity: ${state.sensitivity}")
-                cachedWebView.value?.evaluateJavascript(
-                    "if(document.getElementById('sens')) { document.getElementById('sens').value = ${state.sensitivity}; document.getElementById('sensVal').textContent = ${state.sensitivity}; }",
-                    null
-                )
-                
-                // 6. Force sync theme
-                val themeName = when (state.theme) {
-                    com.soundboost.ui.theme.AppTheme.MEHTAP -> "mehtap"
-                    com.soundboost.ui.theme.AppTheme.SUMI -> "sumi"
-                    com.soundboost.ui.theme.AppTheme.AURORA -> "aurora"
-                    com.soundboost.ui.theme.AppTheme.NOVA -> "nova"
-                    com.soundboost.ui.theme.AppTheme.MYCEL -> "mycel"
-                    com.soundboost.ui.theme.AppTheme.REEF -> "reef"
-                    com.soundboost.ui.theme.AppTheme.MONSOON -> "monsoon"
-                    com.soundboost.ui.theme.AppTheme.MUREKKEP -> "murekkep"
-                    com.soundboost.ui.theme.AppTheme.COL -> "col"
-                    com.soundboost.ui.theme.AppTheme.DIVIT -> "divit"
-                }
-                android.util.Log.d("WebViewHomeScreen", "Syncing theme: $themeName")
-                cachedWebView.value?.evaluateJavascript(
-                    "if(window.setThemeFromAndroid) { console.log('🎨 Force sync theme: $themeName'); window.setThemeFromAndroid('$themeName'); }",
-                    null
-                )
-                
-                // 7. Force layout recalculation
-                cachedWebView.value?.requestLayout()
-                cachedWebView.value?.invalidate()
-                
-                android.util.Log.d("WebViewHomeScreen", "✅ Full state sync complete!")
-            }
-        }
-        
         onDispose {
             // CRITICAL: Don't call onPause() - keep WebView active
             android.util.Log.d("WebViewHomeScreen", "⚠️ WebViewHomeScreen leaving composition - keeping WebView active")
         }
+    }
+    
+    // CRITICAL: When returning to this screen, immediately restore state if WebView exists
+    LaunchedEffect(Unit) {
+        if (cachedWebView.value != null && isWebViewReady && hasInitializedWebView) {
+            android.util.Log.d("WebViewHomeScreen", "🔄 Returned to screen - restoring state immediately")
+            
+            // Force immediate state sync
+            kotlinx.coroutines.delay(100) // Small delay for WebView to be ready
+            
+            val langCode = when (currentLanguage.code) {
+                "tr" -> "tr"
+                "en" -> "en"
+                "de" -> "de"
+                "fr" -> "fr"
+                "es" -> "es"
+                "ru" -> "ru"
+                "ar" -> "ar"
+                "ja" -> "ja"
+                "zh" -> "zh"
+                "ko" -> "ko"
+                "system" -> com.soundboost.data.LanguageManager.getSystemLanguage(context)
+                else -> "en"
+            }
+            
+            val mode = if (effectiveDarkMode) "dark" else "light"
+            
+            val themeName = when (state.theme) {
+                com.soundboost.ui.theme.AppTheme.MEHTAP -> "mehtap"
+                com.soundboost.ui.theme.AppTheme.SUMI -> "sumi"
+                com.soundboost.ui.theme.AppTheme.AURORA -> "aurora"
+                com.soundboost.ui.theme.AppTheme.NOVA -> "nova"
+                com.soundboost.ui.theme.AppTheme.MYCEL -> "mycel"
+                com.soundboost.ui.theme.AppTheme.REEF -> "reef"
+                com.soundboost.ui.theme.AppTheme.MONSOON -> "monsoon"
+                com.soundboost.ui.theme.AppTheme.MUREKKEP -> "murekkep"
+                com.soundboost.ui.theme.AppTheme.COL -> "col"
+                com.soundboost.ui.theme.AppTheme.DIVIT -> "divit"
+            }
+            
+            android.util.Log.d("WebViewHomeScreen", "🔥 FORCE SYNC on return:")
+            android.util.Log.d("WebViewHomeScreen", "   Language: $langCode")
+            android.util.Log.d("WebViewHomeScreen", "   Boost: ${state.isBoostEnabled}")
+            android.util.Log.d("WebViewHomeScreen", "   Mode: $mode")
+            android.util.Log.d("WebViewHomeScreen", "   Theme: $themeName")
+            
+            cachedWebView.value?.evaluateJavascript(
+                """
+                (function() {
+                    console.log('🔥 FORCE RESTORE STATE ON RETURN');
+                    
+                    if(typeof window.updatePlayButtonState === 'function') {
+                        console.log('🎵 Force restore play: ${state.isBoostEnabled}');
+                        window.updatePlayButtonState(${state.isBoostEnabled});
+                    }
+                    
+                    if(typeof window.setModeFromAndroid === 'function') {
+                        console.log('🌓 Force restore mode: $mode');
+                        window.setModeFromAndroid('$mode');
+                    }
+                    
+                    if(typeof window.setLanguage === 'function') {
+                        console.log('🌐 Force restore language: $langCode');
+                        window.setLanguage('$langCode');
+                    }
+                    
+                    if(typeof window.setVolumeFromKotlin === 'function') {
+                        window.setVolumeFromKotlin(${state.masterGainPercent});
+                    }
+                    
+                    if(document.getElementById('sens')) {
+                        document.getElementById('sens').value = ${state.sensitivity};
+                        if(document.getElementById('sensVal')) {
+                            document.getElementById('sensVal').textContent = ${state.sensitivity};
+                        }
+                    }
+                    
+                    if(typeof window.setThemeFromAndroid === 'function') {
+                        window.setThemeFromAndroid('$themeName');
+                    }
+                    
+                    console.log('✅ Force restore complete!');
+                })();
+                """.trimIndent(),
+                null
+            )
+        }
+    }
+    
+    // CRITICAL FIX: REAL-TIME bidirectional sync - monitors ALL state changes
+    // This runs EVERY TIME any state value changes (boost, volume, sensitivity, theme, mode, language)
+    LaunchedEffect(
+        isWebViewReady,
+        state.isBoostEnabled,
+        state.masterGainPercent,
+        state.sensitivity,
+        state.theme,
+        effectiveDarkMode,
+        currentLanguage.code
+    ) {
+        if (!isWebViewReady || cachedWebView.value == null) {
+            android.util.Log.d("WebViewHomeScreen", "⏳ WebView not ready, skipping sync")
+            return@LaunchedEffect
+        }
+        
+        android.util.Log.d("WebViewHomeScreen", "🔄 STATE CHANGED - REAL-TIME SYNC")
+        android.util.Log.d("WebViewHomeScreen", "   Boost: ${state.isBoostEnabled}")
+        android.util.Log.d("WebViewHomeScreen", "   Volume: ${state.masterGainPercent}")
+        android.util.Log.d("WebViewHomeScreen", "   Sensitivity: ${state.sensitivity}")
+        android.util.Log.d("WebViewHomeScreen", "   Theme: ${state.theme}")
+        android.util.Log.d("WebViewHomeScreen", "   Mode: ${if (effectiveDarkMode) "dark" else "light"}")
+        android.util.Log.d("WebViewHomeScreen", "   Language: ${currentLanguage.code}")
+        
+        // Small delay to ensure WebView rendering is complete
+        kotlinx.coroutines.delay(50)
+        
+        val themeName = when (state.theme) {
+            com.soundboost.ui.theme.AppTheme.MEHTAP -> "mehtap"
+            com.soundboost.ui.theme.AppTheme.SUMI -> "sumi"
+            com.soundboost.ui.theme.AppTheme.AURORA -> "aurora"
+            com.soundboost.ui.theme.AppTheme.NOVA -> "nova"
+            com.soundboost.ui.theme.AppTheme.MYCEL -> "mycel"
+            com.soundboost.ui.theme.AppTheme.REEF -> "reef"
+            com.soundboost.ui.theme.AppTheme.MONSOON -> "monsoon"
+            com.soundboost.ui.theme.AppTheme.MUREKKEP -> "murekkep"
+            com.soundboost.ui.theme.AppTheme.COL -> "col"
+            com.soundboost.ui.theme.AppTheme.DIVIT -> "divit"
+        }
+        
+        val langCode = when (currentLanguage.code) {
+            "tr" -> "tr"
+            "en" -> "en"
+            "de" -> "de"
+            "fr" -> "fr"
+            "es" -> "es"
+            "ru" -> "ru"
+            "ar" -> "ar"
+            "ja" -> "ja"
+            "zh" -> "zh"
+            "ko" -> "ko"
+            "system" -> com.soundboost.data.LanguageManager.getSystemLanguage(context)
+            else -> "en"
+        }
+        
+        val mode = if (effectiveDarkMode) "dark" else "light"
+        
+        // Single JavaScript call with ALL state updates
+        cachedWebView.value?.evaluateJavascript(
+            """
+            (function() {
+                console.log('🔥 REAL-TIME STATE SYNC');
+                
+                // 1. Sync play button (MOST CRITICAL)
+                if(typeof window.updatePlayButtonState === 'function') {
+                    console.log('🎵 Sync play: ${state.isBoostEnabled}');
+                    window.updatePlayButtonState(${state.isBoostEnabled});
+                } else {
+                    console.error('❌ window.updatePlayButtonState not found!');
+                }
+                
+                // 2. Sync dark/light mode
+                if(typeof window.setModeFromAndroid === 'function') {
+                    console.log('🌓 Sync mode: $mode');
+                    window.setModeFromAndroid('$mode');
+                } else {
+                    console.error('❌ window.setModeFromAndroid not found!');
+                }
+                
+                // 3. Sync language (INSTANT)
+                if(typeof window.setLanguage === 'function') {
+                    console.log('🌐 Sync language: $langCode');
+                    window.setLanguage('$langCode');
+                } else {
+                    console.error('❌ window.setLanguage not found!');
+                }
+                
+                // 4. Sync volume
+                if(typeof window.setVolumeFromKotlin === 'function') {
+                    console.log('🔊 Sync volume: ${state.masterGainPercent}');
+                    window.setVolumeFromKotlin(${state.masterGainPercent});
+                } else {
+                    console.error('❌ window.setVolumeFromKotlin not found!');
+                }
+                
+                // 5. Sync sensitivity
+                if(document.getElementById('sens')) {
+                    document.getElementById('sens').value = ${state.sensitivity};
+                    if(document.getElementById('sensVal')) {
+                        document.getElementById('sensVal').textContent = ${state.sensitivity};
+                    }
+                    console.log('🎚️ Sync sensitivity: ${state.sensitivity}');
+                } else {
+                    console.error('❌ sens element not found!');
+                }
+                
+                // 6. Sync theme
+                if(typeof window.setThemeFromAndroid === 'function') {
+                    console.log('🎨 Sync theme: $themeName');
+                    window.setThemeFromAndroid('$themeName');
+                } else {
+                    console.error('❌ window.setThemeFromAndroid not found!');
+                }
+                
+                console.log('✅ Real-time sync complete!');
+            })();
+            """.trimIndent(),
+            null
+        )
     }
     
     // Update audio levels in WebView with REAL AUDIO DATA
@@ -185,7 +306,7 @@ fun WebViewHomeScreen(
             // Send minimal bar data for legacy support
             val barsJson = levels.joinToString(",")
             cachedWebView.value?.evaluateJavascript(
-                "if(window.updateAudioLevels) { window.updateAudioLevels([$barsJson]); }",
+                "if(typeof window.updateAudioLevels === 'function') { window.updateAudioLevels([$barsJson]); }",
                 null
             )
         }
@@ -204,7 +325,7 @@ fun WebViewHomeScreen(
                 """.trimIndent().replace("\n", "")
                 
                 cachedWebView.value?.evaluateJavascript(
-                    "if(window.updateRealAudioData) { window.updateRealAudioData('$audioDataJson'); }",
+                    "if(typeof window.updateRealAudioData === 'function') { window.updateRealAudioData('$audioDataJson'); }",
                     null
                 )
             }
@@ -216,7 +337,7 @@ fun WebViewHomeScreen(
         if (!isWebViewReady) return@LaunchedEffect
         android.util.Log.d("WebViewHomeScreen", "Updating boost state: ${state.isBoostEnabled}")
         cachedWebView.value?.evaluateJavascript(
-            "if(window.setBoostState) { window.setBoostState(${state.isBoostEnabled}); }",
+            "if(typeof window.setBoostState === 'function') { window.setBoostState(${state.isBoostEnabled}); }",
             null
         )
     }
@@ -225,7 +346,7 @@ fun WebViewHomeScreen(
     LaunchedEffect(state.masterGainPercent) {
         if (!isWebViewReady) return@LaunchedEffect
         cachedWebView.value?.evaluateJavascript(
-            "if(window.setVolumeFromKotlin) { window.setVolumeFromKotlin(${state.masterGainPercent}); }",
+            "if(typeof window.setVolumeFromKotlin === 'function') { window.setVolumeFromKotlin(${state.masterGainPercent}); }",
             null
         )
     }
@@ -257,7 +378,7 @@ fun WebViewHomeScreen(
                 com.soundboost.ui.theme.AppTheme.DIVIT -> "divit"
             }
             cachedWebView.value?.evaluateJavascript(
-                "if(window.setThemeFromAndroid) { window.setThemeFromAndroid('$themeName'); }",
+                "if(typeof window.setThemeFromAndroid === 'function') { window.setThemeFromAndroid('$themeName'); }",
                 null
             )
         }
@@ -269,7 +390,7 @@ fun WebViewHomeScreen(
         val mode = if (effectiveDarkMode) "dark" else "light"
         android.util.Log.d("WebViewHomeScreen", "Syncing mode to WebView: $mode")
         cachedWebView.value?.evaluateJavascript(
-            "if(window.setModeFromAndroid) { window.setModeFromAndroid('$mode'); }",
+            "if(typeof window.setModeFromAndroid === 'function') { window.setModeFromAndroid('$mode'); }",
             null
         )
     }
@@ -286,10 +407,18 @@ fun WebViewHomeScreen(
                 webViewClient = object : WebViewClient() {
                     override fun onPageFinished(view: WebView?, url: String?) {
                         super.onPageFinished(view, url)
+                        
+                        // CRITICAL: Only restore state on FIRST load, not on every page finish
+                        if (hasInitializedWebView) {
+                            android.util.Log.d("WebViewHomeScreen", "📱 Page finished but already initialized - skipping")
+                            return
+                        }
+                        
                         // WebView ready, initialize with current state
                         isWebViewReady = true
+                        hasInitializedWebView = true
                         
-                        android.util.Log.d("WebViewHomeScreen", "📱 Page loaded, restoring state...")
+                        android.util.Log.d("WebViewHomeScreen", "📱 FIRST PAGE LOAD - Initializing state...")
                         
                         // Restore all state from Kotlin
                         // 1. Set language
@@ -308,18 +437,18 @@ fun WebViewHomeScreen(
                             "system" -> com.soundboost.data.LanguageManager.getSystemLanguage(ctx)
                             else -> "en"
                         }
-                        evaluateJavascript("if(window.setLanguage) { window.setLanguage('$langCode'); }", null)
+                        evaluateJavascript("if(typeof window.setLanguage === 'function') { window.setLanguage('$langCode'); }", null)
                         
-                        // 2. Restore boost state
+                        // 2. Restore boost state (CRITICAL: Use window.updatePlayButtonState)
                         evaluateJavascript(
-                            "if(window.setBoostState) { window.setBoostState(${state.isBoostEnabled}); }",
+                            "if(typeof window.updatePlayButtonState === 'function') { window.updatePlayButtonState(${state.isBoostEnabled}); }",
                             null
                         )
                         android.util.Log.d("WebViewHomeScreen", "✅ Restored boost state: ${state.isBoostEnabled}")
                         
                         // 3. Restore volume slider
                         evaluateJavascript(
-                            "if(window.setVolumeFromKotlin) { window.setVolumeFromKotlin(${state.masterGainPercent}); }",
+                            "if(typeof window.setVolumeFromKotlin === 'function') { window.setVolumeFromKotlin(${state.masterGainPercent}); }",
                             null
                         )
                         android.util.Log.d("WebViewHomeScreen", "✅ Restored volume: ${state.masterGainPercent}")
@@ -344,7 +473,7 @@ fun WebViewHomeScreen(
                             com.soundboost.ui.theme.AppTheme.DIVIT -> "divit"
                         }
                         evaluateJavascript(
-                            "if(window.setThemeFromAndroid) { window.setThemeFromAndroid('$themeName'); }",
+                            "if(typeof window.setThemeFromAndroid === 'function') { window.setThemeFromAndroid('$themeName'); }",
                             null
                         )
                         android.util.Log.d("WebViewHomeScreen", "✅ Restored theme: $themeName")
@@ -352,7 +481,7 @@ fun WebViewHomeScreen(
                         // 6. CRITICAL: Restore dark/light mode
                         val mode = if (effectiveDarkMode) "dark" else "light"
                         evaluateJavascript(
-                            "if(window.setModeFromAndroid) { window.setModeFromAndroid('$mode'); }",
+                            "if(typeof window.setModeFromAndroid === 'function') { window.setModeFromAndroid('$mode'); }",
                             null
                         )
                         android.util.Log.d("WebViewHomeScreen", "✅ Restored mode: $mode")

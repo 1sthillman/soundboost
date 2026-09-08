@@ -141,3 +141,6 @@ function genMycelBranches(){
     mycelBranches.push({pts, bin:Math.floor((i/rootCount)*BINS), child:false});
   }
   mycelGrowStart = t;
+
+// Register visualizer
+RENDERERS['nova'] = drawNova;

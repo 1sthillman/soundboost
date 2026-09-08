@@ -118,3 +118,6 @@ if(!window.mehtapState) {
 }
 const CATCH_PHASES = [{name:'bite',dur:0.5},{name:'pull',dur:0.7},{name:'leap',dur:0.55},{name:'reel',dur:0.9},{name:'release',dur:0.8}];
 const WAVE_LAYERS = [{ampScale:0.34,freq:10,speed:0.55,key:'waterBottom',baseFactor:0.05},{ampScale:0.20,freq:16,speed:0.8,key:'waterTop',baseFactor:0.02}];
+
+// Register visualizer
+RENDERERS['divit'] = drawDivit;

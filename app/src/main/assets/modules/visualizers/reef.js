@@ -95,3 +95,6 @@ let stormBolts = [];
 let rainDrops = null;
 let cloudSeed = null;
 let fogSeed = null;
+
+// Register visualizer
+RENDERERS['reef'] = drawReef;

@@ -93,3 +93,6 @@ function drawAurora(bars, wave, e){
 /* ---------- NOVA — a stellar core waking with every bass hit ---------- */
 let novaStars = null;
 let novaParticles = null;
+
+// Register visualizer
+RENDERERS['aurora'] = drawAurora;

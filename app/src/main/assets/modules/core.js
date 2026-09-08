@@ -104,18 +104,33 @@ function setTheme(name){
   
   // Don't call Android bridge - let Android control themes
   
-  // reset every theme's persistent particle/state buffers
-  sparks = []; inkSplats = []; sumiDust = null;
-  auroraStars = null; auroraOrbPulse = 0;
-  novaStars = null; novaParticles = null; novaShock = [];
-  mycelBranches = null; mycelPulses = []; mycelSpores = []; mycelGrowStart = 0;
-  glassBlobs = null; glassSparkles = [];
-  reefParticles = null; reefTentaclePhase = 0; reefCompanionPhase = 1.7;
-  stormBolts = []; rainDrops = null; cloudSeed = null; fogSeed = null;
-  // New themes
-  murekkepBlob = null; murekkepDrops = [];
-  colDuneSeed = null; colParticles = []; colSunPulse = 0;
-  inkVeins = []; inkRipples = []; inkBlobT = 0;
+  // Reset theme-specific state variables (these are defined in visualizer modules)
+  if(typeof inkSplats !== 'undefined') inkSplats = [];
+  if(typeof sumiDust !== 'undefined') sumiDust = null;
+  if(typeof auroraStars !== 'undefined') auroraStars = null;
+  if(typeof auroraOrbPulse !== 'undefined') auroraOrbPulse = 0;
+  if(typeof novaStars !== 'undefined') novaStars = null;
+  if(typeof novaParticles !== 'undefined') novaParticles = null;
+  if(typeof novaShock !== 'undefined') novaShock = [];
+  if(typeof mycelBranches !== 'undefined') mycelBranches = null;
+  if(typeof mycelPulses !== 'undefined') mycelPulses = [];
+  if(typeof mycelSpores !== 'undefined') mycelSpores = [];
+  if(typeof mycelGrowStart !== 'undefined') mycelGrowStart = 0;
+  if(typeof reefParticles !== 'undefined') reefParticles = null;
+  if(typeof reefTentaclePhase !== 'undefined') reefTentaclePhase = 0;
+  if(typeof reefCompanionPhase !== 'undefined') reefCompanionPhase = 1.7;
+  if(typeof stormBolts !== 'undefined') stormBolts = [];
+  if(typeof rainDrops !== 'undefined') rainDrops = null;
+  if(typeof cloudSeed !== 'undefined') cloudSeed = null;
+  if(typeof fogSeed !== 'undefined') fogSeed = null;
+  if(typeof murekkepBlob !== 'undefined') murekkepBlob = null;
+  if(typeof murekkepDrops !== 'undefined') murekkepDrops = [];
+  if(typeof colDuneSeed !== 'undefined') colDuneSeed = null;
+  if(typeof colParticles !== 'undefined') colParticles = [];
+  if(typeof colSunPulse !== 'undefined') colSunPulse = 0;
+  if(typeof inkVeins !== 'undefined') inkVeins = [];
+  if(typeof inkRipples !== 'undefined') inkRipples = [];
+  if(typeof inkBlobT !== 'undefined') inkBlobT = 0;
 }
 document.getElementById('themes').addEventListener('click', e=>{
   const btn = e.target.closest('.chip');
@@ -127,3 +142,8 @@ document.getElementById('themes').addEventListener('click', e=>{
     AndroidBridge.changeTheme(themeName);
   }
 });
+
+/* ============ RENDERERS MAP ============ */
+// This object will be populated by visualizer modules
+// Each visualizer registers itself here
+const RENDERERS = {};

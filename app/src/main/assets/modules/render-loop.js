@@ -1,3 +1,6 @@
+// ===== MAIN ANIMATION LOOP =====
+let lastResize = 0;
+
 function render(){
   // Only resize on actual window size changes (not every frame)
   const now = Date.now();
