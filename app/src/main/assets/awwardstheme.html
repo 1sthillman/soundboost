@@ -314,7 +314,17 @@
 </div>
 
 
-<!-- Load all visualizer modules first -->
+<!-- Load modules in correct order -->
+<!-- 1. Internationalization -->
+<script src="modules/i18n.js"></script>
+
+<!-- 2. Core utilities -->
+<script src="modules/core.js"></script>
+
+<!-- 3. Audio engine -->
+<script src="modules/audio-engine.js"></script>
+
+<!-- 4. All visualizers -->
 <script src="modules/visualizers/sumi.js"></script>
 <script src="modules/visualizers/aurora.js"></script>
 <script src="modules/visualizers/nova.js"></script>
@@ -326,7 +336,7 @@
 <script src="modules/visualizers/divit.js"></script>
 <script src="modules/visualizers/mehtap.js"></script>
 
-<!-- Load main app logic -->
-<script src="modules/app.js"></script>
+<!-- 5. Main application loop -->
+<script src="modules/main-loop.js"></script>
 </body>
 </html>
