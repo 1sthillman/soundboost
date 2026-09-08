@@ -67,9 +67,9 @@ class BoostPreferences(private val context: Context) {
                 AppTheme.MEHTAP
             },
             colorAccent = try {
-                ColorAccent.valueOf(prefs[Keys.COLOR_ACCENT] ?: ColorAccent.SUMI_RED.name)
+                ColorAccent.valueOf(prefs[Keys.COLOR_ACCENT] ?: ColorAccent.MEHTAP_GOLD.name)
             } catch (e: Exception) {
-                ColorAccent.SUMI_RED
+                ColorAccent.MEHTAP_GOLD
             },
             sensitivity = prefs[Keys.SENSITIVITY] ?: 45,
             isDarkMode = isDarkMode

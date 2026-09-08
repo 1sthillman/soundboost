@@ -253,7 +253,7 @@ private fun RezonansTrackInfo(theme: AppTheme, themeColors: com.soundboost.ui.th
         AppTheme.MYCEL -> "Yeraltı Fısıltısı" to "Kökler arasında yayılan ışık sinyali"
         AppTheme.REEF -> "Derin Işıltı" to "Karanlıkta parıldayan biyolüminesans"
         AppTheme.MONSOON -> "Fırtına Öncesi" to "Şimşek ve yağmurun ritmi"
-        else -> "Sound Boost" to "Volume enhancement"
+        else -> "Ay Balıkçısı" to "Durgun suda sabırla bekleyen bir sandalın hikâyesi"
     }
     
     Column(
@@ -386,6 +386,7 @@ private fun RezonansThemeChips(
     themeColors: com.soundboost.ui.theme.ThemeColors
 ) {
     val themes = listOf(
+        AppTheme.MEHTAP to "Mehtap" to Color(0xFFf2b155),
         AppTheme.SUMI to "Sumi-e" to Color(0xFFc1442c),
         AppTheme.AURORA to "Kutup Şafağı" to Color(0xFF4fd8b0),
         AppTheme.NOVA to "Nova" to Color(0xFFff3d7a),

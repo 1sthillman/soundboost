@@ -25,7 +25,7 @@ fun RezonansVisualizer(
     
     // Dispatch to the appropriate visualizer based on theme
     when (theme) {
-        AppTheme.MEHTAP -> ReefVisualizer(boostedLevels, isActive, accent1, accent2, backgroundColor, modifier)  // Water/moon theme
+        AppTheme.MEHTAP -> MehtapVisualizer(boostedLevels, isActive, true, accent1, accent2, backgroundColor, modifier)
         AppTheme.SUMI -> SumiVisualizer(boostedLevels, isActive, accent1, accent2, backgroundColor, modifier)
         AppTheme.AURORA -> AuroraVisualizer(boostedLevels, isActive, accent1, accent2, backgroundColor, modifier)
         AppTheme.NOVA -> NovaVisualizer(boostedLevels, isActive, accent1, accent2, backgroundColor, modifier)

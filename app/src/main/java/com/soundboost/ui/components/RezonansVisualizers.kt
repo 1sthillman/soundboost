@@ -1219,3 +1219,170 @@ fun MonsoonVisualizer(
 }
 
 data class CloudLayer(val y: Float, val amp: Float, val color: Color, val speed: Float)
+
+// ============ MEHTAP VISUALIZER ============
+// Simple moonlight/sunlight theme with calm water reflection - EXACT HTML drawMehtap
+
+@Composable
+fun MehtapVisualizer(
+    audioLevels: FloatArray?,
+    isActive: Boolean,
+    isDarkMode: Boolean = true,
+    accent1: Color,
+    accent2: Color,
+    backgroundColor: Color,
+    modifier: Modifier = Modifier
+) {
+    var time by remember { mutableStateOf(0f) }
+    
+    LaunchedEffect(Unit) {
+        while (true) {
+            withInfiniteAnimationFrameMillis {
+                time += 0.045f
+            }
+        }
+    }
+    
+    Canvas(modifier = modifier) {
+        val W = size.width
+        val H = size.height
+        val horizonY = H * 0.6f
+        
+        // Sky gradient - EXACT HTML
+        drawRect(
+            brush = Brush.verticalGradient(
+                colors = if (isDarkMode) {
+                    listOf(
+                        Color(0xFF03070d),
+                        Color(0xFF0a1b2c),
+                        Color(0xFF123049)
+                    )
+                } else {
+                    listOf(
+                        Color(0xFFbfe0e8),
+                        Color(0xFFeaf3ee),
+                        Color(0xFFfbe6c4)
+                    )
+                },
+                startY = 0f,
+                endY = horizonY
+            )
+        )
+        
+        // Stars (dark mode only) - EXACT HTML
+        if (isDarkMode) {
+            val starColor = Color(0xFFeaf1ff)
+            repeat(40) { i ->
+                val x = (i * 37.5f) % W
+                val y = (i * 19.3f) % horizonY
+                val size = 0.6f + (i % 3) * 0.3f
+                
+                drawCircle(
+                    color = starColor.copy(alpha = 0.6f),
+                    radius = size,
+                    center = Offset(x, y)
+                )
+            }
+        }
+        
+        // Moon/Sun with breathing effect
+        val bass = audioLevels?.take(7)?.average()?.toFloat() ?: 0f
+        val bodyX = W * 0.52f
+        val bodyY = horizonY * 0.26f
+        val bodyR = minOf(W, horizonY) * 0.12f + bass * 6f
+        
+        // Glow - EXACT HTML
+        drawCircle(
+            brush = Brush.radialGradient(
+                colors = if (isDarkMode) {
+                    listOf(
+                        Color(0xFFbfd4e6).copy(alpha = 0.5f),
+                        Color(0xFFbfd4e6).copy(alpha = 0.1f),
+                        Color.Transparent
+                    )
+                } else {
+                    listOf(
+                        Color(0xFFffdf9e).copy(alpha = 0.5f),
+                        Color(0xFFffdf9e).copy(alpha = 0.1f),
+                        Color.Transparent
+                    )
+                },
+                center = Offset(bodyX, bodyY),
+                radius = bodyR * 5f
+            ),
+            radius = bodyR * 5f,
+            center = Offset(bodyX, bodyY)
+        )
+        
+        // Moon/Sun body - EXACT HTML
+        drawCircle(
+            color = if (isDarkMode) Color(0xFFdfe8ee) else Color(0xFFfff2cf),
+            radius = bodyR,
+            center = Offset(bodyX, bodyY)
+        )
+        
+        // Water gradient - EXACT HTML
+        drawRect(
+            brush = Brush.verticalGradient(
+                colors = if (isDarkMode) {
+                    listOf(
+                        Color(0xFF0d2436),
+                        Color(0xFF030a12)
+                    )
+                } else {
+                    listOf(
+                        Color(0xFFbfe4df),
+                        Color(0xFF4c8a92)
+                    )
+                },
+                startY = horizonY,
+                endY = H
+            ),
+            topLeft = Offset(0f, horizonY),
+            size = androidx.compose.ui.geometry.Size(W, H - horizonY)
+        )
+        
+        // Golden reflection bands - EXACT HTML
+        val energy = audioLevels?.take(7)?.average()?.toFloat() ?: 0f
+        val treble = audioLevels?.drop(36)?.average()?.toFloat() ?: 0f
+        val reflectColor = if (isDarkMode) Color(0xFFd9b46a) else Color(0xFFc98b2e)
+        
+        repeat(15) { i ->
+            val p = i / 15f
+            val y = horizonY + 10f + p * (H - horizonY) * 0.6f
+            val fade = 1f - p * 0.75f
+            val w = (W * 0.08f) * (0.6f + energy * 0.4f) * fade
+            val h = 1.5f * fade
+            val alpha = ((fade * 50f + treble * 50f) / 255f).coerceIn(0f, 1f)
+            
+            drawRect(
+                color = reflectColor.copy(alpha = alpha),
+                topLeft = Offset(bodyX - w / 2, y),
+                size = androidx.compose.ui.geometry.Size(w, h)
+            )
+        }
+        
+        // Simple wave layer - EXACT HTML
+        val path = Path()
+        path.moveTo(0f, H)
+        val waveY = horizonY + (H - horizonY) * 0.1f
+        
+        repeat(31) { i ->
+            val p = i / 30f
+            val amp = 3f + bass * 12f
+            val y = waveY + sin(p * 8f + time * 0.5f) * amp
+            path.lineTo(p * W, y)
+        }
+        path.lineTo(W, H)
+        path.close()
+        
+        drawPath(
+            path,
+            color = if (isDarkMode) {
+                Color(0xFF0d2436).copy(alpha = 0.7f)
+            } else {
+                Color(0xFFbfe4df).copy(alpha = 0.7f)
+            }
+        )
+    }
+}
