@@ -320,6 +320,7 @@ const THEME_META = {
   sumi:     {label:'Sumi-e',       title:'Mürekkep Nefesi',    sub:'Fırça darbeleriyle beliren tek çizgi'},
   aurora:   {label:'Kutup Şafağı', title:'Kutup Şafağı',       sub:'Gökyüzünde süzülen ışık şeritleri'},
   fener:    {label:'Son Işık',     title:'Fenerin Türküsü',    sub:'Dünyanın ucunda, sisli denize yol gösteren bekçi'},
+  deep_eyes:{label:'Derin Göz',    title:'Derin Bakış',        sub:'Karanlık suların altında açılan tek bir göz'},
   mycel:    {label:'Miselyum',     title:'Yeraltı Fısıltısı',  sub:'Kökler arasında yayılan ışık sinyali'},
   reef:     {label:'Derin Işıltı', title:'Derin Işıltı',       sub:'Karanlıkta parıldayan biyolüminesans'},
   monsoon:  {label:'Muson',        title:'Fırtına Öncesi',     sub:'Şimşek ve yağmurun ritmi'},
@@ -340,6 +341,7 @@ const i18n = {
       sumi: {label:'Sumi-e', title:'Mürekkep Nefesi', sub:'Fırça darbeleriyle beliren tek çizgi'},
       aurora: {label:'Kutup Şafağı', title:'Kutup Şafağı', sub:'Gökyüzünde süzülen ışık şeritleri'},
       fener: {label:'Son Işık', title:'Fenerin Türküsü', sub:'Dünyanın ucunda, sisli denize yol gösteren bekçi'},
+      deep_eyes: {label:'Derin Göz', title:'Derin Bakış', sub:'Karanlık suların altında açılan tek bir göz — bazen yaşar, bazen kızarır'},
       mycel: {label:'Miselyum', title:'Yeraltı Fısıltısı', sub:'Kökler arasında yayılan ışık sinyali'},
       reef: {label:'Derin Işıltı', title:'Derin Işıltı', sub:'Karanlıkta parıldayan biyolüminesans'},
       monsoon: {label:'Muson', title:'Fırtına Öncesi', sub:'Şimşek ve yağmurun ritmi'},
@@ -361,6 +363,7 @@ const i18n = {
       sumi: {label:'Sumi-e', title:'Ink Breath', sub:'Single stroke emerging from brush'},
       aurora: {label:'Aurora', title:'Northern Lights', sub:'Light ribbons dancing in sky'},
       fener: {label:'Last Light', title:'Lighthouse Song', sub:'A keeper\'s light guiding ships through fog at world\'s end'},
+      deep_eyes: {label:'Deep Eye', title:'Ocean Gaze', sub:'A single eye opening beneath dark waters — sometimes it weeps, sometimes it reddens'},
       mycel: {label:'Mycelium', title:'Underground Whisper', sub:'Light signal spreading through roots'},
       reef: {label:'Deep Glow', title:'Deep Glow', sub:'Bioluminescence glowing in darkness'},
       monsoon: {label:'Monsoon', title:'Before Storm', sub:'Rhythm of lightning and rain'},
@@ -382,6 +385,7 @@ const i18n = {
       sumi: {label:'Sumi-e', title:'Tintenatem', sub:'Einzelner Pinselstrich'},
       aurora: {label:'Aurora', title:'Nordlichter', sub:'Lichtbänder am Himmel'},
       fener: {label:'Leuchtturm', title:'Letztes Licht', sub:'Leuchtturm führt Schiffe durch nebligen See'},
+      deep_eyes: {label:'Tiefes Auge', title:'Tiefer Blick', sub:'Ein einzelnes Auge unter dunklen Wassern — manchmal weint es, manchmal rötet es sich'},
       mycel: {label:'Myzel', title:'Unterirdisches Flüstern', sub:'Lichtsignal durch Wurzeln'},
       reef: {label:'Tiefes Leuchten', title:'Tiefes Leuchten', sub:'Biolumineszenz in Dunkelheit'},
       monsoon: {label:'Monsun', title:'Vor dem Sturm', sub:'Rhythmus von Blitz und Regen'},
@@ -403,6 +407,7 @@ const i18n = {
       sumi: {label:'Sumi-e', title:'Souffle d\'Encre', sub:'Trait unique émergeant du pinceau'},
       aurora: {label:'Aurore', title:'Aurores Boréales', sub:'Rubans de lumière dansant'},
       fener: {label:'Dernière Lumière', title:'Chanson du Phare', sub:'Gardien guidant les navires dans le brouillard'},
+      deep_eyes: {label:'Œil Profond', title:'Regard de l\'Océan', sub:'Un seul œil s\'ouvrant sous les eaux sombres — parfois il pleure, parfois il rougit'},
       mycel: {label:'Mycélium', title:'Chuchotement Souterrain', sub:'Signal lumineux à travers racines'},
       reef: {label:'Lueur Profonde', title:'Lueur Profonde', sub:'Bioluminescence dans l\'obscurité'},
       monsoon: {label:'Mousson', title:'Avant la Tempête', sub:'Rythme de la foudre et pluie'},
@@ -424,6 +429,7 @@ const i18n = {
       sumi: {label:'Sumi-e', title:'Aliento de Tinta', sub:'Trazo único del pincel'},
       aurora: {label:'Aurora', title:'Luces del Norte', sub:'Cintas de luz bailando'},
       fener: {label:'Última Luz', title:'Canción del Faro', sub:'Guardián guiando barcos en la niebla'},
+      deep_eyes: {label:'Ojo Profundo', title:'Mirada del Océano', sub:'Un solo ojo abriéndose bajo aguas oscuras — a veces llora, a veces se enrojece'},
       mycel: {label:'Micelio', title:'Susurro Subterráneo', sub:'Señal de luz por raíces'},
       reef: {label:'Resplandor Profundo', title:'Resplandor Profundo', sub:'Bioluminiscencia en oscuridad'},
       monsoon: {label:'Monzón', title:'Antes de la Tormenta', sub:'Ritmo de relámpagos y lluvia'},
@@ -445,6 +451,7 @@ const i18n = {
       sumi: {label:'Суми-э', title:'Дыхание Чернил', sub:'Единый мазок кисти'},
       aurora: {label:'Аврора', title:'Северное Сияние', sub:'Ленты света в небе'},
       fener: {label:'Последний Свет', title:'Песня Маяка', sub:'Хранитель ведущий корабли сквозь туман'},
+      deep_eyes: {label:'Глубокий Глаз', title:'Взгляд Океана', sub:'Единственный глаз под темными водами — иногда плачет, иногда краснеет'},
       mycel: {label:'Мицелий', title:'Подземный Шепот', sub:'Световой сигнал через корни'},
       reef: {label:'Глубокое Свечение', title:'Глубокое Свечение', sub:'Биолюминесценция во тьме'},
       monsoon: {label:'Муссон', title:'Перед Бурей', sub:'Ритм молнии и дождя'},
@@ -466,6 +473,7 @@ const i18n = {
       sumi: {label:'سومي-إي', title:'نفس الحبر', sub:'ضربة فرشاة واحدة'},
       aurora: {label:'الشفق', title:'الأضواء الشمالية', sub:'أشرطة ضوئية راقصة'},
       fener: {label:'آخر ضوء', title:'أغنية المنارة', sub:'حارس يرشد السفن عبر الضباب'},
+      deep_eyes: {label:'عين عميقة', title:'نظرة المحيط', sub:'عين واحدة تنفتح تحت المياه المظلمة — أحيانًا تبكي، أحيانًا تحمر'},
       mycel: {label:'الفطريات', title:'همس تحت الأرض', sub:'إشارة ضوئية عبر الجذور'},
       reef: {label:'توهج عميق', title:'توهج عميق', sub:'إضاءة حيوية في الظلام'},
       monsoon: {label:'الموسم', title:'قبل العاصفة', sub:'إيقاع البرق والمطر'},
@@ -487,6 +495,7 @@ const i18n = {
       sumi: {label:'墨絵', title:'墨の息吹', sub:'筆から生まれる一線'},
       aurora: {label:'オーロラ', title:'北極光', sub:'空に舞う光の帯'},
       fener: {label:'最後の光', title:'灯台の歌', sub:'世界の果てで霧の中を導く守人'},
+      deep_eyes: {label:'深い瞳', title:'海の視線', sub:'暗い水の下で開く一つの瞳 — 時には涙し、時には赤くなる'},
       mycel: {label:'菌糸', title:'地下の囁き', sub:'根を伝う光信号'},
       reef: {label:'深海の輝き', title:'深海の輝き', sub:'闇に光る生物発光'},
       monsoon: {label:'モンスーン', title:'嵐の前', sub:'稲妻と雨のリズム'},
@@ -508,6 +517,7 @@ const i18n = {
       sumi: {label:'水墨画', title:'墨息', sub:'毛笔划出的单线'},
       aurora: {label:'极光', title:'北极光', sub:'天空中舞动的光带'},
       fener: {label:'最后之光', title:'灯塔之歌', sub:'世界尽头雾中引导船只的守卫'},
+      deep_eyes: {label:'深眼', title:'海洋之眼', sub:'黑暗水域下睁开的一只眼睛 — 有时哭泣，有时泛红'},
       mycel: {label:'菌丝', title:'地下耳语', sub:'根间传播的光信号'},
       reef: {label:'深海辉光', title:'深海辉光', sub:'黑暗中闪耀的生物发光'},
       monsoon: {label:'季风', title:'暴风前', sub:'闪电和雨的节奏'},
@@ -529,6 +539,7 @@ const i18n = {
       sumi: {label:'먹그림', title:'먹의 숨결', sub:'붓에서 나오는 한 획'},
       aurora: {label:'오로라', title:'북극광', sub:'하늘을 춤추는 빛 띠'},
       fener: {label:'마지막 빛', title:'등대의 노래', sub:'세상 끝 안개 속 배를 인도하는 수호자'},
+      deep_eyes: {label:'깊은 눈', title:'바다의 시선', sub:'어두운 물 아래 뜨는 하나의 눈 — 때로 울고, 때로 붉어진다'},
       mycel: {label:'균사체', title:'지하의 속삭임', sub:'뿌리를 통해 퍼지는 빛 신호'},
       reef: {label:'깊은 빛', title:'깊은 빛', sub:'어둠 속에서 빛나는 생물 발광'},
       monsoon: {label:'몬순', title:'폭풍 전', sub:'번개와 비의 리듬'},
@@ -2759,9 +2770,534 @@ function drawFener(bars, wave, e){
   drawSparks(true);
 }
 
+/* ============================================================
+   DEEP EYES THEME — "Derin Bakış" — Ocean Eye with Tears & Redness
+   A single eye scene with physiological reactions to sound
+   Features: iris dilation, redness, tears, vessel networks
+   ============================================================ */
+
+// Deep Eyes State
+const deepEyesState = {
+  openCur: 0.86, openTarget: 0.86, restOpen: 0.86,
+  gazeX: 0, gazeY: 0, gazeTargetX: 0, gazeTargetY: 0,
+  pupilRatio: 0.30, pupilVel: 0, irisPulse: 1,
+  bassEnv: 0, trebleEnv: 0, lashKick: 0,
+  loudnessEnv: 0, redness: 0, well: 0, tears: [],
+  vesselTrees: null, lastTearSpawn: 0, emotionBoost: 0,
+  lastIdleDrift: 0
+};
+
+// Helper functions for Deep Eyes
+function clampDE(v,a,b){ return v<a?a:v>b?b:v; }
+function approachDE(cur,target,dt,speed){ return cur + (target-cur)*(1-Math.exp(-speed*dt)); }
+function qbezierDE(P0,C,P1,u){
+  const mt=1-u;
+  return { x: mt*mt*P0.x + 2*mt*u*C.x + u*u*P1.x, y: mt*mt*P0.y + 2*mt*u*C.y + u*u*P1.y };
+}
+
+// Conjunctival vessel network (branching blood vessels)
+function growVesselDE(segs, x, y, ang, len, w, depth){
+  if(depth <= 0 || w < 0.18) return;
+  const nx = x + Math.cos(ang)*len;
+  const ny = y + Math.sin(ang)*len*0.62;
+  segs.push({x0:x, y0:y, x1:nx, y1:ny, w, d:depth});
+  const n = Math.random() < 0.78 ? 2 : 1;
+  for(let i=0;i<n;i++){
+    growVesselDE(segs, nx, ny, ang + (Math.random()-0.5)*0.85, len*(0.58+Math.random()*0.28), w*0.62, depth-1);
+  }
+}
+
+function initVesselTreesDE(){
+  if(deepEyesState.vesselTrees) return;
+  const trees = [];
+  const defs = [
+    {ox:-0.97, oy: 0.08, ang: 0.02, n:5},
+    {ox:-0.97, oy:-0.04, ang:-0.16, n:3},
+    {ox: 0.97, oy: 0.04, ang: Math.PI-0.02, n:5},
+    {ox: 0.97, oy:-0.08, ang: Math.PI+0.16, n:3},
+  ];
+  defs.forEach(d=>{
+    const segs = [];
+    for(let k=0;k<d.n;k++){
+      growVesselDE(segs, d.ox, d.oy + (Math.random()-0.5)*0.10,
+                 d.ang + (Math.random()-0.5)*0.30, 0.15+Math.random()*0.09, 1.6+Math.random()*0.9, 4);
+    }
+    trees.push(segs);
+  });
+  deepEyesState.vesselTrees = trees;
+}
+
+// Eye geometry
+function getEyeGeometryDE(open){
+  const cx = W*0.5, cy = H*0.50;
+  const rx = W*0.345;
+  const ryTop = H*0.430, ryBot = H*0.285;
+  const upTilt = -H*0.018;
+  const left = {x:cx-rx, y:cy};
+  const right = {x:cx+rx, y:cy+upTilt};
+  const upperCtrl = {x:cx-rx*0.14, y:cy-ryTop*open};
+  const lowerCtrl = {x:cx+rx*0.03, y:cy+ryBot*open};
+  return {cx,cy,rx,ryTop,ryBot,left,right,upperCtrl,lowerCtrl};
+}
+
+// Decorative elements (pre-generated for performance)
+const IRIS_LINES_DE = Array.from({length:46}, ()=>({a:Math.random()*Math.PI*2, len:0.55+Math.random()*0.4, w:0.4+Math.random()*0.5, op:0.08+Math.random()*0.10}));
+const FLECKS_DE = Array.from({length:20}, ()=>({x:Math.random(), y:Math.random(), r:0.4+Math.random()*1.1, phase:Math.random()*Math.PI*2, speed:0.5+Math.random()*1.0}));
+const BUBBLES_DE = Array.from({length:7}, ()=>({x:Math.random(), y:Math.random(), r:2+Math.random()*4, speed:6+Math.random()*10, drift:(Math.random()-0.5)*8, phase:Math.random()*Math.PI*2}));
+const SNOW_DE = Array.from({length:26}, ()=>({x:Math.random(), y:Math.random(), r:0.4+Math.random()*1.0, vy:2+Math.random()*7, drift:(Math.random()-0.5)*6, phase:Math.random()*Math.PI*2, op:0.05+Math.random()*0.12}));
+const IRIS_CRYPTS_DE = Array.from({length:10}, ()=>({
+  a: Math.random()*Math.PI*2, r: 0.30+Math.random()*0.55,
+  size: 0.10+Math.random()*0.15, dark: Math.random()<0.55
+}));
+const COLLARETTE_DE = Array.from({length:72}, ()=> 0.40 + (Math.random()-0.5)*0.05);
+
+// Tear system
+function spawnTearDE(now){
+  const g = getEyeGeometryDE(deepEyesState.openCur);
+  const b = qbezierDE(g.left, g.lowerCtrl, g.right, 0.15);
+  deepEyesState.tears.push({
+    x: b.x + 3, y: b.y + 1,
+    vx: 3 + Math.random()*7, vy: 4,
+    age: 0, scale: 0.8 + Math.random()*0.45,
+    trail: [], trailClock: 0,
+    state: 'fall', fadeT: 0
+  });
+  deepEyesState.lastTearSpawn = now;
+}
+
+function updateTearsDE(dt, now){
+  for(let i=deepEyesState.tears.length-1;i>=0;i--){
+    const tear = deepEyesState.tears[i];
+    tear.age += dt;
+    if(tear.state==='fall'){
+      tear.vy += 640*dt;
+      tear.vx *= Math.exp(-dt*1.4);
+      tear.x += tear.vx*dt;
+      tear.y += tear.vy*dt;
+      tear.trailClock += dt;
+      if(tear.trailClock > 0.035){
+        tear.trailClock = 0;
+        tear.trail.push({x:tear.x, y:tear.y, age:0});
+        if(tear.trail.length > 90) tear.trail.shift();
+      }
+      if(tear.y > H-30){ tear.state='fade'; tear.fadeT = 0; }
+    } else {
+      tear.fadeT += dt;
+      if(tear.fadeT > 0.7) deepEyesState.tears.splice(i,1);
+    }
+    for(let j=tear.trail.length-1;j>=0;j--){
+      tear.trail[j].age += dt;
+      if(tear.trail[j].age > 3.2) tear.trail.splice(j,1);
+    }
+  }
+  if(deepEyesState.well > 0.72 && now - deepEyesState.lastTearSpawn > 2300 && deepEyesState.tears.length < 3){
+    spawnTearDE(now);
+    deepEyesState.well *= 0.5;
+  }
+}
+
+function drawTearDropDE(tear, alphaMul){
+  const wob = Math.exp(-tear.age*2.6);
+  const sy = 1 + 0.20*Math.sin(tear.age*24)*wob;
+  const sx = 1 - 0.10*Math.sin(tear.age*24)*wob;
+  const r = 3.4*tear.scale * (tear.state==='fade' ? Math.max(0.05, 1-tear.fadeT/0.7) : 1);
+  ctx.save();
+  ctx.translate(tear.x, tear.y);
+  ctx.scale(sx, sy);
+  const grad = ctx.createRadialGradient(-r*0.35,-r*0.55,r*0.2, 0, 0, r*2.1);
+  grad.addColorStop(0,   `rgba(240,253,255,${0.95*alphaMul})`);
+  grad.addColorStop(0.38,`rgba(188,232,244,${0.55*alphaMul})`);
+  grad.addColorStop(0.75,`rgba(150,214,232,${0.22*alphaMul})`);
+  grad.addColorStop(1,   `rgba(140,205,225,0)`);
+  ctx.fillStyle = grad;
+  ctx.beginPath();
+  ctx.moveTo(0, -r*2.0);
+  ctx.bezierCurveTo( r*1.55, -r*0.5,  r*1.25, r*1.25, 0, r*1.25);
+  ctx.bezierCurveTo(-r*1.25, r*1.25, -r*1.55, -r*0.5, 0, -r*2.0);
+  ctx.fill();
+  ctx.strokeStyle = `rgba(255,255,255,${0.35*alphaMul})`;
+  ctx.lineWidth = 0.7;
+  ctx.beginPath();
+  ctx.moveTo(0, -r*2.0);
+  ctx.bezierCurveTo( r*1.55, -r*0.5,  r*1.25, r*1.25, 0, r*1.25);
+  ctx.stroke();
+  ctx.fillStyle = `rgba(255,255,255,${0.9*alphaMul})`;
+  ctx.beginPath(); ctx.arc(-r*0.38, -r*0.6, Math.max(0.4, r*0.30), 0, 7); ctx.fill();
+  ctx.restore();
+}
+
+function drawTearsDE(){
+  ctx.save();
+  ctx.globalCompositeOperation = 'lighter';
+  deepEyesState.tears.forEach(tear=>{
+    if(tear.trail.length < 2) return;
+    for(let i=1;i<tear.trail.length;i++){
+      const p = tear.trail[i];
+      const a = Math.max(0, 1 - p.age/3.2);
+      ctx.strokeStyle = `rgba(190,235,245,${(0.16*a).toFixed(3)})`;
+      ctx.lineWidth = 2.6*a + 0.4;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.moveTo(tear.trail[i-1].x, tear.trail[i-1].y);
+      ctx.lineTo(p.x, p.y);
+      ctx.stroke();
+    }
+  });
+  ctx.restore();
+  deepEyesState.tears.forEach(tear=>{
+    const alphaMul = tear.state==='fade' ? Math.max(0, 1-tear.fadeT/0.7) : 1;
+    drawTearDropDE(tear, alphaMul);
+  });
+}
+
+function drawDeepEyes(bars, wave, e){
+  initVesselTreesDE();
+  
+  const dt = 0.016;
+  const now = t * 1000;
+  
+  // Deep ocean background
+  const bg = ctx.createRadialGradient(W*0.5,H*0.38,10, W*0.5,H*0.55,Math.max(W,H)*0.78);
+  bg.addColorStop(0,'#062230'); bg.addColorStop(1,'#010509');
+  ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
+
+  // Caustic water effects
+  ctx.save(); ctx.globalCompositeOperation = 'lighter';
+  const baseA = 0.028 + deepEyesState.redness*0.012;
+  for(let k=0;k<4;k++){
+    ctx.beginPath();
+    const baseY = H*(0.12 + k*0.07);
+    const speed = (0.35 + k*0.12);
+    for(let x=0;x<=W;x+=7){
+      const y = baseY + Math.sin(x*0.022 + t*speed + k*1.7)*6 + Math.sin(x*0.05 - t*speed*1.6)*3;
+      if(x===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+    }
+    ctx.strokeStyle = `rgba(96,225,208,${baseA})`;
+    ctx.lineWidth = 5 + k*2; ctx.filter = 'blur(3px)'; ctx.stroke();
+  }
+  ctx.filter = 'none'; ctx.restore();
+
+  // Floating particles
+  BUBBLES_DE.forEach(b=>{
+    const span = H+20;
+    const yy = (((b.y*H - t*b.speed*6) % span) + span) % span - 10;
+    const xx = b.x*W + Math.sin(t*0.4+b.phase)*b.drift;
+    const r = b.r;
+    const grad = ctx.createRadialGradient(xx-r*0.3,yy-r*0.3,0.2, xx,yy,r);
+    grad.addColorStop(0,'rgba(180,240,235,0.26)');
+    grad.addColorStop(1,'rgba(180,240,235,0)');
+    ctx.fillStyle = grad;
+    ctx.beginPath(); ctx.arc(xx,yy,r,0,7); ctx.fill();
+  });
+  SNOW_DE.forEach(s=>{
+    const span = H+10;
+    const yy = (((s.y*H - t*s.vy) % span) + span) % span - 5;
+    const xx = s.x*W + Math.sin(t*0.25+s.phase)*s.drift;
+    ctx.fillStyle = `rgba(200,240,235,${(s.op*(0.6+0.4*Math.sin(t+s.phase)))})`;
+    ctx.beginPath(); ctx.arc(xx,yy,s.r,0,7); ctx.fill();
+  });
+
+  const g = getEyeGeometryDE(deepEyesState.openCur);
+  const apH = 0.5*g.ryTop*deepEyesState.restOpen + 0.5*g.ryBot*deepEyesState.restOpen;
+
+  // Lid shadow
+  ctx.save(); ctx.filter = 'blur(16px)';
+  ctx.fillStyle = 'rgba(0,0,0,0.6)';
+  ctx.beginPath(); ctx.ellipse(g.cx, g.cy+apH*0.15, g.rx*1.22, apH*1.35, 0, 0, 7); ctx.fill();
+  ctx.restore();
+
+  // Lid shape
+  ctx.save(); ctx.filter = 'blur(7px)';
+  const lidGrad = ctx.createLinearGradient(g.cx, g.cy-apH*1.5, g.cx, g.cy+apH*1.5);
+  lidGrad.addColorStop(0,'#123246'); lidGrad.addColorStop(1,'#07202c');
+  ctx.fillStyle = lidGrad;
+  ctx.beginPath(); ctx.ellipse(g.cx, g.cy, g.rx*1.08, apH*1.15, 0, 0, 7); ctx.fill();
+  ctx.restore();
+
+  // Aperture clip
+  ctx.save();
+  ctx.beginPath();
+  ctx.moveTo(g.left.x, g.left.y);
+  ctx.quadraticCurveTo(g.upperCtrl.x, g.upperCtrl.y, g.right.x, g.right.y);
+  ctx.quadraticCurveTo(g.lowerCtrl.x, g.lowerCtrl.y, g.left.x, g.left.y);
+  ctx.closePath(); ctx.clip();
+
+  // Sclera with redness
+  const scGrad = ctx.createRadialGradient(g.cx,g.cy,4, g.cx,g.cy,g.rx*1.15);
+  const rTint = Math.round(deepEyesState.redness*38);
+  scGrad.addColorStop(0,`rgb(${234+rTint},${247-rTint*0.6},${249-rTint*0.6})`);
+  scGrad.addColorStop(0.45,`rgb(${191+rTint},${227-rTint},${231-rTint})`);
+  scGrad.addColorStop(0.8,`rgb(${127+rTint},${185-rTint*1.3},${194-rTint*1.3})`);
+  scGrad.addColorStop(1,`rgb(${63+rTint*0.6},${109-rTint},${120-rTint})`);
+  ctx.fillStyle = scGrad; ctx.fillRect(g.cx-g.rx*1.2, g.cy-g.ryTop*1.3, g.rx*2.4, (g.ryTop+g.ryBot)*1.4);
+
+  // Inflamed flush
+  if(deepEyesState.redness > 0.02){
+    [['l',g.left.x+g.rx*0.16],['r',g.right.x-g.rx*0.16]].forEach(([side,x])=>{
+      const infl = ctx.createRadialGradient(x, g.cy, 2, x, g.cy, g.rx*0.85);
+      infl.addColorStop(0, `rgba(198,52,62,${0.30*deepEyesState.redness})`);
+      infl.addColorStop(0.55, `rgba(190,60,66,${0.12*deepEyesState.redness})`);
+      infl.addColorStop(1, 'rgba(190,60,66,0)');
+      ctx.fillStyle = infl; ctx.fillRect(g.cx-g.rx*1.2, g.cy-g.ryTop*1.3, g.rx*2.4, (g.ryTop+g.ryBot)*1.4);
+    });
+  }
+
+  // Vessels
+  const veinPulse = 0.78 + 0.22*Math.sin(t*Math.PI*2*0.9) * (0.5+deepEyesState.bassEnv);
+  if(deepEyesState.redness >= 0.015 && deepEyesState.vesselTrees){
+    deepEyesState.vesselTrees.forEach(tree=>{
+      tree.forEach(s=>{
+        const depthFade = 0.45 + 0.55*(s.d/4);
+        const a = (0.03 + deepEyesState.redness*0.5*veinPulse) * depthFade;
+        ctx.strokeStyle = `rgba(172,38,52,${a})`;
+        ctx.lineWidth = s.w * (0.55 + deepEyesState.redness*0.95);
+        ctx.lineCap = 'round'; ctx.beginPath();
+        ctx.moveTo(g.cx + s.x0*g.rx, g.cy + s.y0*apH);
+        ctx.lineTo(g.cx + s.x1*g.rx, g.cy + s.y1*apH);
+        ctx.stroke();
+      });
+    });
+  }
+
+  // Caruncle (inner corner)
+  ctx.fillStyle = 'rgba(150,85,90,0.45)';
+  ctx.beginPath();
+  ctx.ellipse(g.left.x+g.rx*0.14, g.cy, apH*0.15, apH*0.20, 0, 0, 7);
+  ctx.fill();
+
+  // Sparkles
+  FLECKS_DE.forEach(f=>{
+    const fx = g.cx + (f.x-0.5)*g.rx*2.1;
+    const fy = g.cy + (f.y-0.5)*(g.ryTop+g.ryBot);
+    const tw = 0.35+0.65*(0.5+0.5*Math.sin(t*f.speed+f.phase));
+    ctx.fillStyle = `rgba(190,240,235,${(0.10+deepEyesState.trebleEnv*0.12)*tw})`;
+    ctx.beginPath(); ctx.arc(fx,fy,f.r,0,7); ctx.fill();
+  });
+
+  // Iris
+  const maxGX = g.rx*0.30, maxGY = ((g.ryTop+g.ryBot)/2)*0.20;
+  const ix = g.cx + deepEyesState.gazeX*maxGX;
+  const iy = g.cy + deepEyesState.gazeY*maxGY;
+  const irisBase = (0.5*g.ryTop*deepEyesState.restOpen) * 1.05;
+  const irisR = irisBase*deepEyesState.irisPulse;
+
+  const irGrad = ctx.createRadialGradient(ix,iy,irisR*0.10, ix,iy,irisR);
+  irGrad.addColorStop(0,'#aefaf0'); irGrad.addColorStop(0.22,'#5ff0dd'); irGrad.addColorStop(0.48,'#2fd9c9');
+  irGrad.addColorStop(0.74,'#12839a'); irGrad.addColorStop(0.93,'#0e5f7a'); irGrad.addColorStop(1,'#062230');
+  ctx.fillStyle = irGrad;
+  ctx.beginPath(); ctx.arc(ix,iy,irisR,0,7); ctx.fill();
+
+  // Iris lines
+  ctx.save();
+  ctx.translate(ix,iy);
+  IRIS_LINES_DE.forEach(l=>{
+    ctx.strokeStyle = `rgba(6,30,38,${l.op})`;
+    ctx.lineWidth = l.w;
+    ctx.beginPath();
+    ctx.moveTo(Math.cos(l.a)*irisR*0.20, Math.sin(l.a)*irisR*0.20);
+    ctx.lineTo(Math.cos(l.a)*irisR*l.len, Math.sin(l.a)*irisR*l.len);
+    ctx.stroke();
+  });
+  
+  // Collarette
+  ctx.beginPath();
+  COLLARETTE_DE.forEach((rr,i)=>{
+    const a = (i/COLLARETTE_DE.length)*Math.PI*2;
+    const px = Math.cos(a)*irisR*rr, py = Math.sin(a)*irisR*rr;
+    if(i===0) ctx.moveTo(px,py); else ctx.lineTo(px,py);
+  });
+  ctx.closePath();
+  ctx.strokeStyle = 'rgba(5,26,32,0.38)';
+  ctx.lineWidth = irisR*0.05;
+  ctx.stroke();
+  
+  ctx.filter = 'blur(1.5px)';
+  IRIS_CRYPTS_DE.forEach(c=>{
+    const px = Math.cos(c.a)*irisR*c.r, py = Math.sin(c.a)*irisR*c.r;
+    ctx.fillStyle = c.dark ? 'rgba(4,22,28,0.16)' : 'rgba(255,255,255,0.09)';
+    ctx.beginPath(); ctx.ellipse(px,py, irisR*c.size, irisR*c.size*0.72, c.a, 0, 7); ctx.fill();
+  });
+  ctx.filter = 'none';
+  ctx.restore();
+
+  // Limbal ring
+  ctx.strokeStyle = 'rgba(3,14,20,0.6)';
+  ctx.lineWidth = Math.max(1, irisR*0.07);
+  ctx.beginPath(); ctx.arc(ix,iy,irisR*0.97,0,7); ctx.stroke();
+  ctx.strokeStyle = 'rgba(255,90,110,0.10)';
+  ctx.lineWidth = Math.max(0.6, irisR*0.03);
+  ctx.beginPath(); ctx.arc(ix+0.7,iy,irisR*0.985,0,7); ctx.stroke();
+  ctx.strokeStyle = 'rgba(90,210,255,0.10)';
+  ctx.beginPath(); ctx.arc(ix-0.7,iy,irisR*0.985,0,7); ctx.stroke();
+
+  // Pupil
+  const pr = irisR*deepEyesState.pupilRatio;
+  const puGrad = ctx.createRadialGradient(ix,iy,pr*0.1, ix,iy,pr);
+  puGrad.addColorStop(0,'#000000'); puGrad.addColorStop(1,'#050b12');
+  ctx.fillStyle = puGrad;
+  ctx.beginPath(); ctx.arc(ix,iy,pr,0,7); ctx.fill();
+
+  // Catchlights
+  ctx.save();
+  ctx.filter = 'blur(3px)';
+  ctx.fillStyle = `rgba(255,255,255,${0.08+deepEyesState.trebleEnv*0.10})`;
+  ctx.beginPath();
+  ctx.ellipse(ix-irisR*0.12, iy-irisR*0.5, irisR*0.62, irisR*0.34, -0.35, 0, 7);
+  ctx.fill();
+  ctx.restore();
+
+  ctx.save();
+  ctx.translate(ix-irisR*0.30, iy-irisR*0.42);
+  ctx.rotate(-0.35);
+  ctx.fillStyle = `rgba(255,255,255,${0.10+deepEyesState.trebleEnv*0.08})`;
+  ctx.beginPath();
+  ctx.roundRect(-irisR*0.30, -irisR*0.14, irisR*0.42, irisR*0.24, irisR*0.05);
+  ctx.fill();
+  ctx.restore();
+
+  const glintBoost = 0.5+deepEyesState.trebleEnv*0.9;
+  ctx.fillStyle = `rgba(255,255,255,${Math.min(0.95,0.55*glintBoost)})`;
+  ctx.beginPath(); ctx.arc(ix-irisR*0.34, iy-irisR*0.36, Math.max(1,irisR*0.13*glintBoost), 0, 7); ctx.fill();
+  ctx.fillStyle = `rgba(200,255,248,${Math.min(0.55,0.16*glintBoost)})`;
+  ctx.beginPath(); ctx.arc(ix+irisR*0.26, iy+irisR*0.30, Math.max(0.6,irisR*0.06*glintBoost), 0, 7); ctx.fill();
+
+  // Lid shadows
+  const lidShadow = ctx.createLinearGradient(g.cx, g.cy-g.ryTop*deepEyesState.openCur*0.9, g.cx, g.cy);
+  lidShadow.addColorStop(0,'rgba(0,0,0,0.34)');
+  lidShadow.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle = lidShadow;
+  ctx.fillRect(g.cx-g.rx*1.2, g.cy-g.ryTop*1.3, g.rx*2.4, (g.ryTop+g.ryBot)*1.4);
+  
+  const bounce = ctx.createLinearGradient(g.cx, g.cy+g.ryBot*deepEyesState.openCur*0.7, g.cx, g.cy+g.ryBot*deepEyesState.openCur*0.1);
+  bounce.addColorStop(0,'rgba(70,210,195,0.10)');
+  bounce.addColorStop(1,'rgba(70,210,195,0)');
+  ctx.fillStyle = bounce;
+  ctx.fillRect(g.cx-g.rx*1.2, g.cy, g.rx*2.4, g.ryBot*deepEyesState.openCur);
+
+  // Tear meniscus
+  if(deepEyesState.well > 0.02){
+    ctx.beginPath();
+    for(let i=0;i<=28;i++){
+      const tt = 0.06 + (i/28)*0.88;
+      const b = qbezierDE(g.left, g.lowerCtrl, g.right, tt);
+      const lift = (1 + deepEyesState.well*2.2);
+      if(i===0) ctx.moveTo(b.x, b.y-lift*0.4); else ctx.lineTo(b.x, b.y-lift*0.4);
+    }
+    ctx.strokeStyle = `rgba(214,244,250,${0.10+deepEyesState.well*0.30})`;
+    ctx.lineWidth = 1.2 + deepEyesState.well*3.6;
+    ctx.lineCap = 'round';
+    ctx.stroke();
+
+    const bulgeR = apH*(0.06 + deepEyesState.well*0.22);
+    const bx = g.left.x + g.rx*0.15, by = g.cy + apH*0.35;
+    const bg2 = ctx.createRadialGradient(bx-bulgeR*0.3, by-bulgeR*0.4, 0.5, bx, by, bulgeR*1.6);
+    bg2.addColorStop(0, `rgba(235,251,255,${0.30+deepEyesState.well*0.40})`);
+    bg2.addColorStop(0.6, `rgba(190,235,245,${0.14+deepEyesState.well*0.20})`);
+    bg2.addColorStop(1, 'rgba(190,235,245,0)');
+    ctx.fillStyle = bg2;
+    ctx.beginPath(); ctx.ellipse(bx, by, bulgeR*1.5, bulgeR, 0.15, 0, 7); ctx.fill();
+  }
+
+  // Tear film gloss
+  ctx.save();
+  ctx.globalCompositeOperation = 'lighter';
+  const film = ctx.createLinearGradient(g.cx, g.cy-apH, g.cx, g.cy+apH);
+  film.addColorStop(0, `rgba(220,250,255,${0.05+deepEyesState.well*0.13})`);
+  film.addColorStop(0.5, 'rgba(220,250,255,0)');
+  film.addColorStop(1, `rgba(160,230,240,${0.03+deepEyesState.well*0.07})`);
+  ctx.fillStyle = film;
+  ctx.fillRect(g.cx-g.rx*1.2, g.cy-g.ryTop*1.3, g.rx*2.4, (g.ryTop+g.ryBot)*1.4);
+  ctx.restore();
+
+  ctx.restore();
+
+  // Lid outlines
+  ctx.strokeStyle = 'rgba(2,10,15,0.85)';
+  ctx.lineWidth = 1.4;
+  ctx.beginPath();
+  ctx.moveTo(g.left.x,g.left.y);
+  ctx.quadraticCurveTo(g.upperCtrl.x,g.upperCtrl.y,g.right.x,g.right.y);
+  ctx.stroke();
+
+  ctx.strokeStyle = 'rgba(220,245,250,0.10)';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(g.left.x-3, g.left.y-3);
+  ctx.quadraticCurveTo(g.upperCtrl.x, g.upperCtrl.y-apH*0.30, g.right.x+3, g.right.y-3);
+  ctx.stroke();
+
+  // Lashes (simplified)
+  const LASH_N = 18;
+  const maxLen = Math.max(18, g.rx*0.46);
+  for(let i=0;i<LASH_N;i++){
+    const tt = 0.06 + (i/(LASH_N-1))*0.88;
+    const basex = (1-tt)*(1-tt)*g.left.x + 2*(1-tt)*tt*g.upperCtrl.x + tt*tt*g.right.x;
+    const basey = (1-tt)*(1-tt)*g.left.y + 2*(1-tt)*tt*g.upperCtrl.y + tt*tt*g.right.y;
+    const sweep = (tt-0.5)*0.85;
+    const angle = -Math.PI/2 + sweep + (Math.random()-0.5)*0.16;
+    const lenFactor = Math.pow(Math.sin(Math.PI*tt), 0.85);
+    const length = (11 + lenFactor*maxLen) * (1+deepEyesState.bassEnv*0.12) * (0.55+0.45*deepEyesState.openCur);
+    const endx = basex + Math.cos(angle)*length;
+    const endy = basey + Math.sin(angle)*length;
+    ctx.strokeStyle = 'rgba(2,9,14,0.94)'; ctx.lineWidth = 1.8; ctx.beginPath();
+    ctx.moveTo(basex, basey); ctx.lineTo(endx, endy); ctx.stroke();
+  }
+
+  // Tears roll over everything
+  drawTearsDE();
+
+  // Update physics
+  const bassRaw = bars[3]||0, trebleRaw = bars[40]||0, overall = bars.reduce((a,b)=>a+b,0)/bars.length;
+  const bassAtk = 1-Math.exp(-dt*4.5), bassRel = 1-Math.exp(-dt*2.2);
+  deepEyesState.bassEnv += (bassRaw-deepEyesState.bassEnv) * (bassRaw>deepEyesState.bassEnv?bassAtk:bassRel);
+  const trebAtk = 1-Math.exp(-dt*22), trebRel = 1-Math.exp(-dt*10);
+  deepEyesState.trebleEnv += (trebleRaw-deepEyesState.trebleEnv) * (trebleRaw>deepEyesState.trebleEnv?trebAtk:trebRel);
+
+  // Loudness -> redness
+  deepEyesState.loudnessEnv += (overall-deepEyesState.loudnessEnv) * (1-Math.exp(-dt*(overall>deepEyesState.loudnessEnv?3.0:0.55)));
+  const redTarget = playing ? clampDE((deepEyesState.loudnessEnv-0.30)/0.30, 0, 1) : 0;
+  deepEyesState.redness += (redTarget-deepEyesState.redness) * (1-Math.exp(-dt*1.15));
+
+  // Crying
+  deepEyesState.emotionBoost = Math.max(0, deepEyesState.emotionBoost - dt*0.055);
+  const cryTarget = playing ? clampDE((deepEyesState.loudnessEnv-0.40)*3.2, 0, 1) + deepEyesState.emotionBoost : deepEyesState.emotionBoost*0.6;
+  const cryDrive = clampDE(cryTarget, 0, 1);
+  const wellTarget = cryDrive;
+  deepEyesState.well += (wellTarget-deepEyesState.well) * (1-Math.exp(-dt*(wellTarget>deepEyesState.well?0.9:0.28)));
+
+  updateTearsDE(dt, now);
+
+  // Pupil dilation
+  const pupilTarget = clampDE(0.26 + deepEyesState.bassEnv*0.46, 0.20, 0.74);
+  const k=90, c=18; const force=(pupilTarget-deepEyesState.pupilRatio)*k - deepEyesState.pupilVel*c;
+  deepEyesState.pupilVel += force*dt; deepEyesState.pupilRatio += deepEyesState.pupilVel*dt;
+  deepEyesState.irisPulse += ((1 + deepEyesState.bassEnv*0.05)-deepEyesState.irisPulse) * (1-Math.exp(-dt*6));
+
+  // Heavy-lidded when crying
+  deepEyesState.restOpen = 0.86 - cryDrive*0.10;
+  deepEyesState.openTarget = deepEyesState.restOpen;
+  deepEyesState.openCur = approachDE(deepEyesState.openCur, deepEyesState.openTarget, dt, 10);
+
+  // Idle gaze drift
+  if(now - deepEyesState.lastIdleDrift > 2500){
+    deepEyesState.gazeTargetX = clampDE(deepEyesState.gazeTargetX + (Math.random()-0.5)*0.5, -0.35, 0.35);
+    deepEyesState.gazeTargetY = clampDE((Math.random()-0.5)*0.3, -0.3, 0.3);
+    deepEyesState.lastIdleDrift = now;
+  }
+  deepEyesState.gazeX = approachDE(deepEyesState.gazeX, deepEyesState.gazeTargetX, dt, 1.4);
+  deepEyesState.gazeY = approachDE(deepEyesState.gazeY, deepEyesState.gazeTargetY, dt, 1.2);
+  
+  // Tremor when red
+  if(deepEyesState.redness > 0.25){
+    deepEyesState.gazeX += (Math.random()-0.5)*0.045*(deepEyesState.redness-0.2);
+    deepEyesState.gazeY += (Math.random()-0.5)*0.03*(deepEyesState.redness-0.2);
+  }
+}
+
 const RENDERERS = {
   mehtap: drawMehtap,
   sumi: drawSumi, aurora: drawAurora, fener: drawFener,
+  deep_eyes: drawDeepEyes,
   mycel: drawMycel, reef: drawReef, monsoon: drawMonsoon,
   murekkep: drawMurekkep, col: drawCol, divit: drawDivit,
 };
