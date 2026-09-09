@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Son Işık — Fener Hikâyesi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --font-display:'Fraunces',serif;
+    --font-ui:'Space Grotesk',sans-serif;
+    --bg0:#040910;--bg1:#0c1e30;--ink:#eef2f5;--ink-dim:#6d7f92;
+    --a1:#d9b46a;--a2:#4a6fa5;--a3:#122236;--a4:#f2b155;--accent:#f2b155;--grain:.035;
+    --foam:#eef6fb;
+  }
+  /* Son Işık — dünyanın ucunda bir kayalık, üzerinde yalnız bir fener.
+     Her gece bekçi ışığı döndürür; o ışık sisli denizde kaybolmuş
+     gemilere yol gösterir. Bas frekanslar dalgaları kabartır, tizler
+     yıldızları ve denizdeki ışıltıları uyandırır; ve zaman zaman,
+     süzülen ışık huzmesi bir gemiye değdiğinde, gemi üç kez
+     yanıt verir: bir sinyal, bir selam, bir "buradayım". */
+  [data-theme="sonisik"]{--bg0:#040910;--bg1:#0c1e30;--ink:#eef2f5;--ink-dim:#6d7f92;--a1:#d9b46a;--a2:#4a6fa5;--a3:#122236;--a4:#f2b155;--accent:#f2b155;--grain:.035;--foam:#eef6fb;}
+  [data-theme="sonisik"][data-mode="light"]{--bg0:#e9f0f1;--bg1:#f8fbf9;--ink:#16303a;--ink-dim:#6f8790;--a1:#c98b2e;--a2:#3c6e86;--a3:#dbe9e4;--a4:#c98b2e;--accent:#c98b2e;--grain:.014;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{-webkit-tap-highlight-color:transparent;width:100%;height:100%;overflow:hidden;}
+  body{display:flex;font-family:var(--font-ui);background:var(--bg0);}
+  .phone{position:fixed;inset:0;width:100%;height:100%;color:var(--ink);transition:color 1.1s ease;overflow:hidden;}
+  .screen{position:absolute;inset:0;background:radial-gradient(120% 90% at 50% -10%, var(--bg1), var(--bg0) 65%);padding:env(safe-area-inset-top) 18px 0 18px;display:flex;flex-direction:column;gap:10px;height:100%;overflow-y:auto;transition:background 1.1s ease;}
+  .grain{position:fixed;inset:0;pointer-events:none;mix-blend-mode:overlay;opacity:var(--grain,.03);z-index:5;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");background-size:160px;transition:opacity .6s ease;}
+  .vignette{position:fixed;inset:0;pointer-events:none;z-index:4;box-shadow:inset 0 0 70px 10px rgba(0,0,0,.4);transition:box-shadow .6s ease;}
+  [data-mode="light"] .vignette{box-shadow:inset 0 0 70px 10px rgba(0,0,0,.08);}
+  .topbar{display:flex;align-items:center;justify-content:space-between;position:relative;z-index:2;flex-shrink:0;}
+  .brand{font-family:var(--font-display);font-weight:600;font-style:italic;font-size:19px;letter-spacing:-0.01em;margin:0;color:var(--ink);}
+  .topright{display:flex;align-items:center;gap:12px;}
+  .meter{display:flex;align-items:flex-end;gap:2.5px;height:14px;}
+  .meter i{display:block;width:2.5px;border-radius:1px;background:var(--accent);height:2px;transition:background 1.1s ease;opacity:.85;}
+  .now{font-size:11px;color:var(--ink-dim);margin:0;font-variant-numeric:tabular-nums;transition:color 1.1s ease;}
+  .modeToggle{background:none;border:none;padding:0;cursor:pointer;display:flex;align-items:center;flex-shrink:0;}
+  .modeSwitch{width:38px;height:20px;border-radius:20px;background:color-mix(in srgb, var(--ink) 18%, transparent);position:relative;transition:background 1.1s ease;flex-shrink:0;}
+  .modeSwitch .thumb{position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:var(--accent);transition:transform .35s cubic-bezier(.4,0,.2,1), background 1.1s ease;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 3px rgba(0,0,0,.4);}
+  [data-mode="light"] .modeSwitch .thumb{transform:translateX(18px);}
+  .modeSwitch .thumb svg{width:10px;height:10px;color:var(--bg0);}
+  .stage{position:relative;border-radius:20px;overflow:hidden;flex:1;min-height:220px;max-height:360px;background:#000;z-index:2;transition:transform .05s ease-out, box-shadow .08s linear;box-shadow:0 0 0 1px rgba(255,255,255,.05),0 18px 40px -14px rgba(0,0,0,.6),0 0 46px calc(var(--lvl, 0) * 34px) color-mix(in srgb, var(--accent) 40%, transparent);}
+  canvas{display:block;width:100%;height:100%;}
+  .stage-hint{position:absolute;inset:auto 0 13px 0;text-align:center;font-size:11px;color:var(--ink-dim);opacity:.9;pointer-events:none;letter-spacing:.01em;transition:opacity .5s ease, color 1.1s ease;}
+  .track{margin-top:0;position:relative;z-index:2;flex-shrink:0;}
+  .track h2{font-family:var(--font-display);font-weight:600;font-style:italic;font-size:20px;margin:0 0 2px;letter-spacing:-0.01em;transition:opacity .3s ease;}
+  .track p{font-size:12px;color:var(--ink-dim);margin:0;transition:color 1.1s ease;}
+  .transport{display:flex;align-items:center;gap:12px;position:relative;z-index:2;flex-shrink:0;padding-bottom:14px;}
+  .playbtn{position:relative;width:50px;height:50px;border-radius:50%;border:none;cursor:pointer;background:radial-gradient(circle at 35% 30%, color-mix(in srgb, var(--accent) 100%, white 25%), var(--accent) 70%);color:var(--bg0);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform .15s ease, background 1.1s ease, box-shadow .1s linear;box-shadow:inset 0 2px 3px rgba(255,255,255,.35),inset 0 -3px 5px rgba(0,0,0,.25),0 4px 14px -2px color-mix(in srgb, var(--accent) 60%, transparent),0 0 0 calc(4px + var(--lvl, 0) * 14px) color-mix(in srgb, var(--accent) calc(8% + var(--lvl,0) * 22%), transparent);}
+  .playbtn:active{transform:scale(.92);}
+  .playbtn svg{width:20px;height:20px;position:relative;z-index:1;}
+  .ripple{position:absolute;inset:0;border-radius:50%;border:1.5px solid var(--accent);opacity:0;pointer-events:none;}
+  .ripple.go{animation:rippleOut .55s ease-out;}
+  @keyframes rippleOut{0%{transform:scale(.7);opacity:.65;}100%{transform:scale(1.9);opacity:0;}}
+  .sliders{flex:1;display:flex;flex-direction:column;gap:8px;}
+  .slider-row{display:flex;align-items:center;gap:10px;}
+  .slider-row label{font-size:11px;color:var(--ink-dim);width:64px;flex-shrink:0;transition:color 1.1s ease;}
+  .slider-row .val{font-size:10px;color:var(--ink-dim);width:30px;text-align:right;flex-shrink:0;font-variant-numeric:tabular-nums;transition:color 1.1s ease;}
+  input[type=range]{-webkit-appearance:none;appearance:none;flex:1;height:3px;border-radius:2px;background:color-mix(in srgb, var(--ink) 18%, transparent);outline:none;}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:var(--accent);cursor:pointer;box-shadow:0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent);transition:background 1.1s ease;}
+  input[type=range]::-moz-range-thumb{width:14px;height:14px;border:none;border-radius:50%;background:var(--accent);cursor:pointer;box-shadow:0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent);transition:background 1.1s ease;}
+  @media (prefers-reduced-motion: reduce){.stage{transition:none;}.ripple.go{animation:none;}}
+</style>
+<base target="_blank">
+</head>
+<body>
+<div class="phone" id="phone" data-theme="sonisik" data-mode="dark">
+  <div class="screen">
+    <div class="grain"></div>
+    <div class="vignette"></div>
+    <div class="topbar">
+      <p class="brand">Son Işık</p>
+      <div class="topright">
+        <button class="modeToggle" id="modeToggle" aria-label="Gece / Şafak">
+          <span class="modeSwitch"><span class="thumb" id="modeThumb"></span></span>
+        </button>
+        <div class="meter" id="meter"><i></i><i></i><i></i><i></i><i></i></div>
+        <p class="now" id="clock">--:--</p>
+      </div>
+    </div>
+    <div class="stage" id="stage">
+      <canvas id="canvas"></canvas>
+      <p class="stage-hint" id="stageHint">Oynat'a basarak feneri yakın</p>
+    </div>
+    <div class="track">
+      <h2 id="trackTitle">Fenerin Türküsü</h2>
+      <p id="trackSub">Dünyanın ucunda, sisli denize yol gösteren bir bekçinin sessizliği</p>
+    </div>
+    <div class="transport">
+      <button class="playbtn" id="playBtn" aria-label="Oynat">
+        <span class="ripple" id="ripple"></span>
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+      </button>
+      <div class="sliders">
+        <div class="slider-row">
+          <label for="boost">Dalga</label>
+          <input type="range" id="boost" min="0" max="100" value="65">
+          <span class="val" id="boostVal">65</span>
+        </div>
+        <div class="slider-row">
+          <label for="sens">Işıltı</label>
+          <input type="range" id="sens" min="0" max="100" value="45">
+          <span class="val" id="sensVal">45</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+const phone = document.getElementById('phone');
+const stageEl = document.getElementById('stage');
+const stageHint = document.getElementById('stageHint');
+const boostEl = document.getElementById('boost');
+const sensEl = document.getElementById('sens');
+const boostVal = document.getElementById('boostVal');
+const sensVal = document.getElementById('sensVal');
+const playBtn = document.getElementById('playBtn');
+const rippleEl = document.getElementById('ripple');
+const clockEl = document.getElementById('clock');
+const meterBars = Array.from(document.querySelectorAll('#meter i'));
+const modeToggle = document.getElementById('modeToggle');
+const modeThumb = document.getElementById('modeThumb');
+
+let W,H,DPR;
+function resize(){
+  DPR = Math.min(2, window.devicePixelRatio || 1);
+  const r = canvas.getBoundingClientRect();
+  W = r.width; H = r.height;
+  canvas.width = Math.round(W*DPR); canvas.height = Math.round(H*DPR);
+  ctx.setTransform(DPR,0,0,DPR,0,0);
+}
+window.addEventListener('resize', resize);
+let cssCache = {};
+function css(v){ return cssCache[v] || (cssCache[v] = getComputedStyle(phone).getPropertyValue(v).trim()); }
+function alpha(colorVar, a){
+  const hex = css(colorVar);
+  const aa = Math.max(0,Math.min(1,a));
+  const h = Math.round(aa*255).toString(16).padStart(2,'0');
+  return hex.length===7 ? hex+h : hex;
+}
+function tickClock(){
+  const d = new Date();
+  clockEl.textContent = d.toLocaleTimeString('tr-TR',{hour:'2-digit',minute:'2-digit'});
+}
+tickClock(); setInterval(tickClock, 15000);
+
+let shakeTimer = null;
+function shakeStage(intensity){
+  stageEl.style.transform = `translate(${(Math.random()-0.5)*intensity}px, ${(Math.random()-0.5)*intensity}px)`;
+  clearTimeout(shakeTimer);
+  shakeTimer = setTimeout(()=>{ stageEl.style.transform=''; }, 85);
+}
+
+const MOON_ICON = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 12.4A9 9 0 1111.6 3a7 7 0 009.4 9.4z"/></svg>';
+const SUN_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4" fill="currentColor" stroke="none"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg>';
+let currentMode = 'dark';
+function setMode(mode){
+  currentMode = mode;
+  phone.dataset.mode = mode;
+  cssCache = {};
+  modeThumb.innerHTML = mode==='dark' ? MOON_ICON : SUN_ICON;
+}
+modeToggle.addEventListener('click', ()=>{ setMode(currentMode === 'dark' ? 'light' : 'dark'); });
+
+/* ============ REAL AUDIO ENGINE ============ */
+let actx, analyser, freqData, timeData;
+let master, bassShelf, lowpass, airShelf, comp, panner, panLfo, panLfoGain;
+let delay, delayFeedback, delayFilter, delayOut;
+let lfo, lfoGain;
+let droneOscs = [], droneLfos = [];
+let noiseBuffer, waveSrc, waveFilter, waveGain, waveSwellLfo, waveSwellGain;
+let chordIdx = 0;
+let chordTimer=null;
+let dropletHandle=null, thumpHandle=null;
+let playing = false;
+
+const CHORDS = [
+  [55.00, 82.41, 110.00, 164.81, 220.00],
+  [49.00, 73.42, 98.00, 146.83, 196.00],
+  [43.65, 65.41, 87.31, 130.81, 174.61],
+  [46.25, 69.30, 92.50, 138.59, 185.00],
+];
+function makeNoiseBuffer(){
+  const len = actx.sampleRate*2;
+  const buf = actx.createBuffer(1, len, actx.sampleRate);
+  const d = buf.getChannelData(0);
+  for(let i=0;i<len;i++) d[i] = Math.random()*2-1;
+  return buf;
+}
+function initAudio(){
+  actx = new (window.AudioContext||window.webkitAudioContext)();
+  analyser = actx.createAnalyser();
+  analyser.fftSize = 1024;
+  analyser.smoothingTimeConstant = 0.8;
+  freqData = new Uint8Array(analyser.frequencyBinCount);
+  timeData = new Uint8Array(analyser.fftSize);
+  master = actx.createGain(); master.gain.value = 0.0001;
+  bassShelf = actx.createBiquadFilter(); bassShelf.type='lowshelf'; bassShelf.frequency.value=200; bassShelf.gain.value=0;
+  lowpass = actx.createBiquadFilter(); lowpass.type='lowpass'; lowpass.frequency.value=1100; lowpass.Q.value=0.5;
+  airShelf = actx.createBiquadFilter(); airShelf.type='highshelf'; airShelf.frequency.value=5000; airShelf.gain.value=2;
+  comp = actx.createDynamicsCompressor();
+  comp.threshold.value=-22; comp.knee.value=24; comp.ratio.value=3; comp.attack.value=0.006; comp.release.value=0.25;
+  panner = actx.createStereoPanner();
+  panLfo = actx.createOscillator(); panLfo.frequency.value=0.045;
+  panLfoGain = actx.createGain(); panLfoGain.gain.value=0.35;
+  panLfo.connect(panLfoGain); panLfoGain.connect(panner.pan); panLfo.start();
+  delay = actx.createDelay(1.4); delay.delayTime.value=0.42;
+  delayFeedback = actx.createGain(); delayFeedback.gain.value=0.3;
+  delayFilter = actx.createBiquadFilter(); delayFilter.type='lowpass'; delayFilter.frequency.value=2000;
+  delay.connect(delayFilter); delayFilter.connect(delayFeedback); delayFeedback.connect(delay);
+  delayOut = actx.createGain(); delayOut.gain.value=0.4;
+  delay.connect(delayOut);
+  lowpass.connect(bassShelf); bassShelf.connect(airShelf); airShelf.connect(master);
+  delayOut.connect(master); master.connect(comp); comp.connect(panner); panner.connect(analyser); analyser.connect(actx.destination);
+  lfo = actx.createOscillator(); lfo.frequency.value=0.03;
+  lfoGain = actx.createGain(); lfoGain.gain.value=220;
+  lfo.connect(lfoGain); lfoGain.connect(lowpass.frequency); lfo.start();
+  noiseBuffer = makeNoiseBuffer();
+  waveSrc = actx.createBufferSource(); waveSrc.buffer=noiseBuffer; waveSrc.loop=true;
+  waveFilter = actx.createBiquadFilter(); waveFilter.type='bandpass'; waveFilter.frequency.value=550; waveFilter.Q.value=0.6;
+  waveGain = actx.createGain(); waveGain.gain.value=0.05;
+  waveSwellLfo = actx.createOscillator(); waveSwellLfo.frequency.value=0.085;
+  waveSwellGain = actx.createGain(); waveSwellGain.gain.value=0.045;
+  waveSwellLfo.connect(waveSwellGain); waveSwellGain.connect(waveGain.gain);
+  waveSrc.connect(waveFilter); waveFilter.connect(waveGain); waveGain.connect(lowpass);
+  waveSrc.start(); waveSwellLfo.start();
+  buildDrone(CHORDS[0]);
+  applyBoost(); applySensitivity();
+}
+function buildDrone(chord){
+  droneOscs.forEach(o=>{ try{o.stop();}catch(e){} });
+  droneLfos.forEach(o=>{ try{o.stop();}catch(e){} });
+  droneOscs = []; droneLfos = [];
+  chord.forEach((freq,i)=>{
+    const o = actx.createOscillator();
+    o.type = i===0 ? 'sine' : (i%2===0 ? 'triangle' : 'sine');
+    o.frequency.value = i===0 ? freq/2 : freq;
+    const g = actx.createGain();
+    g.gain.value = i===0 ? 0.20 : 0.04;
+    o.connect(g); g.connect(lowpass); o.start();
+    droneOscs.push(o);
+    if(i>0){
+      const dl = actx.createOscillator(); dl.frequency.value = 0.02 + i*0.011;
+      const dg = actx.createGain(); dg.gain.value = 2.5 + i*0.5;
+      dl.connect(dg); dg.connect(o.detune); dl.start();
+      droneLfos.push(dl);
+    }
+  });
+  const shimmer = actx.createOscillator(); shimmer.frequency.value=0.06;
+  const shimmerGain = actx.createGain(); shimmerGain.gain.value=500;
+  shimmer.connect(shimmerGain); shimmerGain.connect(delayFilter.frequency);
+  shimmer.start(); droneLfos.push(shimmer);
+}
+function advanceChord(){
+  chordIdx = (chordIdx+1) % CHORDS.length;
+  const chord = CHORDS[chordIdx];
+  const now = actx.currentTime;
+  droneOscs.forEach((o,i)=>{
+    if(chord[i] !== undefined){
+      const target = i===0 ? chord[i]/2 : chord[i];
+      o.frequency.linearRampToValueAtTime(target, now + 2.6);
+    }
+  });
+}
+function ping(freq, when, gainMul){ /* fener sinyali: temiz, uzun yankılı bir "ding" */
+  const t0 = actx.currentTime + (when||0);
+  const o = actx.createOscillator();
+  o.type='sine'; o.frequency.value=freq;
+  const o2 = actx.createOscillator();
+  o2.type='sine'; o2.frequency.value=freq*2.76; /* üst perde: fener camı tınısı */
+  const g = actx.createGain(); const g2 = actx.createGain();
+  g.gain.setValueAtTime(0.0001,t0);
+  g.gain.exponentialRampToValueAtTime(0.14*(gainMul||1), t0+0.012);
+  g.gain.exponentialRampToValueAtTime(0.0001, t0+1.8);
+  g2.gain.setValueAtTime(0.0001,t0);
+  g2.gain.exponentialRampToValueAtTime(0.045*(gainMul||1), t0+0.01);
+  g2.gain.exponentialRampToValueAtTime(0.0001, t0+0.7);
+  o.connect(g); o2.connect(g2); g.connect(lowpass); g2.connect(lowpass);
+  const send = actx.createGain(); send.gain.value=0.55;
+  g.connect(send); send.connect(delay);
+  o.start(t0); o.stop(t0+1.9); o2.start(t0); o2.stop(t0+0.8);
+}
+function droplet(freq, when, gainMul){
+  const t0 = actx.currentTime + (when||0);
+  const o = actx.createOscillator(); o.type='sine'; o.frequency.value=freq;
+  const g = actx.createGain();
+  g.gain.setValueAtTime(0.0001, t0);
+  g.gain.exponentialRampToValueAtTime(0.1*(gainMul||1), t0+0.01);
+  g.gain.exponentialRampToValueAtTime(0.0001, t0+0.6);
+  o.connect(g); g.connect(lowpass);
+  const send = actx.createGain(); send.gain.value=0.45;
+  g.connect(send); send.connect(delay);
+  o.start(t0); o.stop(t0+0.65);
+}
+function scheduleDroplets(){
+  if(!playing) return;
+  const chord = CHORDS[chordIdx];
+  const note = chord[1+Math.floor(Math.random()*3)] * (Math.random()<0.5?2:4);
+  droplet(note, 0, 0.7+Math.random()*0.5);
+  dropletHandle = setTimeout(scheduleDroplets, 350+Math.random()*900);
+}
+function waveThump(){
+  if(!actx) return;
+  const t0 = actx.currentTime;
+  const o = actx.createOscillator(); o.type='sine';
+  o.frequency.setValueAtTime(95, t0);
+  o.frequency.exponentialRampToValueAtTime(32, t0+0.5);
+  const g = actx.createGain();
+  g.gain.setValueAtTime(0.0001, t0);
+  g.gain.exponentialRampToValueAtTime(0.22, t0+0.05);
+  g.gain.exponentialRampToValueAtTime(0.0001, t0+0.9);
+  o.connect(g); g.connect(bassShelf);
+  o.start(t0); o.stop(t0+0.95);
+}
+function scheduleThumps(){
+  if(!playing) return;
+  waveThump();
+  thumpHandle = setTimeout(scheduleThumps, 2600+Math.random()*2200);
+}
+function splashSound(intensity){
+  if(!actx) return;
+  intensity = intensity||0.5;
+  const t0 = actx.currentTime;
+  const src = actx.createBufferSource(); src.buffer=noiseBuffer;
+  const bp = actx.createBiquadFilter(); bp.type='bandpass';
+  bp.frequency.setValueAtTime(1800, t0);
+  bp.frequency.exponentialRampToValueAtTime(500, t0+0.4);
+  bp.Q.value=0.8;
+  const g = actx.createGain();
+  g.gain.setValueAtTime(0.0001, t0);
+  g.gain.exponentialRampToValueAtTime(0.5*intensity, t0+0.02);
+  g.gain.exponentialRampToValueAtTime(0.0001, t0+0.5);
+  src.connect(bp); bp.connect(g); g.connect(bassShelf);
+  src.start(t0); src.stop(t0+0.55);
+  droplet(900+Math.random()*300, 0.05, 0.5*intensity);
+  droplet(1200+Math.random()*400, 0.15, 0.35*intensity);
+}
+function applyBoost(){
+  const v = parseFloat(boostEl.value);
+  boostVal.textContent = v;
+  if(bassShelf){ bassShelf.gain.setTargetAtTime((v-50)/50*15, actx.currentTime, 0.05); }
+  if(waveGain){ waveGain.gain.value = 0.03 + (v/100)*0.09; }
+}
+function applySensitivity(){
+  if(!analyser){ sensVal.textContent = sensEl.value; return; }
+  const v = parseFloat(sensEl.value);
+  analyser.smoothingTimeConstant = 0.88 - (v/100)*0.55;
+  if(airShelf) airShelf.gain.setTargetAtTime(1 + (v/100)*5, actx.currentTime, 0.12);
+  sensVal.textContent = v;
+}
+boostEl.addEventListener('input', applyBoost);
+sensEl.addEventListener('input', applySensitivity);
+
+async function togglePlay(){
+  rippleEl.classList.remove('go');
+  void rippleEl.offsetWidth;
+  rippleEl.classList.add('go');
+  if(!actx) initAudio();
+  if(actx && actx.state === 'suspended') actx.resume();
+  if(!playing){
+    master.gain.cancelScheduledValues(actx.currentTime);
+    master.gain.setTargetAtTime(0.4, actx.currentTime, 0.5);
+    playing = true;
+    chordTimer = setInterval(advanceChord, 7600);
+    scheduleDroplets();
+    scheduleThumps();
+    nextSignalIn = 8 + Math.random()*8;
+    updatePlayButtonState(true);
+  } else {
+    master.gain.cancelScheduledValues(actx.currentTime);
+    master.gain.setTargetAtTime(0.0001, actx.currentTime, 0.35);
+    playing = false;
+    clearInterval(chordTimer);
+    clearTimeout(dropletHandle);
+    clearTimeout(thumpHandle);
+    updatePlayButtonState(false);
+  }
+}
+function updatePlayButtonState(isPlaying){
+  if(isPlaying){
+    playBtn.querySelector('svg').innerHTML = '<rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/>';
+    stageHint.style.opacity = '0';
+  } else {
+    playBtn.querySelector('svg').innerHTML = '<path d="M8 5v14l11-7z"/>';
+    stageHint.style.opacity = '0.9';
+  }
+}
+playBtn.addEventListener('click', togglePlay);
+
+/* ============ ANALYSIS LAYER ============ */
+let t = 0;
+const BINS = 48;
+let fluxHistory = [];
+let beatCooldown = 0;
+let prevBandFrame = null;
+let smoothedEnergy = 0;
+function getBars(sensBoost){
+  const bars = new Array(BINS).fill(0.02);
+  if(!analyser){
+    for(let i=0;i<BINS;i++) bars[i] = 0.035 + 0.018*Math.sin(t*0.6 + i*0.4);
+    return bars;
+  }
+  analyser.getByteFrequencyData(freqData);
+  const usable = Math.floor(freqData.length*0.8);
+  for(let i=0;i<BINS;i++){
+    const p = i/BINS;
+    const idx = Math.floor(Math.pow(p, 1.35)*usable);
+    bars[i] = Math.max(0.02, (freqData[idx]/255) * (sensBoost||1));
+  }
+  return bars;
+}
+function bandAvg(bars, from, to){
+  from = Math.max(0, from); to = Math.min(BINS, to);
+  let s=0, n=0;
+  for(let i=from;i<to;i++){ s+=bars[i]; n++; }
+  return n ? s/n : 0;
+}
+function analyze(bars, sensBoost){
+  const sub    = bandAvg(bars, 0, 3);
+  const bass   = bandAvg(bars, 1, 7);
+  const lowMid = bandAvg(bars, 7, 15);
+  const mid    = bandAvg(bars, 15, 26);
+  const highMid= bandAvg(bars, 26, 36);
+  const treble = bandAvg(bars, 36, 46);
+  const frameEnergy = (sub*1.3 + bass) / 2.3;
+  smoothedEnergy += (frameEnergy - smoothedEnergy) * 0.12;
+  let flux = 0;
+  if(prevBandFrame){ for(let i=0;i<BINS;i++) flux += Math.max(0, bars[i]-prevBandFrame[i]); }
+  prevBandFrame = bars.slice();
+  fluxHistory.push(flux);
+  if(fluxHistory.length>30) fluxHistory.shift();
+  const avgFlux = fluxHistory.reduce((a,b)=>a+b,0)/fluxHistory.length;
+  const sensitivity = 0.5 + ((sensBoost-0.55)/1.1);
+  const fluxThresh = avgFlux * (1.55 - sensitivity*0.4) + 0.6;
+  let beat = false;
+  beatCooldown = Math.max(0, beatCooldown-1);
+  if(playing && beatCooldown===0 && flux > fluxThresh && frameEnergy > 0.22){
+    beat = true; beatCooldown = 7;
+  }
+  return {sub, bass, lowMid, mid, highMid, treble, energy: smoothedEnergy, flux, beat};
+}
+
+let sparks = [];
+function burst(cx, cy, n, colorVar, speed, life, opts){
+  opts = opts||{};
+  for(let i=0;i<n;i++){
+    const ang = Math.random()*Math.PI*2;
+    const sp = (speed||2) * (0.45+Math.random()*0.9);
+    sparks.push({
+      x:cx,y:cy,vx:Math.cos(ang)*sp,vy:Math.sin(ang)*sp,
+      r:(opts.r0||1)+Math.random()*(opts.r1||2.2),
+      life:1, decay:1/(life||40), color:colorVar,
+      grav:opts.gravity||0, drag:opts.drag!==undefined?opts.drag:0.96
+    });
+  }
+}
+function drawSparks(glow){
+  sparks.forEach(s=>{
+    s.x+=s.vx; s.y+=s.vy; s.vy+=s.grav; s.vx*=s.drag; s.vy*=s.drag; s.life-=s.decay;
+    ctx.beginPath(); ctx.arc(s.x,s.y,Math.max(0.2,s.r*s.life),0,7);
+    if(glow){ ctx.shadowColor = css(s.color); ctx.shadowBlur = 8; }
+    ctx.fillStyle = css(s.color); ctx.globalAlpha = Math.max(0,s.life);
+    ctx.fill(); ctx.globalAlpha=1; ctx.shadowBlur=0;
+  });
+  sparks = sparks.filter(s=>s.life>0);
+}
+function updateMeter(bars){
+  for(let i=0;i<5;i++){
+    const v = bars[3+i*8] || 0.03;
+    meterBars[i].style.height = (2+v*13).toFixed(1)+'px';
+    meterBars[i].style.opacity = (0.4+v*0.6).toFixed(2);
+  }
+}
+
+/* =====================================================================
+   SON IŞIK — bir kayalık, bir fener, dönen bir huzme ve sisli denizde
+   süzülen bir gemi. Bas dalgaları kabartır, tizler yıldızları uyarır;
+   huzme gemiye değdiğinde gemi üç kez yanıt verir.
+   ===================================================================== */
+const PALETTE = {
+  night:{
+    skyTop:'#030810', skyMid:'#0b2033', skyBottom:'#17374f',
+    waterTop:'#0d2738', waterBottom:'#03090f',
+    body:'#e6edf3', bodyGlow:'#b9d1e6', bodyCore:'#fdfbf0',
+    silhouette:'#02060b', rock:'#0a141e', tower:'#d8d3c4', towerBand:'#8e2f2f',
+    reflect:'#d9b46a', starColor:'#eaf1ff', beam:'#ffe9b0', lamp:'#ffd98a'
+  },
+  day:{
+    skyTop:'#a4cbda', skyMid:'#ecf4ef', skyBottom:'#fce3bc',
+    waterTop:'#aad9d3', waterBottom:'#417f88',
+    body:'#fff3d0', bodyGlow:'#ffdf9e', bodyCore:'#fffaf0',
+    silhouette:'#16262b', rock:'#3d575d', tower:'#f3ead8', towerBand:'#b0552f',
+    reflect:'#c98b2e', starColor:'#ffffff', beam:'#fff3cf', lamp:'#ffd27a'
+  }
+};
+function hexToRgbObj(h){ h=h.replace('#',''); return {r:parseInt(h.substring(0,2),16),g:parseInt(h.substring(2,4),16),b:parseInt(h.substring(4,6),16)}; }
+function lerpRgb(h1,h2,tt){ const c1=hexToRgbObj(h1),c2=hexToRgbObj(h2); return {r:c1.r+(c2.r-c1.r)*tt,g:c1.g+(c2.g-c1.g)*tt,b:c1.b+(c2.b-c1.b)*tt}; }
+let modeMix = 0;
+function pal(key, a){
+  const c = lerpRgb(PALETTE.night[key], PALETTE.day[key], modeMix);
+  if(a===undefined) return `rgb(${c.r|0},${c.g|0},${c.b|0})`;
+  return `rgba(${c.r|0},${c.g|0},${c.b|0},${Math.max(0,a)})`;
+}
+
+let stars = [];
+function initStars(){
+  stars = [];
+  for(let i=0;i<110;i++){
+    stars.push({ x:Math.random(), y:Math.random()*0.75, r:0.5+Math.random()*1.3,
+      phase:Math.random()*Math.PI*2, speed:0.3+Math.random()*1.1, baseA:0.4+Math.random()*0.6 });
+  }
+}
+initStars();
+const craters = [
+  {dx:-0.30,dy:-0.20,r:0.16},{dx:0.25,dy:0.15,r:0.12},{dx:0.05,dy:0.32,r:0.09},{dx:-0.15,dy:0.25,r:0.07}
+];
+
+const WAVE_LAYERS = [
+  { ampScale:0.34, freq:10, speed:0.55, key:'waterBottom', baseFactor:0.05 },
+  { ampScale:0.20, freq:16, speed:0.8,  key:'waterTop',    baseFactor:0.02 },
+];
+function waveY(p, e, layer, horizonY){
+  const amp = (6+e.bass*26) * layer.ampScale * 3.4;
+  const baseY = horizonY + (H-horizonY)*(0.05+layer.baseFactor);
+  return baseY
+    + Math.sin(p*layer.freq + t*layer.speed)*amp
+    + Math.sin(p*layer.freq*2.3 - t*layer.speed*1.6)*amp*0.35;
+}
+function drawWaveLayer(layer, e, horizonY){
+  ctx.beginPath();
+  ctx.moveTo(0,H+4);
+  const steps=40;
+  for(let i=0;i<=steps;i++){ const p=i/steps; ctx.lineTo(p*W, waveY(p,e,layer,horizonY)); }
+  ctx.lineTo(W,H+4);
+  ctx.closePath();
+  ctx.fillStyle = pal(layer.key, 0.92);
+  ctx.fill();
+}
+
+/* --- gemi: uzakta süzülen, sinyal veren yalnız bir vapur --- */
+let shipP = -0.25;           /* yatay konum (ekran genişliği oranı) */
+let shipDir = 1;
+let shipLights = 0;          /* 0..1: huzmeye göre parladığında artar */
+let nextSignalIn = 12;
+let signalPhase = null;      /* null veya {flashed:0, t:0} */
+let flashCount = 0;
+
+function shipPos(e, horizonY){
+  const layer = WAVE_LAYERS[1];
+  const x = shipP * W;
+  const y = waveY(shipP, e, layer, horizonY) - H*0.004;
+  return {x, y};
+}
+function drawShip(pos, e){
+  const s = Math.min(W,H)*0.0016;
+  ctx.save();
+  ctx.translate(pos.x, pos.y);
+  ctx.scale(s,s);
+  const sil = pal('silhouette',1);
+  ctx.fillStyle = sil;
+  /* gövde */
+  ctx.beginPath();
+  ctx.moveTo(-70,0); ctx.lineTo(70,0); ctx.lineTo(56,-16); ctx.lineTo(-56,-16);
+  ctx.closePath(); ctx.fill();
+  /* üst yapı + baca */
+  ctx.fillRect(-18,-30,36,14);
+  ctx.fillRect(6,-44,10,14);
+  ctx.beginPath(); ctx.arc(-8,-34,4,0,7); ctx.fill();
+  /* köprü ışıkları — huzme değince parlar */
+  const glow = 0.25 + shipLights*0.75;
+  ctx.fillStyle = pal('lamp', glow);
+  for(let i=0;i<3;i++){ ctx.beginPath(); ctx.arc(-10+i*10, -26, 2.4, 0, 7); ctx.fill(); }
+  /* direk ucu */
+  ctx.strokeStyle = sil; ctx.lineWidth=2;
+  ctx.beginPath(); ctx.moveTo(0,-30); ctx.lineTo(0,-58); ctx.stroke();
+  ctx.fillStyle = pal('lamp', glow);
+  ctx.beginPath(); ctx.arc(0,-58,2.8,0,7); ctx.fill();
+  ctx.restore();
+  /* bacadan süzülen ince duman */
+  ctx.fillStyle = pal('starColor', 0.05 + 0.04*Math.sin(t*0.7));
+  ctx.beginPath();
+  ctx.ellipse(pos.x + 12 + Math.sin(t*0.4)*4, pos.y - H*0.09, 14, 5, -0.25, 0, 7);
+  ctx.fill();
+}
+
+/* --- fener: kayalık, şeritli kule, dönen huzme --- */
+function lighthouseGeom(horizonY){
+  const baseX = W*0.76;
+  const baseY = horizonY + (H-horizonY)*0.04;
+  const scale = Math.min(W,H)*0.0011;
+  return { baseX, baseY, scale };
+}
+function drawLighthouse(geom, e, beamAngle, horizonY){
+  const { baseX, baseY, scale } = geom;
+  const sil = pal('silhouette',1);
+  ctx.save();
+  ctx.translate(baseX, baseY);
+  ctx.scale(scale, scale);
+  /* kayalık */
+  ctx.fillStyle = pal('rock',1);
+  ctx.beginPath();
+  ctx.moveTo(-150,40); ctx.lineTo(-110,-30); ctx.lineTo(-60,-52); ctx.lineTo(-10,-38);
+  ctx.lineTo(40,-58); ctx.lineTo(90,-30); ctx.lineTo(140,10); ctx.lineTo(150,40);
+  ctx.closePath(); ctx.fill();
+  ctx.fillStyle = pal('silhouette',0.9);
+  ctx.beginPath();
+  ctx.moveTo(-150,40); ctx.lineTo(-120,8); ctx.lineTo(-40,18); ctx.lineTo(30,6);
+  ctx.lineTo(110,16); ctx.lineTo(150,40); ctx.closePath(); ctx.fill();
+  /* kule: hafif konik, kırmızı-beyaz şeritli */
+  const tw = 34, th = 150, tx = 0, ty = -52;
+  ctx.beginPath();
+  ctx.moveTo(tx-tw, ty);
+  ctx.lineTo(tx-tw*0.62, ty-th);
+  ctx.lineTo(tx+tw*0.62, ty-th);
+  ctx.lineTo(tx+tw, ty);
+  ctx.closePath();
+  ctx.fillStyle = pal('tower',1); ctx.fill();
+  ctx.save();
+  ctx.clip();
+  ctx.fillStyle = pal('towerBand',0.92);
+  for(let i=0;i<4;i++){
+    const yy = ty - th*(0.16 + i*0.24);
+    ctx.fillRect(tx-tw*1.4, yy, tw*2.8, th*0.10);
+  }
+  ctx.restore();
+  /* galeri + lamba odası */
+  ctx.fillStyle = pal('silhouette',1);
+  ctx.fillRect(tx-tw*0.8, ty-th-8, tw*1.6, 6);
+  ctx.fillStyle = pal('lamp', 0.9);
+  ctx.beginPath(); ctx.arc(tx, ty-th-20, 11, 0, 7); ctx.fill();
+  ctx.fillStyle = pal('silhouette',1);
+  ctx.beginPath();
+  ctx.moveTo(tx-14, ty-th-30); ctx.lineTo(tx+14, ty-th-30); ctx.lineTo(tx, ty-th-44);
+  ctx.closePath(); ctx.fill();
+  ctx.restore();
+  return { x: baseX, y: baseY + (ty-th-20)*scale };
+}
+
+function drawBeam(lamp, angle, intensity){
+  if(intensity <= 0.01) return;
+  const len = W*1.1;
+  const spread = 0.10;
+  ctx.save();
+  ctx.globalCompositeOperation = 'lighter';
+  for(const dir of [1,-1]){ /* ana huzme + zayıf karşı huzme */
+    const a = angle*dir;
+    const str = dir===1 ? intensity : intensity*0.22;
+    const g = ctx.createLinearGradient(lamp.x, lamp.y, lamp.x+Math.cos(a)*len, lamp.y+Math.sin(a)*len);
+    g.addColorStop(0, pal('beam', 0.30*str));
+    g.addColorStop(0.5, pal('beam', 0.10*str));
+    g.addColorStop(1, pal('beam', 0));
+    ctx.fillStyle = g;
+    ctx.beginPath();
+    ctx.moveTo(lamp.x, lamp.y);
+    ctx.lineTo(lamp.x+Math.cos(a-spread)*len, lamp.y+Math.sin(a-spread)*len);
+    ctx.lineTo(lamp.x+Math.cos(a+spread)*len, lamp.y+Math.sin(a+spread)*len);
+    ctx.closePath();
+    ctx.fill();
+  }
+  ctx.restore();
+}
+
+/* --- hikâye motoru: huzme gemiyi bulur, gemi üç kez yanıt verir --- */
+function angDiff(a,b){ let d = a-b; while(d>Math.PI) d-=Math.PI*2; while(d<-Math.PI) d+=Math.PI*2; return d; }
+
+function updateStory(dt, e, horizonY, lamp){
+  if(!playing){
+    shipLights += (0.15 - shipLights)*Math.min(1,dt*2);
+    return;
+  }
+  /* gemi süzülüşü */
+  shipP += shipDir * dt * 0.0085;
+  if(shipP > 1.25){ shipP = -0.25; shipDir = 1; }
+  if(shipP < -0.30){ shipP = 1.25; shipDir = -1; }
+
+  const ship = shipPos(e, horizonY);
+  const beamA = beamAngleGlobal;
+  const toShip = Math.atan2(ship.y - lamp.y, ship.x - lamp.x);
+  const d = Math.abs(angDiff(beamA, toShip));
+  const lit = Math.max(0, 1 - d/0.16);
+
+  shipLights += (0.15 + lit*0.85 - shipLights) * Math.min(1, dt*5);
+
+  /* huzme gemiye değdiğinde: üç kez yanıt flaşı + fener "ding"i */
+  if(signalPhase === null){
+    nextSignalIn -= dt;
+    if(nextSignalIn <= 0 && lit > 0.7){
+      signalPhase = { t:0, flashes:0 };
+    }
+  } else {
+    signalPhase.t += dt;
+    const FLASH_GAP = 0.42;
+    if(signalPhase.flashes < 3 && signalPhase.t > signalPhase.flashes * FLASH_GAP){
+      signalPhase.flashes++;
+      ping(660 + signalPhase.flashes*40, 0, 0.9);
+      burst(ship.x, ship.y - 8, 12, '--a1', 1.5, 30, {gravity:0, drag:0.94, r0:0.7, r1:1.8});
+      shakeStage(0.4);
+    }
+    if(signalPhase.t > 1.8){
+      signalPhase = null;
+      nextSignalIn = 14 + Math.random()*18;
+    }
+  }
+}
+
+/* --- yüzey ışıltıları --- */
+let glints = [];
+function updateGlints(e, horizonY, dt){
+  const spawnChance = (0.12+e.treble*0.55) * (playing?1:0.15);
+  if(Math.random() < spawnChance){
+    let p = Math.random();
+    if(Math.random()<0.25) p = 0.45 + (Math.random()-0.5)*0.12;
+    const y = waveY(p, e, WAVE_LAYERS[1], horizonY) - Math.random()*3;
+    glints.push({ x:p*W, y, life:1, size:0.6+Math.random()*1.5, decay:0.8+Math.random()*1.3 });
+  }
+  glints.forEach(g=> g.life -= dt*g.decay);
+  glints = glints.filter(g=>g.life>0);
+}
+function drawGlints(){
+  glints.forEach(g=>{
+    ctx.beginPath();
+    ctx.arc(g.x, g.y, g.size*Math.max(0,g.life), 0, 7);
+    ctx.fillStyle = pal('reflect', Math.max(0,g.life)*0.85);
+    ctx.fill();
+  });
+}
+
+function drawReflection(bodyX, horizonY, e){
+  const rows=26;
+  const bandBase = W*0.1;
+  for(let i=0;i<rows;i++){
+    const p = i/rows;
+    const y = horizonY+6+p*(H-horizonY)*0.85;
+    const fade = 1-p*0.85;
+    const jitter = (Math.pow(Math.random(),2)-0.3) * (12+e.treble*38) * fade;
+    const w = (bandBase*(1-p*0.55) + jitter) * (0.6+e.energy*0.6);
+    const cx = bodyX + Math.sin(p*22 + t*1.3) * (4+(1-p)*10);
+    const h = 1.3 + Math.random()*2*fade;
+    ctx.fillStyle = pal('reflect', (0.1+Math.random()*0.2)*fade*(0.5+e.treble*0.8));
+    ctx.fillRect(cx-w/2, y, Math.max(0,w), h);
+  }
+}
+
+let beamAngleGlobal = 0;
+
+function drawSea(e, horizonY){
+  const skyGrad = ctx.createLinearGradient(0,0,0,horizonY);
+  skyGrad.addColorStop(0, pal('skyTop'));
+  skyGrad.addColorStop(0.55, pal('skyMid'));
+  skyGrad.addColorStop(1, pal('skyBottom'));
+  ctx.fillStyle = skyGrad;
+  ctx.fillRect(0,0,W,horizonY+2);
+
+  /* yıldızlar — şafakta söner */
+  const starAlpha = Math.max(0, 1-modeMix*1.7);
+  if(starAlpha>0.01){
+    stars.forEach(s=>{
+      const tw = 0.5+0.5*Math.sin(t*s.speed+s.phase);
+      ctx.beginPath();
+      ctx.arc(s.x*W, s.y*horizonY*0.9, s.r*(0.6+tw*0.6), 0, 7);
+      ctx.fillStyle = pal('starColor', starAlpha*(0.35+tw*0.65)*s.baseA);
+      ctx.fill();
+    });
+  }
+
+  /* ay / güneş */
+  const bodyX = W*0.20 + Math.sin(t*0.015)*W*0.015;
+  const bodyY = horizonY*0.24 + Math.cos(t*0.011)*7;
+  const bodyR = Math.min(W,horizonY)*0.10 + e.bass*6;
+  const glow = ctx.createRadialGradient(bodyX,bodyY,bodyR*0.15, bodyX,bodyY,bodyR*6);
+  glow.addColorStop(0, pal('bodyGlow', 0.5+e.energy*0.22));
+  glow.addColorStop(0.35, pal('bodyGlow', 0.13));
+  glow.addColorStop(1, pal('bodyGlow', 0));
+  ctx.fillStyle = glow;
+  ctx.beginPath(); ctx.arc(bodyX,bodyY,bodyR*6,0,7); ctx.fill();
+
+  if(modeMix>0.15){
+    ctx.save();
+    ctx.globalAlpha = Math.min(1,(modeMix-0.15)/0.85)*0.22;
+    ctx.strokeStyle = pal('bodyGlow'); ctx.lineWidth = 1;
+    for(let i=0;i<10;i++){
+      const ang = (i/10)*Math.PI*2 + t*0.04;
+      ctx.beginPath();
+      ctx.moveTo(bodyX+Math.cos(ang)*bodyR*1.3, bodyY+Math.sin(ang)*bodyR*1.3);
+      ctx.lineTo(bodyX+Math.cos(ang)*bodyR*3.4, bodyY+Math.sin(ang)*bodyR*3.4);
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  const bodyGrad = ctx.createRadialGradient(bodyX-bodyR*0.25,bodyY-bodyR*0.25,bodyR*0.1, bodyX,bodyY,bodyR);
+  bodyGrad.addColorStop(0, pal('bodyCore'));
+  bodyGrad.addColorStop(1, pal('body'));
+  ctx.fillStyle = bodyGrad;
+  ctx.beginPath(); ctx.arc(bodyX,bodyY,bodyR,0,7); ctx.fill();
+
+  if(modeMix<0.7){
+    ctx.globalAlpha = (1-modeMix)*0.16;
+    ctx.fillStyle = pal('skyMid');
+    craters.forEach(c=>{
+      ctx.beginPath();
+      ctx.arc(bodyX+c.dx*bodyR, bodyY+c.dy*bodyR, c.r*bodyR, 0, 7);
+      ctx.fill();
+    });
+    ctx.globalAlpha = 1;
+  }
+
+  /* ufuktaki sis */
+  const fogGrad = ctx.createLinearGradient(0,horizonY-36,0,horizonY+22);
+  fogGrad.addColorStop(0, pal('skyBottom',0));
+  fogGrad.addColorStop(0.5, pal('skyBottom',0.3));
+  fogGrad.addColorStop(1, pal('waterTop',0));
+  ctx.fillStyle = fogGrad;
+  ctx.fillRect(0,horizonY-36,W,58);
+
+  /* deniz */
+  const waterGrad = ctx.createLinearGradient(0,horizonY,0,H);
+  waterGrad.addColorStop(0, pal('waterTop'));
+  waterGrad.addColorStop(1, pal('waterBottom'));
+  ctx.fillStyle = waterGrad;
+  ctx.fillRect(0,horizonY-2,W,H-horizonY+2);
+
+  drawReflection(bodyX, horizonY, e);
+
+  /* fener + dönen huzme (gemiden önce, arkada kalsın) */
+  const geom = lighthouseGeom(horizonY);
+  const beamPulse = playing ? (0.75 + e.energy*0.5 + (e.beat?0.5:0)) : 0.35;
+  const lamp = drawLighthouse(geom, e, beamAngleGlobal, horizonY);
+  drawBeam(lamp, beamAngleGlobal, beamPulse * (0.35 + 0.65*(1-modeMix*0.4)));
+
+  /* gemi */
+  const ship = shipPos(e, horizonY);
+  drawShip(ship, e);
+
+  /* dalgalar ve ışıltılar geminin önünden geçsin */
+  drawWaveLayer(WAVE_LAYERS[0], e, horizonY);
+  drawGlints();
+  drawWaveLayer(WAVE_LAYERS[1], e, horizonY);
+
+  drawSparks(true);
+}
+
+let lastResize = 0;
+let lastFrameTime = performance.now();
+
+function render(){
+  const now = performance.now();
+  let dt = (now-lastFrameTime)/1000;
+  lastFrameTime = now;
+  if(!isFinite(dt) || dt<=0) dt = 1/60;
+  dt = Math.min(dt, 0.05);
+  const nowMs = Date.now();
+  if(nowMs - lastResize > 500){ resize(); lastResize = nowMs; }
+  t += dt*2.7;
+
+  const modeTarget = currentMode==='light' ? 1 : 0;
+  modeMix += (modeTarget-modeMix) * Math.min(1, dt*1.4);
+
+  const sensBoost = 0.55 + (parseFloat(sensEl.value)/100)*1.1;
+  const bars = getBars(sensBoost);
+  const e = analyze(bars, sensBoost);
+  updateMeter(bars);
+
+  phone.style.setProperty('--lvl', playing ? Math.min(1, e.bass*1.3) : 0);
+
+  beamAngleGlobal = t*0.30; /* huzme dönüşü */
+
+  const horizonY = H*0.60;
+  const geom = lighthouseGeom(horizonY);
+  const lampPreview = { x: geom.baseX, y: geom.baseY - (52+150+20)*geom.scale };
+  updateStory(dt, e, horizonY, lampPreview);
+  updateGlints(e, horizonY, dt);
+
+  drawSea(e, horizonY);
+
+  requestAnimationFrame(render);
+}
+
+setMode('dark');
+sensVal.textContent = sensEl.value;
+boostVal.textContent = boostEl.value;
+resize();
+render();
+</script>
+</body>
+</html>
