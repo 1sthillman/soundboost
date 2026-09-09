@@ -672,6 +672,43 @@ function setTheme(name){
   murekkepBlob = null; murekkepDrops = [];
   colDuneSeed = null; colParticles = []; colSunPulse = 0;
   inkVeins = []; inkRipples = []; inkBlobT = 0;
+  
+  // Deep Eyes: Setup pointer tracking
+  if(name === 'deep_eyes'){
+    setupDeepEyesPointerTracking();
+  } else {
+    removeDeepEyesPointerTracking();
+  }
+}
+
+// Deep Eyes pointer tracking
+let deepEyesPointerHandler = null;
+function setupDeepEyesPointerTracking(){
+  if(deepEyesPointerHandler) return; // Already setup
+  deepEyesPointerHandler = (e) => {
+    const rect = stageEl.getBoundingClientRect();
+    const px = (e.clientX - rect.left) / rect.width;
+    const py = (e.clientY - rect.top) / rect.height;
+    // Convert to gaze coordinates (-0.7 to 0.7 horizontally, -0.4 to 0.4 vertically)
+    deepEyesState.gazeTargetX = clampDE((px - 0.5) * 1.4, -0.7, 0.7);
+    deepEyesState.gazeTargetY = clampDE((py - 0.5) * 0.8, -0.4, 0.4);
+  };
+  stageEl.addEventListener('pointermove', deepEyesPointerHandler);
+  stageEl.addEventListener('pointerdown', deepEyesPointerHandler);
+  
+  // Reset gaze to center when pointer leaves
+  stageEl.addEventListener('pointerleave', () => {
+    deepEyesState.gazeTargetX = 0;
+    deepEyesState.gazeTargetY = 0;
+  });
+}
+
+function removeDeepEyesPointerTracking(){
+  if(deepEyesPointerHandler){
+    stageEl.removeEventListener('pointermove', deepEyesPointerHandler);
+    stageEl.removeEventListener('pointerdown', deepEyesPointerHandler);
+    deepEyesPointerHandler = null;
+  }
 }
 
 // CRITICAL: Expose to window for Android access
@@ -2828,12 +2865,12 @@ function initVesselTreesDE(){
   deepEyesState.vesselTrees = trees;
 }
 
-// Eye geometry
+// Eye geometry - PERFECT SCALE for mobile viewing
 function getEyeGeometryDE(open){
-  const cx = W*0.5, cy = H*0.50;
-  const rx = W*0.345;
-  const ryTop = H*0.430, ryBot = H*0.285;
-  const upTilt = -H*0.018;
+  const cx = W*0.5, cy = H*0.52;  // Slightly lower center for better framing
+  const rx = W*0.38;  // Perfect width - not too wide, not too narrow
+  const ryTop = H*0.44, ryBot = H*0.30;  // Balanced vertical size
+  const upTilt = -H*0.015;
   const left = {x:cx-rx, y:cy};
   const right = {x:cx+rx, y:cy+upTilt};
   const upperCtrl = {x:cx-rx*0.14, y:cy-ryTop*open};
@@ -2962,24 +2999,26 @@ function drawDeepEyes(bars, wave, e){
   bg.addColorStop(0,'#062230'); bg.addColorStop(1,'#010509');
   ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
 
-  // Caustic water effects
+  // Caustic water effects - OPTIMIZED (2 layers instead of 4)
   ctx.save(); ctx.globalCompositeOperation = 'lighter';
   const baseA = 0.028 + deepEyesState.redness*0.012;
-  for(let k=0;k<4;k++){
+  for(let k=0;k<2;k++){  // Reduced from 4 to 2
     ctx.beginPath();
-    const baseY = H*(0.12 + k*0.07);
-    const speed = (0.35 + k*0.12);
-    for(let x=0;x<=W;x+=7){
+    const baseY = H*(0.12 + k*0.14);
+    const speed = (0.35 + k*0.24);
+    for(let x=0;x<=W;x+=10){  // Reduced from x+=7 to x+=10 for performance
       const y = baseY + Math.sin(x*0.022 + t*speed + k*1.7)*6 + Math.sin(x*0.05 - t*speed*1.6)*3;
       if(x===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
     }
     ctx.strokeStyle = `rgba(96,225,208,${baseA})`;
-    ctx.lineWidth = 5 + k*2; ctx.filter = 'blur(3px)'; ctx.stroke();
+    ctx.lineWidth = 6 + k*3; ctx.filter = 'blur(3px)'; ctx.stroke();
   }
   ctx.filter = 'none'; ctx.restore();
 
-  // Floating particles
-  BUBBLES_DE.forEach(b=>{
+  // Floating particles - OPTIMIZED (fewer particles)
+  // Only draw every other bubble for performance
+  for(let i=0; i<BUBBLES_DE.length; i+=2){
+    const b = BUBBLES_DE[i];
     const span = H+20;
     const yy = (((b.y*H - t*b.speed*6) % span) + span) % span - 10;
     const xx = b.x*W + Math.sin(t*0.4+b.phase)*b.drift;
@@ -2989,14 +3028,16 @@ function drawDeepEyes(bars, wave, e){
     grad.addColorStop(1,'rgba(180,240,235,0)');
     ctx.fillStyle = grad;
     ctx.beginPath(); ctx.arc(xx,yy,r,0,7); ctx.fill();
-  });
-  SNOW_DE.forEach(s=>{
+  }
+  // Snow particles - only every third one
+  for(let i=0; i<SNOW_DE.length; i+=3){
+    const s = SNOW_DE[i];
     const span = H+10;
     const yy = (((s.y*H - t*s.vy) % span) + span) % span - 5;
     const xx = s.x*W + Math.sin(t*0.25+s.phase)*s.drift;
     ctx.fillStyle = `rgba(200,240,235,${(s.op*(0.6+0.4*Math.sin(t+s.phase)))})`;
     ctx.beginPath(); ctx.arc(xx,yy,s.r,0,7); ctx.fill();
-  });
+  }
 
   const g = getEyeGeometryDE(deepEyesState.openCur);
   const apH = 0.5*g.ryTop*deepEyesState.restOpen + 0.5*g.ryBot*deepEyesState.restOpen;
@@ -3227,15 +3268,16 @@ function drawDeepEyes(bars, wave, e){
   ctx.quadraticCurveTo(g.upperCtrl.x, g.upperCtrl.y-apH*0.30, g.right.x+3, g.right.y-3);
   ctx.stroke();
 
-  // Lashes (simplified)
+  // Lashes - ONLY react to sound (no random jitter)
   const LASH_N = 18;
   const maxLen = Math.max(18, g.rx*0.46);
+  const lashFlutter = deepEyesState.trebleEnv * 0.15;  // Only treble-based movement
   for(let i=0;i<LASH_N;i++){
     const tt = 0.06 + (i/(LASH_N-1))*0.88;
     const basex = (1-tt)*(1-tt)*g.left.x + 2*(1-tt)*tt*g.upperCtrl.x + tt*tt*g.right.x;
     const basey = (1-tt)*(1-tt)*g.left.y + 2*(1-tt)*tt*g.upperCtrl.y + tt*tt*g.right.y;
     const sweep = (tt-0.5)*0.85;
-    const angle = -Math.PI/2 + sweep + (Math.random()-0.5)*0.16;
+    const angle = -Math.PI/2 + sweep + lashFlutter * Math.sin(t*7 + i);  // Treble-based flutter only
     const lenFactor = Math.pow(Math.sin(Math.PI*tt), 0.85);
     const length = (11 + lenFactor*maxLen) * (1+deepEyesState.bassEnv*0.12) * (0.55+0.45*deepEyesState.openCur);
     const endx = basex + Math.cos(angle)*length;
@@ -3279,16 +3321,12 @@ function drawDeepEyes(bars, wave, e){
   deepEyesState.openTarget = deepEyesState.restOpen;
   deepEyesState.openCur = approachDE(deepEyesState.openCur, deepEyesState.openTarget, dt, 10);
 
-  // Idle gaze drift
-  if(now - deepEyesState.lastIdleDrift > 2500){
-    deepEyesState.gazeTargetX = clampDE(deepEyesState.gazeTargetX + (Math.random()-0.5)*0.5, -0.35, 0.35);
-    deepEyesState.gazeTargetY = clampDE((Math.random()-0.5)*0.3, -0.3, 0.3);
-    deepEyesState.lastIdleDrift = now;
-  }
-  deepEyesState.gazeX = approachDE(deepEyesState.gazeX, deepEyesState.gazeTargetX, dt, 1.4);
-  deepEyesState.gazeY = approachDE(deepEyesState.gazeY, deepEyesState.gazeTargetY, dt, 1.2);
+  // Pointer tracking - eye follows where you touch (NO idle drift)
+  // gazeTargetX/Y are set by pointer events, just interpolate towards them
+  deepEyesState.gazeX = approachDE(deepEyesState.gazeX, deepEyesState.gazeTargetX, dt, 2.5);
+  deepEyesState.gazeY = approachDE(deepEyesState.gazeY, deepEyesState.gazeTargetY, dt, 2.2);
   
-  // Tremor when red
+  // Tremor when red (only)
   if(deepEyesState.redness > 0.25){
     deepEyesState.gazeX += (Math.random()-0.5)*0.045*(deepEyesState.redness-0.2);
     deepEyesState.gazeY += (Math.random()-0.5)*0.03*(deepEyesState.redness-0.2);
