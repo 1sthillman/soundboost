@@ -10,7 +10,7 @@ enum class AppTheme {
     MEHTAP,          // 🌙 Mehtap - Moonlight on still water, patient fisherman
     SUMI,            // 🎨 Sumi-e - Japanese ink painting
     AURORA,          // 🌌 Kutup Şafağı - Northern lights  
-    NOVA,            // ⭐ Nova - Stellar explosion
+    EYES,            // 👁️ Derin Göz - Ocean eye that weeps tears and reddens with sound
     MYCEL,           // 🍄 Miselyum - Bioluminescent network
     REEF,            // 🐠 Derin Işıltı - Deep sea bioluminescence
     MONSOON,         // ⛈️ Muson - Storm with lightning
@@ -23,7 +23,7 @@ enum class ColorAccent {
     MEHTAP_GOLD,     // #f2b155
     SUMI_RED,        // #c1442c
     AURORA_CYAN,     // #4fd8b0
-    NOVA_PINK,       // #ff3d7a
+    EYES_CYAN,       // #3fe0d0
     MYCEL_GREEN,     // #6dffb0
     REEF_CYAN,       // #12e0bd
     MONSOON_BLUE,    // #9cc2ff
@@ -83,14 +83,14 @@ fun getThemeColors(theme: AppTheme, accent: ColorAccent): ThemeColors {
             accent2 = Color(0xFF8a6bff),
             isDark = true
         )
-        AppTheme.NOVA -> ThemeColors(
-            primary = Color(0xFFff3d7a),        // --a1
-            secondary = Color(0xFFffcf6b),      // --a2
-            background = Color(0xFF030110),     // --bg0
-            surface = Color(0xFF0d0620),        // --bg1
-            onSurface = Color(0xFFf5eeff),      // --ink
-            accent1 = Color(0xFFff3d7a),
-            accent2 = Color(0xFFffcf6b),
+        AppTheme.EYES -> ThemeColors(
+            primary = Color(0xFF3fe0d0),        // --accent (turquoise eye glow)
+            secondary = Color(0xFF2fd9c9),      // --a1 (bright cyan)
+            background = Color(0xFF020a10),     // --bg0 (deep ocean)
+            surface = Color(0xFF04141e),        // --bg1
+            onSurface = Color(0xFFdff6ff),      // --ink (light cyan)
+            accent1 = Color(0xFF2fd9c9),
+            accent2 = Color(0xFF0e5f7a),        // --a2 (deep teal)
             isDark = true
         )
         AppTheme.MYCEL -> ThemeColors(
@@ -161,7 +161,7 @@ private fun getAccentColor1(accent: ColorAccent): Color {
         ColorAccent.MEHTAP_GOLD -> Color(0xFFf2b155)
         ColorAccent.SUMI_RED -> Color(0xFFc1442c)
         ColorAccent.AURORA_CYAN -> Color(0xFF4fd8b0)
-        ColorAccent.NOVA_PINK -> Color(0xFFff3d7a)
+        ColorAccent.EYES_CYAN -> Color(0xFF3fe0d0)
         ColorAccent.MYCEL_GREEN -> Color(0xFF6dffb0)
         ColorAccent.REEF_CYAN -> Color(0xFF12e0bd)
         ColorAccent.MONSOON_BLUE -> Color(0xFF9cc2ff)
@@ -176,7 +176,7 @@ private fun getAccentColor2(accent: ColorAccent): Color {
         ColorAccent.MEHTAP_GOLD -> Color(0xFF4a6fa5)
         ColorAccent.SUMI_RED -> Color(0xFFe9e2d0)
         ColorAccent.AURORA_CYAN -> Color(0xFF8a6bff)
-        ColorAccent.NOVA_PINK -> Color(0xFFffcf6b)
+        ColorAccent.EYES_CYAN -> Color(0xFF0e5f7a)
         ColorAccent.MYCEL_GREEN -> Color(0xFFffd58a)
         ColorAccent.REEF_CYAN -> Color(0xFFff6bcf)
         ColorAccent.MONSOON_BLUE -> Color(0xFFb48bff)

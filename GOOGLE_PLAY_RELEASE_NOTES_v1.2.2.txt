@@ -1,0 +1,179 @@
+════════════════════════════════════════════════════════════════
+  GOOGLE PLAY CONSOLE - RELEASE NOTES v1.2.2 (10 LANGUAGES)
+  Kopyala-Yapıştır Formatı
+════════════════════════════════════════════════════════════════
+
+<tr-TR>
+🔧 v1.2.2 - Uyumluluk ve Performans Güncellemesi
+
+✅ Android 16 (API 36) Desteği
+• En güncel Android sürümü ile tam uyumlu
+• Google Play 2026 gereksinimlerini karşılar
+• Sistem kararlılığı ve performans iyileştirmeleri
+
+🔐 Gizlilik Önceliklidir
+• Reklam yok, veri toplama yok
+• Kullanıcı gizliliğine tam saygı
+• Tüm veriler cihazınızda kalır
+
+Bu güncelleme Google Play politika uyumluluğu için yayınlandı.
+</tr-TR>
+
+<ar>
+🔧 الإصدار 1.2.2 - تحديث التوافق والأداء
+
+✅ دعم Android 16 (API 36)
+• توافق كامل مع أحدث إصدار من Android
+• يلبي متطلبات Google Play 2026
+• تحسينات في استقرار النظام والأداء
+
+🔐 الخصوصية أولاً
+• بدون إعلانات، بدون جمع بيانات
+• احترام كامل لخصوصية المستخدم
+• جميع البيانات تبقى على جهازك
+
+تم إصدار هذا التحديث للامتثال لسياسات Google Play.
+</ar>
+
+<de-DE>
+🔧 v1.2.2 - Kompatibilitäts- und Leistungsupdate
+
+✅ Android 16 (API 36) Unterstützung
+• Vollständige Kompatibilität mit neuester Android-Version
+• Erfüllt Google Play 2026 Anforderungen
+• Systemstabilität und Leistungsverbesserungen
+
+🔐 Datenschutz steht an erster Stelle
+• Keine Werbung, keine Datenerfassung
+• Volle Achtung der Privatsphäre
+• Alle Daten bleiben auf Ihrem Gerät
+
+Dieses Update wurde für Google Play-Richtlinien veröffentlicht.
+</de-DE>
+
+<en-US>
+🔧 v1.2.2 - Compliance and Performance Update
+
+✅ Android 16 (API 36) Support
+• Full compatibility with latest Android version
+• Meets Google Play 2026 requirements
+• System stability and performance improvements
+
+🔐 Privacy First
+• No ads, no data collection
+• Full respect for user privacy
+• All data stays on your device
+
+This update is published for Google Play policy compliance.
+</en-US>
+
+<es-ES>
+🔧 v1.2.2 - Actualización de Cumplimiento y Rendimiento
+
+✅ Compatibilidad con Android 16 (API 36)
+• Compatibilidad completa con la última versión de Android
+• Cumple con los requisitos de Google Play 2026
+• Mejoras en estabilidad del sistema y rendimiento
+
+🔐 Privacidad Primero
+• Sin anuncios, sin recopilación de datos
+• Respeto total por la privacidad del usuario
+• Todos los datos permanecen en tu dispositivo
+
+Esta actualización se publica para el cumplimiento de políticas de Google Play.
+</es-ES>
+
+<fr-FR>
+🔧 v1.2.2 - Mise à Jour de Conformité et Performance
+
+✅ Prise en Charge d'Android 16 (API 36)
+• Compatibilité complète avec la dernière version d'Android
+• Conforme aux exigences Google Play 2026
+• Améliorations de la stabilité système et des performances
+
+🔐 Confidentialité Avant Tout
+• Pas de publicités, pas de collecte de données
+• Respect total de la vie privée de l'utilisateur
+• Toutes les données restent sur votre appareil
+
+Cette mise à jour est publiée pour la conformité aux politiques Google Play.
+</fr-FR>
+
+<ja-JP>
+🔧 v1.2.2 - コンプライアンスとパフォーマンスの更新
+
+✅ Android 16 (API 36) サポート
+• 最新のAndroidバージョンとの完全な互換性
+• Google Play 2026要件を満たしています
+• システムの安定性とパフォーマンスの向上
+
+🔐 プライバシー優先
+• 広告なし、データ収集なし
+• ユーザーのプライバシーを完全に尊重
+• すべてのデータはデバイスに保存されます
+
+この更新はGoogle Playポリシー準拠のために公開されました。
+</ja-JP>
+
+<ko-KR>
+🔧 v1.2.2 - 규정 준수 및 성능 업데이트
+
+✅ Android 16 (API 36) 지원
+• 최신 Android 버전과 완벽한 호환
+• Google Play 2026 요구사항 충족
+• 시스템 안정성 및 성능 개선
+
+🔐 개인정보 보호 우선
+• 광고 없음, 데이터 수집 없음
+• 사용자 개인정보 완전 존중
+• 모든 데이터는 기기에 저장됩니다
+
+이 업데이트는 Google Play 정책 준수를 위해 출시되었습니다.
+</ko-KR>
+
+<ru-RU>
+🔧 v1.2.2 - Обновление Соответствия и Производительности
+
+✅ Поддержка Android 16 (API 36)
+• Полная совместимость с последней версией Android
+• Соответствует требованиям Google Play 2026
+• Улучшения стабильности системы и производительности
+
+🔐 Конфиденциальность Превыше Всего
+• Без рекламы, без сбора данных
+• Полное уважение к конфиденциальности пользователя
+• Все данные остаются на вашем устройстве
+
+Это обновление опубликовано для соответствия политикам Google Play.
+</ru-RU>
+
+<zh-CN>
+🔧 v1.2.2 - 合规性与性能更新
+
+✅ Android 16 (API 36) 支持
+• 与最新 Android 版本完全兼容
+• 符合 Google Play 2026 要求
+• 系统稳定性和性能改进
+
+🔐 隐私优先
+• 无广告、无数据收集
+• 完全尊重用户隐私
+• 所有数据保留在您的设备上
+
+此更新是为了符合 Google Play 政策而发布的。
+</zh-CN>
+
+════════════════════════════════════════════════════════════════
+  USAGE INSTRUCTIONS / KULLANIM TALIMATLARI
+════════════════════════════════════════════════════════════════
+
+1. Google Play Console'a git
+2. Yeni sürüm oluştur sayfasında "Sürüm notları" bölümünü bul
+3. Her dil için yukarıdaki metni AYNEN kopyala-yapıştır
+   (Her dilin başındaki ve sonundaki etiketlerle birlikte)
+4. Tüm 10 dili ekledikten sonra kaydet
+
+NOT: <tr-TR> ve </tr-TR> gibi etiketler DAHİL kopyalanmalıdır!
+     Google Play Console bu etiketleri otomatik olarak işleyecektir.
+
+════════════════════════════════════════════════════════════════

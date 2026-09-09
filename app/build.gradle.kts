@@ -24,14 +24,14 @@ configurations.all {
 
 android {
     namespace = "com.soundboost"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.soundboost"
         minSdk = 24
-        targetSdk = 35
-        versionCode = 7
-        versionName = "1.1.0"
+        targetSdk = 36
+        versionCode = 20
+        versionName = "1.3.2"
         
         setProperty("archivesBaseName", "SoundSTBoost-v$versionName")
     }

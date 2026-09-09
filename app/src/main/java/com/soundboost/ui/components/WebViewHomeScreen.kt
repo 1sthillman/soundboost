@@ -120,7 +120,7 @@ fun WebViewHomeScreen(
                 com.soundboost.ui.theme.AppTheme.MEHTAP -> "mehtap"
                 com.soundboost.ui.theme.AppTheme.SUMI -> "sumi"
                 com.soundboost.ui.theme.AppTheme.AURORA -> "aurora"
-                com.soundboost.ui.theme.AppTheme.NOVA -> "nova"
+                com.soundboost.ui.theme.AppTheme.EYES -> "eyes"
                 com.soundboost.ui.theme.AppTheme.MYCEL -> "mycel"
                 com.soundboost.ui.theme.AppTheme.REEF -> "reef"
                 com.soundboost.ui.theme.AppTheme.MONSOON -> "monsoon"
@@ -209,7 +209,7 @@ fun WebViewHomeScreen(
             com.soundboost.ui.theme.AppTheme.MEHTAP -> "mehtap"
             com.soundboost.ui.theme.AppTheme.SUMI -> "sumi"
             com.soundboost.ui.theme.AppTheme.AURORA -> "aurora"
-            com.soundboost.ui.theme.AppTheme.NOVA -> "nova"
+            com.soundboost.ui.theme.AppTheme.EYES -> "eyes"
             com.soundboost.ui.theme.AppTheme.MYCEL -> "mycel"
             com.soundboost.ui.theme.AppTheme.REEF -> "reef"
             com.soundboost.ui.theme.AppTheme.MONSOON -> "monsoon"
@@ -369,7 +369,7 @@ fun WebViewHomeScreen(
                 com.soundboost.ui.theme.AppTheme.MEHTAP -> "mehtap"
                 com.soundboost.ui.theme.AppTheme.SUMI -> "sumi"
                 com.soundboost.ui.theme.AppTheme.AURORA -> "aurora"
-                com.soundboost.ui.theme.AppTheme.NOVA -> "nova"
+                com.soundboost.ui.theme.AppTheme.EYES -> "eyes"
                 com.soundboost.ui.theme.AppTheme.MYCEL -> "mycel"
                 com.soundboost.ui.theme.AppTheme.REEF -> "reef"
                 com.soundboost.ui.theme.AppTheme.MONSOON -> "monsoon"
@@ -464,7 +464,7 @@ fun WebViewHomeScreen(
                             com.soundboost.ui.theme.AppTheme.MEHTAP -> "mehtap"
                             com.soundboost.ui.theme.AppTheme.SUMI -> "sumi"
                             com.soundboost.ui.theme.AppTheme.AURORA -> "aurora"
-                            com.soundboost.ui.theme.AppTheme.NOVA -> "nova"
+                            com.soundboost.ui.theme.AppTheme.EYES -> "eyes"
                             com.soundboost.ui.theme.AppTheme.MYCEL -> "mycel"
                             com.soundboost.ui.theme.AppTheme.REEF -> "reef"
                             com.soundboost.ui.theme.AppTheme.MONSOON -> "monsoon"
@@ -514,7 +514,7 @@ fun WebViewHomeScreen(
                                 "mehtap" -> com.soundboost.ui.theme.AppTheme.MEHTAP
                                 "sumi" -> com.soundboost.ui.theme.AppTheme.SUMI
                                 "aurora" -> com.soundboost.ui.theme.AppTheme.AURORA
-                                "nova" -> com.soundboost.ui.theme.AppTheme.NOVA
+                                "eyes" -> com.soundboost.ui.theme.AppTheme.EYES
                                 "mycel" -> com.soundboost.ui.theme.AppTheme.MYCEL
                                 "reef" -> com.soundboost.ui.theme.AppTheme.REEF
                                 "monsoon" -> com.soundboost.ui.theme.AppTheme.MONSOON

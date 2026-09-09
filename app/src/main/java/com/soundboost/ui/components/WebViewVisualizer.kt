@@ -24,7 +24,7 @@ fun WebViewVisualizer(
     val themeName = when (theme) {
         AppTheme.SUMI -> "sumi"
         AppTheme.AURORA -> "aurora"
-        AppTheme.NOVA -> "nova"
+        AppTheme.EYES -> "eyes"
         AppTheme.MYCEL -> "mycel"
         AppTheme.REEF -> "reef"
         AppTheme.MONSOON -> "monsoon"

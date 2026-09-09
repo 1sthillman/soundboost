@@ -95,19 +95,88 @@ fun WebViewHomeScreenPersistent(
         }
     }
     
-    // Sync ONLY when state actually changes (not on every recomposition)
-    LaunchedEffect(
-        state.isBoostEnabled,
-        state.masterGainPercent,
-        state.sensitivity,
-        state.theme,
-        effectiveDarkMode,
-        currentLanguage.code
-    ) {
-        // Skip if not ready or haven't done initial sync yet
+    // Sync ONLY specific values when they change (not entire state)
+    // Volume slider - isolated update
+    LaunchedEffect(state.masterGainPercent) {
         if (!isManagerReady || !hasInitialSynced) return@LaunchedEffect
         
-        android.util.Log.d("WebViewPersistent", "🔄 State changed - syncing once")
+        val wv = PersistentWebViewManager.getWebView(context)
+        android.util.Log.d("WebViewPersistent", "🎚️ Volume changed: ${state.masterGainPercent}")
+        wv.evaluateJavascript(
+            "if(typeof window.setVolumeFromKotlin === 'function') { window.setVolumeFromKotlin(${state.masterGainPercent}); }",
+            null
+        )
+    }
+    
+    // Sensitivity slider - isolated update
+    LaunchedEffect(state.sensitivity) {
+        if (!isManagerReady || !hasInitialSynced) return@LaunchedEffect
+        
+        val wv = PersistentWebViewManager.getWebView(context)
+        android.util.Log.d("WebViewPersistent", "📊 Sensitivity changed: ${state.sensitivity}")
+        wv.evaluateJavascript("""
+            if(document.getElementById('sens')) {
+                document.getElementById('sens').value = ${state.sensitivity};
+                if(document.getElementById('sensVal')) {
+                    document.getElementById('sensVal').textContent = ${state.sensitivity};
+                }
+            }
+        """.trimIndent(), null)
+    }
+    
+    // Boost toggle - isolated update
+    LaunchedEffect(state.isBoostEnabled) {
+        if (!isManagerReady || !hasInitialSynced) return@LaunchedEffect
+        
+        val wv = PersistentWebViewManager.getWebView(context)
+        android.util.Log.d("WebViewPersistent", "▶️ Boost changed: ${state.isBoostEnabled}")
+        wv.evaluateJavascript(
+            "if(typeof window.updatePlayButtonState === 'function') { window.updatePlayButtonState(${state.isBoostEnabled}); }",
+            null
+        )
+    }
+    
+    // Theme - isolated update (only when theme actually changes)
+    LaunchedEffect(state.theme) {
+        if (!isManagerReady || !hasInitialSynced) return@LaunchedEffect
+        
+        val themeName = when (state.theme) {
+            com.soundboost.ui.theme.AppTheme.MEHTAP -> "mehtap"
+            com.soundboost.ui.theme.AppTheme.SUMI -> "sumi"
+            com.soundboost.ui.theme.AppTheme.AURORA -> "aurora"
+            com.soundboost.ui.theme.AppTheme.EYES -> "eyes"
+            com.soundboost.ui.theme.AppTheme.MYCEL -> "mycel"
+            com.soundboost.ui.theme.AppTheme.REEF -> "reef"
+            com.soundboost.ui.theme.AppTheme.MONSOON -> "monsoon"
+            com.soundboost.ui.theme.AppTheme.MUREKKEP -> "murekkep"
+            com.soundboost.ui.theme.AppTheme.COL -> "col"
+            com.soundboost.ui.theme.AppTheme.DIVIT -> "divit"
+        }
+        
+        val wv = PersistentWebViewManager.getWebView(context)
+        android.util.Log.d("WebViewPersistent", "🎨 Theme changed: $themeName")
+        wv.evaluateJavascript(
+            "if(typeof window.setThemeFromAndroid === 'function') { window.setThemeFromAndroid('$themeName'); }",
+            null
+        )
+    }
+    
+    // Dark mode - isolated update
+    LaunchedEffect(effectiveDarkMode) {
+        if (!isManagerReady || !hasInitialSynced) return@LaunchedEffect
+        
+        val mode = if (effectiveDarkMode) "dark" else "light"
+        val wv = PersistentWebViewManager.getWebView(context)
+        android.util.Log.d("WebViewPersistent", "🌓 Mode changed: $mode")
+        wv.evaluateJavascript(
+            "if(typeof window.setModeFromAndroid === 'function') { window.setModeFromAndroid('$mode'); }",
+            null
+        )
+    }
+    
+    // Language - isolated update
+    LaunchedEffect(currentLanguage.code) {
+        if (!isManagerReady || !hasInitialSynced) return@LaunchedEffect
         
         val langCode = when (currentLanguage.code) {
             "tr" -> "tr"; "en" -> "en"; "de" -> "de"; "fr" -> "fr"
@@ -117,14 +186,11 @@ fun WebViewHomeScreenPersistent(
             else -> "en"
         }
         
-        // Single sync - no repeats
-        PersistentWebViewManager.syncState(
-            isBoostEnabled = state.isBoostEnabled,
-            masterGainPercent = state.masterGainPercent,
-            sensitivity = state.sensitivity,
-            theme = state.theme,
-            isDarkMode = effectiveDarkMode,
-            languageCode = langCode
+        val wv = PersistentWebViewManager.getWebView(context)
+        android.util.Log.d("WebViewPersistent", "🌐 Language changed: $langCode")
+        wv.evaluateJavascript(
+            "if(typeof window.setLanguage === 'function') { window.setLanguage('$langCode'); }",
+            null
         )
     }
     

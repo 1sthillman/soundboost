@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rezonans — Derin Göz: Gözyaşı</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --font-display:'Fraunces',serif;
+    --font-ui:'Space Grotesk',sans-serif;
+    --bg0:#020a10; --bg1:#04141e; --ink:#dff6ff; --ink-dim:#5f8ea0;
+    --a1:#2fd9c9; --a2:#0e5f7a; --accent:#3fe0d0; --a3:#08222e;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-tap-highlight-color:transparent;}
+  body{
+    margin:0; min-height:100vh; display:flex; align-items:center; justify-content:center;
+    background:radial-gradient(120% 120% at 50% 0%, #061219 0%, #01040a 65%);
+    font-family:var(--font-ui); padding:32px 12px;
+  }
+  .phone{
+    position:relative; width:100%; max-width:390px; border-radius:38px; padding:14px;
+    background:linear-gradient(160deg, color-mix(in srgb, var(--bg0) 92%, white 3%), var(--bg0) 40%);
+    color:var(--ink);
+    box-shadow:
+      0 40px 90px -20px rgba(0,0,0,.7),
+      0 8px 24px -8px rgba(0,0,0,.5),
+      inset 0 0 0 1px rgba(255,255,255,.05),
+      inset 0 1px 0 rgba(255,255,255,.08);
+  }
+  .phone::before{
+    content:''; position:absolute; inset:0; border-radius:38px; padding:1px;
+    background:linear-gradient(160deg, color-mix(in srgb, var(--accent) 35%, transparent), transparent 42%);
+    -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite:xor; mask-composite:exclude;
+    pointer-events:none; opacity:.6;
+  }
+  .notch{
+    position:absolute; top:14px; left:50%; transform:translateX(-50%);
+    width:84px; height:22px; background:#000; border-radius:14px; z-index:6;
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,.04);
+    display:flex; align-items:center; justify-content:flex-end; padding-right:10px;
+  }
+  .notch i{width:6px; height:6px; border-radius:50%; background:#141414; box-shadow:inset 0 0 2px rgba(255,255,255,.18), 0 0 4px rgba(80,180,255,.25);}
+  .screen{
+    position:relative; overflow:hidden;
+    background:radial-gradient(120% 90% at 50% -10%, var(--bg1), var(--bg0) 65%);
+    border-radius:27px; padding:34px 18px 16px;
+    display:flex; flex-direction:column; gap:14px; min-height:672px;
+    box-shadow:inset 0 0 40px rgba(0,0,0,.35);
+  }
+  .sheen{
+    position:absolute; inset:0; pointer-events:none; z-index:4; border-radius:27px;
+    background:linear-gradient(115deg, rgba(255,255,255,.05) 0%, rgba(255,255,255,0) 18%, rgba(255,255,255,0) 82%, rgba(255,255,255,.03) 100%);
+  }
+  .grain{
+    position:absolute; inset:0; pointer-events:none; mix-blend-mode:overlay;
+    opacity:.03; z-index:5;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    background-size:160px;
+  }
+  .vignette{
+    position:absolute; inset:0; pointer-events:none; z-index:4; border-radius:27px;
+    box-shadow:inset 0 0 70px 10px rgba(0,0,0,.45);
+  }
+  .topbar{display:flex; align-items:center; justify-content:space-between; position:relative; z-index:2;}
+  .brand{font-family:var(--font-display); font-weight:600; font-style:italic; font-size:22px; letter-spacing:-0.01em; margin:0; display:flex; align-items:baseline; gap:.04em;}
+  .brand .re{color:var(--ink);}
+  .brand .zo{color:var(--accent); text-shadow:0 0 18px color-mix(in srgb, var(--accent) 55%, transparent);}
+  .brand .nans{color:var(--ink-dim); font-style:normal; font-weight:500; font-family:var(--font-ui); font-size:15px;}
+  .topright{display:flex; align-items:center; gap:10px;}
+  .meter{display:flex; align-items:flex-end; gap:2.5px; height:14px;}
+  .meter i{display:block; width:2.5px; border-radius:1px; background:var(--accent); height:2px; opacity:.85;}
+  .now{font-size:11px; color:var(--ink-dim); margin:0; font-variant-numeric:tabular-nums;}
+
+  .stage{
+    position:relative; border-radius:20px; overflow:hidden; height:294px; cursor:crosshair;
+    background:#00050a; z-index:2;
+    box-shadow:
+      0 0 0 1px rgba(255,255,255,.05),
+      0 18px 40px -14px rgba(0,0,0,.6),
+      0 0 46px calc(var(--lvl, 0) * 34px) color-mix(in srgb, var(--accent) 40%, transparent),
+      0 0 74px calc(var(--red, 0) * 48px) rgba(255,64,64,.34);
+    transition:box-shadow .12s linear;
+  }
+  canvas{display:block; width:100%; height:100%;}
+  .stage-hint{
+    position:absolute; inset:auto 0 13px 0; text-align:center; font-size:11px;
+    color:var(--ink-dim); opacity:.9; pointer-events:none; letter-spacing:.01em;
+    transition:opacity .5s ease;
+  }
+  .track{margin-top:-2px; position:relative; z-index:2;}
+  .track h2{font-family:var(--font-display); font-weight:600; font-style:italic; font-size:20px; margin:0 0 2px; letter-spacing:-0.01em;}
+  .track p{font-size:12px; color:var(--ink-dim); margin:0;}
+  .transport{display:flex; align-items:center; gap:16px; position:relative; z-index:2;}
+  .playbtn{
+    position:relative; width:56px; height:56px; border-radius:50%; border:none; cursor:pointer;
+    background:radial-gradient(circle at 35% 30%, color-mix(in srgb, var(--accent) 100%, white 25%), var(--accent) 70%);
+    color:var(--bg0); display:flex; align-items:center; justify-content:center;
+    flex-shrink:0; transition:transform .15s ease, box-shadow .1s linear;
+    box-shadow:
+      inset 0 2px 3px rgba(255,255,255,.35),
+      inset 0 -3px 5px rgba(0,0,0,.25),
+      0 4px 14px -2px color-mix(in srgb, var(--accent) 60%, transparent),
+      0 0 0 calc(4px + var(--lvl, 0) * 14px) color-mix(in srgb, var(--accent) calc(8% + var(--lvl,0) * 22%), transparent);
+  }
+  .playbtn:active{transform:scale(.92);}
+  .playbtn svg{width:20px; height:20px; position:relative; z-index:1;}
+  .ripple{position:absolute; inset:0; border-radius:50%; border:1.5px solid var(--accent); opacity:0; pointer-events:none;}
+  .ripple.go{animation:rippleOut .55s ease-out;}
+  @keyframes rippleOut{0%{transform:scale(.7); opacity:.65;} 100%{transform:scale(1.9); opacity:0;}}
+  .sliders{flex:1; display:flex; flex-direction:column; gap:10px;}
+  .slider-row{display:flex; align-items:center; gap:10px;}
+  .slider-row label{font-size:11px; color:var(--ink-dim); width:64px; flex-shrink:0;}
+  .slider-row .val{font-size:10px; color:var(--ink-dim); width:30px; text-align:right; flex-shrink:0; font-variant-numeric:tabular-nums;}
+  input[type=range]{-webkit-appearance:none; appearance:none; flex:1; height:3px; border-radius:2px; background:color-mix(in srgb, var(--ink) 18%, transparent); outline:none;}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none; width:14px; height:14px; border-radius:50%; background:var(--accent); cursor:pointer; box-shadow:0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent);}
+  input[type=range]::-moz-range-thumb{width:14px; height:14px; border:none; border-radius:50%; background:var(--accent); cursor:pointer; box-shadow:0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent);}
+  .navbar{display:flex; justify-content:space-around; padding-top:8px; margin-top:auto; border-top:1px solid color-mix(in srgb, var(--ink) 12%, transparent); position:relative; z-index:2;}
+  .navitem{display:flex; flex-direction:column; align-items:center; gap:4px; color:var(--ink-dim); font-size:10px; background:none; border:none; font-family:var(--font-ui); cursor:pointer;}
+  .navitem.active{color:var(--ink);}
+  .navitem svg{width:18px; height:18px;}
+  .caption{max-width:390px; margin-top:18px; color:#8a9aa2; font-family:var(--font-ui); font-size:12px; line-height:1.6; text-align:center;}
+  .caption b{color:#c7dde3; font-weight:600;}
+  @media (prefers-reduced-motion: reduce){ .ripple.go{animation:none;} }
+</style>
+<base target="_blank">
+</head>
+<body>
+
+<div>
+  <div class="phone" id="phone">
+    <div class="notch"><i></i></div>
+    <div class="screen">
+      <div class="grain"></div>
+      <div class="sheen"></div>
+      <div class="vignette"></div>
+
+      <div class="topbar">
+        <p class="brand"><span class="re">re</span><span class="zo">zo</span><span class="nans">nans</span></p>
+        <div class="topright">
+          <div class="meter" id="meter"><i></i><i></i><i></i><i></i><i></i></div>
+          <p class="now" id="clock">--:--</p>
+        </div>
+      </div>
+
+      <div class="stage" id="stage">
+        <canvas id="canvas"></canvas>
+        <p class="stage-hint" id="stageHint">Oynat'a basarak derinlerin sesini uyandır</p>
+      </div>
+
+      <div class="track">
+        <h2>Derin Bakış</h2>
+        <p>Karanlık suların altında açılan tek bir göz — bazen yaşar, bazen kızarır</p>
+      </div>
+
+      <div class="transport">
+        <button class="playbtn" id="playBtn" aria-label="Oynat">
+          <span class="ripple" id="ripple"></span>
+          <svg id="playIcon" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+        <div class="sliders">
+          <div class="slider-row">
+            <label for="boost">Derinlik</label>
+            <input type="range" id="boost" min="0" max="100" value="62">
+            <span class="val" id="boostVal">62</span>
+          </div>
+          <div class="slider-row">
+            <label for="sens">Hassasiyet</label>
+            <input type="range" id="sens" min="0" max="100" value="52">
+            <span class="val" id="sensVal">52</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="navbar">
+        <button class="navitem active">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 11l8-7 8 7v9a1 1 0 01-1 1h-4v-6H9v6H5a1 1 0 01-1-1z"/></svg>
+          Ana Sayfa
+        </button>
+        <button class="navitem">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg>
+          Presetler
+        </button>
+        <button class="navitem">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 00.34 1.87l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.7 1.7 0 00-1.87-.34 1.7 1.7 0 00-1 1.55V21a2 2 0 11-4 0v-.09a1.7 1.7 0 00-1-1.55 1.7 1.7 0 00-1.87.34l-.06.06a2 2 0 11-2.83-2.83l.06-.06a1.7 1.7 0 00.34-1.87 1.7 1.7 0 00-1.55-1H3a2 2 0 110-4h.09a1.7 1.7 0 001.55-1 1.7 1.7 0 00-.34-1.87l-.06-.06a2 2 0 112.83-2.83l.06.06a1.7 1.7 0 001.87.34H9a1.7 1.7 0 001-1.55V3a2 2 0 114 0v.09a1.7 1.7 0 001 1.55 1.7 1.7 0 001.87-.34l.06-.06a2 2 0 112.83 2.83l-.06.06a1.7 1.7 0 00-.34 1.87V9a1.7 1.7 0 001.55 1H21a2 2 0 110 4h-.09a1.7 1.7 0 00-1.55 1z"/></svg>
+          Ayarlar
+        </button>
+      </div>
+    </div>
+  </div>
+  <p class="caption">Bu, <b>gerçek Web Audio API</b> ile üretilen ambient bir parçayı canlı olarak analiz eden çalışan bir prototiptir — spektrum sahte veri değil, gerçek FFT çıktısıdır. Deniz teması sahnede değil, gözün kendisinde: iris turkuvazdan lacivert derinliğe geçen gerçek bir okyanus rengi taşır. Bas darbeleri gözbebeğini genişletir, tizlik kirpikleri titretir. <b>Ses çok yükseldiğinde</b> göz beyni gerçek bir fizyolojik tepki verir: iç köşelerdeki damar ağları belirginleşir, sklera kızarır, göz hafifçe titrer ve sahnenin halesi al alınır. <b>Gözyaşı</b> da gerçek bir akışkan gibi davranır: önce alt kapakta birikir, iç köşede dolan damla yerçekimiyle süzülür, yüzeyinde ışığı kırar ve arkasında yavaşça kuruyan ıslak bir iz bırakır. Sahne üzerinde gezindiğinde göz seni takip eder.</p>
+</div>
+
+<script>
+/* ============================================================
+   REZONANS — Derin Bakış: Gözyaşı & Kızarıklık
+   A single ocean-eye scene, animated on canvas and driven live
+   by a real Web Audio graph + AnalyserNode. New in this build:
+   - Conjunctival redness: procedurally grown branching vessel
+     trees whose opacity/thickness track overall loudness (RMS
+     of the full spectrum), plus an inflamed tint and lid tremor.
+   - Physically-behaved tears: a tear meniscus wells along the
+     lower lid, a drop detaches at the inner canthus, falls with
+     gravity, wobbles, refracts light and leaves a fading wet trail.
+   ============================================================ */
+
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+const phone = document.getElementById('phone');
+const stageEl = document.getElementById('stage');
+const stageHint = document.getElementById('stageHint');
+const boostEl = document.getElementById('boost');
+const sensEl = document.getElementById('sens');
+const boostVal = document.getElementById('boostVal');
+const sensVal = document.getElementById('sensVal');
+const playBtn = document.getElementById('playBtn');
+const playIcon = document.getElementById('playIcon');
+const playPathEl = playIcon.querySelector('path');
+const rippleEl = document.getElementById('ripple');
+const clockEl = document.getElementById('clock');
+const meterBars = Array.from(document.querySelectorAll('#meter i'));
+const REDUCE_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ---------- canvas sizing ---------- */
+let W,H,DPR;
+function resize(){
+  DPR = Math.min(2, window.devicePixelRatio || 1);
+  const r = canvas.getBoundingClientRect();
+  W = r.width; H = r.height;
+  canvas.width = Math.round(W*DPR); canvas.height = Math.round(H*DPR);
+  ctx.setTransform(DPR,0,0,DPR,0,0);
+}
+window.addEventListener('resize', resize);
+resize();
+
+/* ---------- clock ---------- */
+function tickClock(){ clockEl.textContent = new Date().toLocaleTimeString('tr-TR',{hour:'2-digit',minute:'2-digit'}); }
+tickClock(); setInterval(tickClock, 15000);
+
+/* ---------- controls ---------- */
+let boost = +boostEl.value, sens = +sensEl.value;
+boostEl.addEventListener('input', e=>{ boost = +e.target.value; boostVal.textContent = boost; applyBoost(); });
+sensEl.addEventListener('input', e=>{ sens = +e.target.value; sensVal.textContent = sens; applySens(); });
+
+/* =====================================================================
+   AUDIO ENGINE
+   ===================================================================== */
+let actx, analyser, freqData, master, comp, bassShelf, airShelf, lowpass;
+let delay, delayFeedback, delayFilter, delaySend;
+let padOscA = [], padOscB = [], padGains = [], filterLfo, filterLfoGain;
+let noiseBuffer;
+let playing = false;
+let schedTimers = [];
+
+const CHORDS = [
+  [65.41, 98.00, 130.81, 164.81, 196.00],
+  [58.27, 87.31, 116.54, 155.56, 174.61],
+  [61.74, 92.50, 123.47, 146.83, 185.00],
+  [55.00, 82.41, 110.00, 138.59, 164.81],
+];
+let chordIdx = 0;
+
+function makeNoiseBuffer(){
+  const len = actx.sampleRate * 2;
+  const buf = actx.createBuffer(1, len, actx.sampleRate);
+  const d = buf.getChannelData(0);
+  for(let i=0;i<len;i++) d[i] = Math.random()*2-1;
+  return buf;
+}
+
+function initAudio(){
+  actx = new (window.AudioContext || window.webkitAudioContext)();
+  analyser = actx.createAnalyser();
+  analyser.fftSize = 2048;
+  analyser.smoothingTimeConstant = 0.0;
+  freqData = new Uint8Array(analyser.frequencyBinCount);
+  prevSpectrum = new Float32Array(freqData.length);
+  computeBandBins();
+  computeMeterBins();
+
+  master = actx.createGain(); master.gain.value = 0.85;
+  comp = actx.createDynamicsCompressor();
+  comp.threshold.value = -22; comp.knee.value = 18; comp.ratio.value = 3.2; comp.attack.value = 0.01; comp.release.value = 0.25;
+
+  lowpass = actx.createBiquadFilter(); lowpass.type='lowpass'; lowpass.frequency.value = 2200; lowpass.Q.value = 0.5;
+  bassShelf = actx.createBiquadFilter(); bassShelf.type='lowshelf'; bassShelf.frequency.value = 150; bassShelf.gain.value = 4;
+  airShelf = actx.createBiquadFilter(); airShelf.type='highshelf'; airShelf.frequency.value = 3200; airShelf.gain.value = 1;
+
+  delay = actx.createDelay(1.2); delay.delayTime.value = 0.38;
+  delayFeedback = actx.createGain(); delayFeedback.gain.value = 0.36;
+  delayFilter = actx.createBiquadFilter(); delayFilter.type='lowpass'; delayFilter.frequency.value = 2600;
+  delaySend = actx.createGain(); delaySend.gain.value = 0.5;
+
+  lowpass.connect(bassShelf); bassShelf.connect(airShelf); airShelf.connect(master);
+  master.connect(comp); comp.connect(analyser); analyser.connect(actx.destination);
+
+  delaySend.connect(delay); delay.connect(delayFilter); delayFilter.connect(delayFeedback);
+  delayFeedback.connect(delay); delayFilter.connect(master);
+
+  noiseBuffer = makeNoiseBuffer();
+  buildPad();
+  applyBoost(); applySens();
+}
+
+function buildPad(){
+  const chord = CHORDS[chordIdx];
+  filterLfo = actx.createOscillator(); filterLfo.frequency.value = 0.045; filterLfo.type='sine';
+  filterLfoGain = actx.createGain(); filterLfoGain.gain.value = 380;
+  filterLfo.connect(filterLfoGain); filterLfoGain.connect(lowpass.frequency);
+  filterLfo.start();
+
+  chord.forEach((freq,i)=>{
+    const oscA = actx.createOscillator(); oscA.type='triangle'; oscA.frequency.value = freq;
+    const oscB = actx.createOscillator(); oscB.type='sine'; oscB.frequency.value = freq; oscB.detune.value = 6;
+    const g = actx.createGain(); g.gain.value = 0.0;
+    oscA.connect(g); oscB.connect(g); g.connect(lowpass);
+    g.connect(delaySend);
+    oscA.start(); oscB.start();
+    padOscA.push(oscA); padOscB.push(oscB); padGains.push(g);
+    const target = 0.05 + (i===0?0.02:0);
+    g.gain.setTargetAtTime(target, actx.currentTime + i*0.15, 1.4);
+  });
+
+  scheduleChordMorph();
+  scheduleArp();
+  scheduleWave();
+  scheduleShimmer();
+}
+
+function scheduleChordMorph(){
+  const t = setTimeout(()=>{
+    if(!playing) return scheduleChordMorph();
+    chordIdx = (chordIdx+1) % CHORDS.length;
+    const chord = CHORDS[chordIdx];
+    const now = actx.currentTime;
+    chord.forEach((freq,i)=>{
+      if(padOscA[i]){
+        padOscA[i].frequency.setTargetAtTime(freq, now, 2.2);
+        padOscB[i].frequency.setTargetAtTime(freq, now, 2.2);
+      }
+    });
+    scheduleChordMorph();
+  }, 7000 + Math.random()*2000);
+  schedTimers.push(t);
+}
+
+function pluckArp(){
+  const chord = CHORDS[chordIdx];
+  const note = chord[Math.floor(Math.random()*chord.length)] * (Math.random()<0.5?4:2);
+  const osc = actx.createOscillator(); osc.type='sine'; osc.frequency.value = note;
+  const g = actx.createGain(); g.gain.value = 0;
+  osc.connect(g); g.connect(airShelf); g.connect(delaySend);
+  const now = actx.currentTime;
+  g.gain.setValueAtTime(0, now);
+  g.gain.linearRampToValueAtTime(0.09, now+0.015);
+  g.gain.exponentialRampToValueAtTime(0.0001, now+0.9);
+  osc.start(now); osc.stop(now+1);
+}
+function scheduleArp(){
+  const t = setTimeout(()=>{
+    if(!playing) return scheduleArp();
+    pluckArp();
+    scheduleArp();
+  }, 1300 + Math.random()*1600);
+  schedTimers.push(t);
+}
+
+function waveHit(){
+  const osc = actx.createOscillator(); osc.type='sine';
+  const g = actx.createGain(); g.gain.value = 0;
+  osc.connect(g); g.connect(bassShelf);
+  const now = actx.currentTime;
+  osc.frequency.setValueAtTime(95, now);
+  osc.frequency.exponentialRampToValueAtTime(38, now+1.1);
+  g.gain.setValueAtTime(0, now);
+  g.gain.linearRampToValueAtTime(0.5, now+0.09);
+  g.gain.exponentialRampToValueAtTime(0.0001, now+1.3);
+  osc.start(now); osc.stop(now+1.4);
+}
+function scheduleWave(){
+  const t = setTimeout(()=>{
+    if(!playing) return scheduleWave();
+    waveHit();
+    scheduleWave();
+  }, 4200 + Math.random()*4200);
+  schedTimers.push(t);
+}
+
+function shimmerHit(){
+  const src = actx.createBufferSource(); src.buffer = noiseBuffer;
+  const hp = actx.createBiquadFilter(); hp.type='highpass'; hp.frequency.value = 5200 + Math.random()*2600;
+  const g = actx.createGain(); g.gain.value = 0;
+  src.connect(hp); hp.connect(g); g.connect(airShelf); g.connect(delaySend);
+  const now = actx.currentTime;
+  g.gain.setValueAtTime(0, now);
+  g.gain.linearRampToValueAtTime(0.045 + Math.random()*0.03, now+0.008);
+  g.gain.exponentialRampToValueAtTime(0.0001, now+0.1+Math.random()*0.06);
+  src.start(now); src.stop(now+0.3);
+}
+function scheduleShimmer(){
+  const t = setTimeout(()=>{
+    if(!playing) return scheduleShimmer();
+    shimmerHit();
+    scheduleShimmer();
+  }, 900 + Math.random()*1400);
+  schedTimers.push(t);
+}
+
+/* =====================================================================
+   REACTIVITY MAPPING
+   ===================================================================== */
+let prevSpectrum;
+let bassBinLo=1, bassBinHi=6, trebleBinLo=140, trebleBinHi=420;
+let meterBinEdges = null;
+let bassReactMul = 1, trebleReactMul = 1, transientThreshold = 0.22;
+
+function computeBandBins(){
+  const nyquist = actx.sampleRate/2;
+  const perBin = nyquist/freqData.length;
+  bassBinLo = Math.max(1, Math.round(30/perBin));
+  bassBinHi = Math.max(bassBinLo+1, Math.round(170/perBin));
+  trebleBinLo = Math.round(3000/perBin);
+  trebleBinHi = Math.min(freqData.length-1, Math.round(9500/perBin));
+}
+function computeMeterBins(){
+  const nyquist = actx.sampleRate/2;
+  const perBin = nyquist/freqData.length;
+  const edgesHz = [30,120,500,2000,6000,14000];
+  meterBinEdges = edgesHz.map(hz=>Math.min(freqData.length-1, Math.max(0, Math.round(hz/perBin))));
+}
+function bandAvg(lo,hi){
+  let s=0; const n=Math.max(1,hi-lo+1);
+  for(let i=lo;i<=hi;i++) s+=freqData[i];
+  return s/(n*255);
+}
+function meterBands(){
+  if(!meterBinEdges) return [0,0,0,0,0];
+  const res=[];
+  for(let i=0;i<5;i++) res.push(bandAvg(meterBinEdges[i], Math.max(meterBinEdges[i], meterBinEdges[i+1]-1)));
+  return res;
+}
+function applyBoost(){
+  const db = -4 + (boost/100)*20;
+  if(bassShelf && actx) bassShelf.gain.setTargetAtTime(db, actx.currentTime, 0.15);
+  bassReactMul = 0.55 + (boost/100)*1.15;
+}
+function applySens(){
+  const db = -6 + (sens/100)*16;
+  if(airShelf && actx) airShelf.gain.setTargetAtTime(db, actx.currentTime, 0.15);
+  transientThreshold = 0.34 - (sens/100)*0.22;
+  trebleReactMul = 0.5 + (sens/100)*1.25;
+}
+
+/* =====================================================================
+   EYE STATE
+   ===================================================================== */
+function clamp(v,a,b){ return v<a?a:v>b?b:v; }
+function approach(cur,target,dt,speed){ return cur + (target-cur)*(1-Math.exp(-speed*dt)); }
+function qbezier(P0,C,P1,u){
+  const mt=1-u;
+  return { x: mt*mt*P0.x + 2*mt*u*C.x + u*u*P1.x, y: mt*mt*P0.y + 2*mt*u*C.y + u*u*P1.y };
+}
+function qtangent(P0,C,P1,u){
+  const mt=1-u;
+  return { x: 2*mt*(C.x-P0.x)+2*u*(P1.x-C.x), y: 2*mt*(C.y-P0.y)+2*u*(P1.y-C.y) };
+}
+
+const restOpenBase = 0.86;
+let restOpen = restOpenBase;
+let openCur = restOpenBase, openTarget = restOpenBase;
+let gazeX = 0, gazeY = 0, gazeTargetX = 0, gazeTargetY = 0;
+let pointerGX = 0, pointerGY = 0;
+let pupilRatio = 0.30, pupilVel = 0;
+let irisPulse = 1;
+let bassEnv = 0, trebleEnv = 0;
+let lashKick = 0;
+let blinking = false, squinting = false;
+let lastStartle = 0;
+let hasPlayedOnce = false;
+let meterVals = [0,0,0,0,0];
+
+/* ---- physiology: loudness -> redness, crying ---- */
+let loudnessEnv = 0;   // overall RMS of spectrum
+let redness = 0;       // 0..1 conjunctival injection
+let cryDrive = 0;      // 0..1 emotional/loud tearing drive
+let well = 0;          // 0..1 tear welling at the lower lid
+let emotionBoost = 0;  // momentary emotional surges (squint, swells)
+let lastTearSpawn = 0;
+
+function blink(){
+  if(blinking || squinting) return;
+  blinking = true;
+  openTarget = 0.02;
+  setTimeout(()=>{ openTarget = restOpen; }, 110);
+  setTimeout(()=>{ blinking = false; }, 260);
+}
+
+function squintLook(){
+  if(blinking || squinting) return;
+  squinting = true;
+  emotionBoost = Math.max(emotionBoost, 0.5); // emotional moment -> eyes water a little
+  openTarget = 0.40;
+  const t1 = setTimeout(()=>{ gazeTargetX = -0.85; gazeTargetY = 0.08; }, 320);
+  const t2 = setTimeout(()=>{ gazeTargetX = 0.85; gazeTargetY = -0.06; }, 1150);
+  const t3 = setTimeout(()=>{ gazeTargetX = 0; gazeTargetY = 0; openTarget = restOpen; }, 2050);
+  const t4 = setTimeout(()=>{ squinting = false; }, 2550);
+  schedTimers.push(t1,t2,t3,t4);
+}
+
+function scheduleBlink(){
+  const wait = (REDUCE_MOTION ? 1.8 : 1) * (2600 + Math.random()*4200);
+  const t = setTimeout(()=>{ blink(); scheduleBlink(); }, wait);
+  schedTimers.push(t);
+}
+function scheduleSquintLook(){
+  const wait = (REDUCE_MOTION ? 1.8 : 1) * (9000 + Math.random()*9000);
+  const t = setTimeout(()=>{ squintLook(); scheduleSquintLook(); }, wait);
+  schedTimers.push(t);
+}
+function scheduleIdleDrift(){
+  const wait = 2200 + Math.random()*2600;
+  const t = setTimeout(()=>{
+    if(!squinting && !blinking){
+      gazeTargetX = clamp(gazeTargetX + (Math.random()-0.5)*0.5, -0.35, 0.35);
+      gazeTargetY = clamp((Math.random()-0.5)*0.3, -0.3, 0.3);
+    }
+    scheduleIdleDrift();
+  }, wait);
+  schedTimers.push(t);
+}
+function scheduleEmotionSurge(){
+  const wait = 14000 + Math.random()*16000;
+  const t = setTimeout(()=>{
+    emotionBoost = Math.max(emotionBoost, 0.30 + Math.random()*0.25);
+    scheduleEmotionSurge();
+  }, wait);
+  schedTimers.push(t);
+}
+
+/* pointer parallax — the eye follows you across the stage */
+stageEl.addEventListener('pointermove', e=>{
+  const r = stageEl.getBoundingClientRect();
+  pointerGX = clamp(((e.clientX-r.left)/r.width-0.5)*1.4, -0.7, 0.7);
+  pointerGY = clamp(((e.clientY-r.top)/r.height-0.5)*0.8, -0.4, 0.4);
+});
+stageEl.addEventListener('pointerleave', ()=>{ pointerGX = 0; pointerGY = 0; });
+
+/* =====================================================================
+   TEAR SYSTEM — meniscus wells along the lower lid; when it overflows,
+   a drop detaches at the inner canthus and falls under gravity,
+   wobbling like a real fluid and leaving a wet trail that slowly dries.
+   ===================================================================== */
+const tears = []; // {x,y,vx,vy,age,scale,trail:[{x,y,age}],state:'fall'|'fade',fadeT}
+
+function spawnTear(now){
+  const g = getEyeGeometry(openCur);
+  const b = qbezier(g.left, g.lowerCtrl, g.right, 0.15);
+  tears.push({
+    x: b.x + 3, y: b.y + 1,
+    vx: 3 + Math.random()*7, vy: 4,
+    age: 0, scale: 0.8 + Math.random()*0.45,
+    trail: [], trailClock: 0,
+    state: 'fall', fadeT: 0
+  });
+  lastTearSpawn = now;
+}
+
+function updateTears(dt, now){
+  for(let i=tears.length-1;i>=0;i--){
+    const t = tears[i];
+    t.age += dt;
+    if(t.state==='fall'){
+      t.vy += 640*dt;                 // gravity
+      t.vx *= Math.exp(-dt*1.4);      // horizontal drag
+      t.x += t.vx*dt;
+      t.y += t.vy*dt;
+      t.trailClock += dt;
+      if(t.trailClock > 0.035){
+        t.trailClock = 0;
+        t.trail.push({x:t.x, y:t.y, age:0});
+        if(t.trail.length > 90) t.trail.shift();
+      }
+      if(t.y > H-30){ t.state='fade'; t.fadeT = 0; }
+    } else {
+      t.fadeT += dt;
+      if(t.fadeT > 0.7) tears.splice(i,1);
+    }
+    for(let j=t.trail.length-1;j>=0;j--){
+      t.trail[j].age += dt;
+      if(t.trail[j].age > 3.2) t.trail.splice(j,1);
+    }
+  }
+  // well overflows into a drop
+  if(well > 0.72 && now - lastTearSpawn > 2300 && tears.length < 3){
+    spawnTear(now);
+    well *= 0.5; // the well drains into the drop
+  }
+}
+
+function drawTearDrop(t, alphaMul){
+  const wob = Math.exp(-t.age*2.6);
+  const sy = 1 + 0.20*Math.sin(t.age*24)*wob;
+  const sx = 1 - 0.10*Math.sin(t.age*24)*wob;
+  const r = 3.4*t.scale * (t.state==='fade' ? Math.max(0.05, 1-t.fadeT/0.7) : 1);
+  ctx.save();
+  ctx.translate(t.x, t.y);
+  ctx.scale(sx, sy);
+  const grad = ctx.createRadialGradient(-r*0.35,-r*0.55,r*0.2, 0, 0, r*2.1);
+  grad.addColorStop(0,   `rgba(240,253,255,${0.95*alphaMul})`);
+  grad.addColorStop(0.38,`rgba(188,232,244,${0.55*alphaMul})`);
+  grad.addColorStop(0.75,`rgba(150,214,232,${0.22*alphaMul})`);
+  grad.addColorStop(1,   `rgba(140,205,225,0)`);
+  ctx.fillStyle = grad;
+  ctx.beginPath();
+  ctx.moveTo(0, -r*2.0);
+  ctx.bezierCurveTo( r*1.55, -r*0.5,  r*1.25, r*1.25, 0, r*1.25);
+  ctx.bezierCurveTo(-r*1.25, r*1.25, -r*1.55, -r*0.5, 0, -r*2.0);
+  ctx.fill();
+  // refracted bright rim + specular
+  ctx.strokeStyle = `rgba(255,255,255,${0.35*alphaMul})`;
+  ctx.lineWidth = 0.7;
+  ctx.beginPath();
+  ctx.moveTo(0, -r*2.0);
+  ctx.bezierCurveTo( r*1.55, -r*0.5,  r*1.25, r*1.25, 0, r*1.25);
+  ctx.stroke();
+  ctx.fillStyle = `rgba(255,255,255,${0.9*alphaMul})`;
+  ctx.beginPath(); ctx.arc(-r*0.38, -r*0.6, Math.max(0.4, r*0.30), 0, Math.PI*2); ctx.fill();
+  ctx.restore();
+}
+
+function drawTears(){
+  // wet trails first (under the drop) — 'lighter' reads as a reflective film
+  ctx.save();
+  ctx.globalCompositeOperation = 'lighter';
+  tears.forEach(t=>{
+    if(t.trail.length < 2) return;
+    for(let i=1;i<t.trail.length;i++){
+      const p = t.trail[i];
+      const a = Math.max(0, 1 - p.age/3.2);
+      ctx.strokeStyle = `rgba(190,235,245,${(0.16*a).toFixed(3)})`;
+      ctx.lineWidth = 2.6*a + 0.4;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.moveTo(t.trail[i-1].x, t.trail[i-1].y);
+      ctx.lineTo(p.x, p.y);
+      ctx.stroke();
+    }
+  });
+  ctx.restore();
+  tears.forEach(t=>{
+    const alphaMul = t.state==='fade' ? Math.max(0, 1-t.fadeT/0.7) : 1;
+    drawTearDrop(t, alphaMul);
+  });
+}
+
+/* =====================================================================
+   PROCEDURAL CONJUNCTIVAL VESSELS — branching trees grown once from
+   each canthus. Coordinates are fractions of (rx, aperture half-height)
+   so they track the lid geometry through every blink and resize.
+   Opacity and calibre scale with `redness`, driven by real loudness.
+   ===================================================================== */
+function growVessel(segs, x, y, ang, len, w, depth){
+  if(depth <= 0 || w < 0.18) return;
+  const nx = x + Math.cos(ang)*len;
+  const ny = y + Math.sin(ang)*len*0.62; // flattened to hug the scleral dome
+  segs.push({x0:x, y0:y, x1:nx, y1:ny, w, d:depth});
+  const n = Math.random() < 0.78 ? 2 : 1;
+  for(let i=0;i<n;i++){
+    growVessel(segs, nx, ny, ang + (Math.random()-0.5)*0.85, len*(0.58+Math.random()*0.28), w*0.62, depth-1);
+  }
+}
+function makeVesselTrees(){
+  const trees = [];
+  const defs = [
+    {ox:-0.97, oy: 0.08, ang: 0.02, n:5},
+    {ox:-0.97, oy:-0.04, ang:-0.16, n:3},
+    {ox: 0.97, oy: 0.04, ang: Math.PI-0.02, n:5},
+    {ox: 0.97, oy:-0.08, ang: Math.PI+0.16, n:3},
+  ];
+  defs.forEach(d=>{
+    const segs = [];
+    for(let k=0;k<d.n;k++){
+      growVessel(segs, d.ox, d.oy + (Math.random()-0.5)*0.10,
+                 d.ang + (Math.random()-0.5)*0.30, 0.15+Math.random()*0.09, 1.6+Math.random()*0.9, 4);
+    }
+    trees.push(segs);
+  });
+  return trees;
+}
+const VESSEL_TREES = makeVesselTrees();
+
+function drawVessels(g, apH, red, pulse){
+  if(red < 0.015) return;
+  ctx.save();
+  VESSEL_TREES.forEach(tree=>{
+    tree.forEach(s=>{
+      const depthFade = 0.45 + 0.55*(s.d/4);
+      const a = (0.03 + red*0.5*pulse) * depthFade;
+      ctx.strokeStyle = `rgba(172,38,52,${a.toFixed(3)})`;
+      ctx.lineWidth = s.w * (0.55 + red*0.95);
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.moveTo(g.cx + s.x0*g.rx, g.cy + s.y0*apH);
+      ctx.lineTo(g.cx + s.x1*g.rx, g.cy + s.y1*apH);
+      ctx.stroke();
+    });
+  });
+  ctx.restore();
+}
+
+/* =====================================================================
+   GEOMETRY
+   ===================================================================== */
+function getEyeGeometry(open){
+  const cx = W*0.5, cy = H*0.50;
+  const rx = W*0.345;
+  const ryTop = H*0.430, ryBot = H*0.285;
+  const upTilt = -H*0.018;
+  const left = {x:cx-rx, y:cy};
+  const right = {x:cx+rx, y:cy+upTilt};
+  const upperCtrl = {x:cx-rx*0.14, y:cy-ryTop*open};
+  const lowerCtrl = {x:cx+rx*0.03, y:cy+ryBot*open};
+  return {cx,cy,rx,ryTop,ryBot,left,right,upperCtrl,lowerCtrl};
+}
+function buildAperturePath(g){
+  const p = new Path2D();
+  p.moveTo(g.left.x, g.left.y);
+  p.quadraticCurveTo(g.upperCtrl.x, g.upperCtrl.y, g.right.x, g.right.y);
+  p.quadraticCurveTo(g.lowerCtrl.x, g.lowerCtrl.y, g.left.x, g.left.y);
+  p.closePath();
+  return p;
+}
+
+/* ---------- decorative seeds ---------- */
+const IRIS_LINES = Array.from({length:46}, ()=>({a:Math.random()*Math.PI*2, len:0.55+Math.random()*0.4, w:0.4+Math.random()*0.5, op:0.08+Math.random()*0.10}));
+const FLECKS = Array.from({length:20}, ()=>({x:Math.random(), y:Math.random(), r:0.4+Math.random()*1.1, phase:Math.random()*Math.PI*2, speed:0.5+Math.random()*1.0}));
+const BUBBLES = Array.from({length:7}, ()=>({x:Math.random(), y:Math.random(), r:2+Math.random()*4, speed:6+Math.random()*10, drift:(Math.random()-0.5)*8, phase:Math.random()*Math.PI*2}));
+const SNOW = Array.from({length:26}, ()=>({x:Math.random(), y:Math.random(), r:0.4+Math.random()*1.0, vy:2+Math.random()*7, drift:(Math.random()-0.5)*6, phase:Math.random()*Math.PI*2, op:0.05+Math.random()*0.12}));
+
+const LASH_N = 18;
+const LASH_SEEDS = Array.from({length:LASH_N}, ()=>({lenJ:0.82+Math.random()*0.34, jitter:(Math.random()-0.5)*0.16, phase:Math.random()*Math.PI*2, freqJ:Math.random()*3}));
+const LOWER_LASH_N = 8;
+const LOWER_SEEDS = Array.from({length:LOWER_LASH_N}, ()=>({lenJ:0.7+Math.random()*0.4, jitter:(Math.random()-0.5)*0.10}));
+
+const IRIS_CRYPTS = Array.from({length:10}, ()=>({
+  a: Math.random()*Math.PI*2,
+  r: 0.30+Math.random()*0.55,
+  size: 0.10+Math.random()*0.15,
+  dark: Math.random()<0.55
+}));
+const COLLARETTE = Array.from({length:72}, ()=> 0.40 + (Math.random()-0.5)*0.05);
+
+function drawLash(base, angle, length, curl, baseWidth, fill){
+  const dx=Math.cos(angle), dy=Math.sin(angle);
+  const px=-dy, py=dx;
+  const bax=base.x+px*baseWidth/2, bay=base.y+py*baseWidth/2;
+  const bbx=base.x-px*baseWidth/2, bby=base.y-py*baseWidth/2;
+  const midx=base.x+dx*length*0.55+px*curl*0.55;
+  const midy=base.y+dy*length*0.55+py*curl*0.55;
+  const tipx=base.x+dx*length+px*curl;
+  const tipy=base.y+dy*length+py*curl;
+  ctx.beginPath();
+  ctx.moveTo(bax,bay);
+  ctx.quadraticCurveTo(midx+px*baseWidth*0.18, midy+py*baseWidth*0.18, tipx, tipy);
+  ctx.quadraticCurveTo(midx-px*baseWidth*0.18, midy-py*baseWidth*0.18, bbx, bby);
+  ctx.closePath();
+  ctx.fillStyle=fill;
+  ctx.fill();
+}
+
+function drawLashes(g, nowSec, bassE, trebleE, kick){
+  const maxLen = Math.max(18, g.rx*0.46);
+  const flutterMul = REDUCE_MOTION ? 0.3 : 1;
+  for(let i=0;i<LASH_N;i++){
+    const t = 0.06 + (i/(LASH_N-1))*0.88;
+    const base = qbezier(g.left, g.upperCtrl, g.right, t);
+    const tan = qtangent(g.left, g.upperCtrl, g.right, t);
+    let normal = Math.atan2(tan.y, tan.x) - Math.PI/2;
+    if(Math.sin(normal) > -0.05) normal += Math.PI;
+    const sweep = (t-0.5)*0.85;
+    const seed = LASH_SEEDS[i];
+    const flutter = Math.sin(nowSec*(7+seed.freqJ)+seed.phase) * (trebleE*0.12 + kick*0.24) * flutterMul;
+    const angle = normal + sweep + seed.jitter + flutter;
+    const lenFactor = Math.pow(Math.sin(Math.PI*t), 0.85);
+    const length = (11 + lenFactor*maxLen*seed.lenJ) * (1+bassE*bassReactMul*0.12) * (0.55+0.45*openCur);
+    const curl = length*0.44*(0.6+0.5*Math.abs(sweep));
+    drawLash(base, angle, length, curl, 1.8, 'rgba(2,9,14,0.94)');
+  }
+  for(let i=0;i<LOWER_LASH_N;i++){
+    const t = 0.16 + (i/(LOWER_LASH_N-1))*0.68;
+    const base = qbezier(g.left, g.lowerCtrl, g.right, t);
+    const seed = LOWER_SEEDS[i];
+    const sweep = (t-0.5)*1.1;
+    const angle = Math.PI/2 + sweep*0.55 + seed.jitter;
+    const length = (5 + 5*Math.pow(Math.sin(Math.PI*t),1.1)*seed.lenJ) * (0.55+0.45*openCur);
+    drawLash(base, angle, length, length*0.18, 1.1, 'rgba(2,9,14,0.5)');
+  }
+}
+
+function updateMeterVisual(vals){
+  meterBars.forEach((el,i)=>{
+    const v = vals[i]||0;
+    el.style.height = (2 + v*13).toFixed(1)+'px';
+    el.style.opacity = (0.5+v*0.5).toFixed(2);
+  });
+}
+
+/* ---------- environment dressing ---------- */
+function drawCaustics(nowSec, red){
+  ctx.save();
+  ctx.globalCompositeOperation = 'lighter';
+  const baseA = 0.028 + red*0.012;
+  for(let k=0;k<4;k++){
+    ctx.beginPath();
+    const baseY = H*(0.12 + k*0.07);
+    const speed = (0.35 + k*0.12) * (REDUCE_MOTION ? 0.35 : 1);
+    for(let x=0;x<=W;x+=7){
+      const y = baseY + Math.sin(x*0.022 + nowSec*speed + k*1.7)*6 + Math.sin(x*0.05 - nowSec*speed*1.6)*3;
+      if(x===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+    }
+    ctx.strokeStyle = `rgba(96,225,208,${baseA.toFixed(3)})`;
+    ctx.lineWidth = 5 + k*2;
+    ctx.filter = 'blur(3px)';
+    ctx.stroke();
+  }
+  ctx.filter = 'none';
+  ctx.restore();
+}
+
+function drawScene(dt, now, bassE, trebleE, kick){
+  const nowSec = now*0.001;
+  ctx.clearRect(0,0,W,H);
+
+  const bg = ctx.createRadialGradient(W*0.5,H*0.38,10, W*0.5,H*0.55,Math.max(W,H)*0.78);
+  bg.addColorStop(0,'#062230'); bg.addColorStop(1,'#010509');
+  ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
+
+  drawCaustics(nowSec, redness);
+
+  const bubbleSpeed = REDUCE_MOTION ? 0.35 : 1;
+  BUBBLES.forEach(b=>{
+    const span = H+20;
+    const yy = (((b.y*H - nowSec*b.speed*6*bubbleSpeed) % span) + span) % span - 10;
+    const xx = b.x*W + Math.sin(nowSec*0.4*bubbleSpeed+b.phase)*b.drift;
+    const r = b.r;
+    const grad = ctx.createRadialGradient(xx-r*0.3,yy-r*0.3,0.2, xx,yy,r);
+    grad.addColorStop(0,'rgba(180,240,235,0.26)');
+    grad.addColorStop(1,'rgba(180,240,235,0)');
+    ctx.fillStyle = grad;
+    ctx.beginPath(); ctx.arc(xx,yy,r,0,Math.PI*2); ctx.fill();
+  });
+  SNOW.forEach(s=>{
+    const span = H+10;
+    const yy = (((s.y*H - nowSec*s.vy*bubbleSpeed) % span) + span) % span - 5;
+    const xx = s.x*W + Math.sin(nowSec*0.25*bubbleSpeed+s.phase)*s.drift;
+    ctx.fillStyle = `rgba(200,240,235,${(s.op*(0.6+0.4*Math.sin(nowSec+s.phase))).toFixed(3)})`;
+    ctx.beginPath(); ctx.arc(xx,yy,s.r,0,Math.PI*2); ctx.fill();
+  });
+
+  const g = getEyeGeometry(openCur);
+  const aperture = buildAperturePath(g);
+  const apH = 0.5*g.ryTop*restOpen + 0.5*g.ryBot*restOpen;
+
+  ctx.save();
+  ctx.filter = 'blur(16px)';
+  ctx.fillStyle = 'rgba(0,0,0,0.6)';
+  ctx.beginPath();
+  ctx.ellipse(g.cx, g.cy+apH*0.15, g.rx*1.22, apH*1.35, 0, 0, Math.PI*2);
+  ctx.fill();
+  ctx.restore();
+
+  ctx.save();
+  ctx.filter = 'blur(7px)';
+  const lidGrad = ctx.createLinearGradient(g.cx, g.cy-apH*1.5, g.cx, g.cy+apH*1.5);
+  lidGrad.addColorStop(0,'#123246'); lidGrad.addColorStop(1,'#07202c');
+  ctx.fillStyle = lidGrad;
+  ctx.beginPath();
+  ctx.ellipse(g.cx, g.cy, g.rx*1.08, apH*1.15, 0, 0, Math.PI*2);
+  ctx.fill();
+  ctx.restore();
+
+  ctx.save();
+  ctx.clip(aperture);
+
+  const scGrad = ctx.createRadialGradient(g.cx,g.cy,4, g.cx,g.cy,g.rx*1.15);
+  const rTint = Math.round(redness*38);
+  scGrad.addColorStop(0,`rgb(${234+rTint},${247-rTint*0.6},${249-rTint*0.6})`);
+  scGrad.addColorStop(0.45,`rgb(${191+rTint},${227-rTint},${231-rTint})`);
+  scGrad.addColorStop(0.8,`rgb(${127+rTint},${185-rTint*1.3},${194-rTint*1.3})`);
+  scGrad.addColorStop(1,`rgb(${63+rTint*0.6},${109-rTint},${120-rTint})`);
+  ctx.fillStyle = scGrad;
+  ctx.fillRect(g.cx-g.rx*1.2, g.cy-g.ryTop*1.3, g.rx*2.4, (g.ryTop+g.ryBot)*1.4);
+
+  /* inflamed flush washing in from both canthi */
+  if(redness > 0.02){
+    [['l',g.left.x+g.rx*0.16],[ 'r',g.right.x-g.rx*0.16]].forEach(([side,x])=>{
+      const infl = ctx.createRadialGradient(x, g.cy, 2, x, g.cy, g.rx*0.85);
+      infl.addColorStop(0, `rgba(198,52,62,${(0.30*redness).toFixed(3)})`);
+      infl.addColorStop(0.55, `rgba(190,60,66,${(0.12*redness).toFixed(3)})`);
+      infl.addColorStop(1, 'rgba(190,60,66,0)');
+      ctx.fillStyle = infl;
+      ctx.fillRect(g.cx-g.rx*1.2, g.cy-g.ryTop*1.3, g.rx*2.4, (g.ryTop+g.ryBot)*1.4);
+    });
+  }
+
+  const veinPulse = 0.78 + 0.22*Math.sin(nowSec*Math.PI*2*0.9) * (0.5+bassE);
+  drawVessels(g, apH, redness, veinPulse);
+
+  ctx.fillStyle = 'rgba(150,85,90,0.45)';
+  ctx.beginPath();
+  ctx.ellipse(g.left.x+g.rx*0.14, g.cy, apH*0.15, apH*0.20, 0, 0, Math.PI*2);
+  ctx.fill();
+
+  FLECKS.forEach(f=>{
+    const fx = g.cx + (f.x-0.5)*g.rx*2.1;
+    const fy = g.cy + (f.y-0.5)*(g.ryTop+g.ryBot);
+    const tw = 0.35+0.65*(0.5+0.5*Math.sin(nowSec*f.speed+f.phase));
+    ctx.fillStyle = `rgba(190,240,235,${((0.10+trebleE*0.12)*tw).toFixed(3)})`;
+    ctx.beginPath(); ctx.arc(fx,fy,f.r,0,Math.PI*2); ctx.fill();
+  });
+
+  const maxGX = g.rx*0.30, maxGY = ((g.ryTop+g.ryBot)/2)*0.20;
+  const ix = g.cx + gazeX*maxGX;
+  const iy = g.cy + gazeY*maxGY;
+  const irisBase = (0.5*g.ryTop*restOpen) * 1.05;
+  const irisR = irisBase*irisPulse;
+
+  const irGrad = ctx.createRadialGradient(ix,iy,irisR*0.10, ix,iy,irisR);
+  irGrad.addColorStop(0,'#aefaf0'); irGrad.addColorStop(0.22,'#5ff0dd'); irGrad.addColorStop(0.48,'#2fd9c9');
+  irGrad.addColorStop(0.74,'#12839a'); irGrad.addColorStop(0.93,'#0e5f7a'); irGrad.addColorStop(1,'#062230');
+  ctx.fillStyle = irGrad;
+  ctx.beginPath(); ctx.arc(ix,iy,irisR,0,Math.PI*2); ctx.fill();
+
+  ctx.save();
+  ctx.translate(ix,iy);
+  IRIS_LINES.forEach(l=>{
+    ctx.strokeStyle = `rgba(6,30,38,${l.op.toFixed(3)})`;
+    ctx.lineWidth = l.w;
+    ctx.beginPath();
+    ctx.moveTo(Math.cos(l.a)*irisR*0.20, Math.sin(l.a)*irisR*0.20);
+    ctx.lineTo(Math.cos(l.a)*irisR*l.len, Math.sin(l.a)*irisR*l.len);
+    ctx.stroke();
+  });
+  /* collarette — the jagged pigment ring real irises have */
+  ctx.beginPath();
+  COLLARETTE.forEach((rr,i)=>{
+    const a = (i/COLLARETTE.length)*Math.PI*2;
+    const px = Math.cos(a)*irisR*rr, py = Math.sin(a)*irisR*rr;
+    if(i===0) ctx.moveTo(px,py); else ctx.lineTo(px,py);
+  });
+  ctx.closePath();
+  ctx.strokeStyle = 'rgba(5,26,32,0.38)';
+  ctx.lineWidth = irisR*0.05;
+  ctx.stroke();
+  ctx.filter = 'blur(1.5px)';
+  IRIS_CRYPTS.forEach(c=>{
+    const px = Math.cos(c.a)*irisR*c.r, py = Math.sin(c.a)*irisR*c.r;
+    ctx.fillStyle = c.dark ? 'rgba(4,22,28,0.16)' : 'rgba(255,255,255,0.09)';
+    ctx.beginPath(); ctx.ellipse(px,py, irisR*c.size, irisR*c.size*0.72, c.a, 0, Math.PI*2); ctx.fill();
+  });
+  ctx.filter = 'none';
+  ctx.restore();
+
+  /* limbal ring with a chromatic fringe for a wet, optical edge */
+  ctx.strokeStyle = 'rgba(3,14,20,0.6)';
+  ctx.lineWidth = Math.max(1, irisR*0.07);
+  ctx.beginPath(); ctx.arc(ix,iy,irisR*0.97,0,Math.PI*2); ctx.stroke();
+  ctx.strokeStyle = 'rgba(255,90,110,0.10)';
+  ctx.lineWidth = Math.max(0.6, irisR*0.03);
+  ctx.beginPath(); ctx.arc(ix+0.7,iy,irisR*0.985,0,Math.PI*2); ctx.stroke();
+  ctx.strokeStyle = 'rgba(90,210,255,0.10)';
+  ctx.beginPath(); ctx.arc(ix-0.7,iy,irisR*0.985,0,Math.PI*2); ctx.stroke();
+
+  const pr = irisR*pupilRatio;
+  const puGrad = ctx.createRadialGradient(ix,iy,pr*0.1, ix,iy,pr);
+  puGrad.addColorStop(0,'#000000'); puGrad.addColorStop(1,'#050b12');
+  ctx.fillStyle = puGrad;
+  ctx.beginPath(); ctx.arc(ix,iy,pr,0,Math.PI*2); ctx.fill();
+
+  ctx.save();
+  ctx.filter = 'blur(3px)';
+  ctx.fillStyle = `rgba(255,255,255,${(0.08+trebleE*0.10).toFixed(3)})`;
+  ctx.beginPath();
+  ctx.ellipse(ix-irisR*0.12, iy-irisR*0.5, irisR*0.62, irisR*0.34, -0.35, 0, Math.PI*2);
+  ctx.fill();
+  ctx.restore();
+
+  /* soft-box catchlight — a window-shaped reflection like a studio source */
+  ctx.save();
+  ctx.translate(ix-irisR*0.30, iy-irisR*0.42);
+  ctx.rotate(-0.35);
+  ctx.fillStyle = `rgba(255,255,255,${(0.10+trebleE*0.08).toFixed(3)})`;
+  ctx.beginPath();
+  ctx.roundRect(-irisR*0.30, -irisR*0.14, irisR*0.42, irisR*0.24, irisR*0.05);
+  ctx.fill();
+  ctx.restore();
+
+  const glintBoost = 0.5+trebleE*0.9;
+  ctx.fillStyle = `rgba(255,255,255,${Math.min(0.95,0.55*glintBoost).toFixed(3)})`;
+  ctx.beginPath(); ctx.arc(ix-irisR*0.34, iy-irisR*0.36, Math.max(1,irisR*0.13*glintBoost), 0, Math.PI*2); ctx.fill();
+  ctx.fillStyle = `rgba(200,255,248,${Math.min(0.55,0.16*glintBoost).toFixed(3)})`;
+  ctx.beginPath(); ctx.arc(ix+irisR*0.26, iy+irisR*0.30, Math.max(0.6,irisR*0.06*glintBoost), 0, Math.PI*2); ctx.fill();
+
+  /* upper-lid cast shadow + lower-lid bounce light sell the roundness */
+  const lidShadow = ctx.createLinearGradient(g.cx, g.cy-g.ryTop*openCur*0.9, g.cx, g.cy);
+  lidShadow.addColorStop(0,'rgba(0,0,0,0.34)');
+  lidShadow.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle = lidShadow;
+  ctx.fillRect(g.cx-g.rx*1.2, g.cy-g.ryTop*1.3, g.rx*2.4, (g.ryTop+g.ryBot)*1.4);
+  const bounce = ctx.createLinearGradient(g.cx, g.cy+g.ryBot*openCur*0.7, g.cx, g.cy+g.ryBot*openCur*0.1);
+  bounce.addColorStop(0,'rgba(70,210,195,0.10)');
+  bounce.addColorStop(1,'rgba(70,210,195,0)');
+  ctx.fillStyle = bounce;
+  ctx.fillRect(g.cx-g.rx*1.2, g.cy, g.rx*2.4, g.ryBot*openCur);
+
+  /* tear meniscus along the lower lid + welling bulge at the inner canthus */
+  if(well > 0.02){
+    ctx.beginPath();
+    for(let i=0;i<=28;i++){
+      const t = 0.06 + (i/28)*0.88;
+      const b = qbezier(g.left, g.lowerCtrl, g.right, t);
+      const lift = (1 + well*2.2);
+      if(i===0) ctx.moveTo(b.x, b.y-lift*0.4); else ctx.lineTo(b.x, b.y-lift*0.4);
+    }
+    ctx.strokeStyle = `rgba(214,244,250,${(0.10+well*0.30).toFixed(3)})`;
+    ctx.lineWidth = 1.2 + well*3.6;
+    ctx.lineCap = 'round';
+    ctx.stroke();
+
+    const bulgeR = apH*(0.06 + well*0.22);
+    const bx = g.left.x + g.rx*0.15, by = g.cy + apH*0.35;
+    const bg2 = ctx.createRadialGradient(bx-bulgeR*0.3, by-bulgeR*0.4, 0.5, bx, by, bulgeR*1.6);
+    bg2.addColorStop(0, `rgba(235,251,255,${(0.30+well*0.40).toFixed(3)})`);
+    bg2.addColorStop(0.6, `rgba(190,235,245,${(0.14+well*0.20).toFixed(3)})`);
+    bg2.addColorStop(1, 'rgba(190,235,245,0)');
+    ctx.fillStyle = bg2;
+    ctx.beginPath(); ctx.ellipse(bx, by, bulgeR*1.5, bulgeR, 0.15, 0, Math.PI*2); ctx.fill();
+  }
+
+  /* tear film gloss over the whole cornea, grows with welling */
+  ctx.save();
+  ctx.globalCompositeOperation = 'lighter';
+  const film = ctx.createLinearGradient(g.cx, g.cy-apH, g.cx, g.cy+apH);
+  film.addColorStop(0, `rgba(220,250,255,${(0.05+well*0.13).toFixed(3)})`);
+  film.addColorStop(0.5, 'rgba(220,250,255,0)');
+  film.addColorStop(1, `rgba(160,230,240,${(0.03+well*0.07).toFixed(3)})`);
+  ctx.fillStyle = film;
+  ctx.fillRect(g.cx-g.rx*1.2, g.cy-g.ryTop*1.3, g.rx*2.4, (g.ryTop+g.ryBot)*1.4);
+  ctx.restore();
+
+  ctx.restore();
+
+  ctx.strokeStyle = 'rgba(2,10,15,0.85)';
+  ctx.lineWidth = 1.4;
+  ctx.beginPath();
+  ctx.moveTo(g.left.x,g.left.y);
+  ctx.quadraticCurveTo(g.upperCtrl.x,g.upperCtrl.y,g.right.x,g.right.y);
+  ctx.stroke();
+
+  ctx.strokeStyle = 'rgba(220,245,250,0.10)';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(g.left.x-3, g.left.y-3);
+  ctx.quadraticCurveTo(g.upperCtrl.x, g.upperCtrl.y-apH*0.30, g.right.x+3, g.right.y-3);
+  ctx.stroke();
+
+  drawLashes(g, nowSec, bassE, trebleE, kick);
+
+  /* tears roll OVER the lashes and skin — drawn last */
+  drawTears();
+}
+
+/* =====================================================================
+   MAIN LOOP
+   ===================================================================== */
+let lastT = performance.now();
+function animate(now){
+  requestAnimationFrame(animate);
+  let dt = (now-lastT)/1000; lastT = now;
+  dt = Math.min(dt, 0.05);
+
+  let bassRaw=0, trebleRaw=0, flux=0, overall=0;
+  const live = playing && analyser && actx && actx.state==='running';
+  if(live){
+    analyser.getByteFrequencyData(freqData);
+    bassRaw = bandAvg(bassBinLo,bassBinHi);
+    trebleRaw = bandAvg(trebleBinLo,trebleBinHi);
+    overall = bandAvg(0, freqData.length-1);
+    for(let i=0;i<freqData.length;i++){
+      const v = freqData[i]/255;
+      const d = v - prevSpectrum[i];
+      if(d>0) flux += d;
+      prevSpectrum[i] = v;
+    }
+    flux /= freqData.length;
+  }
+
+  const bassAtk = 1-Math.exp(-dt*4.5), bassRel = 1-Math.exp(-dt*2.2);
+  bassEnv += (bassRaw-bassEnv) * (bassRaw>bassEnv?bassAtk:bassRel);
+  const trebAtk = 1-Math.exp(-dt*22), trebRel = 1-Math.exp(-dt*10);
+  trebleEnv += (trebleRaw-trebleEnv) * (trebleRaw>trebleEnv?trebAtk:trebRel);
+
+  /* loudness -> redness (slow, biological-feeling) */
+  loudnessEnv += (overall-loudnessEnv) * (1-Math.exp(-dt*(overall>loudnessEnv?3.0:0.55)));
+  const redTarget = live ? clamp((loudnessEnv-0.30)/0.30, 0, 1) : 0;
+  redness += (redTarget-redness) * (1-Math.exp(-dt*1.15));
+
+  /* crying drive: sustained loudness + emotional surges */
+  emotionBoost = Math.max(0, emotionBoost - dt*0.055);
+  const cryTarget = live ? clamp((loudnessEnv-0.40)*3.2, 0, 1) + emotionBoost : emotionBoost*0.6;
+  cryDrive += (clamp(cryTarget,0,1)-cryDrive) * (1-Math.exp(-dt*1.4));
+  const wellTarget = clamp(cryDrive, 0, 1);
+  well += (wellTarget-well) * (1-Math.exp(-dt*(wellTarget>well?0.9:0.28)));
+
+  updateTears(dt, now);
+
+  if(live && flux>transientThreshold*(1-redness*0.35) && (now-lastStartle)>1200){
+    lastStartle = now; blink();
+    lashKick = 1;
+    emotionBoost = Math.max(emotionBoost, 0.22);
+  }
+  lashKick = approach(lashKick, 0, dt, 6);
+
+  const pupilTarget = clamp(0.26 + bassEnv*0.46*bassReactMul, 0.20, 0.74);
+  { const k=90, c=18; const force=(pupilTarget-pupilRatio)*k - pupilVel*c; pupilVel += force*dt; pupilRatio += pupilVel*dt; }
+  irisPulse = approach(irisPulse, 1 + bassEnv*0.05*bassReactMul, dt, 6);
+
+  /* heavy-lidded when the eyes water */
+  restOpen = restOpenBase - cryDrive*0.10;
+  if(!blinking && !squinting) openTarget = restOpen;
+
+  openCur = approach(openCur, openTarget, dt, blinking?26:10);
+
+  /* gaze: idle drift + pointer parallax + high-volume tremor */
+  const idleX = squinting ? gazeTargetX : gazeTargetX + pointerGX;
+  const idleY = squinting ? gazeTargetY : gazeTargetY + pointerGY*0.6;
+  gazeX = approach(gazeX, idleX, dt, squinting?2.4:1.4);
+  gazeY = approach(gazeY, idleY, dt, 1.2);
+  if(redness > 0.25 && !REDUCE_MOTION){
+    gazeX += (Math.random()-0.5)*0.045*(redness-0.2);
+    gazeY += (Math.random()-0.5)*0.03*(redness-0.2);
+  }
+
+  drawScene(dt, now, bassEnv, trebleEnv, lashKick);
+
+  const targetBands = live ? meterBands() : [0,0,0,0,0];
+  for(let i=0;i<5;i++) meterVals[i] = approach(meterVals[i], targetBands[i], dt, 8);
+  updateMeterVisual(meterVals);
+
+  phone.style.setProperty('--lvl', (playing? Math.min(1,bassEnv*1.15):0).toFixed(3));
+  stageEl.style.setProperty('--red', redness.toFixed(3));
+}
+
+/* ---------- transport ---------- */
+function fireRipple(){
+  rippleEl.classList.remove('go');
+  void rippleEl.offsetWidth;
+  rippleEl.classList.add('go');
+}
+function setPlayingUI(isPlaying){
+  playPathEl.setAttribute('d', isPlaying ? 'M7 5h4v14H7zM13 5h4v14h-4z' : 'M8 5v14l11-7z');
+  playBtn.setAttribute('aria-label', isPlaying ? 'Duraklat' : 'Oynat');
+  stageHint.style.opacity = (isPlaying || hasPlayedOnce) ? '0' : '1';
+}
+playBtn.addEventListener('click', ()=>{
+  if(!actx) initAudio();
+  playing = !playing;
+  if(playing){
+    hasPlayedOnce = true;
+    if(actx.state==='suspended') actx.resume();
+  } else {
+    actx.suspend();
+  }
+  fireRipple();
+  setPlayingUI(playing);
+});
+
+/* ---------- bootstrap ---------- */
+scheduleBlink();
+scheduleSquintLook();
+scheduleIdleDrift();
+scheduleEmotionSurge();
+requestAnimationFrame(animate);
+</script>
+</body>
+</html>

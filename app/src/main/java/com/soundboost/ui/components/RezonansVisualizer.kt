@@ -28,12 +28,12 @@ fun RezonansVisualizer(
         AppTheme.MEHTAP -> MehtapVisualizer(boostedLevels, isActive, true, accent1, accent2, backgroundColor, modifier)
         AppTheme.SUMI -> SumiVisualizer(boostedLevels, isActive, accent1, accent2, backgroundColor, modifier)
         AppTheme.AURORA -> AuroraVisualizer(boostedLevels, isActive, accent1, accent2, backgroundColor, modifier)
-        AppTheme.NOVA -> NovaVisualizer(boostedLevels, isActive, accent1, accent2, backgroundColor, modifier)
+        AppTheme.EYES -> EyesVisualizer(boostedLevels, isActive, accent1, accent2, backgroundColor, modifier)
         AppTheme.MYCEL -> MycelVisualizer(boostedLevels, isActive, accent1, accent2, backgroundColor, modifier)
         AppTheme.REEF -> ReefVisualizer(boostedLevels, isActive, accent1, accent2, backgroundColor, modifier)
         AppTheme.MONSOON -> MonsoonVisualizer(boostedLevels, isActive, accent1, accent2, backgroundColor, modifier)
         AppTheme.MUREKKEP -> SumiVisualizer(boostedLevels, isActive, accent1, accent2, backgroundColor, modifier)  // Similar ink style
-        AppTheme.COL -> NovaVisualizer(boostedLevels, isActive, accent1, accent2, backgroundColor, modifier)  // Similar heat/energy style
+        AppTheme.COL -> EyesVisualizer(boostedLevels, isActive, accent1, accent2, backgroundColor, modifier)  // Similar eye/heat style
         AppTheme.DIVIT -> SumiVisualizer(boostedLevels, isActive, accent1, accent2, backgroundColor, modifier)  // Ink calligraphy style
     }
 }

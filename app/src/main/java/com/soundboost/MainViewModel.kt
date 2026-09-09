@@ -22,6 +22,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private var analysisJob: Job? = null
     
     val uiState: StateFlow<BoostSettings> = prefs.settings
+        .distinctUntilChanged()  // CRITICAL: Only emit when value actually changes
         .stateIn(viewModelScope, SharingStarted.Eagerly, BoostSettings())
     
     // YENİ: Tam audio analiz verisi
@@ -55,7 +56,18 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
     
+    private var lastEmittedGain: Int? = null
+    
     fun onMasterGainChanged(percent: Int) {
+        // CRITICAL: Prevent duplicate emissions that cause recomposition
+        if (lastEmittedGain == percent) {
+            android.util.Log.v("MainViewModel", "⏭️ onMasterGainChanged: $percent (skipped, same as last)")
+            return
+        }
+        
+        lastEmittedGain = percent
+        android.util.Log.d("MainViewModel", "🎚️ onMasterGainChanged: $percent")
+        
         viewModelScope.launch {
             prefs.setMasterGain(percent)
             if (uiState.value.isBoostEnabled) {
@@ -172,7 +184,18 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
     
+    private var lastEmittedSensitivity: Int? = null
+    
     fun onSensitivityChanged(value: Int) {
+        // CRITICAL: Prevent duplicate emissions that cause recomposition
+        if (lastEmittedSensitivity == value) {
+            android.util.Log.v("MainViewModel", "⏭️ onSensitivityChanged: $value (skipped, same as last)")
+            return
+        }
+        
+        lastEmittedSensitivity = value
+        android.util.Log.d("MainViewModel", "📊 onSensitivityChanged: $value")
+        
         viewModelScope.launch {
             prefs.setSensitivity(value)
         }

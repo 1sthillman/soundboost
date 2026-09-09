@@ -249,7 +249,7 @@ private fun RezonansTrackInfo(theme: AppTheme, themeColors: com.soundboost.ui.th
         AppTheme.MEHTAP -> "Ay Balıkçısı" to "Durgun suda sabırla bekleyen bir sandalın hikâyesi"
         AppTheme.SUMI -> "Mürekkep Nefesi" to "Fırça darbeleriyle beliren tek çizgi"
         AppTheme.AURORA -> "Kutup Şafağı" to "Gökyüzünde süzülen ışık şeritleri"
-        AppTheme.NOVA -> "Çekirdek Uyanışı" to "Bas vuruşuyla genişleyen plazma çekirdeği"
+        AppTheme.EYES -> "Derin Bakış" to "Okyanusun derinliklerinde açılan göz — bazen yaşar, bazen kızarır"
         AppTheme.MYCEL -> "Yeraltı Fısıltısı" to "Kökler arasında yayılan ışık sinyali"
         AppTheme.REEF -> "Derin Işıltı" to "Karanlıkta parıldayan biyolüminesans"
         AppTheme.MONSOON -> "Fırtına Öncesi" to "Şimşek ve yağmurun ritmi"
@@ -285,6 +285,11 @@ private fun RezonansTransport(
     onToggle: () -> Unit,
     themeColors: com.soundboost.ui.theme.ThemeColors
 ) {
+    // Stable callbacks to prevent recomposition
+    val stableOnVolumeChange = rememberUpdatedState(onVolumeChange)
+    val stableOnSensitivityChange = rememberUpdatedState(onSensitivityChange)
+    val stableOnToggle = rememberUpdatedState(onToggle)
+    
     Row(
         horizontalArrangement = Arrangement.spacedBy(16.dp),
         verticalAlignment = Alignment.CenterVertically
@@ -302,7 +307,7 @@ private fun RezonansTransport(
                         )
                     )
                 )
-                .clickable(onClick = onToggle),
+                .clickable(onClick = { stableOnToggle.value() }),
             contentAlignment = Alignment.Center
         ) {
             Icon(
@@ -318,35 +323,53 @@ private fun RezonansTransport(
             modifier = Modifier.weight(1f),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            // Volume Slider
-            SliderRow(
-                label = "Yükseltme",
-                value = volumePercent,
-                onValueChange = { onVolumeChange(it.toInt()) },
-                valueRange = 60f..200f,
-                themeColors = themeColors
-            )
+            // Volume Slider - KEYED to prevent recreation on other state changes
+            key("volume_slider") {
+                ThrottledSliderRow(
+                    label = "Yükseltme",
+                    value = volumePercent,
+                    onValueChange = { stableOnVolumeChange.value(it.toInt()) },
+                    valueRange = 60f..200f,
+                    themeColors = themeColors
+                )
+            }
             
-            // Sensitivity Slider (now functional)
-            SliderRow(
-                label = "Hassasiyet",
-                value = sensitivity,
-                onValueChange = onSensitivityChange,
-                valueRange = 0f..100f,
-                themeColors = themeColors
-            )
+            // Sensitivity Slider - KEYED to prevent recreation on other state changes
+            key("sensitivity_slider") {
+                ThrottledSliderRow(
+                    label = "Hassasiyet",
+                    value = sensitivity,
+                    onValueChange = { stableOnSensitivityChange.value(it) },
+                    valueRange = 0f..100f,
+                    themeColors = themeColors
+                )
+            }
         }
     }
 }
 
 @Composable
-private fun SliderRow(
+private fun ThrottledSliderRow(
     label: String,
     value: Int,
     onValueChange: (Float) -> Unit,
     valueRange: ClosedFloatingPointRange<Float>,
     themeColors: com.soundboost.ui.theme.ThemeColors
 ) {
+    // ULTRA-SIMPLE: Pure local state, ONE callback on finger lift
+    var localValue by remember { mutableFloatStateOf(value.toFloat()) }
+    var isDragging by remember { mutableStateOf(false) }
+    
+    // Sync external value ONLY when not dragging
+    LaunchedEffect(value) {
+        if (!isDragging) {
+            localValue = value.toFloat()
+        }
+    }
+    
+    // Create stable callback
+    val stableOnValueChange = rememberUpdatedState(onValueChange)
+    
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(10.dp)
@@ -358,9 +381,19 @@ private fun SliderRow(
             modifier = Modifier.width(64.dp)
         )
         
+        // PURE local UI - ZERO external updates during drag
         Slider(
-            value = value.toFloat(),
-            onValueChange = onValueChange,
+            value = localValue,
+            onValueChange = { newValue ->
+                // Pure UI update - no side effects
+                isDragging = true
+                localValue = newValue
+            },
+            onValueChangeFinished = {
+                // SINGLE callback when finger lifted
+                isDragging = false
+                stableOnValueChange.value(localValue)
+            },
             valueRange = valueRange,
             modifier = Modifier.weight(1f),
             colors = SliderDefaults.colors(
@@ -370,8 +403,9 @@ private fun SliderRow(
             )
         )
         
+        // Display updates instantly from local state
         Text(
-            text = value.toString(),
+            text = localValue.toInt().toString(),
             fontSize = 10.sp,
             color = themeColors.onSurfaceVariant,
             modifier = Modifier.width(30.dp)
@@ -389,7 +423,7 @@ private fun RezonansThemeChips(
         AppTheme.MEHTAP to "Mehtap" to Color(0xFFf2b155),
         AppTheme.SUMI to "Sumi-e" to Color(0xFFc1442c),
         AppTheme.AURORA to "Kutup Şafağı" to Color(0xFF4fd8b0),
-        AppTheme.NOVA to "Nova" to Color(0xFFff3d7a),
+        AppTheme.EYES to "Derin Göz" to Color(0xFF3fe0d0),
         AppTheme.MYCEL to "Miselyum" to Color(0xFF6dffb0),
         AppTheme.REEF to "Derin Işıltı" to Color(0xFF12e0bd),
         AppTheme.MONSOON to "Muson" to Color(0xFF9cc2ff)

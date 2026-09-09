@@ -479,8 +479,24 @@ private fun smoothPath(path: Path, points: List<Offset>) {
     }
 }
 
+// Eyes theme state
+private var eyeOpenCur = 0.86f
+private var eyeGazeX = 0f
+private var eyeGazeY = 0f
+private var eyePupilRatio = 0.30f
+private var eyeIrisPulse = 1f
+private var eyeBassEnv = 0f
+private var eyeTrebleEnv = 0f
+private var eyeLoudness = 0f
+private var eyeRedness = 0f
+private var eyeWell = 0f
+private var eyeGazeTargetX = 0f
+private var eyeGazeTargetY = 0f
+private var eyePupilVel = 0f
+private var eyeDriftTimer = 0f
+
 @Composable
-fun NovaVisualizer(
+fun EyesVisualizer(
     audioLevels: FloatArray?,
     isActive: Boolean,
     accent1: Color,
@@ -489,7 +505,6 @@ fun NovaVisualizer(
     modifier: Modifier = Modifier
 ) {
     var time by remember { mutableStateOf(0f) }
-    var lastBeat by remember { mutableStateOf(false) }
     
     LaunchedEffect(Unit) {
         while (true) {
@@ -499,177 +514,266 @@ fun NovaVisualizer(
         }
     }
     
-    // Initialize stars and particles once - EXACT HTML (70 stars, 22 embers)
-    if (novaStars.isEmpty()) {
-        repeat(70) {
-            novaStars.add(Star(
-                x = Random.nextFloat(),
-                y = Random.nextFloat(),
-                r = Random.nextFloat() * 1.1f,
-                phase = Random.nextFloat() * 7f
-            ))
-        }
-    }
-    if (novaParticles.isEmpty()) {
-        repeat(22) {
-            novaParticles.add(OrbitingParticle(
-                angle = Random.nextFloat() * 6.28f,
-                rBase = 1.5f + Random.nextFloat() * 1.6f,
-                speed = (0.15f + Random.nextFloat() * 0.3f) * if (Random.nextBoolean()) 1f else -1f,
-                r = 0.8f + Random.nextFloat() * 1.6f
-            ))
-        }
-    }
-    
     Canvas(modifier = modifier) {
         val W = size.width
         val H = size.height
+        val dt = 0.045f
         
-        // Deep space gradient - EXACT HTML
+        // Deep ocean background
         drawRect(
             brush = Brush.radialGradient(
-                colors = listOf(backgroundColor.copy(alpha = 1.15f), backgroundColor),
-                center = Offset(W * 0.5f, H * 0.44f),
-                radius = W * 1.0f
+                colors = listOf(Color(0xFF062230), Color(0xFF010509)),
+                center = Offset(W * 0.5f, H * 0.38f),
+                radius = max(W, H) * 0.78f
             )
         )
         
-        // Deep starfield with treble twinkling - EXACT HTML
-        val treble = audioLevels?.drop(36)?.average()?.toFloat() ?: 0f
-        novaStars.forEach { s ->
-            val twinkle = (0.16f + 0.5f * abs(sin(time * 1.4f + s.phase))) * (0.5f + treble * 1.3f)
-            drawCircle(
-                color = accent1.copy(alpha = twinkle),
-                radius = s.r,
-                center = Offset(s.x * W, s.y * H)
+        // Caustic water effects
+        for (k in 0..3) {
+            val baseY = H * (0.12f + k * 0.07f)
+            val speed = 0.35f + k * 0.12f
+            val path = Path()
+            for (x in 0..W.toInt() step 7) {
+                val y = baseY + sin(x * 0.022f + time * speed + k * 1.7f) * 6f + 
+                        sin(x * 0.05f - time * speed * 1.6f) * 3f
+                if (x == 0) path.moveTo(x.toFloat(), y) else path.lineTo(x.toFloat(), y)
+            }
+            drawPath(
+                path = path,
+                color = Color(0x60, 0xE1, 0xD0, (28 + eyeRedness * 12).toInt()),
+                style = Stroke(width = 5f + k * 2f),
+                blendMode = BlendMode.Plus
             )
         }
         
+        // Eye geometry
         val cx = W * 0.5f
-        val cy = H * 0.46f
-        val sub = audioLevels?.take(3)?.average()?.toFloat() ?: 0f
-        val bass = audioLevels?.take(7)?.drop(1)?.average()?.toFloat() ?: 0f
-        val coreRadius = 18f + sub * 44f + bass * 20f
+        val cy = H * 0.50f
+        val rx = W * 0.345f
+        val ryTop = H * 0.430f
+        val ryBot = H * 0.285f
+        val upTilt = -H * 0.018f
+        val leftX = cx - rx
+        val leftY = cy
+        val rightX = cx + rx
+        val rightY = cy + upTilt
+        val upperCtrlX = cx - rx * 0.14f
+        val upperCtrlY = cy - ryTop * eyeOpenCur
+        val lowerCtrlX = cx + rx * 0.03f
+        val lowerCtrlY = cy + ryBot * eyeOpenCur
+        val apH = 0.5f * ryTop * 0.86f + 0.5f * ryBot * 0.86f
         
-        // Layered corona (4 layers) with BlendMode.Plus - EXACT HTML globalCompositeOperation='lighter'
-        for (i in 3 downTo 0) {
-            val r = coreRadius * (1.35f + i * 0.5f) + bass * i * 12f
+        // Lid shadow
+        drawCircle(
+            brush = Brush.radialGradient(
+                colors = listOf(Color.Black.copy(alpha = 0.6f), Color.Transparent),
+                center = Offset(cx, cy + apH * 0.15f),
+                radius = rx * 1.22f
+            ),
+            radius = rx * 1.22f,
+            center = Offset(cx, cy + apH * 0.15f)
+        )
+        
+        // Lid shape
+        drawOval(
+            brush = Brush.verticalGradient(
+                colors = listOf(Color(0xFF123246), Color(0xFF07202c)),
+                startY = cy - apH * 1.5f,
+                endY = cy + apH * 1.5f
+            ),
+            topLeft = Offset(cx - rx * 1.08f, cy - apH * 1.15f),
+            size = androidx.compose.ui.geometry.Size(rx * 2.16f, apH * 2.3f)
+        )
+        
+        // Aperture clip path
+        val aperturePath = Path().apply {
+            moveTo(leftX, leftY)
+            quadraticTo(upperCtrlX, upperCtrlY, rightX, rightY)
+            quadraticTo(lowerCtrlX, lowerCtrlY, leftX, leftY)
+            close()
+        }
+        
+        withTransform({
+            clipPath(path = aperturePath)
+        }) {
+            // Sclera with redness tint
+            val rTint = (eyeRedness * 38f).toInt()
+            drawRect(
+                brush = Brush.radialGradient(
+                    colors = listOf(
+                        Color(234 + rTint, 247 - (rTint * 0.6f).toInt(), 249 - (rTint * 0.6f).toInt()),
+                        Color(191 + rTint, 227 - rTint, 231 - rTint),
+                        Color(127 + rTint, 185 - (rTint * 1.3f).toInt(), 194 - (rTint * 1.3f).toInt()),
+                        Color(63 + (rTint * 0.6f).toInt(), 109 - rTint, 120 - rTint)
+                    ),
+                    center = Offset(cx, cy),
+                    radius = rx * 1.15f
+                ),
+                topLeft = Offset(cx - rx * 1.2f, cy - ryTop * 1.3f),
+                size = androidx.compose.ui.geometry.Size(rx * 2.4f, (ryTop + ryBot) * 1.4f)
+            )
+            
+            // Inflamed flush from canthi
+            if (eyeRedness > 0.02f) {
+                drawCircle(
+                    brush = Brush.radialGradient(
+                        colors = listOf(
+                            Color(198, 52, 62, (0.30f * eyeRedness * 255).toInt()),
+                            Color(190, 60, 66, (0.12f * eyeRedness * 255).toInt()),
+                            Color.Transparent
+                        ),
+                        center = Offset(leftX + rx * 0.16f, cy),
+                        radius = rx * 0.85f
+                    ),
+                    radius = rx * 0.85f,
+                    center = Offset(leftX + rx * 0.16f, cy),
+                    blendMode = BlendMode.Plus
+                )
+            }
+            
+            // Iris with ocean colors
+            val maxGX = rx * 0.30f
+            val maxGY = ((ryTop + ryBot) / 2f) * 0.20f
+            val ix = cx + eyeGazeX * maxGX
+            val iy = cy + eyeGazeY * maxGY
+            val irisBase = (0.5f * ryTop * 0.86f) * 1.05f
+            val irisR = irisBase * eyeIrisPulse
+            
             drawCircle(
                 brush = Brush.radialGradient(
                     colors = listOf(
-                        accent1.copy(alpha = 0.2f - i * 0.04f),
-                        Color.Transparent
+                        Color(0xFFaefaf0),
+                        Color(0xFF5ff0dd),
+                        Color(0xFF2fd9c9),
+                        Color(0xFF12839a),
+                        Color(0xFF0e5f7a),
+                        Color(0xFF062230)
                     ),
-                    center = Offset(cx, cy),
-                    radius = r
+                    center = Offset(ix, iy),
+                    radius = irisR
                 ),
-                radius = r,
-                center = Offset(cx, cy),
-                blendMode = BlendMode.Plus
+                radius = irisR,
+                center = Offset(ix, iy)
             )
+            
+            // Pupil with bass dilation
+            val pr = irisR * eyePupilRatio
+            drawCircle(
+                brush = Brush.radialGradient(
+                    colors = listOf(Color.Black, Color(0xFF050b12)),
+                    center = Offset(ix, iy),
+                    radius = pr
+                ),
+                radius = pr,
+                center = Offset(ix, iy)
+            )
+            
+            // Catchlight
+            drawCircle(
+                color = Color.White.copy(alpha = 0.08f + eyeTrebleEnv * 0.10f),
+                radius = irisR * 0.62f,
+                center = Offset(ix - irisR * 0.12f, iy - irisR * 0.5f)
+            )
+            
+            // Tear meniscus
+            if (eyeWell > 0.02f) {
+                val tearPath = Path()
+                for (i in 0..28) {
+                    val tt = 0.06f + (i / 28f) * 0.88f
+                    val mt = 1f - tt
+                    val bx = mt * mt * leftX + 2f * mt * tt * lowerCtrlX + tt * tt * rightX
+                    val by = mt * mt * leftY + 2f * mt * tt * lowerCtrlY + tt * tt * rightY
+                    val lift = 1f + eyeWell * 2.2f
+                    if (i == 0) tearPath.moveTo(bx, by - lift * 0.4f)
+                    else tearPath.lineTo(bx, by - lift * 0.4f)
+                }
+                drawPath(
+                    path = tearPath,
+                    color = Color(214, 244, 250, ((0.10f + eyeWell * 0.30f) * 255).toInt()),
+                    style = Stroke(width = 1.2f + eyeWell * 3.6f, cap = StrokeCap.Round)
+                )
+            }
         }
         
-        // 16 plasma filaments with REAL shadowBlur - EXACT HTML
-        val mid = audioLevels?.slice(15..25)?.average()?.toFloat() ?: 0f
-        repeat(16) { i ->
-            val bandIdx = ((i / 16f) * 48).toInt().coerceIn(0, 47)
-            val v = audioLevels?.getOrNull(bandIdx) ?: 0f
-            val baseAng = (i / 16f) * PI.toFloat() * 2 + time * 0.1f * if (i % 2 == 0) 1f else -1f
-            val len = coreRadius * 1.05f + v * 95f + mid * 26f
-            val wob = sin(time * 1.5f + i) * 0.2f
-            
-            val x1 = cx + cos(baseAng) * coreRadius * 0.85f
-            val y1 = cy + sin(baseAng) * coreRadius * 0.85f
-            val xm = cx + cos(baseAng + wob) * len * 0.55f
-            val ym = cy + sin(baseAng + wob) * len * 0.55f
-            val x2 = cx + cos(baseAng + wob * 1.7f) * len
-            val y2 = cy + sin(baseAng + wob * 1.7f) * len
-            
-            val path = Path()
-            path.moveTo(x1, y1)
-            path.quadraticTo(xm, ym, x2, y2)
-            
-            val color = if (i % 3 == 0) accent2 else accent1
-            val blur = 5f + v * 11f // shadowBlur from HTML
-            
-            // Draw with REAL shadowBlur effect using drawPathWithGlow
-            drawPathWithGlow(
-                path = path,
-                color = color.copy(alpha = 0.32f + v * 0.6f),
-                blur = blur,
-                strokeWidth = 1f + v * 4.2f,
-                cap = StrokeCap.Round,
-                blendMode = BlendMode.Plus
-            )
-        }
-        
-        // Orbiting embers with shadowBlur=6 - EXACT HTML
-        novaParticles.forEach { p ->
-            p.angle += p.speed * 0.02f
-            val rr = coreRadius * p.rBase + treble * 32f
-            val x = cx + cos(p.angle) * rr
-            val y = cy + sin(p.angle) * rr * 0.82f
-            
-            // Draw with glow (shadowBlur=6, shadowColor=accent2 in HTML)
-            drawCircleWithGlow(
-                color = accent2.copy(alpha = 0.55f + treble * 0.45f),
-                radius = p.r,
-                center = Offset(x, y),
-                blur = 6f,
-                glowColor = accent2
-            )
-        }
-        
-        // The core itself with radial gradient - EXACT HTML
-        drawCircle(
-            brush = Brush.radialGradient(
-                colors = listOf(accent1, accent2, accent1),
-                center = Offset(cx - coreRadius * 0.25f, cy - coreRadius * 0.25f),
-                radius = coreRadius
-            ),
-            radius = coreRadius,
-            center = Offset(cx, cy),
-            blendMode = BlendMode.Plus
+        // Lid outline
+        val lidPath = Path()
+        lidPath.moveTo(leftX, leftY)
+        lidPath.quadraticTo(upperCtrlX, upperCtrlY, rightX, rightY)
+        drawPath(
+            path = lidPath,
+            color = Color(2, 10, 15, 217),
+            style = Stroke(width = 1.4f)
         )
         
-        // Shockwave rings on beat - EXACT HTML
-        val beat = isActive && bass > 0.6f && !lastBeat
-        lastBeat = bass > 0.6f
-        
-        if (beat) {
-            novaShockwaves.add(Shockwave(radius = coreRadius, life = 1f))
-        }
-        
-        val punch = audioLevels?.drop(36)?.take(10)?.maxOrNull() ?: 0f
-        novaShockwaves.forEach { s ->
-            s.radius += 5f + punch * 3f
-            s.life -= 0.028f
-            
-            drawCircle(
-                color = accent1.copy(alpha = maxOf(0f, s.life * 0.6f)),
-                radius = s.radius,
-                center = Offset(cx, cy),
-                style = Stroke(width = 2f)
-            )
-        }
-        novaShockwaves.removeAll { it.life <= 0f }
-        
-        // Quiet spectral horizon (28 bars at bottom) - EXACT HTML
-        val n = 28
-        repeat(n) { i ->
-            val idx = ((i / n.toFloat()) * 48).toInt().coerceIn(0, 47)
-            val v = audioLevels?.getOrNull(idx) ?: 0f
-            val x = W * 0.1f + (i / n.toFloat()) * W * 0.8f
-            val baseY = H * 0.93f
-            val h = 4f + v * 34f
-            
+        // Simplified lashes
+        val LASH_N = 18
+        val maxLen = max(18f, rx * 0.46f)
+        for (i in 0 until LASH_N) {
+            val tt = 0.06f + (i / (LASH_N - 1f)) * 0.88f
+            val mt = 1f - tt
+            val basex = mt * mt * leftX + 2f * mt * tt * upperCtrlX + tt * tt * rightX
+            val basey = mt * mt * leftY + 2f * mt * tt * upperCtrlY + tt * tt * rightY
+            val sweep = (tt - 0.5f) * 0.85f
+            val angle = -PI.toFloat() / 2f + sweep
+            val lenFactor = sin(PI.toFloat() * tt).pow(0.85f)
+            val length = (11f + lenFactor * maxLen) * (1f + eyeBassEnv * 0.12f) * (0.55f + 0.45f * eyeOpenCur)
+            val endx = basex + cos(angle) * length
+            val endy = basey + sin(angle) * length
             drawLine(
-                color = accent1.copy(alpha = 0.16f + v * 0.3f),
-                start = Offset(x, baseY),
-                end = Offset(x, baseY - h),
-                strokeWidth = 2f
+                color = Color(2, 9, 14, 240),
+                start = Offset(basex, basey),
+                end = Offset(endx, endy),
+                strokeWidth = 1.8f,
+                cap = StrokeCap.Round
             )
         }
+        
+        // Update eye physics
+        if (isActive && audioLevels != null) {
+            val bassRaw = audioLevels.getOrNull(3) ?: 0f
+            val trebleRaw = audioLevels.getOrNull(40) ?: 0f
+            val overall = audioLevels.average().toFloat()
+            
+            // Bass/treble envelopes
+            val bassAtk = 1f - exp(-dt * 4.5f)
+            val bassRel = 1f - exp(-dt * 2.2f)
+            eyeBassEnv += (bassRaw - eyeBassEnv) * if (bassRaw > eyeBassEnv) bassAtk else bassRel
+            
+            val trebAtk = 1f - exp(-dt * 22f)
+            val trebRel = 1f - exp(-dt * 10f)
+            eyeTrebleEnv += (trebleRaw - eyeTrebleEnv) * if (trebleRaw > eyeTrebleEnv) trebAtk else trebRel
+            
+            // Loudness -> redness
+            eyeLoudness += (overall - eyeLoudness) * (1f - exp(-dt * if (overall > eyeLoudness) 3.0f else 0.55f))
+            val redTarget = ((eyeLoudness - 0.30f) / 0.30f).coerceIn(0f, 1f)
+            eyeRedness += (redTarget - eyeRedness) * (1f - exp(-dt * 1.15f))
+            
+            // Crying
+            val cryTarget = ((eyeLoudness - 0.40f) * 3.2f).coerceIn(0f, 1f)
+            eyeWell += (cryTarget - eyeWell) * (1f - exp(-dt * 0.9f))
+            
+            // Pupil dilation
+            val pupilTarget = (0.26f + eyeBassEnv * 0.46f).coerceIn(0.20f, 0.74f)
+            val k = 90f
+            val c = 18f
+            val force = (pupilTarget - eyePupilRatio) * k - eyePupilVel * c
+            eyePupilVel += force * dt
+            eyePupilRatio += eyePupilVel * dt
+            
+            eyeIrisPulse += ((1f + eyeBassEnv * 0.05f) - eyeIrisPulse) * (1f - exp(-dt * 6f))
+        }
+        
+        // Idle gaze drift
+        eyeDriftTimer += dt
+        if (eyeDriftTimer > 0.5f) {
+            eyeDriftTimer = 0f
+            if (Random.nextFloat() < 0.01f) {
+                eyeGazeTargetX = (eyeGazeTargetX + (Random.nextFloat() - 0.5f) * 0.5f).coerceIn(-0.35f, 0.35f)
+                eyeGazeTargetY = ((Random.nextFloat() - 0.5f) * 0.3f).coerceIn(-0.3f, 0.3f)
+            }
+        }
+        eyeGazeX += (eyeGazeTargetX - eyeGazeX) * (1f - exp(-dt * 1.4f))
+        eyeGazeY += (eyeGazeTargetY - eyeGazeY) * (1f - exp(-dt * 1.2f))
     }
 }
 

@@ -70,7 +70,7 @@ object PersistentWebViewManager {
                         "mehtap" -> AppTheme.MEHTAP
                         "sumi" -> AppTheme.SUMI
                         "aurora" -> AppTheme.AURORA
-                        "nova" -> AppTheme.NOVA
+                        "eyes" -> AppTheme.EYES
                         "mycel" -> AppTheme.MYCEL
                         "reef" -> AppTheme.REEF
                         "monsoon" -> AppTheme.MONSOON
@@ -119,7 +119,7 @@ object PersistentWebViewManager {
             AppTheme.MEHTAP -> "mehtap"
             AppTheme.SUMI -> "sumi"
             AppTheme.AURORA -> "aurora"
-            AppTheme.NOVA -> "nova"
+            AppTheme.EYES -> "eyes"
             AppTheme.MYCEL -> "mycel"
             AppTheme.REEF -> "reef"
             AppTheme.MONSOON -> "monsoon"

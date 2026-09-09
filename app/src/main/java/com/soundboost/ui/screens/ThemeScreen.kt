@@ -180,7 +180,7 @@ fun ColorCircle(
         ColorAccent.MEHTAP_GOLD -> Color(0xFFf2b155)
         ColorAccent.SUMI_RED -> Color(0xFFc1442c)
         ColorAccent.AURORA_CYAN -> Color(0xFF4fd8b0)
-        ColorAccent.NOVA_PINK -> Color(0xFFff3d7a)
+        ColorAccent.EYES_CYAN -> Color(0xFF3fe0d0)
         ColorAccent.MYCEL_GREEN -> Color(0xFF6dffb0)
         ColorAccent.REEF_CYAN -> Color(0xFF12e0bd)
         ColorAccent.MONSOON_BLUE -> Color(0xFF9cc2ff)
@@ -218,7 +218,7 @@ fun getThemeName(theme: AppTheme): String {
         AppTheme.MEHTAP -> "Mehtap"
         AppTheme.SUMI -> "Sumi-e"
         AppTheme.AURORA -> "Kutup Şafağı"
-        AppTheme.NOVA -> "Nova"
+        AppTheme.EYES -> "Derin Göz"
         AppTheme.MYCEL -> "Miselyum"
         AppTheme.REEF -> "Derin Işıltı"
         AppTheme.MONSOON -> "Muson"
