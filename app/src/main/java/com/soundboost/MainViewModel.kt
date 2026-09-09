@@ -115,6 +115,18 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
     
+    fun onVocalMusicBalanceChanged(balance: Float) {
+        viewModelScope.launch {
+            prefs.setVocalMusicBalance(balance)
+            if (uiState.value.isBoostEnabled) {
+                val intent = Intent(getApplication(), BoostForegroundService::class.java).apply {
+                    action = "UPDATE_EFFECTS"
+                }
+                getApplication<Application>().startService(intent)
+            }
+        }
+    }
+    
     fun onAutoStartToggled(enabled: Boolean) {
         viewModelScope.launch {
             prefs.setAutoStart(enabled)

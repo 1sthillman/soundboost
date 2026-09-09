@@ -207,6 +207,7 @@ fun MainScreen(viewModel: MainViewModel) {
                     onBassBoostChanged = viewModel::onBassBoostChanged,
                     onVirtualizerChanged = viewModel::onVirtualizerChanged,
                     onEqChanged = viewModel::onEqChanged,
+                    onVocalMusicBalanceChanged = viewModel::onVocalMusicBalanceChanged,
                     onBack = { 
                         navController.popBackStack()
                     }

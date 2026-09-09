@@ -553,6 +553,7 @@ const i18n = {
 };
 
 let currentLang = 'tr';
+let currentMode = 'dark'; // Track dark/light mode for theme transitions
 
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
@@ -615,6 +616,7 @@ const MOON_ICON = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 12.
 const SUN_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4" fill="currentColor" stroke="none"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg>';
 
 function setMode(mode){
+  currentMode = mode; // Update global mode variable for themes like orman
   phone.dataset.mode = mode;
   cssCache = {};  // Clear CSS cache to reload colors for canvas
   modeThumb.innerHTML = mode==='dark' ? MOON_ICON : SUN_ICON;
@@ -672,7 +674,17 @@ function setTheme(name){
   // New themes
   murekkepBlob = null; murekkepDrops = [];
   colDuneSeed = null; colParticles = []; colSunPulse = 0;
-  inkVeens = []; inkRipples = []; inkBlobT = 0;
+  inkVeins = []; inkRipples = []; inkBlobT = 0;
+  
+  // Orman theme state reset
+  ormanStars = []; ormanPinesFar = []; ormanPinesMid = [];
+  ormanGrassTufts = []; ormanRipples = []; ormanWaterPulse = 0;
+  ormanSparks = []; ormanShootingStar = null; ormanEmbers = []; ormanSmoke = [];
+  ormanWagBoost = 0; ormanFireBoost = 0; ormanBeatFlash = 0;
+  ormanModeMix = 0; ormanLastFrameTime = null;
+  // PERFORMANCE: Clear orman caches
+  ormanGradientCache = {sky: null, fog: null, lastModeMix: -1, lastW: 0, lastH: 0};
+  ormanPalCache = {};
   
   // Orman: Setup interactions
   if(name === 'orman'){
@@ -2800,25 +2812,34 @@ let ormanBeatFlash = 0;
 let ormanModeMix = 0;
 let ormanLastFrameTime = null;
 
+// PERFORMANCE: Gradient cache - recreate only when needed
+let ormanGradientCache = {
+  sky: null,
+  fog: null,
+  lastModeMix: -1,
+  lastW: 0,
+  lastH: 0
+};
+
 // Initialize Orman scene elements
 function initOrman(){
   if(ormanStars.length > 0) return; // Already initialized
   
-  // Stars
-  for(let i=0;i<130;i++){
+  // Stars - OPTIMIZED: Reduced to 30 for smooth performance
+  for(let i=0;i<30;i++){
     ormanStars.push({
-      x:Math.random(), y:Math.random()*0.62, r:0.4+Math.random()*1.1,
-      phase:Math.random()*Math.PI*2, speed:0.3+Math.random()*1.0, baseA:0.35+Math.random()*0.6
+      x:Math.random(), y:Math.random()*0.62, r:0.5+Math.random()*1.4,
+      phase:Math.random()*Math.PI*2, speed:0.3+Math.random()*1.0, baseA:0.4+Math.random()*0.6
     });
   }
   
-  // Pines
-  for(let i=0;i<16;i++) ormanPinesFar.push({x:0.02+Math.random()*0.96, s:0.45+Math.random()*0.5});
-  for(let i=0;i<11;i++) ormanPinesMid.push({x:0.03+Math.random()*0.94, s:0.65+Math.random()*0.6});
+  // Pines - OPTIMIZED: Minimal for smooth FPS
+  for(let i=0;i<8;i++) ormanPinesFar.push({x:0.02+Math.random()*0.96, s:0.5+Math.random()*0.5});
+  for(let i=0;i<6;i++) ormanPinesMid.push({x:0.03+Math.random()*0.94, s:0.7+Math.random()*0.5});
   
-  // Grass
-  for(let i=0;i<18;i++) ormanGrassTufts.push({
-    x:Math.random(), y:0.885+Math.random()*0.1, ph:Math.random()*7, h:5+Math.random()*8
+  // Grass - OPTIMIZED: Reduced
+  for(let i=0;i<12;i++) ormanGrassTufts.push({
+    x:Math.random(), y:0.885+Math.random()*0.1, ph:Math.random()*7, h:6+Math.random()*9
   });
 }
 
@@ -2867,10 +2888,27 @@ function lerpRgb(h1,h2,tt){
   return {r:c1.r+(c2.r-c1.r)*tt,g:c1.g+(c2.g-c1.g)*tt,b:c1.b+(c2.b-c1.b)*tt};
 }
 
+// PERFORMANCE: Simple cache for ormanPal to avoid recalculating colors every frame
+let ormanPalCache = {};
+let ormanPalCacheModeMix = -1;
+
 function ormanPal(key, a){
+  // Invalidate cache if mode mix changed significantly (every 5%)
+  if(Math.abs(ormanModeMix - ormanPalCacheModeMix) > 0.05) {
+    ormanPalCache = {};
+    ormanPalCacheModeMix = ormanModeMix;
+  }
+  
+  const cacheKey = a === undefined ? key : `${key}_${a.toFixed(2)}`;
+  if(ormanPalCache[cacheKey]) return ormanPalCache[cacheKey];
+  
   const c = lerpRgb(ORMAN_PAL.night[key]||'#000000', ORMAN_PAL.dawn[key]||'#ffffff', ormanModeMix);
-  if(a===undefined) return `rgb(${c.r|0},${c.g|0},${c.b|0})`;
-  return `rgba(${c.r|0},${c.g|0},${c.b|0},${Math.max(0,Math.min(1,a))})`;
+  const result = a === undefined 
+    ? `rgb(${c.r|0},${c.g|0},${c.b|0})` 
+    : `rgba(${c.r|0},${c.g|0},${c.b|0},${Math.max(0,Math.min(1,a))})`;
+  
+  ormanPalCache[cacheKey] = result;
+  return result;
 }
 
 // Ridge terrain functions
@@ -2881,7 +2919,7 @@ function ormanRidge(x01, seed, amp){
 }
 
 function ormanRidgePath(yBase, amp, seed, e){
-  const steps=64, pts=[];
+  const steps=32, pts=[]; // OPTIMIZED: Reduced from 64 to 32 steps
   for(let i=0;i<=steps;i++){
     const p=i/steps;
     pts.push([p*W, yBase + ormanRidge(p, seed, amp) + Math.sin(p*4+t*0.4+seed)*e.bass*2]);
@@ -2925,7 +2963,7 @@ function ormanDrawPine(x, baseY, h, key){
 function ormanDrawWater(e, g, flick){
   const top = g.waterTop, bottom = H*0.875;
   const amp = 1.3 + e.bass*11 + ormanWaterPulse*13;
-  const steps=80, pts=[];
+  const steps=40, pts=[]; // OPTIMIZED: Reduced from 80 to 40 steps
   for(let i=0;i<=steps;i++){
     const p=i/steps;
     const y = top + Math.sin(p*9+t*1.7)*amp*0.5
@@ -2950,14 +2988,14 @@ function ormanDrawWater(e, g, flick){
   pts.forEach((pt,i)=> i?ctx.lineTo(pt[0],pt[1]):ctx.moveTo(pt[0],pt[1]));
   ctx.stroke();
   
-  // Underwater shimmer lines
-  for(let k=0;k<4;k++){
-    const yy = top + (bottom-top)*(0.22+k*0.19);
+  // Underwater shimmer lines - OPTIMIZED: Reduced from 4 to 2 lines
+  for(let k=0;k<2;k++){
+    const yy = top + (bottom-top)*(0.3+k*0.35);
     ctx.strokeStyle = ormanPal('waterLine', Math.max(0, 0.045+0.045*Math.sin(t*2.1+k*2)));
     ctx.lineWidth = 1;
     ctx.beginPath();
-    for(let i=0;i<=40;i++){
-      const p=i/40;
+    for(let i=0;i<=20;i++){ // OPTIMIZED: Reduced from 40 to 20 points
+      const p=i/20;
       const y = yy + Math.sin(p*14+t*(1.1+k*0.35))*(1.5+e.bass*4);
       i?ctx.lineTo(p*W,y):ctx.moveTo(p*W,y);
     }
@@ -3012,7 +3050,7 @@ function ormanDrawWater(e, g, flick){
 
 function ormanDrawShore(g){
   const sy = g.shoreY;
-  const steps=50, pts=[];
+  const steps=30, pts=[]; // OPTIMIZED: Reduced from 50 to 30 steps
   for(let i=0;i<=steps;i++){
     const p=i/steps;
     pts.push([p*W, sy + Math.sin(p*5+2)*4 + Math.sin(p*13+1)*2]);
@@ -3271,8 +3309,14 @@ function ormanDrawFire(g, e, windAmt){
 function ormanUpdateParticles(dt, g, e, windAmt, f){
   const fPow = ormanFirePower();
   
+  // PERFORMANCE: Aggressive particle limits for smooth FPS
+  const MAX_EMBERS = 30;
+  const MAX_SMOKE = 12;
+  const MAX_SPARKS = 60;
+  const MAX_RIPPLES = 10;
+  
   // Spawn embers
-  if(Math.random() < 0.10 + fPow*0.45*(playing?1:0.4)){
+  if(ormanEmbers.length < MAX_EMBERS && Math.random() < 0.10 + fPow*0.45*(playing?1:0.4)){
     ormanEmbers.push({
       x: g.fx + (Math.random()-0.5)*20,
       y: g.fy - 14 - Math.random()*f.h*0.7,
@@ -3292,7 +3336,7 @@ function ormanUpdateParticles(dt, g, e, windAmt, f){
   ormanEmbers = ormanEmbers.filter(m=>m.life>0);
   
   // Spawn smoke
-  if(Math.random() < 0.05+fPow*0.08){
+  if(ormanSmoke.length < MAX_SMOKE && Math.random() < 0.05+fPow*0.08){
     ormanSmoke.push({
       x:g.fx+(Math.random()-0.5)*12, y:g.fy-f.h*0.85,
       r:5+Math.random()*7, vy:-(16+Math.random()*14), life:1, decay:0.22+Math.random()*0.18
@@ -3308,12 +3352,20 @@ function ormanUpdateParticles(dt, g, e, windAmt, f){
   });
   ormanSmoke = ormanSmoke.filter(sm=>sm.life>0);
   
-  // Update ripples
+  // Update sparks - PERFORMANCE: Limit spark count
+  if(ormanSparks.length > MAX_SPARKS) {
+    ormanSparks = ormanSparks.slice(-MAX_SPARKS);
+  }
+  
+  // Update ripples - PERFORMANCE: Limit ripple count
   ormanRipples.forEach(r=>{
     r.r += r.v*dt;
     r.life -= dt*r.decay;
   });
   ormanRipples = ormanRipples.filter(r=>r.life>0 && r.r < W*0.5);
+  if(ormanRipples.length > MAX_RIPPLES) {
+    ormanRipples = ormanRipples.slice(-MAX_RIPPLES);
+  }
   
   // Update shooting star
   if(ormanShootingStar){
@@ -3409,12 +3461,12 @@ function drawOrman(bars, wave, e){
   const g = ormanGeo();
   const flick = ormanFireFlick();
   
-  // Beat detection
+  // Beat detection - OPTIMIZED: Reduced particle count from 10 to 5
   if(e.beat){
     ormanBeatFlash = 1;
     ormanFireBoost = Math.min(1.4, ormanFireBoost+0.15);
     ormanWaterPulse = 1;
-    for(let i=0;i<10;i++){
+    for(let i=0;i<5;i++){
       ormanSparks.push({
         x: g.fx+(Math.random()-0.5)*18, y: g.fy-30,
         vx:(Math.random()-0.5)*1.2, vy:-(0.8+Math.random()*2),
@@ -3424,22 +3476,42 @@ function drawOrman(bars, wave, e){
     }
   }
   
-  // Sky
-  const skyGrad = ctx.createLinearGradient(0,0,0,g.skyH);
-  skyGrad.addColorStop(0, ormanPal('skyTop'));
-  skyGrad.addColorStop(0.62, ormanPal('skyMid'));
-  skyGrad.addColorStop(1, ormanPal('skyHorizon'));
-  ctx.fillStyle = skyGrad;
+  // Sky - OPTIMIZED: Use cached gradient
+  const needsGradientUpdate = 
+    !ormanGradientCache.sky || 
+    Math.abs(ormanModeMix - ormanGradientCache.lastModeMix) > 0.1 ||
+    W !== ormanGradientCache.lastW || 
+    H !== ormanGradientCache.lastH;
+  
+  if(needsGradientUpdate) {
+    ormanGradientCache.sky = ctx.createLinearGradient(0,0,0,g.skyH);
+    ormanGradientCache.sky.addColorStop(0, ormanPal('skyTop'));
+    ormanGradientCache.sky.addColorStop(0.62, ormanPal('skyMid'));
+    ormanGradientCache.sky.addColorStop(1, ormanPal('skyHorizon'));
+    
+    ormanGradientCache.fog = ctx.createLinearGradient(0,g.waterTop-24,0,g.waterTop+14);
+    ormanGradientCache.fog.addColorStop(0, ormanPal('skyHorizon',0));
+    ormanGradientCache.fog.addColorStop(0.5, ormanPal('skyHorizon',0.28));
+    ormanGradientCache.fog.addColorStop(1, ormanPal('waterTop',0));
+    
+    ormanGradientCache.lastModeMix = ormanModeMix;
+    ormanGradientCache.lastW = W;
+    ormanGradientCache.lastH = H;
+  }
+  
+  ctx.fillStyle = ormanGradientCache.sky;
   ctx.fillRect(0,0,W,g.skyH+2);
   
-  // Stars
+  // Stars - OPTIMIZED: Batch rendering
   const starAlpha = Math.max(0, 1-ormanModeMix*1.7);
   if(starAlpha>0.01){
+    const starColor = ormanPal('star', starAlpha);
     ormanStars.forEach(st=>{
       const tw = 0.5+0.5*Math.sin(t*st.speed+st.phase);
+      const alpha = starAlpha*(0.35+tw*0.65)*st.baseA;
+      ctx.fillStyle = starColor.replace(/[\d.]+\)$/,`${alpha})`); // Reuse color, just change alpha
       ctx.beginPath();
       ctx.arc(st.x*W, st.y*g.skyH*0.95, st.r*(0.6+tw*0.6), 0, 7);
-      ctx.fillStyle = ormanPal('star', starAlpha*(0.35+tw*0.65)*st.baseA);
       ctx.fill();
     });
   }
@@ -3470,12 +3542,8 @@ function drawOrman(bars, wave, e){
     ormanDrawPine(p.x*W, midPts[i][1]+2, H*0.13*p.s, 'ridgeMid');
   });
   
-  // Fog band
-  const fogGrad = ctx.createLinearGradient(0,g.waterTop-24,0,g.waterTop+14);
-  fogGrad.addColorStop(0, ormanPal('skyHorizon',0));
-  fogGrad.addColorStop(0.5, ormanPal('skyHorizon',0.28));
-  fogGrad.addColorStop(1, ormanPal('waterTop',0));
-  ctx.fillStyle = fogGrad;
+  // Fog band - OPTIMIZED: Use cached gradient
+  ctx.fillStyle = ormanGradientCache.fog;
   ctx.fillRect(0,g.waterTop-24,W,40);
   
   // Water

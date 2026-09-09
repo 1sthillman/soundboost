@@ -20,6 +20,7 @@ data class BoostSettings(
     val eqLowGain: Float = 0f,
     val eqMidGain: Float = 0f,
     val eqHighGain: Float = 0f,
+    val vocalMusicBalance: Float = 0.5f,  // 0.0 = music only, 0.5 = balanced, 1.0 = vocal only
     val autoStartOnBoot: Boolean = false,
     val theme: AppTheme = AppTheme.MEHTAP,
     val colorAccent: ColorAccent = ColorAccent.MEHTAP_GOLD,
@@ -37,6 +38,7 @@ class BoostPreferences(private val context: Context) {
         val EQ_LOW = floatPreferencesKey("eq_low_gain")
         val EQ_MID = floatPreferencesKey("eq_mid_gain")
         val EQ_HIGH = floatPreferencesKey("eq_high_gain")
+        val VOCAL_MUSIC_BALANCE = floatPreferencesKey("vocal_music_balance")
         val AUTO_START = booleanPreferencesKey("auto_start_on_boot")
         val THEME = stringPreferencesKey("app_theme")
         val COLOR_ACCENT = stringPreferencesKey("color_accent")
@@ -62,6 +64,7 @@ class BoostPreferences(private val context: Context) {
             eqLowGain = prefs[Keys.EQ_LOW] ?: 0f,
             eqMidGain = prefs[Keys.EQ_MID] ?: 0f,
             eqHighGain = prefs[Keys.EQ_HIGH] ?: 0f,
+            vocalMusicBalance = prefs[Keys.VOCAL_MUSIC_BALANCE] ?: 0.5f,
             autoStartOnBoot = prefs[Keys.AUTO_START] ?: false,
             theme = try {
                 AppTheme.valueOf(prefs[Keys.THEME] ?: AppTheme.MEHTAP.name)
@@ -99,6 +102,12 @@ class BoostPreferences(private val context: Context) {
             prefs[Keys.EQ_LOW] = low.coerceIn(-15f, 15f)
             prefs[Keys.EQ_MID] = mid.coerceIn(-15f, 15f)
             prefs[Keys.EQ_HIGH] = high.coerceIn(-15f, 15f)
+        }
+    }
+    
+    suspend fun setVocalMusicBalance(balance: Float) {
+        context.dataStore.edit { 
+            it[Keys.VOCAL_MUSIC_BALANCE] = balance.coerceIn(0f, 1f)
         }
     }
     

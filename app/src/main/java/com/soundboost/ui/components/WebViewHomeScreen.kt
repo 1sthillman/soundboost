@@ -514,6 +514,8 @@ fun WebViewHomeScreen(
                                 "mehtap" -> com.soundboost.ui.theme.AppTheme.MEHTAP
                                 "sumi" -> com.soundboost.ui.theme.AppTheme.SUMI
                                 "aurora" -> com.soundboost.ui.theme.AppTheme.AURORA
+                                "fener" -> com.soundboost.ui.theme.AppTheme.AURORA  // Fener -> Aurora (similar lighthouse/northern lights)
+                                "orman" -> com.soundboost.ui.theme.AppTheme.AURORA  // Orman (Moon Camp) -> Aurora (similar night sky)
                                 "eyes" -> com.soundboost.ui.theme.AppTheme.EYES
                                 "mycel" -> com.soundboost.ui.theme.AppTheme.MYCEL
                                 "reef" -> com.soundboost.ui.theme.AppTheme.REEF
@@ -521,6 +523,7 @@ fun WebViewHomeScreen(
                                 "murekkep" -> com.soundboost.ui.theme.AppTheme.MUREKKEP
                                 "col" -> com.soundboost.ui.theme.AppTheme.COL
                                 "divit" -> com.soundboost.ui.theme.AppTheme.DIVIT
+                                "nova" -> com.soundboost.ui.theme.AppTheme.AURORA  // Nova -> Aurora (similar star theme)
                                 else -> com.soundboost.ui.theme.AppTheme.MEHTAP  // Default
                             }
                             lastThemeFromKotlin = theme  // HTML'den geldiğini işaretle

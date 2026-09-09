@@ -5,9 +5,16 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
+import com.soundboost.cache.ThemePreloader
 import com.soundboost.data.LanguageManager
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 
 class SoundBoostApplication : Application() {
+
+    private val applicationScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
 
     override fun onCreate() {
         super.onCreate()
@@ -17,6 +24,17 @@ class SoundBoostApplication : Application() {
         LanguageManager.applyLanguage(this)
         
         createNotificationChannel()
+        
+        // Preload all themes in background to prevent lag when switching
+        applicationScope.launch {
+            ThemePreloader.preloadAllThemes(this@SoundBoostApplication)
+        }
+    }
+    
+    override fun onLowMemory() {
+        super.onLowMemory()
+        // Clear theme cache if system is running low on memory
+        ThemePreloader.clearCache()
     }
     
     override fun attachBaseContext(base: Context) {

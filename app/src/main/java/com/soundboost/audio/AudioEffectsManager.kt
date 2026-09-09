@@ -162,6 +162,61 @@ class AudioEffectsManager {
         }
     }
 
+    /**
+     * Vocal/Music Balance - Smart EQ preset system
+     * vocalBalance: 0.0 = music only, 0.5 = balanced, 1.0 = vocal only
+     * 
+     * Works by applying frequency-specific EQ based on human vocal range:
+     * - Vocals: 300Hz - 3kHz (fundamental + harmonics)
+     * - Music: <300Hz (bass) + >4kHz (treble/instruments)
+     */
+    fun setVocalMusicBalance(vocalBalance: Float) {
+        val eq = equalizer ?: return
+        try {
+            val bandCount = eq.numberOfBands.toInt()
+            if (bandCount <= 0) return
+            
+            val range = eq.bandLevelRange
+            val clamped = vocalBalance.coerceIn(0f, 1f)
+            
+            // Convert 0.0-1.0 to -1.0 to +1.0 range (centered at 0.5)
+            val vocalGain = (clamped - 0.5f) * 2f  // -1.0 to +1.0
+            val musicGain = -vocalGain  // Inverse relationship
+            
+            for (band in 0 until bandCount) {
+                val centerFreq = eq.getCenterFreq(band.toShort()) / 1000  // Hz to kHz
+                
+                // Frequency-specific gain calculation
+                val targetDb = when {
+                    // Bass range (50-250 Hz) - Music
+                    centerFreq < 250 -> musicGain * 5f
+                    
+                    // Low-mid vocal fundamentals (250-800 Hz) - Vocal
+                    centerFreq in 250..800 -> vocalGain * 6f
+                    
+                    // Mid vocal presence (800-3000 Hz) - Strong Vocal
+                    centerFreq in 800..3000 -> vocalGain * 7f
+                    
+                    // High-mid clarity (3-5 kHz) - Slight Vocal
+                    centerFreq in 3000..5000 -> vocalGain * 4f
+                    
+                    // Treble/Air (>5 kHz) - Music
+                    else -> musicGain * 3f
+                }.coerceIn(-MAX_EQ_BAND_GAIN_DB, MAX_EQ_BAND_GAIN_DB)
+                
+                val gainMb = (targetDb * 100).toInt().coerceIn(range[0].toInt(), range[1].toInt())
+                eq.setBandLevel(band.toShort(), gainMb.toShort())
+            }
+            
+            // Enable EQ if not balanced (0.5)
+            eq.enabled = kotlin.math.abs(clamped - 0.5f) > 0.05f
+            
+            Log.d(TAG, "Vocal/Music Balance applied: vocalBalance=$clamped, vocalGain=$vocalGain, musicGain=$musicGain")
+        } catch (e: Exception) {
+            Log.w(TAG, "setVocalMusicBalance başarısız: ${e.message}")
+        }
+    }
+
     fun release() {
         try { loudnessEnhancer?.release() } catch (_: Exception) {}
         try { bassBoost?.release() } catch (_: Exception) {}

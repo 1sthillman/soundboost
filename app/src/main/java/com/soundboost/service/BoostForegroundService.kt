@@ -54,7 +54,15 @@ class BoostForegroundService : Service() {
             audioEffects.setMasterGain(settings.masterGainPercent)
             audioEffects.setBassBoost(settings.bassBoostPercent)
             audioEffects.setVirtualizer(settings.virtualizerPercent)
-            audioEffects.setEqualizer(settings.eqLowGain, settings.eqMidGain, settings.eqHighGain)
+            
+            // Apply either manual EQ or vocal/music balance (vocal balance overrides manual EQ)
+            val isBalanceActive = kotlin.math.abs(settings.vocalMusicBalance - 0.5f) > 0.05f
+            if (isBalanceActive) {
+                audioEffects.setVocalMusicBalance(settings.vocalMusicBalance)
+                android.util.Log.d("BoostService", "Applied Vocal/Music Balance: ${settings.vocalMusicBalance}")
+            } else {
+                audioEffects.setEqualizer(settings.eqLowGain, settings.eqMidGain, settings.eqHighGain)
+            }
             
             val notification = createNotification(settings.masterGainPercent, settings.bassBoostPercent)
             startForeground(NOTIFICATION_ID, notification)
@@ -76,7 +84,15 @@ class BoostForegroundService : Service() {
             audioEffects.setMasterGain(settings.masterGainPercent)
             audioEffects.setBassBoost(settings.bassBoostPercent)
             audioEffects.setVirtualizer(settings.virtualizerPercent)
-            audioEffects.setEqualizer(settings.eqLowGain, settings.eqMidGain, settings.eqHighGain)
+            
+            // Apply either manual EQ or vocal/music balance (vocal balance overrides manual EQ)
+            val isBalanceActive = kotlin.math.abs(settings.vocalMusicBalance - 0.5f) > 0.05f
+            if (isBalanceActive) {
+                audioEffects.setVocalMusicBalance(settings.vocalMusicBalance)
+                android.util.Log.d("BoostService", "Applied Vocal/Music Balance: ${settings.vocalMusicBalance}")
+            } else {
+                audioEffects.setEqualizer(settings.eqLowGain, settings.eqMidGain, settings.eqHighGain)
+            }
             
             val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             val notification = createNotification(settings.masterGainPercent, settings.bassBoostPercent)

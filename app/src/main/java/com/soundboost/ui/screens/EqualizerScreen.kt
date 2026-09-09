@@ -29,6 +29,7 @@ fun EqualizerScreen(
     onBassBoostChanged: (Int) -> Unit,
     onVirtualizerChanged: (Int) -> Unit,
     onEqChanged: (Float, Float, Float) -> Unit,
+    onVocalMusicBalanceChanged: (Float) -> Unit,
     onBack: () -> Unit
 ) {
     val themeColors = getThemeColors(state.theme, state.colorAccent)
@@ -65,6 +66,15 @@ fun EqualizerScreen(
             verticalArrangement = Arrangement.spacedBy(Spacing.md)
         ) {
             Spacer(Modifier.height(Spacing.xs))
+            
+            // Vocal/Music Balance Card - NEW FEATURE
+            VocalMusicBalanceCard(
+                value = state.vocalMusicBalance,
+                accentColor = themeColors.accent1,
+                surfaceColor = themeColors.surface,
+                textColor = themeColors.onSurface,
+                onValueChange = onVocalMusicBalanceChanged
+            )
             
             // Bass Boost Card
             EffectCard(
