@@ -17,6 +17,7 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import com.soundboost.R
 import com.soundboost.data.BoostSettings
 import com.soundboost.ui.components.*
@@ -30,6 +31,7 @@ fun EqualizerScreen(
     onVirtualizerChanged: (Int) -> Unit,
     onEqChanged: (Float, Float, Float) -> Unit,
     onVocalMusicBalanceChanged: (Float) -> Unit,
+    onNavigateToAISeparation: () -> Unit = {},  // NEW
     onBack: () -> Unit
 ) {
     val themeColors = getThemeColors(state.theme, state.colorAccent)
@@ -66,6 +68,39 @@ fun EqualizerScreen(
             verticalArrangement = Arrangement.spacedBy(Spacing.md)
         ) {
             Spacer(Modifier.height(Spacing.xs))
+            
+            // AI Vocal Separation Button - EXPERIMENTAL
+            Button(
+                onClick = onNavigateToAISeparation,
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFFFF9800).copy(alpha = 0.3f)
+                ),
+                shape = RoundedCornerShape(Corners.xl)
+            ) {
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        "🤖",
+                        fontSize = TextStyles.titleMedium
+                    )
+                    Column {
+                        Text(
+                            "AI VOCAL SEPARATION",
+                            fontSize = TextStyles.titleSmall,
+                            fontWeight = FontWeight.Black,
+                            letterSpacing = TextStyles.spacingWide
+                        )
+                        Text(
+                            "BETA - Experimental",
+                            fontSize = TextStyles.bodyMedium,
+                            color = themeColors.onSurface.copy(alpha = 0.7f)
+                        )
+                    }
+                }
+            }
             
             // Vocal/Music Balance Card - NEW FEATURE
             VocalMusicBalanceCard(

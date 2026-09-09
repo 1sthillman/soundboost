@@ -208,6 +208,18 @@ fun MainScreen(viewModel: MainViewModel) {
                     onVirtualizerChanged = viewModel::onVirtualizerChanged,
                     onEqChanged = viewModel::onEqChanged,
                     onVocalMusicBalanceChanged = viewModel::onVocalMusicBalanceChanged,
+                    onNavigateToAISeparation = {
+                        navController.navigate("ai_vocal_separation")
+                    },
+                    onBack = { 
+                        navController.popBackStack()
+                    }
+                )
+            }
+            
+            composable("ai_vocal_separation") {
+                AIVocalSeparationScreen(
+                    state = uiState,
                     onBack = { 
                         navController.popBackStack()
                     }
