@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ay Işığı Kampı — Göl Kenarında Gece</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..700&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --font-display:'Fraunces',serif;
+    --font-ui:'Space Grotesk',sans-serif;
+    --bg0:#020a16;--bg1:#0a2036;--ink:#e8f1fa;--ink-dim:#6d87a0;
+    --accent:#ffb35c;--grain:.05;
+  }
+  /* AY IŞIĞI KAMPI — göl kenarında bir gece: taş çukurda ateş, ateşin
+     başında bir gezgin ve köpeği. Bas frekansı gölün yüzeyini, tizler
+     közden yükselen korları, dokunuşlar sahneyi uyandırır. */
+  [data-theme="ayisigi"]{--bg0:#020a16;--bg1:#0a2036;--ink:#e8f1fa;--ink-dim:#6d87a0;--accent:#ffb35c;--grain:.05;}
+  [data-theme="ayisigi"][data-mode="light"]{--bg0:#dfe9f2;--bg1:#f2f6fa;--ink:#152a3d;--ink-dim:#6d8296;--accent:#e08a2e;--grain:.018;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{-webkit-tap-highlight-color:transparent;width:100%;height:100%;overflow:hidden;}
+  body{display:flex;font-family:var(--font-ui);background:var(--bg0);}
+  .phone{position:fixed;inset:0;width:100%;height:100%;color:var(--ink);transition:color 1.1s ease;overflow:hidden;}
+  .screen{position:absolute;inset:0;background:radial-gradient(130% 100% at 50% -20%, var(--bg1), var(--bg0) 60%);padding:env(safe-area-inset-top) 18px 0 18px;display:flex;flex-direction:column;gap:14px;height:100%;overflow-y:auto;transition:background 1.1s ease;}
+  .grain{position:fixed;inset:0;pointer-events:none;mix-blend-mode:overlay;opacity:var(--grain,.03);z-index:5;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");background-size:160px;transition:opacity .6s ease;}
+  .vignette{position:fixed;inset:0;pointer-events:none;z-index:4;box-shadow:inset 0 0 90px 14px rgba(0,0,0,.55);transition:box-shadow .6s ease;}
+  [data-mode="light"] .vignette{box-shadow:inset 0 0 90px 14px rgba(0,0,0,.06);}
+  .topbar{display:flex;align-items:center;justify-content:space-between;position:relative;z-index:2;flex-shrink:0;padding-top:6px;}
+  .brand{font-family:var(--font-display);font-weight:500;font-size:20px;letter-spacing:.02em;margin:0;color:var(--ink);}
+  .brand em{font-style:italic;color:var(--accent);transition:color 1.1s ease;}
+  .topbar::after{content:'';position:absolute;left:0;right:0;bottom:-9px;height:1px;background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--ink) 16%,transparent),transparent);}
+  .topright{display:flex;align-items:center;gap:12px;}
+  .meter{display:flex;align-items:flex-end;gap:2.5px;height:14px;}
+  .meter i{display:block;width:2.5px;border-radius:1px;background:var(--accent);height:2px;transition:background 1.1s ease;opacity:.85;}
+  .now{font-size:11px;color:var(--ink-dim);margin:0;font-variant-numeric:tabular-nums;letter-spacing:.06em;transition:color 1.1s ease;}
+  .modeToggle{background:none;border:none;padding:0;cursor:pointer;display:flex;align-items:center;flex-shrink:0;}
+  .modeSwitch{width:38px;height:20px;border-radius:20px;background:color-mix(in srgb, var(--ink) 16%, transparent);position:relative;transition:background 1.1s ease;flex-shrink:0;}
+  .modeSwitch .thumb{position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:var(--accent);transition:transform .35s cubic-bezier(.4,0,.2,1), background 1.1s ease;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 3px rgba(0,0,0,.4);}
+  [data-mode="light"] .modeSwitch .thumb{transform:translateX(18px);}
+  .modeSwitch .thumb svg{width:10px;height:10px;color:var(--bg0);}
+  .stage{position:relative;border-radius:22px;overflow:hidden;flex:1;min-height:240px;max-height:380px;background:#000;z-index:2;cursor:pointer;transition:transform .05s ease-out, box-shadow .1s linear;box-shadow:0 0 0 1px color-mix(in srgb, var(--ink) 8%, transparent),0 24px 50px -18px rgba(0,0,0,.7),0 0 50px calc(var(--lvl, 0) * 30px) color-mix(in srgb, var(--accent) 35%, transparent);}
+  canvas{display:block;width:100%;height:100%;}
+  .stage-hint{position:absolute;inset:auto 0 12px 0;text-align:center;font-size:10px;color:rgba(220,235,250,.75);opacity:.9;pointer-events:none;letter-spacing:.12em;text-transform:uppercase;transition:opacity .5s ease;text-shadow:0 1px 4px rgba(0,0,0,.6);}
+  .track{position:relative;z-index:2;flex-shrink:0;text-align:center;}
+  .track .kicker{font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--ink-dim);margin:0 0 4px;transition:color 1.1s ease;}
+  .track h2{font-family:var(--font-display);font-weight:400;font-style:italic;font-size:24px;margin:0 0 4px;letter-spacing:-0.01em;}
+  .track p{font-size:12px;color:var(--ink-dim);margin:0;letter-spacing:.03em;transition:color 1.1s ease, opacity .6s ease;}
+  .transport{display:flex;align-items:center;gap:14px;position:relative;z-index:2;flex-shrink:0;padding-bottom:16px;}
+  .transport::before{content:'';position:absolute;left:0;right:0;top:-10px;height:1px;background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--ink) 12%,transparent),transparent);}
+  .playbtn{position:relative;width:52px;height:52px;border-radius:50%;border:none;cursor:pointer;background:radial-gradient(circle at 35% 30%, color-mix(in srgb, var(--accent) 100%, white 28%), var(--accent) 70%);color:var(--bg0);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform .15s ease, background 1.1s ease, box-shadow .1s linear;box-shadow:inset 0 2px 3px rgba(255,255,255,.35),inset 0 -3px 5px rgba(0,0,0,.25),0 4px 14px -2px color-mix(in srgb, var(--accent) 55%, transparent),0 0 0 calc(4px + var(--lvl, 0) * 14px) color-mix(in srgb, var(--accent) calc(8% + var(--lvl,0) * 20%), transparent);}
+  .playbtn:active{transform:scale(.92);}
+  .playbtn svg{width:20px;height:20px;position:relative;z-index:1;}
+  .ripple{position:absolute;inset:0;border-radius:50%;border:1.5px solid var(--accent);opacity:0;pointer-events:none;}
+  .ripple.go{animation:rippleOut .55s ease-out;}
+  @keyframes rippleOut{0%{transform:scale(.7);opacity:.65;}100%{transform:scale(1.9);opacity:0;}}
+  .sliders{flex:1;display:flex;flex-direction:column;gap:10px;}
+  .slider-row{display:flex;align-items:center;gap:12px;}
+  .slider-row label{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-dim);width:70px;flex-shrink:0;transition:color 1.1s ease;}
+  .slider-row .val{font-size:10px;color:var(--ink-dim);width:26px;text-align:right;flex-shrink:0;font-variant-numeric:tabular-nums;transition:color 1.1s ease;}
+  input[type=range]{-webkit-appearance:none;appearance:none;flex:1;height:2px;border-radius:2px;background:linear-gradient(90deg, color-mix(in srgb, var(--accent) 55%, transparent), color-mix(in srgb, var(--accent) 55%, transparent)) 0/var(--fill,50%) 100% no-repeat, color-mix(in srgb, var(--ink) 14%, transparent);outline:none;}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:13px;height:13px;border-radius:50%;background:var(--accent);cursor:pointer;box-shadow:0 0 0 4px color-mix(in srgb, var(--accent) 22%, transparent);transition:background 1.1s ease;}
+  input[type=range]::-moz-range-thumb{width:13px;height:13px;border:none;border-radius:50%;background:var(--accent);cursor:pointer;box-shadow:0 0 0 4px color-mix(in srgb, var(--accent) 22%, transparent);transition:background 1.1s ease;}
+  @media (prefers-reduced-motion: reduce){.stage{transition:none;}.ripple.go{animation:none;}}
+</style>
+<base target="_blank">
+<base target="_blank">
+</head>
+<body>
+<div class="phone" id="phone" data-theme="ayisigi" data-mode="dark">
+  <div class="screen">
+    <div class="grain"></div>
+    <div class="vignette"></div>
+    <div class="topbar">
+      <p class="brand">Ay Işığı <em>Kampı</em></p>
+      <div class="topright">
+        <button class="modeToggle" id="modeToggle" aria-label="Gece / Şafak">
+          <span class="modeSwitch"><span class="thumb" id="modeThumb"></span></span>
+        </button>
+        <div class="meter" id="meter"><i></i><i></i><i></i><i></i><i></i></div>
+        <p class="now" id="clock">--:--</p>
+      </div>
+    </div>
+    <div class="stage" id="stage">
+      <canvas id="canvas"></canvas>
+      <p class="stage-hint" id="stageHint">Göle dokun · ateşi körükle · gökyüzüne dokun</p>
+    </div>
+    <div class="track">
+      <p class="kicker">Gece Nöbeti · II</p>
+      <h2 id="trackTitle">Göl Kenarında Ateş</h2>
+      <p id="trackSub">Bir gezgin, bir köpek, közlenen bir ateş ve basın ritmiyle nefes alan mavi bir göl</p>
+    </div>
+    <div class="transport">
+      <button class="playbtn" id="playBtn" aria-label="Oynat">
+        <span class="ripple" id="ripple"></span>
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+      </button>
+      <div class="sliders">
+        <div class="slider-row">
+          <label for="wind">Rüzgar</label>
+          <input type="range" id="wind" min="0" max="100" value="55">
+          <span class="val" id="windVal">55</span>
+        </div>
+        <div class="slider-row">
+          <label for="flame">Alev</label>
+          <input type="range" id="flame" min="0" max="100" value="60">
+          <span class="val" id="flameVal">60</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+const phone = document.getElementById('phone');
+const stageEl = document.getElementById('stage');
+const stageHint = document.getElementById('stageHint');
+const windEl = document.getElementById('wind');
+const flameEl = document.getElementById('flame');
+const windVal = document.getElementById('windVal');
+const flameVal = document.getElementById('flameVal');
+const playBtn = document.getElementById('playBtn');
+const rippleEl = document.getElementById('ripple');
+const clockEl = document.getElementById('clock');
+const meterBars = Array.from(document.querySelectorAll('#meter i'));
+const modeToggle = document.getElementById('modeToggle');
+const modeThumb = document.getElementById('modeThumb');
+const trackSub = document.getElementById('trackSub');
+
+let W,H,DPR;
+function resize(){
+  DPR = Math.min(2, window.devicePixelRatio || 1);
+  const r = canvas.getBoundingClientRect();
+  W = r.width; H = r.height;
+  canvas.width = Math.round(W*DPR); canvas.height = Math.round(H*DPR);
+  ctx.setTransform(DPR,0,0,DPR,0,0);
+}
+window.addEventListener('resize', resize);
+let cssCache = {};
+function css(v){ return cssCache[v] || (cssCache[v] = getComputedStyle(phone).getPropertyValue(v).trim()); }
+function tickClock(){
+  const d = new Date();
+  clockEl.textContent = d.toLocaleTimeString('tr-TR',{hour:'2-digit',minute:'2-digit'});
+}
+tickClock(); setInterval(tickClock, 15000);
+
+function syncSliderFill(el){ el.style.setProperty('--fill', el.value + '%'); }
+syncSliderFill(windEl); syncSliderFill(flameEl);
+
+let shakeTimer = null;
+function shakeStage(intensity){
+  stageEl.style.transform = `translate(${(Math.random()-0.5)*intensity}px, ${(Math.random()-0.5)*intensity}px)`;
+  clearTimeout(shakeTimer);
+  shakeTimer = setTimeout(()=>{ stageEl.style.transform=''; }, 85);
+}
+
+const MOON_ICON = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 12.4A9 9 0 1111.6 3a7 7 0 009.4 9.4z"/></svg>';
+const SUN_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4" fill="currentColor" stroke="none"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg>';
+let currentMode = 'dark';
+function setMode(mode){
+  currentMode = mode;
+  phone.dataset.mode = mode;
+  cssCache = {};
+  modeThumb.innerHTML = mode==='dark' ? MOON_ICON : SUN_ICON;
+}
+modeToggle.addEventListener('click', ()=>{ setMode(currentMode === 'dark' ? 'light' : 'dark'); });
+
+/* ============ SES MOTORU ============ */
+let actx, analyser, freqData;
+let master, lowpass, airShelf, comp, panner, panLfo, panLfoGain;
+let delay, delayFeedback, delayFilter, delayOut;
+let lfo, lfoGain;
+let droneOscs = [], droneLfos = [];
+let noiseBuffer, windSrc, windFilter, windGain, windSwellLfo, windSwellGain;
+let crackleBus;
+let chordIdx = 0, chordTimer = null;
+let cricketHandle = null, owlHandle = null, crackleHandle = null;
+let playing = false;
+
+const CHORDS = [
+  [110.00, 164.81, 220.00, 261.63],
+  [87.31, 130.81, 174.61, 220.00],
+  [98.00, 146.83, 196.00, 246.94],
+  [82.41, 123.47, 164.81, 207.65],
+];
+const PENTA = [523.25, 587.33, 659.25, 783.99, 880.00];
+function makeNoiseBuffer(){
+  const len = actx.sampleRate*2;
+  const buf = actx.createBuffer(1, len, actx.sampleRate);
+  const d = buf.getChannelData(0);
+  for(let i=0;i<len;i++) d[i] = Math.random()*2-1;
+  return buf;
+}
+function initAudio(){
+  actx = new (window.AudioContext||window.webkitAudioContext)();
+  analyser = actx.createAnalyser();
+  analyser.fftSize = 1024;
+  analyser.smoothingTimeConstant = 0.82;
+  freqData = new Uint8Array(analyser.frequencyBinCount);
+  master = actx.createGain(); master.gain.value = 0.0001;
+  lowpass = actx.createBiquadFilter(); lowpass.type='lowpass'; lowpass.frequency.value=2400; lowpass.Q.value=0.4;
+  airShelf = actx.createBiquadFilter(); airShelf.type='highshelf'; airShelf.frequency.value=5200; airShelf.gain.value=2;
+  comp = actx.createDynamicsCompressor();
+  comp.threshold.value=-22; comp.knee.value=24; comp.ratio.value=3; comp.attack.value=0.006; comp.release.value=0.25;
+  panner = actx.createStereoPanner();
+  panLfo = actx.createOscillator(); panLfo.frequency.value=0.038;
+  panLfoGain = actx.createGain(); panLfoGain.gain.value=0.32;
+  panLfo.connect(panLfoGain); panLfoGain.connect(panner.pan); panLfo.start();
+  delay = actx.createDelay(1.6); delay.delayTime.value=0.55;
+  delayFeedback = actx.createGain(); delayFeedback.gain.value=0.38;
+  delayFilter = actx.createBiquadFilter(); delayFilter.type='lowpass'; delayFilter.frequency.value=1700;
+  delay.connect(delayFilter); delayFilter.connect(delayFeedback); delayFeedback.connect(delay);
+  delayOut = actx.createGain(); delayOut.gain.value=0.45;
+  delay.connect(delayOut);
+  lowpass.connect(airShelf); airShelf.connect(master);
+  delayOut.connect(master); master.connect(comp); comp.connect(panner); panner.connect(analyser); analyser.connect(actx.destination);
+  lfo = actx.createOscillator(); lfo.frequency.value=0.025;
+  lfoGain = actx.createGain(); lfoGain.gain.value=520;
+  lfo.connect(lfoGain); lfoGain.connect(lowpass.frequency); lfo.start();
+  noiseBuffer = makeNoiseBuffer();
+  windSrc = actx.createBufferSource(); windSrc.buffer=noiseBuffer; windSrc.loop=true;
+  windFilter = actx.createBiquadFilter(); windFilter.type='bandpass'; windFilter.frequency.value=420; windFilter.Q.value=0.5;
+  windGain = actx.createGain(); windGain.gain.value=0.04;
+  windSwellLfo = actx.createOscillator(); windSwellLfo.frequency.value=0.07;
+  windSwellGain = actx.createGain(); windSwellGain.gain.value=0.03;
+  windSwellLfo.connect(windSwellGain); windSwellGain.connect(windGain.gain);
+  windSrc.connect(windFilter); windFilter.connect(windGain); windGain.connect(lowpass);
+  windSrc.start(); windSwellLfo.start();
+  crackleBus = actx.createGain(); crackleBus.gain.value = 0.7;
+  crackleBus.connect(master);
+  buildDrone(CHORDS[0]);
+  applyWind(); applyFlame();
+}
+function buildDrone(chord){
+  droneOscs.forEach(o=>{ try{o.stop();}catch(e){} });
+  droneLfos.forEach(o=>{ try{o.stop();}catch(e){} });
+  droneOscs = []; droneLfos = [];
+  chord.forEach((freq,i)=>{
+    const o = actx.createOscillator();
+    o.type = i===0 ? 'sine' : (i%2===0 ? 'triangle' : 'sine');
+    o.frequency.value = i===0 ? freq/2 : freq;
+    const g = actx.createGain();
+    g.gain.value = i===0 ? 0.17 : 0.04;
+    o.connect(g); g.connect(lowpass); o.start();
+    droneOscs.push(o);
+    if(i>0){
+      const dl = actx.createOscillator(); dl.frequency.value = 0.018 + i*0.009;
+      const dg = actx.createGain(); dg.gain.value = 2.2 + i*0.5;
+      dl.connect(dg); dg.connect(o.detune); dl.start();
+      droneLfos.push(dl);
+    }
+  });
+  const shimmer = actx.createOscillator(); shimmer.frequency.value=0.05;
+  const shimmerGain = actx.createGain(); shimmerGain.gain.value=420;
+  shimmer.connect(shimmerGain); shimmerGain.connect(delayFilter.frequency);
+  shimmer.start(); droneLfos.push(shimmer);
+}
+function advanceChord(){
+  chordIdx = (chordIdx+1) % CHORDS.length;
+  const chord = CHORDS[chordIdx];
+  const now = actx.currentTime;
+  droneOscs.forEach((o,i)=>{
+    if(chord[i] !== undefined){
+      const target = i===0 ? chord[i]/2 : chord[i];
+      o.frequency.linearRampToValueAtTime(target, now + 2.8);
+    }
+  });
+  advanceStory();
+}
+const STORY = [
+  "Bir gezgin, bir köpek, közlenen bir ateş ve basın ritmiyle nefes alan mavi bir göl",
+  "Rüzgar çam dallarında; göl, kalbin atışını kıyıya yansıtıyor",
+  "Köpek başını kaldırıyor — vadinin ötesinde bir baykuş sesleniyor",
+  "Ateşe dokunursan közlenir; gökyüzüne dokunursan bir yıldız kayar"
+];
+function advanceStory(){
+  const line = STORY[chordIdx % STORY.length];
+  trackSub.style.opacity = 0;
+  setTimeout(()=>{ trackSub.textContent = line; trackSub.style.opacity = 1; }, 600);
+}
+function bell(freq, when, gainMul){
+  const t0 = actx.currentTime + (when||0);
+  const o = actx.createOscillator(); o.type='sine'; o.frequency.value=freq;
+  const o2 = actx.createOscillator(); o2.type='sine'; o2.frequency.value=freq*2.4;
+  const g = actx.createGain(); const g2 = actx.createGain();
+  g.gain.setValueAtTime(0.0001,t0);
+  g.gain.exponentialRampToValueAtTime(0.13*(gainMul||1), t0+0.012);
+  g.gain.exponentialRampToValueAtTime(0.0001, t0+2.2);
+  g2.gain.setValueAtTime(0.0001,t0);
+  g2.gain.exponentialRampToValueAtTime(0.04*(gainMul||1), t0+0.01);
+  g2.gain.exponentialRampToValueAtTime(0.0001, t0+0.8);
+  o.connect(g); o2.connect(g2); g.connect(lowpass); g2.connect(lowpass);
+  const send = actx.createGain(); send.gain.value=0.6;
+  g.connect(send); send.connect(delay);
+  o.start(t0); o.stop(t0+2.3); o2.start(t0); o2.stop(t0+0.9);
+}
+function cricket(when, pan){
+  const t0 = actx.currentTime + (when||0);
+  const o = actx.createOscillator(); o.type='triangle'; o.frequency.value=3800+Math.random()*700;
+  const g = actx.createGain();
+  const p = actx.createStereoPanner(); p.pan.value = pan!==undefined?pan:(Math.random()*2-1)*0.8;
+  g.gain.setValueAtTime(0.0001,t0);
+  for(let i=0;i<3;i++){
+    g.gain.exponentialRampToValueAtTime(0.016, t0+i*0.07+0.015);
+    g.gain.exponentialRampToValueAtTime(0.0001, t0+i*0.07+0.05);
+  }
+  o.connect(g); g.connect(p); p.connect(lowpass);
+  o.start(t0); o.stop(t0+0.3);
+}
+function scheduleCrickets(){
+  if(!playing) return;
+  cricket(0);
+  if(Math.random()<0.4) cricket(0.35+Math.random()*0.4, (Math.random()*2-1)*0.7);
+  cricketHandle = setTimeout(scheduleCrickets, 700+Math.random()*1600);
+}
+function owlCall(){
+  if(!actx) return;
+  const t0 = actx.currentTime;
+  [0, 0.42].forEach((off,k)=>{
+    const o = actx.createOscillator(); o.type='sine';
+    o.frequency.setValueAtTime(k===0?392:370, t0+off);
+    o.frequency.linearRampToValueAtTime(k===0?340:330, t0+off+0.28);
+    const g = actx.createGain();
+    g.gain.setValueAtTime(0.0001, t0+off);
+    g.gain.exponentialRampToValueAtTime(0.09, t0+off+0.06);
+    g.gain.exponentialRampToValueAtTime(0.0001, t0+off+0.34);
+    o.connect(g); g.connect(delay); g.connect(lowpass);
+    o.start(t0+off); o.stop(t0+off+0.4);
+  });
+}
+function scheduleOwl(){
+  if(!playing) return;
+  owlCall();
+  owlHandle = setTimeout(scheduleOwl, 16000+Math.random()*16000);
+}
+function pop(when, vol){
+  const t0 = actx.currentTime + when;
+  const src = actx.createBufferSource(); src.buffer = noiseBuffer;
+  const bp = actx.createBiquadFilter(); bp.type='bandpass';
+  bp.frequency.value = 1600 + Math.random()*3400; bp.Q.value = 7;
+  const g = actx.createGain();
+  const dur = 0.02 + Math.random()*0.05;
+  g.gain.setValueAtTime(0.0001, t0);
+  g.gain.exponentialRampToValueAtTime(vol, t0+0.004);
+  g.gain.exponentialRampToValueAtTime(0.0001, t0+dur);
+  const p = actx.createStereoPanner(); p.pan.value = (Math.random()*2-1)*0.4;
+  src.connect(bp); bp.connect(g); g.connect(p); p.connect(crackleBus);
+  src.start(t0); src.stop(t0+dur+0.02);
+}
+function scheduleCrackle(){
+  if(!playing || !actx) return;
+  const n = 1 + Math.floor(Math.random()*3);
+  for(let i=0;i<n;i++) pop(i*(0.015+Math.random()*0.05), 0.05+Math.random()*0.12);
+  const base = flameBase();
+  crackleHandle = setTimeout(scheduleCrackle, 70 + Math.random()*(340 - base*260));
+}
+function crackleBurst(){
+  if(!actx) return;
+  for(let i=0;i<10;i++) pop(Math.random()*0.3, 0.10+Math.random()*0.14);
+}
+function splashSound(intensity){
+  if(!actx) return;
+  intensity = intensity||0.5;
+  const t0 = actx.currentTime;
+  const src = actx.createBufferSource(); src.buffer=noiseBuffer;
+  const bp = actx.createBiquadFilter(); bp.type='bandpass';
+  bp.frequency.setValueAtTime(1400, t0);
+  bp.frequency.exponentialRampToValueAtTime(420, t0+0.35);
+  bp.Q.value=0.9;
+  const g = actx.createGain();
+  g.gain.setValueAtTime(0.0001, t0);
+  g.gain.exponentialRampToValueAtTime(0.4*intensity, t0+0.02);
+  g.gain.exponentialRampToValueAtTime(0.0001, t0+0.45);
+  src.connect(bp); bp.connect(g); g.connect(master);
+  src.start(t0); src.stop(t0+0.5);
+}
+function bark(){
+  if(!actx) return;
+  [0, 0.22].forEach(off=>{
+    const t0 = actx.currentTime + off;
+    const o = actx.createOscillator(); o.type='sawtooth';
+    o.frequency.setValueAtTime(360 + Math.random()*40, t0);
+    o.frequency.exponentialRampToValueAtTime(150, t0+0.09);
+    const bp = actx.createBiquadFilter(); bp.type='bandpass'; bp.frequency.value=850; bp.Q.value=1.4;
+    const g = actx.createGain();
+    g.gain.setValueAtTime(0.0001, t0);
+    g.gain.exponentialRampToValueAtTime(0.16, t0+0.012);
+    g.gain.exponentialRampToValueAtTime(0.0001, t0+0.12);
+    const p = actx.createStereoPanner(); p.pan.value=0.25;
+    o.connect(bp); bp.connect(g); g.connect(p); p.connect(master);
+    o.start(t0); o.stop(t0+0.15);
+  });
+}
+function chime(){
+  if(!actx) return;
+  bell(1567.98, 0, 0.35);
+  bell(2093.00, 0.12, 0.2);
+}
+function flameBase(){ return parseFloat(flameEl.value)/100; }
+function applyWind(){
+  const v = parseFloat(windEl.value);
+  windVal.textContent = v;
+  syncSliderFill(windEl);
+  if(windFilter){ windFilter.frequency.value = 300 + v*5; }
+  if(windGain){ windGain.gain.value = 0.02 + (v/100)*0.08; }
+}
+function applyFlame(){
+  const v = parseFloat(flameEl.value);
+  flameVal.textContent = v;
+  syncSliderFill(flameEl);
+  if(crackleBus){ crackleBus.gain.setTargetAtTime(0.3 + v*0.9, actx.currentTime, 0.12); }
+  if(airShelf){ airShelf.gain.setTargetAtTime(1 + (v/100)*5, actx.currentTime, 0.12); }
+  if(analyser){ analyser.smoothingTimeConstant = 0.9 - (v/100)*0.55; }
+}
+windEl.addEventListener('input', applyWind);
+flameEl.addEventListener('input', applyFlame);
+
+async function togglePlay(){
+  rippleEl.classList.remove('go');
+  void rippleEl.offsetWidth;
+  rippleEl.classList.add('go');
+  if(!actx) initAudio();
+  if(actx && actx.state === 'suspended') actx.resume();
+  if(!playing){
+    master.gain.cancelScheduledValues(actx.currentTime);
+    master.gain.setTargetAtTime(0.42, actx.currentTime, 0.6);
+    playing = true;
+    chordTimer = setInterval(advanceChord, 8200);
+    scheduleCrickets();
+    scheduleOwl();
+    scheduleCrackle();
+    updatePlayButtonState(true);
+  } else {
+    master.gain.cancelScheduledValues(actx.currentTime);
+    master.gain.setTargetAtTime(0.0001, actx.currentTime, 0.4);
+    playing = false;
+    clearInterval(chordTimer);
+    clearTimeout(cricketHandle);
+    clearTimeout(owlHandle);
+    clearTimeout(crackleHandle);
+    updatePlayButtonState(false);
+  }
+}
+function updatePlayButtonState(isPlaying){
+  if(isPlaying){
+    playBtn.querySelector('svg').innerHTML = '<rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/>';
+    stageHint.style.opacity = '0';
+  } else {
+    playBtn.querySelector('svg').innerHTML = '<path d="M8 5v14l11-7z"/>';
+    stageHint.style.opacity = '0.9';
+  }
+}
+playBtn.addEventListener('click', togglePlay);
+
+/* ============ ANALİZ ============ */
+let t = 0;
+const BINS = 48;
+let fluxHistory = [];
+let beatCooldown = 0;
+let prevBandFrame = null;
+let smoothedEnergy = 0;
+function getBars(sensBoost){
+  const bars = new Array(BINS).fill(0.02);
+  if(!analyser){
+    for(let i=0;i<BINS;i++) bars[i] = 0.035 + 0.018*Math.sin(t*0.6 + i*0.4);
+    return bars;
+  }
+  analyser.getByteFrequencyData(freqData);
+  const usable = Math.floor(freqData.length*0.8);
+  for(let i=0;i<BINS;i++){
+    const p = i/BINS;
+    const idx = Math.floor(Math.pow(p, 1.35)*usable);
+    bars[i] = Math.max(0.02, (freqData[idx]/255) * (sensBoost||1));
+  }
+  return bars;
+}
+function bandAvg(bars, from, to){
+  from = Math.max(0, from); to = Math.min(BINS, to);
+  let s=0, n=0;
+  for(let i=from;i<to;i++){ s+=bars[i]; n++; }
+  return n ? s/n : 0;
+}
+function analyze(bars, sensBoost){
+  const sub    = bandAvg(bars, 0, 3);
+  const bass   = bandAvg(bars, 1, 7);
+  const lowMid = bandAvg(bars, 7, 15);
+  const mid    = bandAvg(bars, 15, 26);
+  const highMid= bandAvg(bars, 26, 36);
+  const treble = bandAvg(bars, 36, 46);
+  const frameEnergy = (sub*1.3 + bass) / 2.3;
+  smoothedEnergy += (frameEnergy - smoothedEnergy) * 0.12;
+  let flux = 0;
+  if(prevBandFrame){ for(let i=0;i<BINS;i++) flux += Math.max(0, bars[i]-prevBandFrame[i]); }
+  prevBandFrame = bars.slice();
+  fluxHistory.push(flux);
+  if(fluxHistory.length>30) fluxHistory.shift();
+  const avgFlux = fluxHistory.reduce((a,b)=>a+b,0)/fluxHistory.length;
+  const sensitivity = 0.5 + ((sensBoost-0.55)/1.1);
+  const fluxThresh = avgFlux * (1.55 - sensitivity*0.4) + 0.6;
+  let beat = false;
+  beatCooldown = Math.max(0, beatCooldown-1);
+  if(playing && beatCooldown===0 && flux > fluxThresh && frameEnergy > 0.22){
+    beat = true; beatCooldown = 7;
+  }
+  return {sub, bass, lowMid, mid, highMid, treble, energy: smoothedEnergy, flux, beat};
+}
+
+let sparks = [];
+function burst(cx, cy, n, color, speed, life, opts){
+  opts = opts||{};
+  for(let i=0;i<n;i++){
+    const ang = Math.random()*Math.PI*2;
+    const sp = (speed||2) * (0.45+Math.random()*0.9);
+    sparks.push({
+      x:cx,y:cy,vx:Math.cos(ang)*sp,vy:Math.sin(ang)*sp,
+      r:(opts.r0||1)+Math.random()*(opts.r1||2.2),
+      life:1, decay:1/(life||40), color:color,
+      grav:opts.gravity||0.015, drag:opts.drag!==undefined?opts.drag:0.965
+    });
+  }
+}
+function drawSparks(){
+  sparks.forEach(s=>{
+    s.x+=s.vx; s.y+=s.vy; s.vy+=s.grav; s.vx*=s.drag; s.vy*=s.drag; s.life-=s.decay;
+    ctx.beginPath(); ctx.arc(s.x,s.y,Math.max(0.2,s.r*s.life),0,7);
+    ctx.shadowColor = s.color; ctx.shadowBlur = 8;
+    ctx.fillStyle = s.color; ctx.globalAlpha = Math.max(0,s.life);
+    ctx.fill(); ctx.globalAlpha=1; ctx.shadowBlur=0;
+  });
+  sparks = sparks.filter(s=>s.life>0);
+}
+function updateMeter(bars){
+  for(let i=0;i<5;i++){
+    const v = bars[3+i*8] || 0.03;
+    meterBars[i].style.height = (2+v*13).toFixed(1)+'px';
+    meterBars[i].style.opacity = (0.4+v*0.6).toFixed(2);
+  }
+}
+
+/* =====================================================================
+   AY IŞIĞI KAMPI — atmosferik perspektifli çam sırtları, mavi göl,
+   basla nefes alan su, taş çukurda ateş, gezgin ve köpek silüetleri.
+   ===================================================================== */
+const PAL = {
+  night:{
+    skyTop:'#020a18', skyMid:'#0a2440', skyHorizon:'#1d4a6b',
+    star:'#eaf4ff', moonCore:'#f2f7ff', moonBody:'#cfe0f5', moonGlow:'#9fc8ff',
+    ridgeFar:'#123a5e', ridgeMid:'#0c2a47', ridgeNear:'#071e33', ridgeFore:'#041221',
+    waterTop:'#155a86', waterDeep:'#041a2e', waterLine:'#7cc4ff', glint:'#bfe6ff',
+    fireCore:'#fff3c4', fireMid:'#ffb14e', fireOuter:'#ff6a26', ember:'#ffc46b', smoke:'#8fa3b8',
+    glow:'#ff9440', rock:'#2a3a4d', rockHi:'#4a5f78', log:'#33241551', wood:'#3a2a1c',
+    tent:'#0a1a2c', tentGlow:'#ffb35c', shore:'#030f1c', shoreEdge:'#0e2c47', grass:'#05131f'
+  },
+  dawn:{
+    skyTop:'#7fa8c9', skyMid:'#cfe0ea', skyHorizon:'#ffd9a8',
+    star:'#ffffff', moonCore:'#fff8e0', moonBody:'#f4e3b8', moonGlow:'#ffe1a0',
+    ridgeFar:'#7d9db4', ridgeMid:'#5d8098', ridgeNear:'#3f6076', ridgeFore:'#2a4456',
+    waterTop:'#6fa8c9', waterDeep:'#3a6a8a', waterLine:'#eaf6ff', glint:'#ffffff',
+    fireCore:'#fff3c4', fireMid:'#ffb14e', fireOuter:'#ff6a26', ember:'#ffc46b', smoke:'#aab8c4',
+    glow:'#ff9440', rock:'#5a6a78', rockHi:'#8fa0b0', wood:'#4a3826',
+    tent:'#3c5a70', tentGlow:'#ffcf8a', shore:'#2a4456', shoreEdge:'#6a8aa0', grass:'#2a4456'
+  }
+};
+function hexToRgbObj(h){ h=h.replace('#',''); return {r:parseInt(h.substring(0,2),16),g:parseInt(h.substring(2,4),16),b:parseInt(h.substring(4,6),16)}; }
+function lerpRgb(h1,h2,tt){ const c1=hexToRgbObj(h1),c2=hexToRgbObj(h2); return {r:c1.r+(c2.r-c1.r)*tt,g:c1.g+(c2.g-c1.g)*tt,b:c1.b+(c2.b-c1.b)*tt}; }
+let modeMix = 0;
+function pal(key, a){
+  const c = lerpRgb(PAL.night[key]||'#000000', PAL.dawn[key]||'#ffffff', modeMix);
+  if(a===undefined) return `rgb(${c.r|0},${c.g|0},${c.b|0})`;
+  return `rgba(${c.r|0},${c.g|0},${c.b|0},${Math.max(0,Math.min(1,a))})`;
+}
+
+/* sahne geometrisi */
+function geo(){
+  return {
+    skyH: H*0.56,
+    waterTop: H*0.60,
+    shoreY: H*0.85,
+    fx: W*0.5, fy: H*0.905,
+    manX: W*0.315, dogX: W*0.685,
+    tentX: W*0.135, tentY: H*0.858,
+    mx: W*0.74, my: H*0.16
+  };
+}
+
+let stars = [];
+for(let i=0;i<130;i++){
+  stars.push({ x:Math.random(), y:Math.random()*0.62, r:0.4+Math.random()*1.1,
+    phase:Math.random()*Math.PI*2, speed:0.3+Math.random()*1.0, baseA:0.35+Math.random()*0.6 });
+}
+const pinesFar=[], pinesMid=[];
+for(let i=0;i<16;i++) pinesFar.push({x:0.02+Math.random()*0.96, s:0.45+Math.random()*0.5});
+for(let i=0;i<11;i++) pinesMid.push({x:0.03+Math.random()*0.94, s:0.65+Math.random()*0.6});
+const grassTufts=[];
+for(let i=0;i<18;i++) grassTufts.push({x:Math.random(), y:0.885+Math.random()*0.1, ph:Math.random()*7, h:5+Math.random()*8});
+
+function ridge(x01, seed, amp){
+  return Math.sin(x01*2.7+seed)*amp
+       + Math.sin(x01*6.3+seed*1.9)*amp*0.45
+       + Math.sin(x01*13.7+seed*2.7)*amp*0.18;
+}
+function ridgePath(yBase, amp, seed, e){
+  const steps=64, pts=[];
+  for(let i=0;i<=steps;i++){
+    const p=i/steps;
+    pts.push([p*W, yBase + ridge(p, seed, amp) + Math.sin(p*4+t*0.4+seed)*e.bass*2]);
+  }
+  return pts;
+}
+function drawRidge(yBase, amp, seed, key, rimAlpha, e){
+  const pts = ridgePath(yBase, amp, seed, e);
+  ctx.beginPath();
+  ctx.moveTo(-4, pts[0][1]);
+  pts.forEach(pt=>ctx.lineTo(pt[0],pt[1]));
+  ctx.lineTo(W+4, pts[pts.length-1][1]);
+  ctx.lineTo(W+4, H+4); ctx.lineTo(-4, H+4);
+  ctx.closePath();
+  ctx.fillStyle = pal(key, 1);
+  ctx.fill();
+  ctx.strokeStyle = pal('waterLine', rimAlpha);
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  pts.forEach((pt,i)=> i?ctx.lineTo(pt[0],pt[1]):ctx.moveTo(pt[0],pt[1]));
+  ctx.stroke();
+  return pts;
+}
+function drawPine(x, baseY, h, key){
+  ctx.fillStyle = pal(key, 1);
+  ctx.fillRect(x-h*0.03, baseY-h*0.1, h*0.06, h*0.12);
+  for(let i=0;i<3;i++){
+    const w = h*0.52*(1-i*0.22);
+    const ly = baseY - i*h*0.26;
+    const lh = h*0.44;
+    ctx.beginPath();
+    ctx.moveTo(x-w/2, ly);
+    ctx.lineTo(x, ly-lh);
+    ctx.lineTo(x+w/2, ly);
+    ctx.closePath(); ctx.fill();
+  }
+}
+
+/* su */
+let ripples = [];
+let waterPulse = 0;
+function drawWater(e, g, flick){
+  const top = g.waterTop, bottom = H*0.875;
+  const amp = 1.3 + e.bass*11 + waterPulse*13;
+  const steps=80, pts=[];
+  for(let i=0;i<=steps;i++){
+    const p=i/steps;
+    const y = top + Math.sin(p*9+t*1.7)*amp*0.5
+                  + Math.sin(p*23-t*2.4)*amp*0.28
+                  + Math.sin(p*4+t*0.7)*amp*0.35;
+    pts.push([p*W, y]);
+  }
+  ctx.beginPath();
+  ctx.moveTo(-4, pts[0][1]);
+  pts.forEach(pt=>ctx.lineTo(pt[0],pt[1]));
+  ctx.lineTo(W+4, bottom+10); ctx.lineTo(-4, bottom+10);
+  ctx.closePath();
+  const wg = ctx.createLinearGradient(0,top,0,bottom);
+  wg.addColorStop(0, pal('waterTop'));
+  wg.addColorStop(1, pal('waterDeep'));
+  ctx.fillStyle = wg; ctx.fill();
+  /* dalga sırtı ışığı */
+  ctx.strokeStyle = pal('waterLine', 0.22 + e.bass*0.4);
+  ctx.lineWidth = 1.3;
+  ctx.beginPath();
+  pts.forEach((pt,i)=> i?ctx.lineTo(pt[0],pt[1]):ctx.moveTo(pt[0],pt[1]));
+  ctx.stroke();
+  /* su içi titreşim çizgileri */
+  for(let k=0;k<4;k++){
+    const yy = top + (bottom-top)*(0.22+k*0.19);
+    ctx.strokeStyle = pal('waterLine', Math.max(0, 0.045+0.045*Math.sin(t*2.1+k*2)));
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    for(let i=0;i<=40;i++){
+      const p=i/40;
+      const y = yy + Math.sin(p*14+t*(1.1+k*0.35))*(1.5+e.bass*4);
+      i?ctx.lineTo(p*W,y):ctx.moveTo(p*W,y);
+    }
+    ctx.stroke();
+  }
+  /* ay yansıması — kırık mavi sütun */
+  const mAlpha = (1-modeMix*0.65);
+  if(mAlpha>0.03){
+    for(let i=0;i<16;i++){
+      const p=i/16;
+      const y = top+4+p*(bottom-top)*0.92;
+      const fade = 1-p*0.75;
+      const w = (W*0.045*(1-p*0.4))*(0.55+Math.random()*0.7)*(0.6+e.energy*0.5);
+      const cx = g.mx + Math.sin(p*13+t*0.9)*(3+(1-p)*8);
+      ctx.fillStyle = pal('glint', (0.05+Math.random()*0.12)*fade*mAlpha*(0.6+e.treble*0.6));
+      ctx.fillRect(cx-w/2, y, Math.max(0,w), 1.1+Math.random()*1.5*fade);
+    }
+  }
+  /* ateş yansıması — kıyıda titreyen turuncu sütun */
+  const fPow = firePower();
+  for(let i=0;i<13;i++){
+    const p=i/13;
+    const y = bottom-6-p*(bottom-top)*0.75;
+    const near = 1-p*0.55;
+    const w = (W*0.05*(1-p*0.3))*(0.5+Math.random()*0.9)*(0.7+flick*0.5+e.bass*0.5);
+    const cx = g.fx + Math.sin(p*11+t*2.2)*(2+(1-p)*6);
+    ctx.fillStyle = pal('fireMid', (0.06+Math.random()*0.16)*near*flick*(0.4+fPow*0.6));
+    ctx.fillRect(cx-w/2, y, Math.max(0,w), 1.3+Math.random()*1.8*near);
+  }
+  /* ateşin kıyıya vuran ılık parlaması */
+  ctx.save();
+  ctx.globalCompositeOperation='lighter';
+  const fg = ctx.createRadialGradient(g.fx, bottom-8, 6, g.fx, bottom-8, W*0.3);
+  fg.addColorStop(0, pal('glow', 0.10*flick*(0.5+fPow*0.5)));
+  fg.addColorStop(1, pal('glow', 0));
+  ctx.fillStyle = fg;
+  ctx.fillRect(g.fx-W*0.32, top, W*0.64, bottom-top);
+  ctx.restore();
+  /* dokunuş dalgalanmaları */
+  ripples.forEach(r=>{
+    ctx.strokeStyle = pal('glint', Math.max(0,r.life)*0.55);
+    ctx.lineWidth = 1.2;
+    ctx.beginPath(); ctx.ellipse(r.x, r.y, r.r, r.r*0.32, 0, 0, 7); ctx.stroke();
+    ctx.strokeStyle = pal('waterLine', Math.max(0,r.life)*0.25);
+    ctx.beginPath(); ctx.ellipse(r.x, r.y, r.r*0.62, r.r*0.2, 0, 0, 7); ctx.stroke();
+  });
+}
+
+/* kıyı */
+function drawShore(g){
+  const sy = g.shoreY;
+  const steps=50, pts=[];
+  for(let i=0;i<=steps;i++){
+    const p=i/steps;
+    pts.push([p*W, sy + Math.sin(p*5+2)*4 + Math.sin(p*13+1)*2]);
+  }
+  ctx.beginPath();
+  ctx.moveTo(-4, pts[0][1]);
+  pts.forEach(pt=>ctx.lineTo(pt[0],pt[1]));
+  ctx.lineTo(W+4, H+4); ctx.lineTo(-4, H+4);
+  ctx.closePath();
+  const sg = ctx.createLinearGradient(0,sy,0,H);
+  sg.addColorStop(0, pal('shoreEdge'));
+  sg.addColorStop(0.25, pal('shore'));
+  sg.addColorStop(1, '#01070f');
+  ctx.fillStyle = sg; ctx.fill();
+  /* kıyı çizgisi */
+  ctx.strokeStyle = pal('waterLine', 0.10);
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  pts.forEach((pt,i)=> i?ctx.lineTo(pt[0],pt[1]):ctx.moveTo(pt[0],pt[1]));
+  ctx.stroke();
+}
+
+/* çadır — içinden sızan sıcak ışıkla */
+function drawTent(g, flick){
+  const s = H/420;
+  const x = g.tentX, gy = g.tentY;
+  const w = 62*s, h = 50*s;
+  ctx.fillStyle = pal('tent');
+  ctx.beginPath(); ctx.moveTo(x-w/2, gy+2); ctx.lineTo(x, gy-h); ctx.lineTo(x+w/2, gy+2); ctx.closePath(); ctx.fill();
+  /* iç sıcaklık — ateş tarafına bakan giriş */
+  const ig = ctx.createRadialGradient(x+10*s, gy-8*s, 2, x+10*s, gy-8*s, 30*s);
+  ig.addColorStop(0, pal('tentGlow', 0.30+flick*0.25));
+  ig.addColorStop(1, pal('tentGlow', 0));
+  ctx.save(); ctx.globalCompositeOperation='lighter';
+  ctx.fillStyle = ig;
+  ctx.beginPath(); ctx.moveTo(x-w/2, gy+2); ctx.lineTo(x, gy-h); ctx.lineTo(x+w/2, gy+2); ctx.closePath(); ctx.fill();
+  ctx.restore();
+  ctx.fillStyle = '#02080f';
+  ctx.beginPath(); ctx.moveTo(x+2*s, gy+2); ctx.lineTo(x+13*s, gy-24*s); ctx.lineTo(x+26*s, gy+2); ctx.closePath(); ctx.fill();
+  ctx.fillStyle = pal('tentGlow', 0.35+flick*0.3);
+  ctx.beginPath(); ctx.moveTo(x+6*s, gy+2); ctx.lineTo(x+13*s, gy-18*s); ctx.lineTo(x+21*s, gy+2); ctx.closePath(); ctx.fill();
+  /* direk ve ip */
+  ctx.strokeStyle = pal('tent'); ctx.lineWidth = 1.4;
+  ctx.beginPath(); ctx.moveTo(x, gy-h); ctx.lineTo(x, gy-h-11*s); ctx.stroke();
+  ctx.strokeStyle = pal('tent', 0.6); ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(x, gy-h-11*s); ctx.lineTo(x-w*0.62, gy+6); ctx.stroke();
+}
+
+/* oturan gezgin — ateşe dönük profil silüeti */
+function drawMan(x, gy, flick){
+  const s = H/420;
+  const c = '#03080f';
+  /* kütük */
+  ctx.fillStyle = pal('wood');
+  rr(x-80*s, gy-15*s, 120*s, 12*s, 6*s); ctx.fill();
+  ctx.fillStyle = pal('wood');
+  ctx.beginPath(); ctx.ellipse(x-80*s, gy-9*s, 5*s, 6*s, 0, 0, 7); ctx.fill();
+  ctx.fillStyle = pal('rockHi', 0.25);
+  ctx.beginPath(); ctx.ellipse(x-80*s, gy-9*s, 2.5*s, 3*s, 0, 0, 7); ctx.fill();
+  /* silüet */
+  ctx.fillStyle = c; ctx.strokeStyle = c; ctx.lineCap='round';
+  ctx.beginPath(); ctx.arc(x+4*s, gy-86*s, 12*s, 0, 7); ctx.fill();
+  ctx.lineWidth = 20*s;
+  ctx.beginPath();
+  ctx.moveTo(x-6*s, gy-70*s);
+  ctx.quadraticCurveTo(x-15*s, gy-46*s, x-8*s, gy-28*s);
+  ctx.stroke();
+  ctx.lineWidth = 9*s;
+  ctx.beginPath(); ctx.moveTo(x-4*s, gy-62*s); ctx.quadraticCurveTo(x+24*s, gy-52*s, x+44*s, gy-38*s); ctx.stroke();
+  /* eldeki çöp */
+  ctx.lineWidth = 3.5*s;
+  ctx.beginPath(); ctx.moveTo(x+40*s, gy-40*s); ctx.lineTo(x+80*s, gy-25*s); ctx.stroke();
+  ctx.lineWidth = 13*s;
+  ctx.beginPath(); ctx.moveTo(x-8*s, gy-30*s); ctx.lineTo(x+26*s, gy-22*s); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(x+26*s, gy-22*s); ctx.lineTo(x+26*s, gy-4*s); ctx.stroke();
+  /* ateşten gelen sıcak kontur */
+  const rimA = 0.22 + flick*0.42;
+  ctx.strokeStyle = pal('glow', rimA); ctx.lineWidth = 1.6*s;
+  ctx.beginPath(); ctx.arc(x+4*s, gy-86*s, 12*s, -1.25, 0.95); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(x+3*s, gy-74*s); ctx.quadraticCurveTo(x+10*s, gy-52*s, x+5*s, gy-32*s); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(x+1*s, gy-62*s); ctx.quadraticCurveTo(x+26*s, gy-52*s, x+42*s, gy-40*s); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(x+1*s, gy-28*s); ctx.lineTo(x+24*s, gy-21*s); ctx.stroke();
+}
+function rr(x,y,w,h,r){
+  ctx.beginPath();
+  ctx.moveTo(x+r,y);
+  ctx.arcTo(x+w,y,x+w,y+h,r);
+  ctx.arcTo(x+w,y+h,x,y+h,r);
+  ctx.arcTo(x,y+h,x,y,r);
+  ctx.arcTo(x,y,x+w,y,r);
+  ctx.closePath();
+}
+
+/* oturan köpek — kuyruk vuruyla sallanır */
+let wagBoost = 0;
+function drawDog(x, gy, flick){
+  const s = H/420;
+  const c = '#03080f';
+  ctx.fillStyle = c; ctx.strokeStyle = c; ctx.lineCap='round';
+  ctx.beginPath(); ctx.ellipse(x+8*s, gy-17*s, 17*s, 15*s, 0, 0, 7); ctx.fill();
+  ctx.lineWidth = 15*s;
+  ctx.beginPath(); ctx.moveTo(x+7*s, gy-24*s); ctx.quadraticCurveTo(x-6*s, gy-44*s, x-12*s, gy-52*s); ctx.stroke();
+  ctx.beginPath(); ctx.arc(x-16*s, gy-58*s, 9.5*s, 0, 7); ctx.fill();
+  ctx.beginPath(); ctx.moveTo(x-22*s, gy-60*s); ctx.lineTo(x-34*s, gy-56*s); ctx.lineTo(x-21*s, gy-53*s); ctx.closePath(); ctx.fill();
+  ctx.beginPath(); ctx.moveTo(x-11*s, gy-66*s); ctx.lineTo(x-5*s, gy-75*s); ctx.lineTo(x-16*s, gy-68*s); ctx.closePath(); ctx.fill();
+  ctx.lineWidth = 5*s;
+  ctx.beginPath(); ctx.moveTo(x-10*s, gy-40*s); ctx.lineTo(x-10*s, gy-3*s); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(x-2*s, gy-38*s); ctx.lineTo(x-2*s, gy-3*s); ctx.stroke();
+  const wag = 0.3 + wagBoost*0.6 + (playing?0.15:0);
+  const a = Math.sin(t*9)*wag;
+  ctx.lineWidth = 6*s;
+  ctx.beginPath(); ctx.moveTo(x+22*s, gy-24*s);
+  ctx.quadraticCurveTo(x+(33+Math.sin(a)*5)*s, gy-(32+Math.cos(a)*7)*s, x+(35+Math.sin(a)*9)*s, gy-(42+Math.cos(a)*10)*s);
+  ctx.stroke();
+  /* ateş tarafı kontur */
+  ctx.strokeStyle = pal('glow', 0.18+flick*0.38); ctx.lineWidth = 1.5*s;
+  ctx.beginPath(); ctx.arc(x-16*s, gy-58*s, 9.5*s, 2.1, 4.7); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(x-3*s, gy-46*s); ctx.quadraticCurveTo(x-13*s, gy-48*s, x-16*s, gy-54*s); ctx.stroke();
+}
+
+/* ateş */
+let fireBoost = 0;
+function firePower(){ return Math.max(0.15, Math.min(1.5, flameBase()*0.7 + fireBoost)); }
+function fireFlick(){
+  const n = Math.sin(t*11.3) + Math.sin(t*5.1+1.3)*0.7 + Math.sin(t*23.7+4.1)*0.4;
+  return Math.max(0, Math.min(1, 0.55 + n*0.24));
+}
+function drawFire(g, e, windAmt){
+  const s = H/420;
+  const x = g.fx, y = g.fy;
+  const fPow = firePower();
+  const flick = fireFlick();
+  const h = H*0.105*(0.62+fPow*0.5)*(1+e.bass*0.45);
+  const w = 36*s*(0.8+fPow*0.3);
+  const lean = windAmt*12*s + Math.sin(t*3.1)*2*s;
+  /* taş çukuru */
+  for(let i=0;i<7;i++){
+    const a = (i/7)*Math.PI*2 + 0.35;
+    const sx = x + Math.cos(a)*30*s;
+    const sy = y + 3*s + Math.sin(a)*7*s;
+    ctx.fillStyle = pal('rock');
+    ctx.beginPath(); ctx.ellipse(sx, sy, 8*s, 5.5*s, Math.sin(a)*0.3, 0, 7); ctx.fill();
+    ctx.fillStyle = pal('rockHi', 0.35+flick*0.3);
+    ctx.beginPath(); ctx.ellipse(sx-Math.cos(a)*1.5*s, sy-1.8*s, 5*s, 2.6*s, Math.sin(a)*0.3, 0, 7); ctx.fill();
+  }
+  /* kavuşturulmuş odunlar */
+  ctx.strokeStyle = pal('wood'); ctx.lineCap='round';
+  ctx.lineWidth = 7*s;
+  ctx.beginPath(); ctx.moveTo(x-22*s, y+7*s); ctx.lineTo(x+16*s, y-6*s); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(x+22*s, y+7*s); ctx.lineTo(x-16*s, y-6*s); ctx.stroke();
+  ctx.strokeStyle = pal('glow', 0.5+flick*0.3); ctx.lineWidth = 2.5*s;
+  ctx.beginPath(); ctx.moveTo(x-8*s, y-1*s); ctx.lineTo(x+3*s, y-4*s); ctx.stroke();
+  /* köz yatağı */
+  ctx.save();
+  ctx.globalCompositeOperation='lighter';
+  const bg = ctx.createRadialGradient(x, y, 2, x, y, 26*s);
+  bg.addColorStop(0, pal('fireMid', 0.5+flick*0.3));
+  bg.addColorStop(1, pal('fireOuter', 0));
+  ctx.fillStyle = bg;
+  ctx.beginPath(); ctx.ellipse(x, y, 26*s, 10*s, 0, 0, 7); ctx.fill();
+  /* alev katmanları */
+  const layers = [ ['fireOuter', 0.5, 1.0], ['fireMid', 0.62, 0.68], ['fireCore', 0.9, 0.42] ];
+  layers.forEach((L, li)=>{
+    const sc = L[2];
+    const wob = Math.sin(t*9+li*2.1)*0.13 + Math.sin(t*15.7+li*1.3)*0.06;
+    const hh = h*sc*(1+wob*0.5+e.bass*0.12);
+    const ww = w*sc*(1-wob*0.3);
+    const tipX = x + lean*(1+li*0.35);
+    const lg = ctx.createLinearGradient(0,y,0,y-hh);
+    lg.addColorStop(0, pal(L[0], L[1]));
+    lg.addColorStop(0.75, pal(L[0], L[1]*0.55));
+    lg.addColorStop(1, pal(L[0], 0));
+    ctx.fillStyle = lg;
+    ctx.beginPath();
+    ctx.moveTo(x-ww/2, y);
+    ctx.quadraticCurveTo(x-ww*0.85+lean*0.5, y-hh*0.52, tipX, y-hh);
+    ctx.quadraticCurveTo(x+ww*0.85+lean*0.5, y-hh*0.52, x+ww/2, y);
+    ctx.closePath(); ctx.fill();
+  });
+  ctx.restore();
+  return {h, fPow, flick};
+}
+
+/* köz, duman, yıldız */
+let embers = [], smoke = [], shootingStar = null;
+function updateParticles(dt, g, e, windAmt, f){
+  const fPow = firePower();
+  if(Math.random() < 0.10 + fPow*0.45*(playing?1:0.4)){
+    embers.push({
+      x: g.fx + (Math.random()-0.5)*20,
+      y: g.fy - 14 - Math.random()*f.h*0.7,
+      vx: (Math.random()-0.5)*14 + windAmt*26,
+      vy: -(34+Math.random()*52),
+      r: 0.6+Math.random()*1.7, life:1, decay:0.45+Math.random()*0.85,
+      ph: Math.random()*7
+    });
+  }
+  embers.forEach(m=>{
+    m.x += m.vx*dt; m.y += m.vy*dt;
+    m.vx += windAmt*22*dt; m.vy += 12*dt;
+    m.life -= dt*m.decay;
+  });
+  embers = embers.filter(m=>m.life>0);
+  if(Math.random() < 0.05+fPow*0.08){
+    smoke.push({ x:g.fx+(Math.random()-0.5)*12, y:g.fy-f.h*0.85,
+      r:5+Math.random()*7, vy:-(16+Math.random()*14), life:1, decay:0.22+Math.random()*0.18 });
+  }
+  smoke.forEach(sm=>{ sm.y += sm.vy*dt; sm.x += (windAmt*30+Math.sin(t+sm.r)*6)*dt; sm.r += dt*10; sm.life -= dt*sm.decay; });
+  smoke = smoke.filter(sm=>sm.life>0);
+  ripples.forEach(r=>{ r.r += r.v*dt; r.life -= dt*r.decay; });
+  ripples = ripples.filter(r=>r.life>0 && r.r < W*0.5);
+  if(shootingStar){
+    shootingStar.x += shootingStar.vx*dt;
+    shootingStar.y += shootingStar.vy*dt;
+    shootingStar.life -= dt*0.75;
+    if(shootingStar.life<=0 || shootingStar.y>H*0.6) shootingStar = null;
+  }
+  wagBoost = Math.max(0, wagBoost - dt*0.8);
+  fireBoost *= Math.pow(0.28, dt);
+  waterPulse *= Math.pow(0.04, dt);
+}
+function drawParticles(g){
+  /* duman */
+  smoke.forEach(sm=>{
+    ctx.fillStyle = pal('smoke', Math.max(0, sm.life)*0.09);
+    ctx.beginPath(); ctx.arc(sm.x, sm.y, sm.r, 0, 7); ctx.fill();
+  });
+  /* közler */
+  ctx.save();
+  ctx.globalCompositeOperation='lighter';
+  embers.forEach(m=>{
+    const tw = 0.5+0.5*Math.sin(t*6+m.ph);
+    ctx.shadowColor = pal('ember'); ctx.shadowBlur = 7;
+    ctx.fillStyle = pal('ember', Math.max(0,m.life)*(0.55+tw*0.45));
+    ctx.beginPath(); ctx.arc(m.x, m.y, m.r*(0.6+tw*0.5)*Math.max(0.3,m.life), 0, 7); ctx.fill();
+  });
+  ctx.restore();
+  ctx.shadowBlur = 0;
+  /* yıldız kayar */
+  if(shootingStar){
+    const s2 = shootingStar;
+    const tx = s2.x - s2.vx*0.09, ty = s2.y - s2.vy*0.09;
+    const gr = ctx.createLinearGradient(s2.x, s2.y, tx, ty);
+    gr.addColorStop(0, `rgba(255,255,255,${0.9*Math.max(0,s2.life)})`);
+    gr.addColorStop(1, 'rgba(160,200,255,0)');
+    ctx.strokeStyle = gr; ctx.lineWidth = 1.6;
+    ctx.beginPath(); ctx.moveTo(s2.x, s2.y); ctx.lineTo(tx, ty); ctx.stroke();
+    ctx.fillStyle = `rgba(255,255,255,${Math.max(0,s2.life)})`;
+    ctx.beginPath(); ctx.arc(s2.x, s2.y, 1.8, 0, 7); ctx.fill();
+  }
+}
+function drawGrass(windAmt){
+  ctx.strokeStyle = pal('grass');
+  ctx.lineWidth = 1.4; ctx.lineCap='round';
+  grassTufts.forEach(gf=>{
+    const bx = gf.x*W, by = gf.y*H;
+    const sway = Math.sin(t*1.4+gf.ph)*windAmt*5;
+    for(let b=-1;b<=1;b++){
+      ctx.beginPath();
+      ctx.moveTo(bx+b*2.5, by);
+      ctx.quadraticCurveTo(bx+b*3+sway*0.4, by-gf.h*0.6, bx+b*4+sway, by-gf.h*(0.9+Math.abs(b)*-0.15));
+      ctx.stroke();
+    }
+  });
+}
+
+/* etkileşim */
+function stokeFire(g){
+  fireBoost = Math.min(1.4, fireBoost+0.55);
+  for(let i=0;i<22;i++){
+    sparks.push({
+      x: g.fx+(Math.random()-0.5)*22, y: g.fy-26,
+      vx:(Math.random()-0.5)*1.6, vy:-(1+Math.random()*2.6),
+      r:0.7+Math.random()*1.7, life:1, decay:1/(28+Math.random()*34),
+      color: pal('ember',1), grav:-0.008, drag:0.975
+    });
+  }
+  crackleBurst();
+}
+stageEl.addEventListener('pointerdown', ev=>{
+  const r = stageEl.getBoundingClientRect();
+  const x = ev.clientX - r.left, y = ev.clientY - r.top;
+  const g = geo();
+  const s = H/420;
+  if(y > g.waterTop && y < g.shoreY){
+    const ry = Math.min(Math.max(y, g.waterTop+8), g.shoreY-6);
+    ripples.push({x, y:ry, r:3, v:70+H*0.3, life:1, decay:0.85});
+    ripples.push({x, y:ry, r:1, v:44+H*0.18, life:1, decay:1.25});
+    splashSound(0.55);
+    burst(x, ry, 8, pal('glint',1), 1.0, 24, {gravity:0.02, r0:0.5, r1:1.2});
+    shakeStage(0.5);
+  } else if(Math.hypot(x-g.fx, y-(g.fy-24*s)) < 58*s+18){
+    stokeFire(g);
+    shakeStage(0.9);
+  } else if(Math.hypot(x-(g.manX+4*s), y-(g.fy-86*s)) < 44){
+    owlCall(); wagBoost = Math.min(1.6, wagBoost+0.8);
+    burst(x, y, 10, pal('ember',1), 1.2, 26, {gravity:0.01});
+    shakeStage(0.5);
+  } else if(Math.hypot(x-g.dogX, y-(g.fy-50*s)) < 42){
+    bark(); wagBoost = 1.8;
+    burst(x, y, 8, pal('ember',1), 1.0, 22, {gravity:0.02});
+    shakeStage(0.6);
+  } else if(y < g.skyH){
+    if(!shootingStar){
+      shootingStar = { x: W*(0.25+Math.random()*0.55), y: H*(0.05+Math.random()*0.14),
+        vx: -(220+Math.random()*160), vy: 90+Math.random()*70, life: 1 };
+      chime();
+    }
+  } else {
+    burst(x, y, 6, pal('smoke',1), 0.5, 20, {gravity:-0.004, r0:1.4, r1:2.8, drag:0.98});
+  }
+});
+
+let beatFlash = 0;
+function onBeat(g){
+  beatFlash = 1;
+  fireBoost = Math.min(1.4, fireBoost+0.15);
+  waterPulse = 1;
+  for(let i=0;i<10;i++){
+    sparks.push({
+      x: g.fx+(Math.random()-0.5)*18, y: g.fy-30,
+      vx:(Math.random()-0.5)*1.2, vy:-(0.8+Math.random()*2),
+      r:0.6+Math.random()*1.4, life:1, decay:1/(30+Math.random()*30),
+      color: pal('ember',1), grav:-0.006, drag:0.978
+    });
+  }
+  shakeStage(1.0);
+}
+
+let lastFrameTime = performance.now();
+function render(){
+  const now = performance.now();
+  let dt = (now-lastFrameTime)/1000;
+  lastFrameTime = now;
+  if(!isFinite(dt) || dt<=0) dt = 1/60;
+  dt = Math.min(dt, 0.05);
+  t += dt*2.4;
+
+  const modeTarget = currentMode==='light' ? 1 : 0;
+  modeMix += (modeTarget-modeMix) * Math.min(1, dt*1.4);
+
+  const sensBoost = 0.55 + (flameBase())*1.1;
+  const windAmt = parseFloat(windEl.value)/100;
+  const bars = getBars(sensBoost);
+  const e = analyze(bars, sensBoost);
+  updateMeter(bars);
+  const g = geo();
+  if(e.beat) onBeat(g);
+
+  phone.style.setProperty('--lvl', playing ? Math.min(1, e.bass*1.3) : 0);
+
+  const f = {h:H*0.1};
+  updateParticles(dt, g, e, windAmt, f);
+  const flick = fireFlick();
+
+  /* gökyüzü */
+  const skyGrad = ctx.createLinearGradient(0,0,0,g.skyH);
+  skyGrad.addColorStop(0, pal('skyTop'));
+  skyGrad.addColorStop(0.62, pal('skyMid'));
+  skyGrad.addColorStop(1, pal('skyHorizon'));
+  ctx.fillStyle = skyGrad;
+  ctx.fillRect(0,0,W,g.skyH+2);
+
+  const starAlpha = Math.max(0, 1-modeMix*1.7);
+  if(starAlpha>0.01){
+    stars.forEach(st=>{
+      const tw = 0.5+0.5*Math.sin(t*st.speed+st.phase);
+      ctx.beginPath();
+      ctx.arc(st.x*W, st.y*g.skyH*0.95, st.r*(0.6+tw*0.6), 0, 7);
+      ctx.fillStyle = pal('star', starAlpha*(0.35+tw*0.65)*st.baseA);
+      ctx.fill();
+    });
+  }
+
+  /* ay */
+  const mR = Math.min(W,g.skyH)*0.075 + e.bass*3;
+  const mg = ctx.createRadialGradient(g.mx,g.my,mR*0.15, g.mx,g.my,mR*7);
+  mg.addColorStop(0, pal('moonGlow', 0.5+e.energy*0.18));
+  mg.addColorStop(0.35, pal('moonGlow', 0.12));
+  mg.addColorStop(1, pal('moonGlow', 0));
+  ctx.fillStyle = mg;
+  ctx.beginPath(); ctx.arc(g.mx,g.my,mR*7,0,7); ctx.fill();
+  const bodyGrad = ctx.createRadialGradient(g.mx-mR*0.25,g.my-mR*0.25,mR*0.1, g.mx,g.my,mR);
+  bodyGrad.addColorStop(0, pal('moonCore'));
+  bodyGrad.addColorStop(1, pal('moonBody'));
+  ctx.fillStyle = bodyGrad;
+  ctx.beginPath(); ctx.arc(g.mx,g.my,mR,0,7); ctx.fill();
+
+  /* çam sırtları — uzaktan yakına */
+  const farPts = drawRidge(H*0.475, H*0.042, 1.3, 'ridgeFar', 0.08, e);
+  pinesFar.forEach(p=>{
+    const i = Math.min(farPts.length-1, Math.floor(p.x*farPts.length));
+    drawPine(p.x*W, farPts[i][1]+2, H*0.10*p.s, 'ridgeFar');
+  });
+  const midPts = drawRidge(H*0.53, H*0.055, 4.1, 'ridgeMid', 0.07, e);
+  pinesMid.forEach(p=>{
+    const i = Math.min(midPts.length-1, Math.floor(p.x*midPts.length));
+    drawPine(p.x*W, midPts[i][1]+2, H*0.13*p.s, 'ridgeMid');
+  });
+  /* ufukta sis bandı */
+  const fogGrad = ctx.createLinearGradient(0,g.waterTop-24,0,g.waterTop+14);
+  fogGrad.addColorStop(0, pal('skyHorizon',0));
+  fogGrad.addColorStop(0.5, pal('skyHorizon',0.28));
+  fogGrad.addColorStop(1, pal('waterTop',0));
+  ctx.fillStyle = fogGrad;
+  ctx.fillRect(0,g.waterTop-24,W,40);
+
+  /* göl */
+  drawWater(e, g, flick);
+
+  /* kıyı */
+  drawShore(g);
+
+  /* ateşin yere vuran ılık aydınlığı — silüetlerden önce (kontur etkisi) */
+  ctx.save();
+  ctx.globalCompositeOperation='lighter';
+  const fPow = firePower();
+  const gg2 = ctx.createRadialGradient(g.fx, g.fy-16, 8, g.fx, g.fy-16, W*0.36);
+  gg2.addColorStop(0, pal('glow', 0.22*flick+0.08*fPow));
+  gg2.addColorStop(0.5, pal('glow', 0.07*flick));
+  gg2.addColorStop(1, pal('glow', 0));
+  ctx.fillStyle = gg2;
+  ctx.fillRect(0, g.shoreY-6, W, H-g.shoreY+6);
+  /* vuruş parlaması */
+  if(beatFlash>0.01){
+    const bfg = ctx.createRadialGradient(g.fx, g.fy-30, 0, g.fx, g.fy-30, W*0.45);
+    bfg.addColorStop(0, pal('fireMid', 0.14*beatFlash));
+    bfg.addColorStop(1, pal('fireMid', 0));
+    ctx.fillStyle = bfg;
+    ctx.fillRect(0,0,W,H);
+    beatFlash *= Math.pow(0.02, dt);
+  }
+  ctx.restore();
+
+  /* kamp düzeni: çadır → kütük+gezgin → köpek → ateş */
+  drawTent(g, flick);
+  drawMan(g.manX, g.fy, flick);
+  drawDog(g.dogX, g.fy, flick);
+  const fInfo = drawFire(g, e, windAmt);
+
+  /* ön plan çimler */
+  drawGrass(windAmt);
+
+  /* parçacıklar */
+  drawParticles(g);
+  drawSparks();
+
+  requestAnimationFrame(render);
+}
+
+setMode('dark');
+resize();
+render();
+</script>
+</body>
+</html>

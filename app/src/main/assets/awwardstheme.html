@@ -36,8 +36,9 @@
   [data-theme="fener"]{--bg0:#040910;--bg1:#0c1e30;--ink:#eef2f5;--ink-dim:#6d7f92;--a1:#d9b46a;--a2:#4a6fa5;--a3:#122236;--a4:#f2b155;--accent:#f2b155;--grain:.035;--foam:#eef6fb;}
   [data-theme="fener"][data-mode="light"]{--bg0:#e9f0f1;--bg1:#f8fbf9;--ink:#16303a;--ink-dim:#6f8790;--a1:#c98b2e;--a2:#3c6e86;--a3:#dbe9e4;--a4:#c98b2e;--accent:#c98b2e;--grain:.014;}
   
-  [data-theme="mycel"]{--bg0:#020705;--bg1:#06140c;--ink:#eafff0;--ink-dim:#5f8a70;--a1:#6dffb0;--a2:#ffd58a;--a3:#0c2016;--accent:#6dffb0;--grain:.03;}
-  [data-theme="mycel"][data-mode="light"]{--bg0:#f0fff5;--bg1:#e6faed;--ink:#06140c;--ink-dim:#3a5a48;--a1:#00d87a;--a2:#d8a000;--a3:#d8f0e0;--accent:#00d87a;--grain:.012;}
+  /* Orman — Göl Kenarında Ateş (Ay Işığı Kampı) */
+  [data-theme="orman"]{--bg0:#020a16;--bg1:#0a2036;--ink:#e8f1fa;--ink-dim:#6d87a0;--accent:#ffb35c;--grain:.05;}
+  [data-theme="orman"][data-mode="light"]{--bg0:#dfe9f2;--bg1:#f2f6fa;--ink:#152a3d;--ink-dim:#6d8296;--accent:#e08a2e;--grain:.018;}
   
   [data-theme="reef"]{--bg0:#010a10;--bg1:#03151f;--ink:#d7fbff;--ink-dim:#487d88;--a1:#12e0bd;--a2:#ff6bcf;--a3:#062028;--accent:#12e0bd;--grain:.02;}
   [data-theme="reef"][data-mode="light"]{--bg0:#f0fcff;--bg1:#e0f8fc;--ink:#03151f;--ink-dim:#2a4d58;--a1:#00c0a0;--a2:#e6009d;--a3:#c8eff5;--accent:#00c0a0;--grain:.01;}
@@ -285,7 +286,7 @@
         <button class="chip" data-theme="sumi"><span class="dot" style="background:#c1442c;color:#c1442c"></span><span data-i18n-theme="sumi">Sumi-e</span></button>
         <button class="chip" data-theme="aurora"><span class="dot" style="background:#4fd8b0;color:#4fd8b0"></span><span data-i18n-theme="aurora">Kutup Şafağı</span></button>
         <button class="chip" data-theme="fener"><span class="dot" style="background:#f2b155;color:#f2b155"></span><span data-i18n-theme="fener">Son Işık</span></button>
-        <button class="chip" data-theme="deep_eyes"><span class="dot" style="background:#2fd9c9;color:#2fd9c9"></span><span data-i18n-theme="deep_eyes">Derin Göz</span></button>
+        <button class="chip" data-theme="orman"><span class="dot" style="background:#ffb35c;color:#ffb35c"></span><span data-i18n-theme="orman">Ay Kampı</span></button>
         <button class="chip" data-theme="mycel"><span class="dot" style="background:#6dffb0;color:#6dffb0"></span><span data-i18n-theme="mycel">Miselyum</span></button>
         <button class="chip" data-theme="reef"><span class="dot" style="background:#12e0bd;color:#12e0bd"></span><span data-i18n-theme="reef">Derin Işıltı</span></button>
         <button class="chip" data-theme="monsoon"><span class="dot" style="background:#9cc2ff;color:#9cc2ff"></span><span data-i18n-theme="monsoon">Muson</span></button>
@@ -321,7 +322,7 @@ const THEME_META = {
   sumi:     {label:'Sumi-e',       title:'Mürekkep Nefesi',    sub:'Fırça darbeleriyle beliren tek çizgi'},
   aurora:   {label:'Kutup Şafağı', title:'Kutup Şafağı',       sub:'Gökyüzünde süzülen ışık şeritleri'},
   fener:    {label:'Son Işık',     title:'Fenerin Türküsü',    sub:'Dünyanın ucunda, sisli denize yol gösteren bekçi'},
-  deep_eyes:{label:'Derin Göz',    title:'Derin Bakış',        sub:'Karanlık suların altında açılan tek bir göz'},
+  orman:    {label:'Ay Kampı',     title:'Göl Kenarında Ateş',  sub:'Bir gezgin, bir köpek, közlenen bir ateş ve basın ritmiyle nefes alan mavi bir göl'},
   mycel:    {label:'Miselyum',     title:'Yeraltı Fısıltısı',  sub:'Kökler arasında yayılan ışık sinyali'},
   reef:     {label:'Derin Işıltı', title:'Derin Işıltı',       sub:'Karanlıkta parıldayan biyolüminesans'},
   monsoon:  {label:'Muson',        title:'Fırtına Öncesi',     sub:'Şimşek ve yağmurun ritmi'},
@@ -342,7 +343,7 @@ const i18n = {
       sumi: {label:'Sumi-e', title:'Mürekkep Nefesi', sub:'Fırça darbeleriyle beliren tek çizgi'},
       aurora: {label:'Kutup Şafağı', title:'Kutup Şafağı', sub:'Gökyüzünde süzülen ışık şeritleri'},
       fener: {label:'Son Işık', title:'Fenerin Türküsü', sub:'Dünyanın ucunda, sisli denize yol gösteren bekçi'},
-      deep_eyes: {label:'Derin Göz', title:'Derin Bakış', sub:'Karanlık suların altında açılan tek bir göz — bazen yaşar, bazen kızarır'},
+      orman: {label:'Ay Kampı', title:'Göl Kenarında Ateş', sub:'Bir gezgin, bir köpek, közlenen bir ateş ve basın ritmiyle nefes alan mavi bir göl'},
       mycel: {label:'Miselyum', title:'Yeraltı Fısıltısı', sub:'Kökler arasında yayılan ışık sinyali'},
       reef: {label:'Derin Işıltı', title:'Derin Işıltı', sub:'Karanlıkta parıldayan biyolüminesans'},
       monsoon: {label:'Muson', title:'Fırtına Öncesi', sub:'Şimşek ve yağmurun ritmi'},
@@ -364,7 +365,7 @@ const i18n = {
       sumi: {label:'Sumi-e', title:'Ink Breath', sub:'Single stroke emerging from brush'},
       aurora: {label:'Aurora', title:'Northern Lights', sub:'Light ribbons dancing in sky'},
       fener: {label:'Last Light', title:'Lighthouse Song', sub:'A keeper\'s light guiding ships through fog at world\'s end'},
-      deep_eyes: {label:'Deep Eye', title:'Ocean Gaze', sub:'A single eye opening beneath dark waters — sometimes it weeps, sometimes it reddens'},
+      orman: {label:'Moon Camp', title:'Fireside by the Lake', sub:'A traveler, a dog, glowing embers, and a blue lake breathing with the rhythm of bass'},
       mycel: {label:'Mycelium', title:'Underground Whisper', sub:'Light signal spreading through roots'},
       reef: {label:'Deep Glow', title:'Deep Glow', sub:'Bioluminescence glowing in darkness'},
       monsoon: {label:'Monsoon', title:'Before Storm', sub:'Rhythm of lightning and rain'},
@@ -386,7 +387,7 @@ const i18n = {
       sumi: {label:'Sumi-e', title:'Tintenatem', sub:'Einzelner Pinselstrich'},
       aurora: {label:'Aurora', title:'Nordlichter', sub:'Lichtbänder am Himmel'},
       fener: {label:'Leuchtturm', title:'Letztes Licht', sub:'Leuchtturm führt Schiffe durch nebligen See'},
-      deep_eyes: {label:'Tiefes Auge', title:'Tiefer Blick', sub:'Ein einzelnes Auge unter dunklen Wassern — manchmal weint es, manchmal rötet es sich'},
+      orman: {label:'Mondlager', title:'Feuer am See', sub:'Ein Reisender, ein Hund, glühende Kohlen und ein blauer See, der mit dem Rhythmus des Basses atmet'},
       mycel: {label:'Myzel', title:'Unterirdisches Flüstern', sub:'Lichtsignal durch Wurzeln'},
       reef: {label:'Tiefes Leuchten', title:'Tiefes Leuchten', sub:'Biolumineszenz in Dunkelheit'},
       monsoon: {label:'Monsun', title:'Vor dem Sturm', sub:'Rhythmus von Blitz und Regen'},
@@ -408,7 +409,7 @@ const i18n = {
       sumi: {label:'Sumi-e', title:'Souffle d\'Encre', sub:'Trait unique émergeant du pinceau'},
       aurora: {label:'Aurore', title:'Aurores Boréales', sub:'Rubans de lumière dansant'},
       fener: {label:'Dernière Lumière', title:'Chanson du Phare', sub:'Gardien guidant les navires dans le brouillard'},
-      deep_eyes: {label:'Œil Profond', title:'Regard de l\'Océan', sub:'Un seul œil s\'ouvrant sous les eaux sombres — parfois il pleure, parfois il rougit'},
+      orman: {label:'Camp de Lune', title:'Feu au Bord du Lac', sub:'Un voyageur, un chien, des braises ardentes et un lac bleu qui respire au rythme de la basse'},
       mycel: {label:'Mycélium', title:'Chuchotement Souterrain', sub:'Signal lumineux à travers racines'},
       reef: {label:'Lueur Profonde', title:'Lueur Profonde', sub:'Bioluminescence dans l\'obscurité'},
       monsoon: {label:'Mousson', title:'Avant la Tempête', sub:'Rythme de la foudre et pluie'},
@@ -430,7 +431,7 @@ const i18n = {
       sumi: {label:'Sumi-e', title:'Aliento de Tinta', sub:'Trazo único del pincel'},
       aurora: {label:'Aurora', title:'Luces del Norte', sub:'Cintas de luz bailando'},
       fener: {label:'Última Luz', title:'Canción del Faro', sub:'Guardián guiando barcos en la niebla'},
-      deep_eyes: {label:'Ojo Profundo', title:'Mirada del Océano', sub:'Un solo ojo abriéndose bajo aguas oscuras — a veces llora, a veces se enrojece'},
+      orman: {label:'Campamento Lunar', title:'Fuego Junto al Lago', sub:'Un viajero, un perro, brasas ardientes y un lago azul que respira con el ritmo del bajo'},
       mycel: {label:'Micelio', title:'Susurro Subterráneo', sub:'Señal de luz por raíces'},
       reef: {label:'Resplandor Profundo', title:'Resplandor Profundo', sub:'Bioluminiscencia en oscuridad'},
       monsoon: {label:'Monzón', title:'Antes de la Tormenta', sub:'Ritmo de relámpagos y lluvia'},
@@ -452,7 +453,7 @@ const i18n = {
       sumi: {label:'Суми-э', title:'Дыхание Чернил', sub:'Единый мазок кисти'},
       aurora: {label:'Аврора', title:'Северное Сияние', sub:'Ленты света в небе'},
       fener: {label:'Последний Свет', title:'Песня Маяка', sub:'Хранитель ведущий корабли сквозь туман'},
-      deep_eyes: {label:'Глубокий Глаз', title:'Взгляд Океана', sub:'Единственный глаз под темными водами — иногда плачет, иногда краснеет'},
+      orman: {label:'Лунный Лагерь', title:'Огонь у Озера', sub:'Путешественник, собака, тлеющие угли и голубое озеро, дышащее в ритме баса'},
       mycel: {label:'Мицелий', title:'Подземный Шепот', sub:'Световой сигнал через корни'},
       reef: {label:'Глубокое Свечение', title:'Глубокое Свечение', sub:'Биолюминесценция во тьме'},
       monsoon: {label:'Муссон', title:'Перед Бурей', sub:'Ритм молнии и дождя'},
@@ -474,7 +475,7 @@ const i18n = {
       sumi: {label:'سومي-إي', title:'نفس الحبر', sub:'ضربة فرشاة واحدة'},
       aurora: {label:'الشفق', title:'الأضواء الشمالية', sub:'أشرطة ضوئية راقصة'},
       fener: {label:'آخر ضوء', title:'أغنية المنارة', sub:'حارس يرشد السفن عبر الضباب'},
-      deep_eyes: {label:'عين عميقة', title:'نظرة المحيط', sub:'عين واحدة تنفتح تحت المياه المظلمة — أحيانًا تبكي، أحيانًا تحمر'},
+      orman: {label:'مخيم القمر', title:'نار على ضفة البحيرة', sub:'مسافر وكلب وجمر متوهج وبحيرة زرقاء تتنفس بإيقاع الباس'},
       mycel: {label:'الفطريات', title:'همس تحت الأرض', sub:'إشارة ضوئية عبر الجذور'},
       reef: {label:'توهج عميق', title:'توهج عميق', sub:'إضاءة حيوية في الظلام'},
       monsoon: {label:'الموسم', title:'قبل العاصفة', sub:'إيقاع البرق والمطر'},
@@ -496,7 +497,7 @@ const i18n = {
       sumi: {label:'墨絵', title:'墨の息吹', sub:'筆から生まれる一線'},
       aurora: {label:'オーロラ', title:'北極光', sub:'空に舞う光の帯'},
       fener: {label:'最後の光', title:'灯台の歌', sub:'世界の果てで霧の中を導く守人'},
-      deep_eyes: {label:'深い瞳', title:'海の視線', sub:'暗い水の下で開く一つの瞳 — 時には涙し、時には赤くなる'},
+      orman: {label:'月光キャンプ', title:'湖畔の焚き火', sub:'旅人と犬、輝く焚き火、そしてバスのリズムで呼吸する青い湖'},
       mycel: {label:'菌糸', title:'地下の囁き', sub:'根を伝う光信号'},
       reef: {label:'深海の輝き', title:'深海の輝き', sub:'闇に光る生物発光'},
       monsoon: {label:'モンスーン', title:'嵐の前', sub:'稲妻と雨のリズム'},
@@ -518,7 +519,7 @@ const i18n = {
       sumi: {label:'水墨画', title:'墨息', sub:'毛笔划出的单线'},
       aurora: {label:'极光', title:'北极光', sub:'天空中舞动的光带'},
       fener: {label:'最后之光', title:'灯塔之歌', sub:'世界尽头雾中引导船只的守卫'},
-      deep_eyes: {label:'深眼', title:'海洋之眼', sub:'黑暗水域下睁开的一只眼睛 — 有时哭泣，有时泛红'},
+      orman: {label:'月光营地', title:'湖边篝火', sub:'一个旅人、一条狗、燃烧的余烬和随低音节奏呼吸的蓝色湖泊'},
       mycel: {label:'菌丝', title:'地下耳语', sub:'根间传播的光信号'},
       reef: {label:'深海辉光', title:'深海辉光', sub:'黑暗中闪耀的生物发光'},
       monsoon: {label:'季风', title:'暴风前', sub:'闪电和雨的节奏'},
@@ -540,7 +541,7 @@ const i18n = {
       sumi: {label:'먹그림', title:'먹의 숨결', sub:'붓에서 나오는 한 획'},
       aurora: {label:'오로라', title:'북극광', sub:'하늘을 춤추는 빛 띠'},
       fener: {label:'마지막 빛', title:'등대의 노래', sub:'세상 끝 안개 속 배를 인도하는 수호자'},
-      deep_eyes: {label:'깊은 눈', title:'바다의 시선', sub:'어두운 물 아래 뜨는 하나의 눈 — 때로 울고, 때로 붉어진다'},
+      orman: {label:'달빛 캠프', title:'호수가 옆 모닥불', sub:'여행자, 개, 타오르는 불씨, 그리고 베이스 리듬으로 숨 쉬는 푸른 호수'},
       mycel: {label:'균사체', title:'지하의 속삭임', sub:'뿌리를 통해 퍼지는 빛 신호'},
       reef: {label:'깊은 빛', title:'깊은 빛', sub:'어둠 속에서 빛나는 생물 발광'},
       monsoon: {label:'몬순', title:'폭풍 전', sub:'번개와 비의 리듬'},
@@ -671,42 +672,15 @@ function setTheme(name){
   // New themes
   murekkepBlob = null; murekkepDrops = [];
   colDuneSeed = null; colParticles = []; colSunPulse = 0;
-  inkVeins = []; inkRipples = []; inkBlobT = 0;
+  inkVeens = []; inkRipples = []; inkBlobT = 0;
   
-  // Deep Eyes: Setup pointer tracking
-  if(name === 'deep_eyes'){
-    setupDeepEyesPointerTracking();
+  // Orman: Setup interactions
+  if(name === 'orman'){
+    setupOrmanInteractions();
   } else {
-    removeDeepEyesPointerTracking();
+    removeOrmanInteractions();
   }
 }
-
-// Deep Eyes pointer tracking
-let deepEyesPointerHandler = null;
-function setupDeepEyesPointerTracking(){
-  if(deepEyesPointerHandler) return; // Already setup
-  deepEyesPointerHandler = (e) => {
-    const rect = stageEl.getBoundingClientRect();
-    const px = (e.clientX - rect.left) / rect.width;
-    const py = (e.clientY - rect.top) / rect.height;
-    // Convert to gaze coordinates (-0.7 to 0.7 horizontally, -0.4 to 0.4 vertically)
-    deepEyesState.gazeTargetX = clampDE((px - 0.5) * 1.4, -0.7, 0.7);
-    deepEyesState.gazeTargetY = clampDE((py - 0.5) * 0.8, -0.4, 0.4);
-  };
-  stageEl.addEventListener('pointermove', deepEyesPointerHandler);
-  stageEl.addEventListener('pointerdown', deepEyesPointerHandler);
-  
-  // Reset gaze to center when pointer leaves
-  stageEl.addEventListener('pointerleave', () => {
-    deepEyesState.gazeTargetX = 0;
-    deepEyesState.gazeTargetY = 0;
-  });
-}
-
-function removeDeepEyesPointerTracking(){
-  if(deepEyesPointerHandler){
-    stageEl.removeEventListener('pointermove', deepEyesPointerHandler);
-    stageEl.removeEventListener('pointerdown', deepEyesPointerHandler);
     deepEyesPointerHandler = null;
   }
 }
@@ -2809,555 +2783,872 @@ function drawFener(bars, wave, e){
 }
 
 /* ============================================================
-   DEEP EYES THEME — "Derin Bakış" — Ocean Eye with Tears & Redness
-   A single eye scene with physiological reactions to sound
-   Features: iris dilation, redness, tears, vessel networks
+   ORMAN THEME — "Ay Işığı Kampı" — Göl Kenarında Ateş
+   A moonlit campsite by a lake: traveler, dog, glowing fire
+   Interactive: touch lake for ripples, touch fire to stoke it
    ============================================================ */
 
-// Deep Eyes State
-const deepEyesState = {
-  openCur: 0.86, openTarget: 0.86, restOpen: 0.86,
-  gazeX: 0, gazeY: 0, gazeTargetX: 0, gazeTargetY: 0,
-  pupilRatio: 0.30, pupilVel: 0, irisPulse: 1,
-  bassEnv: 0, trebleEnv: 0, lashKick: 0,
-  loudnessEnv: 0, redness: 0, well: 0, tears: [],
-  vesselTrees: null, lastTearSpawn: 0, emotionBoost: 0,
-  lastIdleDrift: 0
+// Orman Scene Variables
+let ormanStars = [];
+let ormanPinesFar = [], ormanPinesMid = [];
+let ormanGrassTufts = [];
+let ormanRipples = [];
+let ormanWaterPulse = 0;
+let ormanSparks = [];
+let ormanEmbers = [], ormanSmoke = [];
+let ormanShootingStar = null;
+let ormanWagBoost = 0;
+let ormanFireBoost = 0;
+let ormanBeatFlash = 0;
+let ormanModeMix = 0;
+let ormanLastFrameTime = null;
+
+// Initialize Orman scene elements
+function initOrman(){
+  if(ormanStars.length > 0) return; // Already initialized
+  
+  // Stars
+  for(let i=0;i<130;i++){
+    ormanStars.push({
+      x:Math.random(), y:Math.random()*0.62, r:0.4+Math.random()*1.1,
+      phase:Math.random()*Math.PI*2, speed:0.3+Math.random()*1.0, baseA:0.35+Math.random()*0.6
+    });
+  }
+  
+  // Pines
+  for(let i=0;i<16;i++) ormanPinesFar.push({x:0.02+Math.random()*0.96, s:0.45+Math.random()*0.5});
+  for(let i=0;i<11;i++) ormanPinesMid.push({x:0.03+Math.random()*0.94, s:0.65+Math.random()*0.6});
+  
+  // Grass
+  for(let i=0;i<18;i++) ormanGrassTufts.push({
+    x:Math.random(), y:0.885+Math.random()*0.1, ph:Math.random()*7, h:5+Math.random()*8
+  });
+}
+
+// Orman geometry helper
+function ormanGeo(){
+  return {
+    skyH: H*0.56,
+    waterTop: H*0.60,
+    shoreY: H*0.85,
+    fx: W*0.5, fy: H*0.905,
+    manX: W*0.315, dogX: W*0.685,
+    tentX: W*0.135, tentY: H*0.858,
+    mx: W*0.74, my: H*0.16
+  };
+}
+
+// Orman color palette with night/dawn interpolation
+const ORMAN_PAL = {
+  night:{
+    skyTop:'#020a18', skyMid:'#0a2440', skyHorizon:'#1d4a6b',
+    star:'#eaf4ff', moonCore:'#f2f7ff', moonBody:'#cfe0f5', moonGlow:'#9fc8ff',
+    ridgeFar:'#123a5e', ridgeMid:'#0c2a47', ridgeNear:'#071e33', ridgeFore:'#041221',
+    waterTop:'#155a86', waterDeep:'#041a2e', waterLine:'#7cc4ff', glint:'#bfe6ff',
+    fireCore:'#fff3c4', fireMid:'#ffb14e', fireOuter:'#ff6a26', ember:'#ffc46b', smoke:'#8fa3b8',
+    glow:'#ff9440', rock:'#2a3a4d', rockHi:'#4a5f78', wood:'#3a2a1c',
+    tent:'#0a1a2c', tentGlow:'#ffb35c', shore:'#030f1c', shoreEdge:'#0e2c47', grass:'#05131f'
+  },
+  dawn:{
+    skyTop:'#7fa8c9', skyMid:'#cfe0ea', skyHorizon:'#ffd9a8',
+    star:'#ffffff', moonCore:'#fff8e0', moonBody:'#f4e3b8', moonGlow:'#ffe1a0',
+    ridgeFar:'#7d9db4', ridgeMid:'#5d8098', ridgeNear:'#3f6076', ridgeFore:'#2a4456',
+    waterTop:'#6fa8c9', waterDeep:'#3a6a8a', waterLine:'#eaf6ff', glint:'#ffffff',
+    fireCore:'#fff3c4', fireMid:'#ffb14e', fireOuter:'#ff6a26', ember:'#ffc46b', smoke:'#aab8c4',
+    glow:'#ff9440', rock:'#5a6a78', rockHi:'#8fa0b0', wood:'#4a3826',
+    tent:'#3c5a70', tentGlow:'#ffcf8a', shore:'#2a4456', shoreEdge:'#6a8aa0', grass:'#2a4456'
+  }
 };
 
-// Helper functions for Deep Eyes
-function clampDE(v,a,b){ return v<a?a:v>b?b:v; }
-function approachDE(cur,target,dt,speed){ return cur + (target-cur)*(1-Math.exp(-speed*dt)); }
-function qbezierDE(P0,C,P1,u){
-  const mt=1-u;
-  return { x: mt*mt*P0.x + 2*mt*u*C.x + u*u*P1.x, y: mt*mt*P0.y + 2*mt*u*C.y + u*u*P1.y };
+function hexToRgbObj(h){
+  h=h.replace('#','');
+  return {r:parseInt(h.substring(0,2),16),g:parseInt(h.substring(2,4),16),b:parseInt(h.substring(4,6),16)};
 }
 
-// Conjunctival vessel network (branching blood vessels)
-function growVesselDE(segs, x, y, ang, len, w, depth){
-  if(depth <= 0 || w < 0.18) return;
-  const nx = x + Math.cos(ang)*len;
-  const ny = y + Math.sin(ang)*len*0.62;
-  segs.push({x0:x, y0:y, x1:nx, y1:ny, w, d:depth});
-  const n = Math.random() < 0.78 ? 2 : 1;
-  for(let i=0;i<n;i++){
-    growVesselDE(segs, nx, ny, ang + (Math.random()-0.5)*0.85, len*(0.58+Math.random()*0.28), w*0.62, depth-1);
+function lerpRgb(h1,h2,tt){
+  const c1=hexToRgbObj(h1),c2=hexToRgbObj(h2);
+  return {r:c1.r+(c2.r-c1.r)*tt,g:c1.g+(c2.g-c1.g)*tt,b:c1.b+(c2.b-c1.b)*tt};
+}
+
+function ormanPal(key, a){
+  const c = lerpRgb(ORMAN_PAL.night[key]||'#000000', ORMAN_PAL.dawn[key]||'#ffffff', ormanModeMix);
+  if(a===undefined) return `rgb(${c.r|0},${c.g|0},${c.b|0})`;
+  return `rgba(${c.r|0},${c.g|0},${c.b|0},${Math.max(0,Math.min(1,a))})`;
+}
+
+// Ridge terrain functions
+function ormanRidge(x01, seed, amp){
+  return Math.sin(x01*2.7+seed)*amp
+       + Math.sin(x01*6.3+seed*1.9)*amp*0.45
+       + Math.sin(x01*13.7+seed*2.7)*amp*0.18;
+}
+
+function ormanRidgePath(yBase, amp, seed, e){
+  const steps=64, pts=[];
+  for(let i=0;i<=steps;i++){
+    const p=i/steps;
+    pts.push([p*W, yBase + ormanRidge(p, seed, amp) + Math.sin(p*4+t*0.4+seed)*e.bass*2]);
   }
+  return pts;
 }
 
-function initVesselTreesDE(){
-  if(deepEyesState.vesselTrees) return;
-  const trees = [];
-  const defs = [
-    {ox:-0.97, oy: 0.08, ang: 0.02, n:5},
-    {ox:-0.97, oy:-0.04, ang:-0.16, n:3},
-    {ox: 0.97, oy: 0.04, ang: Math.PI-0.02, n:5},
-    {ox: 0.97, oy:-0.08, ang: Math.PI+0.16, n:3},
-  ];
-  defs.forEach(d=>{
-    const segs = [];
-    for(let k=0;k<d.n;k++){
-      growVesselDE(segs, d.ox, d.oy + (Math.random()-0.5)*0.10,
-                 d.ang + (Math.random()-0.5)*0.30, 0.15+Math.random()*0.09, 1.6+Math.random()*0.9, 4);
-    }
-    trees.push(segs);
-  });
-  deepEyesState.vesselTrees = trees;
-}
-
-// Eye geometry - PERFECT SCALE for mobile viewing
-function getEyeGeometryDE(open){
-  const cx = W*0.5, cy = H*0.52;  // Slightly lower center for better framing
-  const rx = W*0.38;  // Perfect width - not too wide, not too narrow
-  const ryTop = H*0.44, ryBot = H*0.30;  // Balanced vertical size
-  const upTilt = -H*0.015;
-  const left = {x:cx-rx, y:cy};
-  const right = {x:cx+rx, y:cy+upTilt};
-  const upperCtrl = {x:cx-rx*0.14, y:cy-ryTop*open};
-  const lowerCtrl = {x:cx+rx*0.03, y:cy+ryBot*open};
-  return {cx,cy,rx,ryTop,ryBot,left,right,upperCtrl,lowerCtrl};
-}
-
-// Decorative elements (pre-generated, REDUCED for performance)
-const IRIS_LINES_DE = Array.from({length:24}, ()=>({a:Math.random()*Math.PI*2, len:0.55+Math.random()*0.4, w:0.4+Math.random()*0.5, op:0.08+Math.random()*0.10})); // Reduced from 46 to 24
-const FLECKS_DE = Array.from({length:12}, ()=>({x:Math.random(), y:Math.random(), r:0.4+Math.random()*1.1, phase:Math.random()*Math.PI*2, speed:0.5+Math.random()*1.0})); // Reduced from 20 to 12
-const BUBBLES_DE = Array.from({length:5}, ()=>({x:Math.random(), y:Math.random(), r:2+Math.random()*4, speed:6+Math.random()*10, drift:(Math.random()-0.5)*8, phase:Math.random()*Math.PI*2})); // Reduced from 7 to 5
-const SNOW_DE = Array.from({length:18}, ()=>({x:Math.random(), y:Math.random(), r:0.4+Math.random()*1.0, vy:2+Math.random()*7, drift:(Math.random()-0.5)*6, phase:Math.random()*Math.PI*2, op:0.05+Math.random()*0.12})); // Reduced from 26 to 18
-const IRIS_CRYPTS_DE = Array.from({length:6}, ()=>({
-  a: Math.random()*Math.PI*2, r: 0.30+Math.random()*0.55,
-  size: 0.10+Math.random()*0.15, dark: Math.random()<0.55
-})); // Reduced from 10 to 6
-const COLLARETTE_DE = Array.from({length:48}, ()=> 0.40 + (Math.random()-0.5)*0.05); // Reduced from 72 to 48
-
-// Tear system
-function spawnTearDE(now){
-  const g = getEyeGeometryDE(deepEyesState.openCur);
-  const b = qbezierDE(g.left, g.lowerCtrl, g.right, 0.15);
-  deepEyesState.tears.push({
-    x: b.x + 3, y: b.y + 1,
-    vx: 3 + Math.random()*7, vy: 4,
-    age: 0, scale: 0.8 + Math.random()*0.45,
-    trail: [], trailClock: 0,
-    state: 'fall', fadeT: 0
-  });
-  deepEyesState.lastTearSpawn = now;
-}
-
-function updateTearsDE(dt, now){
-  for(let i=deepEyesState.tears.length-1;i>=0;i--){
-    const tear = deepEyesState.tears[i];
-    tear.age += dt;
-    if(tear.state==='fall'){
-      tear.vy += 640*dt;
-      tear.vx *= Math.exp(-dt*1.4);
-      tear.x += tear.vx*dt;
-      tear.y += tear.vy*dt;
-      tear.trailClock += dt;
-      if(tear.trailClock > 0.035){
-        tear.trailClock = 0;
-        tear.trail.push({x:tear.x, y:tear.y, age:0});
-        if(tear.trail.length > 90) tear.trail.shift();
-      }
-      if(tear.y > H-30){ tear.state='fade'; tear.fadeT = 0; }
-    } else {
-      tear.fadeT += dt;
-      if(tear.fadeT > 0.7) deepEyesState.tears.splice(i,1);
-    }
-    for(let j=tear.trail.length-1;j>=0;j--){
-      tear.trail[j].age += dt;
-      if(tear.trail[j].age > 3.2) tear.trail.splice(j,1);
-    }
-  }
-  if(deepEyesState.well > 0.72 && now - deepEyesState.lastTearSpawn > 2300 && deepEyesState.tears.length < 3){
-    spawnTearDE(now);
-    deepEyesState.well *= 0.5;
-  }
-}
-
-function drawTearDropDE(tear, alphaMul){
-  const wob = Math.exp(-tear.age*2.6);
-  const sy = 1 + 0.20*Math.sin(tear.age*24)*wob;
-  const sx = 1 - 0.10*Math.sin(tear.age*24)*wob;
-  const r = 3.4*tear.scale * (tear.state==='fade' ? Math.max(0.05, 1-tear.fadeT/0.7) : 1);
-  ctx.save();
-  ctx.translate(tear.x, tear.y);
-  ctx.scale(sx, sy);
-  const grad = ctx.createRadialGradient(-r*0.35,-r*0.55,r*0.2, 0, 0, r*2.1);
-  grad.addColorStop(0,   `rgba(240,253,255,${0.95*alphaMul})`);
-  grad.addColorStop(0.38,`rgba(188,232,244,${0.55*alphaMul})`);
-  grad.addColorStop(0.75,`rgba(150,214,232,${0.22*alphaMul})`);
-  grad.addColorStop(1,   `rgba(140,205,225,0)`);
-  ctx.fillStyle = grad;
+function ormanDrawRidge(yBase, amp, seed, key, rimAlpha, e){
+  const pts = ormanRidgePath(yBase, amp, seed, e);
   ctx.beginPath();
-  ctx.moveTo(0, -r*2.0);
-  ctx.bezierCurveTo( r*1.55, -r*0.5,  r*1.25, r*1.25, 0, r*1.25);
-  ctx.bezierCurveTo(-r*1.25, r*1.25, -r*1.55, -r*0.5, 0, -r*2.0);
+  ctx.moveTo(-4, pts[0][1]);
+  pts.forEach(pt=>ctx.lineTo(pt[0],pt[1]));
+  ctx.lineTo(W+4, pts[pts.length-1][1]);
+  ctx.lineTo(W+4, H+4); ctx.lineTo(-4, H+4);
+  ctx.closePath();
+  ctx.fillStyle = ormanPal(key, 1);
   ctx.fill();
-  ctx.strokeStyle = `rgba(255,255,255,${0.35*alphaMul})`;
-  ctx.lineWidth = 0.7;
+  ctx.strokeStyle = ormanPal('waterLine', rimAlpha);
+  ctx.lineWidth = 1;
   ctx.beginPath();
-  ctx.moveTo(0, -r*2.0);
-  ctx.bezierCurveTo( r*1.55, -r*0.5,  r*1.25, r*1.25, 0, r*1.25);
+  pts.forEach((pt,i)=> i?ctx.lineTo(pt[0],pt[1]):ctx.moveTo(pt[0],pt[1]));
   ctx.stroke();
-  ctx.fillStyle = `rgba(255,255,255,${0.9*alphaMul})`;
-  ctx.beginPath(); ctx.arc(-r*0.38, -r*0.6, Math.max(0.4, r*0.30), 0, 7); ctx.fill();
-  ctx.restore();
+  return pts;
 }
 
-function drawTearsDE(){
+function ormanDrawPine(x, baseY, h, key){
+  ctx.fillStyle = ormanPal(key, 1);
+  ctx.fillRect(x-h*0.03, baseY-h*0.1, h*0.06, h*0.12);
+  for(let i=0;i<3;i++){
+    const w = h*0.52*(1-i*0.22);
+    const ly = baseY - i*h*0.26;
+    const lh = h*0.44;
+    ctx.beginPath();
+    ctx.moveTo(x-w/2, ly);
+    ctx.lineTo(x, ly-lh);
+    ctx.lineTo(x+w/2, ly);
+    ctx.closePath(); ctx.fill();
+  }
+}
+
+function ormanDrawWater(e, g, flick){
+  const top = g.waterTop, bottom = H*0.875;
+  const amp = 1.3 + e.bass*11 + ormanWaterPulse*13;
+  const steps=80, pts=[];
+  for(let i=0;i<=steps;i++){
+    const p=i/steps;
+    const y = top + Math.sin(p*9+t*1.7)*amp*0.5
+                  + Math.sin(p*23-t*2.4)*amp*0.28
+                  + Math.sin(p*4+t*0.7)*amp*0.35;
+    pts.push([p*W, y]);
+  }
+  ctx.beginPath();
+  ctx.moveTo(-4, pts[0][1]);
+  pts.forEach(pt=>ctx.lineTo(pt[0],pt[1]));
+  ctx.lineTo(W+4, bottom+10); ctx.lineTo(-4, bottom+10);
+  ctx.closePath();
+  const wg = ctx.createLinearGradient(0,top,0,bottom);
+  wg.addColorStop(0, ormanPal('waterTop'));
+  wg.addColorStop(1, ormanPal('waterDeep'));
+  ctx.fillStyle = wg; ctx.fill();
+  
+  // Wave highlights
+  ctx.strokeStyle = ormanPal('waterLine', 0.22 + e.bass*0.4);
+  ctx.lineWidth = 1.3;
+  ctx.beginPath();
+  pts.forEach((pt,i)=> i?ctx.lineTo(pt[0],pt[1]):ctx.moveTo(pt[0],pt[1]));
+  ctx.stroke();
+  
+  // Underwater shimmer lines
+  for(let k=0;k<4;k++){
+    const yy = top + (bottom-top)*(0.22+k*0.19);
+    ctx.strokeStyle = ormanPal('waterLine', Math.max(0, 0.045+0.045*Math.sin(t*2.1+k*2)));
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    for(let i=0;i<=40;i++){
+      const p=i/40;
+      const y = yy + Math.sin(p*14+t*(1.1+k*0.35))*(1.5+e.bass*4);
+      i?ctx.lineTo(p*W,y):ctx.moveTo(p*W,y);
+    }
+    ctx.stroke();
+  }
+  
+  // Moon reflection
+  const mAlpha = (1-ormanModeMix*0.65);
+  if(mAlpha>0.03){
+    for(let i=0;i<16;i++){
+      const p=i/16;
+      const y = top+4+p*(bottom-top)*0.92;
+      const fade = 1-p*0.75;
+      const w = (W*0.045*(1-p*0.4))*(0.55+Math.random()*0.7)*(0.6+e.energy*0.5);
+      const cx = g.mx + Math.sin(p*13+t*0.9)*(3+(1-p)*8);
+      ctx.fillStyle = ormanPal('glint', (0.05+Math.random()*0.12)*fade*mAlpha*(0.6+e.treble*0.6));
+      ctx.fillRect(cx-w/2, y, Math.max(0,w), 1.1+Math.random()*1.5*fade);
+    }
+  }
+  
+  // Fire reflection
+  const fPow = ormanFirePower();
+  for(let i=0;i<13;i++){
+    const p=i/13;
+    const y = bottom-6-p*(bottom-top)*0.75;
+    const near = 1-p*0.55;
+    const w = (W*0.05*(1-p*0.3))*(0.5+Math.random()*0.9)*(0.7+flick*0.5+e.bass*0.5);
+    const cx = g.fx + Math.sin(p*11+t*2.2)*(2+(1-p)*6);
+    ctx.fillStyle = ormanPal('fireMid', (0.06+Math.random()*0.16)*near*flick*(0.4+fPow*0.6));
+    ctx.fillRect(cx-w/2, y, Math.max(0,w), 1.3+Math.random()*1.8*near);
+  }
+  
+  // Fire glow on shore
   ctx.save();
-  ctx.globalCompositeOperation = 'lighter';
-  deepEyesState.tears.forEach(tear=>{
-    if(tear.trail.length < 2) return;
-    // OPTIMIZED: Draw every 2nd trail point (reduced from 90 to ~45 points)
-    for(let i=2;i<tear.trail.length;i+=2){
-      const p = tear.trail[i];
-      const a = Math.max(0, 1 - p.age/3.2);
-      ctx.strokeStyle = `rgba(190,235,245,${(0.16*a).toFixed(3)})`;
-      ctx.lineWidth = 2.6*a + 0.4;
-      ctx.lineCap = 'round';
+  ctx.globalCompositeOperation='lighter';
+  const fg = ctx.createRadialGradient(g.fx, bottom-8, 6, g.fx, bottom-8, W*0.3);
+  fg.addColorStop(0, ormanPal('glow', 0.10*flick*(0.5+fPow*0.5)));
+  fg.addColorStop(1, ormanPal('glow', 0));
+  ctx.fillStyle = fg;
+  ctx.fillRect(g.fx-W*0.32, top, W*0.64, bottom-top);
+  ctx.restore();
+  
+  // Touch ripples
+  ormanRipples.forEach(r=>{
+    ctx.strokeStyle = ormanPal('glint', Math.max(0,r.life)*0.55);
+    ctx.lineWidth = 1.2;
+    ctx.beginPath(); ctx.ellipse(r.x, r.y, r.r, r.r*0.32, 0, 0, 7); ctx.stroke();
+    ctx.strokeStyle = ormanPal('waterLine', Math.max(0,r.life)*0.25);
+    ctx.beginPath(); ctx.ellipse(r.x, r.y, r.r*0.62, r.r*0.2, 0, 0, 7); ctx.stroke();
+  });
+}
+
+function ormanDrawShore(g){
+  const sy = g.shoreY;
+  const steps=50, pts=[];
+  for(let i=0;i<=steps;i++){
+    const p=i/steps;
+    pts.push([p*W, sy + Math.sin(p*5+2)*4 + Math.sin(p*13+1)*2]);
+  }
+  ctx.beginPath();
+  ctx.moveTo(-4, pts[0][1]);
+  pts.forEach(pt=>ctx.lineTo(pt[0],pt[1]));
+  ctx.lineTo(W+4, H+4); ctx.lineTo(-4, H+4);
+  ctx.closePath();
+  const sg = ctx.createLinearGradient(0,sy,0,H);
+  sg.addColorStop(0, ormanPal('shoreEdge'));
+  sg.addColorStop(0.25, ormanPal('shore'));
+  sg.addColorStop(1, '#01070f');
+  ctx.fillStyle = sg; ctx.fill();
+  
+  ctx.strokeStyle = ormanPal('waterLine', 0.10);
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  pts.forEach((pt,i)=> i?ctx.lineTo(pt[0],pt[1]):ctx.moveTo(pt[0],pt[1]));
+  ctx.stroke();
+}
+
+function ormanDrawTent(g, flick){
+  const s = H/420;
+  const x = g.tentX, gy = g.tentY;
+  const w = 62*s, h = 50*s;
+  
+  ctx.fillStyle = ormanPal('tent');
+  ctx.beginPath();
+  ctx.moveTo(x-w/2, gy+2);
+  ctx.lineTo(x, gy-h);
+  ctx.lineTo(x+w/2, gy+2);
+  ctx.closePath(); ctx.fill();
+  
+  // Interior glow
+  const ig = ctx.createRadialGradient(x+10*s, gy-8*s, 2, x+10*s, gy-8*s, 30*s);
+  ig.addColorStop(0, ormanPal('tentGlow', 0.30+flick*0.25));
+  ig.addColorStop(1, ormanPal('tentGlow', 0));
+  ctx.save(); ctx.globalCompositeOperation='lighter';
+  ctx.fillStyle = ig;
+  ctx.beginPath();
+  ctx.moveTo(x-w/2, gy+2);
+  ctx.lineTo(x, gy-h);
+  ctx.lineTo(x+w/2, gy+2);
+  ctx.closePath(); ctx.fill();
+  ctx.restore();
+  
+  // Door
+  ctx.fillStyle = '#02080f';
+  ctx.beginPath();
+  ctx.moveTo(x+2*s, gy+2);
+  ctx.lineTo(x+13*s, gy-24*s);
+  ctx.lineTo(x+26*s, gy+2);
+  ctx.closePath(); ctx.fill();
+  
+  ctx.fillStyle = ormanPal('tentGlow', 0.35+flick*0.3);
+  ctx.beginPath();
+  ctx.moveTo(x+6*s, gy+2);
+  ctx.lineTo(x+13*s, gy-18*s);
+  ctx.lineTo(x+21*s, gy+2);
+  ctx.closePath(); ctx.fill();
+}
+
+function ormanRoundRect(x,y,w,h,r){
+  ctx.beginPath();
+  ctx.moveTo(x+r,y);
+  ctx.arcTo(x+w,y,x+w,y+h,r);
+  ctx.arcTo(x+w,y+h,x,y+h,r);
+  ctx.arcTo(x,y+h,x,y,r);
+  ctx.arcTo(x,y,x+w,y,r);
+  ctx.closePath();
+}
+
+function ormanDrawMan(x, gy, flick){
+  const s = H/420;
+  const c = '#03080f';
+  
+  // Log
+  ctx.fillStyle = ormanPal('wood');
+  ormanRoundRect(x-80*s, gy-15*s, 120*s, 12*s, 6*s); ctx.fill();
+  ctx.fillStyle = ormanPal('wood');
+  ctx.beginPath(); ctx.ellipse(x-80*s, gy-9*s, 5*s, 6*s, 0, 0, 7); ctx.fill();
+  ctx.fillStyle = ormanPal('rockHi', 0.25);
+  ctx.beginPath(); ctx.ellipse(x-80*s, gy-9*s, 2.5*s, 3*s, 0, 0, 7); ctx.fill();
+  
+  // Silhouette
+  ctx.fillStyle = c; ctx.strokeStyle = c; ctx.lineCap='round';
+  ctx.beginPath(); ctx.arc(x+4*s, gy-86*s, 12*s, 0, 7); ctx.fill();
+  ctx.lineWidth = 20*s;
+  ctx.beginPath();
+  ctx.moveTo(x-6*s, gy-70*s);
+  ctx.quadraticCurveTo(x-15*s, gy-46*s, x-8*s, gy-28*s);
+  ctx.stroke();
+  ctx.lineWidth = 9*s;
+  ctx.beginPath();
+  ctx.moveTo(x-4*s, gy-62*s);
+  ctx.quadraticCurveTo(x+24*s, gy-52*s, x+44*s, gy-38*s);
+  ctx.stroke();
+  
+  // Stick
+  ctx.lineWidth = 3.5*s;
+  ctx.beginPath();
+  ctx.moveTo(x+40*s, gy-40*s);
+  ctx.lineTo(x+80*s, gy-25*s);
+  ctx.stroke();
+  ctx.lineWidth = 13*s;
+  ctx.beginPath();
+  ctx.moveTo(x-8*s, gy-30*s);
+  ctx.lineTo(x+26*s, gy-22*s);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(x+26*s, gy-22*s);
+  ctx.lineTo(x+26*s, gy-4*s);
+  ctx.stroke();
+  
+  // Fire rim light
+  const rimA = 0.22 + flick*0.42;
+  ctx.strokeStyle = ormanPal('glow', rimA); ctx.lineWidth = 1.6*s;
+  ctx.beginPath(); ctx.arc(x+4*s, gy-86*s, 12*s, -1.25, 0.95); ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(x+3*s, gy-74*s);
+  ctx.quadraticCurveTo(x+10*s, gy-52*s, x+5*s, gy-32*s);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(x+1*s, gy-62*s);
+  ctx.quadraticCurveTo(x+26*s, gy-52*s, x+42*s, gy-40*s);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(x+1*s, gy-28*s);
+  ctx.lineTo(x+24*s, gy-21*s);
+  ctx.stroke();
+}
+
+function ormanDrawDog(x, gy, flick){
+  const s = H/420;
+  const c = '#03080f';
+  
+  ctx.fillStyle = c; ctx.strokeStyle = c; ctx.lineCap='round';
+  ctx.beginPath(); ctx.ellipse(x+8*s, gy-17*s, 17*s, 15*s, 0, 0, 7); ctx.fill();
+  ctx.lineWidth = 15*s;
+  ctx.beginPath();
+  ctx.moveTo(x+7*s, gy-24*s);
+  ctx.quadraticCurveTo(x-6*s, gy-44*s, x-12*s, gy-52*s);
+  ctx.stroke();
+  ctx.beginPath(); ctx.arc(x-16*s, gy-58*s, 9.5*s, 0, 7); ctx.fill();
+  
+  // Ears
+  ctx.beginPath();
+  ctx.moveTo(x-22*s, gy-60*s);
+  ctx.lineTo(x-34*s, gy-56*s);
+  ctx.lineTo(x-21*s, gy-53*s);
+  ctx.closePath(); ctx.fill();
+  ctx.beginPath();
+  ctx.moveTo(x-11*s, gy-66*s);
+  ctx.lineTo(x-5*s, gy-75*s);
+  ctx.lineTo(x-16*s, gy-68*s);
+  ctx.closePath(); ctx.fill();
+  
+  // Legs
+  ctx.lineWidth = 5*s;
+  ctx.beginPath(); ctx.moveTo(x-10*s, gy-40*s); ctx.lineTo(x-10*s, gy-3*s); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(x-2*s, gy-38*s); ctx.lineTo(x-2*s, gy-3*s); ctx.stroke();
+  
+  // Tail wag
+  const wag = 0.3 + ormanWagBoost*0.6 + (playing?0.15:0);
+  const a = Math.sin(t*9)*wag;
+  ctx.lineWidth = 6*s;
+  ctx.beginPath();
+  ctx.moveTo(x+22*s, gy-24*s);
+  ctx.quadraticCurveTo(x+(33+Math.sin(a)*5)*s, gy-(32+Math.cos(a)*7)*s, x+(35+Math.sin(a)*9)*s, gy-(42+Math.cos(a)*10)*s);
+  ctx.stroke();
+  
+  // Fire rim light
+  ctx.strokeStyle = ormanPal('glow', 0.18+flick*0.38); ctx.lineWidth = 1.5*s;
+  ctx.beginPath(); ctx.arc(x-16*s, gy-58*s, 9.5*s, 2.1, 4.7); ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(x-3*s, gy-46*s);
+  ctx.quadraticCurveTo(x-13*s, gy-48*s, x-16*s, gy-54*s);
+  ctx.stroke();
+}
+
+function ormanFirePower(){
+  return Math.max(0.15, Math.min(1.5, (sensEl.value/100)*0.7 + ormanFireBoost));
+}
+
+function ormanFireFlick(){
+  const n = Math.sin(t*11.3) + Math.sin(t*5.1+1.3)*0.7 + Math.sin(t*23.7+4.1)*0.4;
+  return Math.max(0, Math.min(1, 0.55 + n*0.24));
+}
+
+function ormanDrawFire(g, e, windAmt){
+  const s = H/420;
+  const x = g.fx, y = g.fy;
+  const fPow = ormanFirePower();
+  const flick = ormanFireFlick();
+  const h = H*0.105*(0.62+fPow*0.5)*(1+e.bass*0.45);
+  const w = 36*s*(0.8+fPow*0.3);
+  const lean = windAmt*12*s + Math.sin(t*3.1)*2*s;
+  
+  // Stone pit
+  for(let i=0;i<7;i++){
+    const a = (i/7)*Math.PI*2 + 0.35;
+    const sx = x + Math.cos(a)*30*s;
+    const sy = y + 3*s + Math.sin(a)*7*s;
+    ctx.fillStyle = ormanPal('rock');
+    ctx.beginPath(); ctx.ellipse(sx, sy, 8*s, 5.5*s, Math.sin(a)*0.3, 0, 7); ctx.fill();
+    ctx.fillStyle = ormanPal('rockHi', 0.35+flick*0.3);
+    ctx.beginPath(); ctx.ellipse(sx-Math.cos(a)*1.5*s, sy-1.8*s, 5*s, 2.6*s, Math.sin(a)*0.3, 0, 7); ctx.fill();
+  }
+  
+  // Logs
+  ctx.strokeStyle = ormanPal('wood'); ctx.lineCap='round';
+  ctx.lineWidth = 7*s;
+  ctx.beginPath(); ctx.moveTo(x-22*s, y+7*s); ctx.lineTo(x+16*s, y-6*s); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(x+22*s, y+7*s); ctx.lineTo(x-16*s, y-6*s); ctx.stroke();
+  ctx.strokeStyle = ormanPal('glow', 0.5+flick*0.3); ctx.lineWidth = 2.5*s;
+  ctx.beginPath(); ctx.moveTo(x-8*s, y-1*s); ctx.lineTo(x+3*s, y-4*s); ctx.stroke();
+  
+  // Ember bed
+  ctx.save();
+  ctx.globalCompositeOperation='lighter';
+  const bg = ctx.createRadialGradient(x, y, 2, x, y, 26*s);
+  bg.addColorStop(0, ormanPal('fireMid', 0.5+flick*0.3));
+  bg.addColorStop(1, ormanPal('fireOuter', 0));
+  ctx.fillStyle = bg;
+  ctx.beginPath(); ctx.ellipse(x, y, 26*s, 10*s, 0, 0, 7); ctx.fill();
+  
+  // Flame layers
+  const layers = [
+    ['fireOuter', 0.5, 1.0],
+    ['fireMid', 0.62, 0.68],
+    ['fireCore', 0.9, 0.42]
+  ];
+  layers.forEach((L, li)=>{
+    const sc = L[2];
+    const wob = Math.sin(t*9+li*2.1)*0.13 + Math.sin(t*15.7+li*1.3)*0.06;
+    const hh = h*sc*(1+wob*0.5+e.bass*0.12);
+    const ww = w*sc*(1-wob*0.3);
+    const tipX = x + lean*(1+li*0.35);
+    const lg = ctx.createLinearGradient(0,y,0,y-hh);
+    lg.addColorStop(0, ormanPal(L[0], L[1]));
+    lg.addColorStop(0.75, ormanPal(L[0], L[1]*0.55));
+    lg.addColorStop(1, ormanPal(L[0], 0));
+    ctx.fillStyle = lg;
+    ctx.beginPath();
+    ctx.moveTo(x-ww/2, y);
+    ctx.quadraticCurveTo(x-ww*0.85+lean*0.5, y-hh*0.52, tipX, y-hh);
+    ctx.quadraticCurveTo(x+ww*0.85+lean*0.5, y-hh*0.52, x+ww/2, y);
+    ctx.closePath(); ctx.fill();
+  });
+  ctx.restore();
+  
+  return {h, fPow, flick};
+}
+
+function ormanUpdateParticles(dt, g, e, windAmt, f){
+  const fPow = ormanFirePower();
+  
+  // Spawn embers
+  if(Math.random() < 0.10 + fPow*0.45*(playing?1:0.4)){
+    ormanEmbers.push({
+      x: g.fx + (Math.random()-0.5)*20,
+      y: g.fy - 14 - Math.random()*f.h*0.7,
+      vx: (Math.random()-0.5)*14 + windAmt*26,
+      vy: -(34+Math.random()*52),
+      r: 0.6+Math.random()*1.7, life:1, decay:0.45+Math.random()*0.85,
+      ph: Math.random()*7
+    });
+  }
+  
+  // Update embers
+  ormanEmbers.forEach(m=>{
+    m.x += m.vx*dt; m.y += m.vy*dt;
+    m.vx += windAmt*22*dt; m.vy += 12*dt;
+    m.life -= dt*m.decay;
+  });
+  ormanEmbers = ormanEmbers.filter(m=>m.life>0);
+  
+  // Spawn smoke
+  if(Math.random() < 0.05+fPow*0.08){
+    ormanSmoke.push({
+      x:g.fx+(Math.random()-0.5)*12, y:g.fy-f.h*0.85,
+      r:5+Math.random()*7, vy:-(16+Math.random()*14), life:1, decay:0.22+Math.random()*0.18
+    });
+  }
+  
+  // Update smoke
+  ormanSmoke.forEach(sm=>{
+    sm.y += sm.vy*dt;
+    sm.x += (windAmt*30+Math.sin(t+sm.r)*6)*dt;
+    sm.r += dt*10;
+    sm.life -= dt*sm.decay;
+  });
+  ormanSmoke = ormanSmoke.filter(sm=>sm.life>0);
+  
+  // Update ripples
+  ormanRipples.forEach(r=>{
+    r.r += r.v*dt;
+    r.life -= dt*r.decay;
+  });
+  ormanRipples = ormanRipples.filter(r=>r.life>0 && r.r < W*0.5);
+  
+  // Update shooting star
+  if(ormanShootingStar){
+    ormanShootingStar.x += ormanShootingStar.vx*dt;
+    ormanShootingStar.y += ormanShootingStar.vy*dt;
+    ormanShootingStar.life -= dt*0.75;
+    if(ormanShootingStar.life<=0 || ormanShootingStar.y>H*0.6) ormanShootingStar = null;
+  }
+  
+  // Update sparks
+  ormanSparks.forEach(s=>{
+    s.x+=s.vx; s.y+=s.vy; s.vy+=s.grav; s.vx*=s.drag; s.vy*=s.drag; s.life-=s.decay;
+  });
+  ormanSparks = ormanSparks.filter(s=>s.life>0);
+  
+  // Decay boosts
+  ormanWagBoost = Math.max(0, ormanWagBoost - dt*0.8);
+  ormanFireBoost *= Math.pow(0.28, dt);
+  ormanWaterPulse *= Math.pow(0.04, dt);
+}
+
+function ormanDrawParticles(g){
+  // Smoke
+  ormanSmoke.forEach(sm=>{
+    ctx.fillStyle = ormanPal('smoke', Math.max(0, sm.life)*0.09);
+    ctx.beginPath(); ctx.arc(sm.x, sm.y, sm.r, 0, 7); ctx.fill();
+  });
+  
+  // Embers
+  ctx.save();
+  ctx.globalCompositeOperation='lighter';
+  ormanEmbers.forEach(m=>{
+    const tw = 0.5+0.5*Math.sin(t*6+m.ph);
+    ctx.shadowColor = ormanPal('ember'); ctx.shadowBlur = 7;
+    ctx.fillStyle = ormanPal('ember', Math.max(0,m.life)*(0.55+tw*0.45));
+    ctx.beginPath(); ctx.arc(m.x, m.y, m.r*(0.6+tw*0.5)*Math.max(0.3,m.life), 0, 7); ctx.fill();
+  });
+  ctx.restore();
+  ctx.shadowBlur = 0;
+  
+  // Shooting star
+  if(ormanShootingStar){
+    const s2 = ormanShootingStar;
+    const tx = s2.x - s2.vx*0.09, ty = s2.y - s2.vy*0.09;
+    const gr = ctx.createLinearGradient(s2.x, s2.y, tx, ty);
+    gr.addColorStop(0, `rgba(255,255,255,${0.9*Math.max(0,s2.life)})`);
+    gr.addColorStop(1, 'rgba(160,200,255,0)');
+    ctx.strokeStyle = gr; ctx.lineWidth = 1.6;
+    ctx.beginPath(); ctx.moveTo(s2.x, s2.y); ctx.lineTo(tx, ty); ctx.stroke();
+    ctx.fillStyle = `rgba(255,255,255,${Math.max(0,s2.life)})`;
+    ctx.beginPath(); ctx.arc(s2.x, s2.y, 1.8, 0, 7); ctx.fill();
+  }
+  
+  // Sparks
+  ormanSparks.forEach(s=>{
+    ctx.beginPath(); ctx.arc(s.x,s.y,Math.max(0.2,s.r*s.life),0,7);
+    ctx.shadowColor = s.color; ctx.shadowBlur = 8;
+    ctx.fillStyle = s.color; ctx.globalAlpha = Math.max(0,s.life);
+    ctx.fill(); ctx.globalAlpha=1; ctx.shadowBlur=0;
+  });
+}
+
+function ormanDrawGrass(windAmt){
+  ctx.strokeStyle = ormanPal('grass');
+  ctx.lineWidth = 1.4; ctx.lineCap='round';
+  ormanGrassTufts.forEach(gf=>{
+    const bx = gf.x*W, by = gf.y*H;
+    const sway = Math.sin(t*1.4+gf.ph)*windAmt*5;
+    for(let b=-1;b<=1;b++){
       ctx.beginPath();
-      ctx.moveTo(tear.trail[i-2].x, tear.trail[i-2].y);
-      ctx.lineTo(p.x, p.y);
+      ctx.moveTo(bx+b*2.5, by);
+      ctx.quadraticCurveTo(bx+b*3+sway*0.4, by-gf.h*0.6, bx+b*4+sway, by-gf.h*(0.9+Math.abs(b)*-0.15));
       ctx.stroke();
     }
   });
-  ctx.restore();
-  deepEyesState.tears.forEach(tear=>{
-    const alphaMul = tear.state==='fade' ? Math.max(0, 1-tear.fadeT/0.7) : 1;
-    drawTearDropDE(tear, alphaMul);
-  });
 }
 
-// Cached gradients (recreated only when needed)
-let cachedBgGradient = null;
-let cachedScleraGradient = null;
-let cachedIrisGradient = null;
-let cachedLidGradient = null;
-let lastRednessCached = -1;
-let frameCounter = 0;
-
-function drawDeepEyes(bars, wave, e){
-  initVesselTreesDE();
-  frameCounter++;
+function drawOrman(bars, wave, e){
+  initOrman();
   
-  const dt = 0.016;
-  const now = t * 1000;
+  const now = performance.now();
+  if(!ormanLastFrameTime) ormanLastFrameTime = now;
+  let dt = (now - ormanLastFrameTime) / 1000;
+  ormanLastFrameTime = now;
+  if(!isFinite(dt) || dt<=0) dt = 1/60;
+  dt = Math.min(dt, 0.05);
   
-  // Deep ocean background - CACHED
-  if(!cachedBgGradient){
-    cachedBgGradient = ctx.createRadialGradient(W*0.5,H*0.38,10, W*0.5,H*0.55,Math.max(W,H)*0.78);
-    cachedBgGradient.addColorStop(0,'#062230'); cachedBgGradient.addColorStop(1,'#010509');
-  }
-  ctx.fillStyle=cachedBgGradient; ctx.fillRect(0,0,W,H);
-
-  // Caustic water effects - OPTIMIZED (2 layers, reduced blur)
-  ctx.save(); ctx.globalCompositeOperation = 'lighter';
-  const baseA = 0.028 + deepEyesState.redness*0.012;
-  for(let k=0;k<2;k++){
-    ctx.beginPath();
-    const baseY = H*(0.12 + k*0.14);
-    const speed = (0.35 + k*0.24);
-    for(let x=0;x<=W;x+=12){  // Further reduced from x+=10 to x+=12
-      const y = baseY + Math.sin(x*0.022 + t*speed + k*1.7)*6 + Math.sin(x*0.05 - t*speed*1.6)*3;
-      if(x===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
-    }
-    ctx.strokeStyle = `rgba(96,225,208,${baseA})`;
-    ctx.lineWidth = 6 + k*3; ctx.filter = 'blur(2px)'; ctx.stroke();  // Reduced blur from 3px to 2px
-  }
-  ctx.filter = 'none'; ctx.restore();
-
-  // Floating particles - SKIP EVERY OTHER FRAME for performance
-  if(frameCounter % 2 === 0){
-    // Draw bubbles every other frame, every other particle
-    for(let i=0; i<BUBBLES_DE.length; i+=2){
-      const b = BUBBLES_DE[i];
-      const span = H+20;
-      const yy = (((b.y*H - t*b.speed*6) % span) + span) % span - 10;
-      const xx = b.x*W + Math.sin(t*0.4+b.phase)*b.drift;
-      const r = b.r;
-      // Simplified gradient (no gradient creation per particle)
-      ctx.fillStyle = 'rgba(180,240,235,0.18)';
-      ctx.beginPath(); ctx.arc(xx,yy,r,0,7); ctx.fill();
-    }
-    // Snow particles - only every third one
-    for(let i=0; i<SNOW_DE.length; i+=3){
-      const s = SNOW_DE[i];
-      const span = H+10;
-      const yy = (((s.y*H - t*s.vy) % span) + span) % span - 5;
-      const xx = s.x*W + Math.sin(t*0.25+s.phase)*s.drift;
-      ctx.fillStyle = `rgba(200,240,235,${(s.op*0.7)})`;  // Removed animation for performance
-      ctx.beginPath(); ctx.arc(xx,yy,s.r,0,7); ctx.fill();
-    }
-  }
-
-  const g = getEyeGeometryDE(deepEyesState.openCur);
-  const apH = 0.5*g.ryTop*deepEyesState.restOpen + 0.5*g.ryBot*deepEyesState.restOpen;
-
-  // Lid shadow - REDUCED BLUR (most expensive operation)
-  ctx.save(); ctx.filter = 'blur(8px)';  // Reduced from 16px to 8px
-  ctx.fillStyle = 'rgba(0,0,0,0.6)';
-  ctx.beginPath(); ctx.ellipse(g.cx, g.cy+apH*0.15, g.rx*1.22, apH*1.35, 0, 0, 7); ctx.fill();
-  ctx.restore();
-
-  // Lid shape - REDUCED BLUR and CACHED GRADIENT
-  ctx.save(); ctx.filter = 'blur(4px)';  // Reduced from 7px to 4px
-  if(!cachedLidGradient){
-    cachedLidGradient = ctx.createLinearGradient(g.cx, g.cy-apH*1.5, g.cx, g.cy+apH*1.5);
-    cachedLidGradient.addColorStop(0,'#123246'); cachedLidGradient.addColorStop(1,'#07202c');
-  }
-  ctx.fillStyle = cachedLidGradient;
-  ctx.beginPath(); ctx.ellipse(g.cx, g.cy, g.rx*1.08, apH*1.15, 0, 0, 7); ctx.fill();
-  ctx.restore();
-
-  // Aperture clip
-  ctx.save();
-  ctx.beginPath();
-  ctx.moveTo(g.left.x, g.left.y);
-  ctx.quadraticCurveTo(g.upperCtrl.x, g.upperCtrl.y, g.right.x, g.right.y);
-  ctx.quadraticCurveTo(g.lowerCtrl.x, g.lowerCtrl.y, g.left.x, g.left.y);
-  ctx.closePath(); ctx.clip();
-
-  // Sclera with redness - CACHED GRADIENT (only recreate when redness changes significantly)
-  const rTint = Math.round(deepEyesState.redness*38);
-  if(!cachedScleraGradient || Math.abs(deepEyesState.redness - lastRednessCached) > 0.05){
-    cachedScleraGradient = ctx.createRadialGradient(g.cx,g.cy,4, g.cx,g.cy,g.rx*1.15);
-    cachedScleraGradient.addColorStop(0,`rgb(${234+rTint},${247-rTint*0.6},${249-rTint*0.6})`);
-    cachedScleraGradient.addColorStop(0.45,`rgb(${191+rTint},${227-rTint},${231-rTint})`);
-    cachedScleraGradient.addColorStop(0.8,`rgb(${127+rTint},${185-rTint*1.3},${194-rTint*1.3})`);
-    cachedScleraGradient.addColorStop(1,`rgb(${63+rTint*0.6},${109-rTint},${120-rTint})`);
-    lastRednessCached = deepEyesState.redness;
-  }
-  ctx.fillStyle = cachedScleraGradient; ctx.fillRect(g.cx-g.rx*1.2, g.cy-g.ryTop*1.3, g.rx*2.4, (g.ryTop+g.ryBot)*1.4);
-
-  // Inflamed flush
-  if(deepEyesState.redness > 0.02){
-    [['l',g.left.x+g.rx*0.16],['r',g.right.x-g.rx*0.16]].forEach(([side,x])=>{
-      const infl = ctx.createRadialGradient(x, g.cy, 2, x, g.cy, g.rx*0.85);
-      infl.addColorStop(0, `rgba(198,52,62,${0.30*deepEyesState.redness})`);
-      infl.addColorStop(0.55, `rgba(190,60,66,${0.12*deepEyesState.redness})`);
-      infl.addColorStop(1, 'rgba(190,60,66,0)');
-      ctx.fillStyle = infl; ctx.fillRect(g.cx-g.rx*1.2, g.cy-g.ryTop*1.3, g.rx*2.4, (g.ryTop+g.ryBot)*1.4);
-    });
-  }
-
-  // Vessels - CONDITIONAL RENDERING (only when visible)
-  if(deepEyesState.redness >= 0.08 && deepEyesState.vesselTrees){  // Raised threshold from 0.015 to 0.08
-    const veinPulse = 0.78 + 0.22*Math.sin(t*Math.PI*2*0.9) * (0.5+deepEyesState.bassEnv);
-    deepEyesState.vesselTrees.forEach(tree=>{
-      tree.forEach(s=>{
-        const depthFade = 0.45 + 0.55*(s.d/4);
-        const a = (0.03 + deepEyesState.redness*0.5*veinPulse) * depthFade;
-        ctx.strokeStyle = `rgba(172,38,52,${a})`;
-        ctx.lineWidth = s.w * (0.55 + deepEyesState.redness*0.95);
-        ctx.lineCap = 'round'; ctx.beginPath();
-        ctx.moveTo(g.cx + s.x0*g.rx, g.cy + s.y0*apH);
-        ctx.lineTo(g.cx + s.x1*g.rx, g.cy + s.y1*apH);
-        ctx.stroke();
+  // Mode transition
+  const modeTarget = currentMode==='light' ? 1 : 0;
+  ormanModeMix += (modeTarget-ormanModeMix) * Math.min(1, dt*1.4);
+  
+  const windAmt = (sensEl.value/100);
+  const g = ormanGeo();
+  const flick = ormanFireFlick();
+  
+  // Beat detection
+  if(e.beat){
+    ormanBeatFlash = 1;
+    ormanFireBoost = Math.min(1.4, ormanFireBoost+0.15);
+    ormanWaterPulse = 1;
+    for(let i=0;i<10;i++){
+      ormanSparks.push({
+        x: g.fx+(Math.random()-0.5)*18, y: g.fy-30,
+        vx:(Math.random()-0.5)*1.2, vy:-(0.8+Math.random()*2),
+        r:0.6+Math.random()*1.4, life:1, decay:1/(30+Math.random()*30),
+        color: ormanPal('ember',1), grav:-0.006, drag:0.978
       });
-    });
-  }
-
-  // Caruncle (inner corner)
-  ctx.fillStyle = 'rgba(150,85,90,0.45)';
-  ctx.beginPath();
-  ctx.ellipse(g.left.x+g.rx*0.14, g.cy, apH*0.15, apH*0.20, 0, 0, 7);
-  ctx.fill();
-
-  // Sparkles - SKIP EVERY OTHER FRAME
-  if(frameCounter % 2 === 0){
-    FLECKS_DE.forEach(f=>{
-      const fx = g.cx + (f.x-0.5)*g.rx*2.1;
-      const fy = g.cy + (f.y-0.5)*(g.ryTop+g.ryBot);
-      const tw = 0.35+0.65*(0.5+0.5*Math.sin(t*f.speed+f.phase));
-      ctx.fillStyle = `rgba(190,240,235,${(0.10+deepEyesState.trebleEnv*0.12)*tw})`;
-      ctx.beginPath(); ctx.arc(fx,fy,f.r,0,7); ctx.fill();
-    });
-  }
-
-  // Iris
-  const maxGX = g.rx*0.30, maxGY = ((g.ryTop+g.ryBot)/2)*0.20;
-  const ix = g.cx + deepEyesState.gazeX*maxGX;
-  const iy = g.cy + deepEyesState.gazeY*maxGY;
-  const irisBase = (0.5*g.ryTop*deepEyesState.restOpen) * 1.05;
-  const irisR = irisBase*deepEyesState.irisPulse;
-
-  // CACHED IRIS GRADIENT (iris gradient doesn't need recreation every frame)
-  if(!cachedIrisGradient){
-    cachedIrisGradient = ctx.createRadialGradient(0,0,irisR*0.10, 0,0,irisR);
-    cachedIrisGradient.addColorStop(0,'#aefaf0'); cachedIrisGradient.addColorStop(0.22,'#5ff0dd'); 
-    cachedIrisGradient.addColorStop(0.48,'#2fd9c9');
-    cachedIrisGradient.addColorStop(0.74,'#12839a'); cachedIrisGradient.addColorStop(0.93,'#0e5f7a'); 
-    cachedIrisGradient.addColorStop(1,'#062230');
-  }
-  ctx.save();
-  ctx.translate(ix, iy);
-  ctx.fillStyle = cachedIrisGradient;
-  ctx.beginPath(); ctx.arc(0,0,irisR,0,7); ctx.fill();
-
-  // Iris lines - DRAW EVERY OTHER LINE for performance
-  for(let i=0; i<IRIS_LINES_DE.length; i+=2){  // Skip every other line
-    const l = IRIS_LINES_DE[i];
-    ctx.strokeStyle = `rgba(6,30,38,${l.op})`;
-    ctx.lineWidth = l.w;
-    ctx.beginPath();
-    ctx.moveTo(Math.cos(l.a)*irisR*0.20, Math.sin(l.a)*irisR*0.20);
-    ctx.lineTo(Math.cos(l.a)*irisR*l.len, Math.sin(l.a)*irisR*l.len);
-    ctx.stroke();
-  }
-  
-  // Collarette - SIMPLIFIED (circle instead of complex path)
-  ctx.strokeStyle = 'rgba(5,26,32,0.38)';
-  ctx.lineWidth = irisR*0.05;
-  ctx.beginPath();
-  ctx.arc(0, 0, irisR*0.42, 0, 7);  // Simple circle at collarette position
-  ctx.stroke();
-  
-  // Crypts - REDUCED BLUR
-  ctx.filter = 'blur(1px)';  // Reduced from 1.5px to 1px
-  IRIS_CRYPTS_DE.forEach(c=>{
-    const px = Math.cos(c.a)*irisR*c.r, py = Math.sin(c.a)*irisR*c.r;
-    ctx.fillStyle = c.dark ? 'rgba(4,22,28,0.16)' : 'rgba(255,255,255,0.09)';
-    ctx.beginPath(); ctx.ellipse(px,py, irisR*c.size, irisR*c.size*0.72, c.a, 0, 7); ctx.fill();
-  });
-  ctx.filter = 'none';
-  ctx.restore();
-
-  // Limbal ring
-  ctx.strokeStyle = 'rgba(3,14,20,0.6)';
-  ctx.lineWidth = Math.max(1, irisR*0.07);
-  ctx.beginPath(); ctx.arc(ix,iy,irisR*0.97,0,7); ctx.stroke();
-  ctx.strokeStyle = 'rgba(255,90,110,0.10)';
-  ctx.lineWidth = Math.max(0.6, irisR*0.03);
-  ctx.beginPath(); ctx.arc(ix+0.7,iy,irisR*0.985,0,7); ctx.stroke();
-  ctx.strokeStyle = 'rgba(90,210,255,0.10)';
-  ctx.beginPath(); ctx.arc(ix-0.7,iy,irisR*0.985,0,7); ctx.stroke();
-
-  // Pupil
-  const pr = irisR*deepEyesState.pupilRatio;
-  const puGrad = ctx.createRadialGradient(ix,iy,pr*0.1, ix,iy,pr);
-  puGrad.addColorStop(0,'#000000'); puGrad.addColorStop(1,'#050b12');
-  ctx.fillStyle = puGrad;
-  ctx.beginPath(); ctx.arc(ix,iy,pr,0,7); ctx.fill();
-
-  // Catchlights - REDUCED BLUR
-  ctx.save();
-  ctx.filter = 'blur(2px)';  // Reduced from 3px to 2px
-  ctx.fillStyle = `rgba(255,255,255,${0.08+deepEyesState.trebleEnv*0.10})`;
-  ctx.beginPath();
-  ctx.ellipse(ix-irisR*0.12, iy-irisR*0.5, irisR*0.62, irisR*0.34, -0.35, 0, 7);
-  ctx.fill();
-  ctx.restore();
-
-  ctx.save();
-  ctx.translate(ix-irisR*0.30, iy-irisR*0.42);
-  ctx.rotate(-0.35);
-  ctx.fillStyle = `rgba(255,255,255,${0.10+deepEyesState.trebleEnv*0.08})`;
-  ctx.beginPath();
-  ctx.roundRect(-irisR*0.30, -irisR*0.14, irisR*0.42, irisR*0.24, irisR*0.05);
-  ctx.fill();
-  ctx.restore();
-
-  const glintBoost = 0.5+deepEyesState.trebleEnv*0.9;
-  ctx.fillStyle = `rgba(255,255,255,${Math.min(0.95,0.55*glintBoost)})`;
-  ctx.beginPath(); ctx.arc(ix-irisR*0.34, iy-irisR*0.36, Math.max(1,irisR*0.13*glintBoost), 0, 7); ctx.fill();
-  ctx.fillStyle = `rgba(200,255,248,${Math.min(0.55,0.16*glintBoost)})`;
-  ctx.beginPath(); ctx.arc(ix+irisR*0.26, iy+irisR*0.30, Math.max(0.6,irisR*0.06*glintBoost), 0, 7); ctx.fill();
-
-  // Lid shadows
-  const lidShadow = ctx.createLinearGradient(g.cx, g.cy-g.ryTop*deepEyesState.openCur*0.9, g.cx, g.cy);
-  lidShadow.addColorStop(0,'rgba(0,0,0,0.34)');
-  lidShadow.addColorStop(1,'rgba(0,0,0,0)');
-  ctx.fillStyle = lidShadow;
-  ctx.fillRect(g.cx-g.rx*1.2, g.cy-g.ryTop*1.3, g.rx*2.4, (g.ryTop+g.ryBot)*1.4);
-  
-  const bounce = ctx.createLinearGradient(g.cx, g.cy+g.ryBot*deepEyesState.openCur*0.7, g.cx, g.cy+g.ryBot*deepEyesState.openCur*0.1);
-  bounce.addColorStop(0,'rgba(70,210,195,0.10)');
-  bounce.addColorStop(1,'rgba(70,210,195,0)');
-  ctx.fillStyle = bounce;
-  ctx.fillRect(g.cx-g.rx*1.2, g.cy, g.rx*2.4, g.ryBot*deepEyesState.openCur);
-
-  // Tear meniscus
-  if(deepEyesState.well > 0.02){
-    ctx.beginPath();
-    for(let i=0;i<=28;i++){
-      const tt = 0.06 + (i/28)*0.88;
-      const b = qbezierDE(g.left, g.lowerCtrl, g.right, tt);
-      const lift = (1 + deepEyesState.well*2.2);
-      if(i===0) ctx.moveTo(b.x, b.y-lift*0.4); else ctx.lineTo(b.x, b.y-lift*0.4);
     }
-    ctx.strokeStyle = `rgba(214,244,250,${0.10+deepEyesState.well*0.30})`;
-    ctx.lineWidth = 1.2 + deepEyesState.well*3.6;
-    ctx.lineCap = 'round';
-    ctx.stroke();
-
-    const bulgeR = apH*(0.06 + deepEyesState.well*0.22);
-    const bx = g.left.x + g.rx*0.15, by = g.cy + apH*0.35;
-    const bg2 = ctx.createRadialGradient(bx-bulgeR*0.3, by-bulgeR*0.4, 0.5, bx, by, bulgeR*1.6);
-    bg2.addColorStop(0, `rgba(235,251,255,${0.30+deepEyesState.well*0.40})`);
-    bg2.addColorStop(0.6, `rgba(190,235,245,${0.14+deepEyesState.well*0.20})`);
-    bg2.addColorStop(1, 'rgba(190,235,245,0)');
-    ctx.fillStyle = bg2;
-    ctx.beginPath(); ctx.ellipse(bx, by, bulgeR*1.5, bulgeR, 0.15, 0, 7); ctx.fill();
   }
-
-  // Tear film gloss
-  ctx.save();
-  ctx.globalCompositeOperation = 'lighter';
-  const film = ctx.createLinearGradient(g.cx, g.cy-apH, g.cx, g.cy+apH);
-  film.addColorStop(0, `rgba(220,250,255,${0.05+deepEyesState.well*0.13})`);
-  film.addColorStop(0.5, 'rgba(220,250,255,0)');
-  film.addColorStop(1, `rgba(160,230,240,${0.03+deepEyesState.well*0.07})`);
-  ctx.fillStyle = film;
-  ctx.fillRect(g.cx-g.rx*1.2, g.cy-g.ryTop*1.3, g.rx*2.4, (g.ryTop+g.ryBot)*1.4);
-  ctx.restore();
-
-  ctx.restore();
-
-  // Lid outlines
-  ctx.strokeStyle = 'rgba(2,10,15,0.85)';
-  ctx.lineWidth = 1.4;
-  ctx.beginPath();
-  ctx.moveTo(g.left.x,g.left.y);
-  ctx.quadraticCurveTo(g.upperCtrl.x,g.upperCtrl.y,g.right.x,g.right.y);
-  ctx.stroke();
-
-  ctx.strokeStyle = 'rgba(220,245,250,0.10)';
-  ctx.lineWidth = 1;
-  ctx.beginPath();
-  ctx.moveTo(g.left.x-3, g.left.y-3);
-  ctx.quadraticCurveTo(g.upperCtrl.x, g.upperCtrl.y-apH*0.30, g.right.x+3, g.right.y-3);
-  ctx.stroke();
-
-  // Lashes - ONLY react to sound (no random jitter)
-  const LASH_N = 18;
-  const maxLen = Math.max(18, g.rx*0.46);
-  const lashFlutter = deepEyesState.trebleEnv * 0.15;  // Only treble-based movement
-  for(let i=0;i<LASH_N;i++){
-    const tt = 0.06 + (i/(LASH_N-1))*0.88;
-    const basex = (1-tt)*(1-tt)*g.left.x + 2*(1-tt)*tt*g.upperCtrl.x + tt*tt*g.right.x;
-    const basey = (1-tt)*(1-tt)*g.left.y + 2*(1-tt)*tt*g.upperCtrl.y + tt*tt*g.right.y;
-    const sweep = (tt-0.5)*0.85;
-    const angle = -Math.PI/2 + sweep + lashFlutter * Math.sin(t*7 + i);  // Treble-based flutter only
-    const lenFactor = Math.pow(Math.sin(Math.PI*tt), 0.85);
-    const length = (11 + lenFactor*maxLen) * (1+deepEyesState.bassEnv*0.12) * (0.55+0.45*deepEyesState.openCur);
-    const endx = basex + Math.cos(angle)*length;
-    const endy = basey + Math.sin(angle)*length;
-    ctx.strokeStyle = 'rgba(2,9,14,0.94)'; ctx.lineWidth = 1.8; ctx.beginPath();
-    ctx.moveTo(basex, basey); ctx.lineTo(endx, endy); ctx.stroke();
-  }
-
-  // Tears roll over everything
-  drawTearsDE();
-
-  // Update physics
-  const bassRaw = bars[3]||0, trebleRaw = bars[40]||0, overall = bars.reduce((a,b)=>a+b,0)/bars.length;
-  const bassAtk = 1-Math.exp(-dt*4.5), bassRel = 1-Math.exp(-dt*2.2);
-  deepEyesState.bassEnv += (bassRaw-deepEyesState.bassEnv) * (bassRaw>deepEyesState.bassEnv?bassAtk:bassRel);
-  const trebAtk = 1-Math.exp(-dt*22), trebRel = 1-Math.exp(-dt*10);
-  deepEyesState.trebleEnv += (trebleRaw-deepEyesState.trebleEnv) * (trebleRaw>deepEyesState.trebleEnv?trebAtk:trebRel);
-
-  // Loudness -> redness
-  deepEyesState.loudnessEnv += (overall-deepEyesState.loudnessEnv) * (1-Math.exp(-dt*(overall>deepEyesState.loudnessEnv?3.0:0.55)));
-  const redTarget = playing ? clampDE((deepEyesState.loudnessEnv-0.30)/0.30, 0, 1) : 0;
-  deepEyesState.redness += (redTarget-deepEyesState.redness) * (1-Math.exp(-dt*1.15));
-
-  // Crying
-  deepEyesState.emotionBoost = Math.max(0, deepEyesState.emotionBoost - dt*0.055);
-  const cryTarget = playing ? clampDE((deepEyesState.loudnessEnv-0.40)*3.2, 0, 1) + deepEyesState.emotionBoost : deepEyesState.emotionBoost*0.6;
-  const cryDrive = clampDE(cryTarget, 0, 1);
-  const wellTarget = cryDrive;
-  deepEyesState.well += (wellTarget-deepEyesState.well) * (1-Math.exp(-dt*(wellTarget>deepEyesState.well?0.9:0.28)));
-
-  updateTearsDE(dt, now);
-
-  // Pupil dilation
-  const pupilTarget = clampDE(0.26 + deepEyesState.bassEnv*0.46, 0.20, 0.74);
-  const k=90, c=18; const force=(pupilTarget-deepEyesState.pupilRatio)*k - deepEyesState.pupilVel*c;
-  deepEyesState.pupilVel += force*dt; deepEyesState.pupilRatio += deepEyesState.pupilVel*dt;
-  deepEyesState.irisPulse += ((1 + deepEyesState.bassEnv*0.05)-deepEyesState.irisPulse) * (1-Math.exp(-dt*6));
-
-  // Heavy-lidded when crying
-  deepEyesState.restOpen = 0.86 - cryDrive*0.10;
-  deepEyesState.openTarget = deepEyesState.restOpen;
-  deepEyesState.openCur = approachDE(deepEyesState.openCur, deepEyesState.openTarget, dt, 10);
-
-  // Pointer tracking - eye follows where you touch (NO idle drift)
-  // gazeTargetX/Y are set by pointer events, just interpolate towards them
-  deepEyesState.gazeX = approachDE(deepEyesState.gazeX, deepEyesState.gazeTargetX, dt, 2.5);
-  deepEyesState.gazeY = approachDE(deepEyesState.gazeY, deepEyesState.gazeTargetY, dt, 2.2);
   
-  // Tremor when red (only)
-  if(deepEyesState.redness > 0.25){
-    deepEyesState.gazeX += (Math.random()-0.5)*0.045*(deepEyesState.redness-0.2);
-    deepEyesState.gazeY += (Math.random()-0.5)*0.03*(deepEyesState.redness-0.2);
+  // Sky
+  const skyGrad = ctx.createLinearGradient(0,0,0,g.skyH);
+  skyGrad.addColorStop(0, ormanPal('skyTop'));
+  skyGrad.addColorStop(0.62, ormanPal('skyMid'));
+  skyGrad.addColorStop(1, ormanPal('skyHorizon'));
+  ctx.fillStyle = skyGrad;
+  ctx.fillRect(0,0,W,g.skyH+2);
+  
+  // Stars
+  const starAlpha = Math.max(0, 1-ormanModeMix*1.7);
+  if(starAlpha>0.01){
+    ormanStars.forEach(st=>{
+      const tw = 0.5+0.5*Math.sin(t*st.speed+st.phase);
+      ctx.beginPath();
+      ctx.arc(st.x*W, st.y*g.skyH*0.95, st.r*(0.6+tw*0.6), 0, 7);
+      ctx.fillStyle = ormanPal('star', starAlpha*(0.35+tw*0.65)*st.baseA);
+      ctx.fill();
+    });
+  }
+  
+  // Moon
+  const mR = Math.min(W,g.skyH)*0.075 + e.bass*3;
+  const mg = ctx.createRadialGradient(g.mx,g.my,mR*0.15, g.mx,g.my,mR*7);
+  mg.addColorStop(0, ormanPal('moonGlow', 0.5+e.energy*0.18));
+  mg.addColorStop(0.35, ormanPal('moonGlow', 0.12));
+  mg.addColorStop(1, ormanPal('moonGlow', 0));
+  ctx.fillStyle = mg;
+  ctx.beginPath(); ctx.arc(g.mx,g.my,mR*7,0,7); ctx.fill();
+  const bodyGrad = ctx.createRadialGradient(g.mx-mR*0.25,g.my-mR*0.25,mR*0.1, g.mx,g.my,mR);
+  bodyGrad.addColorStop(0, ormanPal('moonCore'));
+  bodyGrad.addColorStop(1, ormanPal('moonBody'));
+  ctx.fillStyle = bodyGrad;
+  ctx.beginPath(); ctx.arc(g.mx,g.my,mR,0,7); ctx.fill();
+  
+  // Ridges with pines
+  const farPts = ormanDrawRidge(H*0.475, H*0.042, 1.3, 'ridgeFar', 0.08, e);
+  ormanPinesFar.forEach(p=>{
+    const i = Math.min(farPts.length-1, Math.floor(p.x*farPts.length));
+    ormanDrawPine(p.x*W, farPts[i][1]+2, H*0.10*p.s, 'ridgeFar');
+  });
+  const midPts = ormanDrawRidge(H*0.53, H*0.055, 4.1, 'ridgeMid', 0.07, e);
+  ormanPinesMid.forEach(p=>{
+    const i = Math.min(midPts.length-1, Math.floor(p.x*midPts.length));
+    ormanDrawPine(p.x*W, midPts[i][1]+2, H*0.13*p.s, 'ridgeMid');
+  });
+  
+  // Fog band
+  const fogGrad = ctx.createLinearGradient(0,g.waterTop-24,0,g.waterTop+14);
+  fogGrad.addColorStop(0, ormanPal('skyHorizon',0));
+  fogGrad.addColorStop(0.5, ormanPal('skyHorizon',0.28));
+  fogGrad.addColorStop(1, ormanPal('waterTop',0));
+  ctx.fillStyle = fogGrad;
+  ctx.fillRect(0,g.waterTop-24,W,40);
+  
+  // Water
+  ormanDrawWater(e, g, flick);
+  
+  // Shore
+  ormanDrawShore(g);
+  
+  // Ground fire glow
+  ctx.save();
+  ctx.globalCompositeOperation='lighter';
+  const fPow = ormanFirePower();
+  const gg2 = ctx.createRadialGradient(g.fx, g.fy-16, 8, g.fx, g.fy-16, W*0.36);
+  gg2.addColorStop(0, ormanPal('glow', 0.22*flick+0.08*fPow));
+  gg2.addColorStop(0.5, ormanPal('glow', 0.07*flick));
+  gg2.addColorStop(1, ormanPal('glow', 0));
+  ctx.fillStyle = gg2;
+  ctx.fillRect(0, g.shoreY-6, W, H-g.shoreY+6);
+  
+  // Beat flash
+  if(ormanBeatFlash>0.01){
+    const bfg = ctx.createRadialGradient(g.fx, g.fy-30, 0, g.fx, g.fy-30, W*0.45);
+    bfg.addColorStop(0, ormanPal('fireMid', 0.14*ormanBeatFlash));
+    bfg.addColorStop(1, ormanPal('fireMid', 0));
+    ctx.fillStyle = bfg;
+    ctx.fillRect(0,0,W,H);
+    ormanBeatFlash *= Math.pow(0.02, dt);
+  }
+  ctx.restore();
+  
+  // Scene elements
+  ormanDrawTent(g, flick);
+  ormanDrawMan(g.manX, g.fy, flick);
+  ormanDrawDog(g.dogX, g.fy, flick);
+  const fInfo = ormanDrawFire(g, e, windAmt);
+  
+  // Grass
+  ormanDrawGrass(windAmt);
+  
+  // Particles
+  ormanUpdateParticles(dt, g, e, windAmt, fInfo);
+  ormanDrawParticles(g);
+}
+
+// Orman interaction handlers
+let ormanTouchHandler = null;
+
+function setupOrmanInteractions(){
+  if(ormanTouchHandler) return; // Already setup
+  
+  ormanTouchHandler = (ev)=>{
+    const r = stageEl.getBoundingClientRect();
+    const x = ((ev.clientX - r.left) / r.width) * W;
+    const y = ((ev.clientY - r.top) / r.height) * H;
+    const g = ormanGeo();
+    const s = H/420;
+    
+    // Touch water -> create ripples
+    if(y > g.waterTop && y < g.shoreY){
+      const ry = Math.min(Math.max(y, g.waterTop+8), g.shoreY-6);
+      ormanRipples.push({x, y:ry, r:3, v:70+H*0.3, life:1, decay:0.85});
+      ormanRipples.push({x, y:ry, r:1, v:44+H*0.18, life:1, decay:1.25});
+      
+      // Burst particles
+      for(let i=0;i<8;i++){
+        const ang = Math.random()*Math.PI*2;
+        const sp = 1.0 * (0.45+Math.random()*0.9);
+        ormanSparks.push({
+          x, y:ry,
+          vx:Math.cos(ang)*sp, vy:Math.sin(ang)*sp,
+          r:0.5+Math.random()*1.2,
+          life:1, decay:1/24,
+          color:ormanPal('glint',1),
+          grav:0.02, drag:0.965
+        });
+      }
+    }
+    // Touch fire -> stoke it
+    else if(Math.hypot(x-g.fx, y-(g.fy-24*s)) < 58*s+18){
+      ormanFireBoost = Math.min(1.4, ormanFireBoost+0.55);
+      for(let i=0;i<22;i++){
+        const ang = Math.random()*Math.PI*2;
+        const sp = 1.6 * (0.45+Math.random()*0.9);
+        ormanSparks.push({
+          x: g.fx+(Math.random()-0.5)*22,
+          y: g.fy-26,
+          vx:Math.cos(ang)*sp,
+          vy:Math.sin(ang)*sp - (1+Math.random()*2.6),
+          r:0.7+Math.random()*1.7,
+          life:1, decay:1/(28+Math.random()*34),
+          color: ormanPal('ember',1),
+          grav:-0.008, drag:0.975
+        });
+      }
+    }
+    // Touch man -> owl calls and dog wag
+    else if(Math.hypot(x-(g.manX+4*s), y-(g.fy-86*s)) < 44){
+      ormanWagBoost = Math.min(1.6, ormanWagBoost+0.8);
+      for(let i=0;i<10;i++){
+        const ang = Math.random()*Math.PI*2;
+        const sp = 1.2 * (0.45+Math.random()*0.9);
+        ormanSparks.push({
+          x, y,
+          vx:Math.cos(ang)*sp, vy:Math.sin(ang)*sp,
+          r:0.5+Math.random()*1.5,
+          life:1, decay:1/26,
+          color:ormanPal('ember',1),
+          grav:0.01, drag:0.965
+        });
+      }
+    }
+    // Touch dog -> bark and wag
+    else if(Math.hypot(x-g.dogX, y-(g.fy-50*s)) < 42){
+      ormanWagBoost = 1.8;
+      for(let i=0;i<8;i++){
+        const ang = Math.random()*Math.PI*2;
+        const sp = 1.0 * (0.45+Math.random()*0.9);
+        ormanSparks.push({
+          x, y,
+          vx:Math.cos(ang)*sp, vy:Math.sin(ang)*sp,
+          r:0.5+Math.random()*1.5,
+          life:1, decay:1/22,
+          color:ormanPal('ember',1),
+          grav:0.02, drag:0.965
+        });
+      }
+    }
+    // Touch sky -> shooting star
+    else if(y < g.skyH){
+      if(!ormanShootingStar){
+        ormanShootingStar = {
+          x: W*(0.25+Math.random()*0.55),
+          y: H*(0.05+Math.random()*0.14),
+          vx: -(220+Math.random()*160),
+          vy: 90+Math.random()*70,
+          life: 1
+        };
+      }
+    }
+    // Touch anywhere else -> small burst
+    else {
+      for(let i=0;i<6;i++){
+        const ang = Math.random()*Math.PI*2;
+        const sp = 0.5 * (0.45+Math.random()*0.9);
+        ormanSparks.push({
+          x, y,
+          vx:Math.cos(ang)*sp, vy:Math.sin(ang)*sp,
+          r:1.4+Math.random()*2.8,
+          life:1, decay:1/20,
+          color:ormanPal('smoke',1),
+          grav:-0.004, drag:0.98
+        });
+      }
+    }
+  };
+  
+  stageEl.addEventListener('pointerdown', ormanTouchHandler);
+}
+
+function removeOrmanInteractions(){
+  if(ormanTouchHandler){
+    stageEl.removeEventListener('pointerdown', ormanTouchHandler);
+    ormanTouchHandler = null;
   }
 }
 
 const RENDERERS = {
   mehtap: drawMehtap,
   sumi: drawSumi, aurora: drawAurora, fener: drawFener,
-  deep_eyes: drawDeepEyes,
+  orman: drawOrman,
   mycel: drawMycel, reef: drawReef, monsoon: drawMonsoon,
   murekkep: drawMurekkep, col: drawCol, divit: drawDivit,
 };
