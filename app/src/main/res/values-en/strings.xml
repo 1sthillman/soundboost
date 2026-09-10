@@ -111,4 +111,16 @@
     <string name="rate_app_desc">Support us with 5 stars ⭐</string>
     <string name="share_app_desc">Tell your friends about us</string>
     <string name="help_desc">Get answers to common questions</string>
+    
+    <!-- Onboarding -->
+    <string name="onboarding_step1_title">Start the Live Audio</string>
+    <string name="onboarding_step1_desc">First, tap the Play button to feel the rhythm of the music!</string>
+    <string name="onboarding_step2_title">Fine-tune Settings</string>
+    <string name="onboarding_step2_desc">Adjust the Boost and Sensitivity sliders to fine-tune sound and theme responsiveness.</string>
+    <string name="onboarding_step3_title">Pick Your Vibe</string>
+    <string name="onboarding_step3_desc">Choose a theme that matches your mood. Remember, visuals dance to the beat!</string>
+    <string name="onboarding_skip">Skip</string>
+    <string name="onboarding_next">Next</string>
+    <string name="onboarding_start">Let\'s Go!</string>
+    <string name="onboarding_complete">Great! You\'re Ready 🎉</string>
 </resources>

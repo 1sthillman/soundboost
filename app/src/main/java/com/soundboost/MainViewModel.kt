@@ -18,12 +18,20 @@ import kotlinx.coroutines.launch
 class MainViewModel(application: Application) : AndroidViewModel(application) {
     
     private val prefs = BoostPreferences(application)
+    private val onboardingPrefs = com.soundboost.data.OnboardingPreferences(application) // YENİ
     private val audioAnalyzer = RealTimeAudioAnalyzer() // YENİ: Profesyonel analyzer
     private var analysisJob: Job? = null
     
     val uiState: StateFlow<BoostSettings> = prefs.settings
         .distinctUntilChanged()  // CRITICAL: Only emit when value actually changes
         .stateIn(viewModelScope, SharingStarted.Eagerly, BoostSettings())
+    
+    // YENİ: Onboarding state
+    val isOnboardingCompleted: StateFlow<Boolean> = onboardingPrefs.isOnboardingCompleted
+        .stateIn(viewModelScope, SharingStarted.Eagerly, false)
+    
+    val currentOnboardingStep: StateFlow<Int> = onboardingPrefs.currentStep
+        .stateIn(viewModelScope, SharingStarted.Eagerly, 0)
     
     // YENİ: Tam audio analiz verisi
     private val _audioAnalysis = MutableStateFlow<AudioAnalysis?>(null)
@@ -249,6 +257,26 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     fun onDarkModeChanged(isDark: Boolean?) {
         viewModelScope.launch {
             prefs.setDarkMode(isDark)
+        }
+    }
+    
+    // YENİ: Onboarding fonksiyonları
+    fun onOnboardingStepComplete() {
+        viewModelScope.launch {
+            val nextStep = currentOnboardingStep.value + 1
+            onboardingPrefs.setCurrentStep(nextStep)
+        }
+    }
+    
+    fun completeOnboarding() {
+        viewModelScope.launch {
+            onboardingPrefs.completeOnboarding()
+        }
+    }
+    
+    fun skipOnboarding() {
+        viewModelScope.launch {
+            onboardingPrefs.completeOnboarding()
         }
     }
     

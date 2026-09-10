@@ -10,6 +10,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -28,6 +29,7 @@ import androidx.core.view.WindowCompat
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.soundboost.ui.components.OnboardingOverlayForWebView
 import com.soundboost.ui.screens.*
 import com.soundboost.ui.theme.SoundSTBoostTheme
 import com.soundboost.ui.theme.getThemeColors
@@ -158,6 +160,10 @@ fun MainScreen(viewModel: MainViewModel) {
     val themeColors = getThemeColors(uiState.theme, uiState.colorAccent)
     val context = androidx.compose.ui.platform.LocalContext.current
     
+    // YENİ: Onboarding state
+    val isOnboardingCompleted by viewModel.isOnboardingCompleted.collectAsState()
+    val onboardingStep by viewModel.currentOnboardingStep.collectAsState()
+    
     // CRITICAL: Track language as state to trigger immediate WebView updates
     var currentLanguage by remember { mutableStateOf(viewModel.getCurrentLanguage(context)) }
     
@@ -188,36 +194,48 @@ fun MainScreen(viewModel: MainViewModel) {
             composable(
                 route = "volume",
                 content = {
-                    // PROFESSIONAL SOLUTION: Use persistent WebView that never gets paused
-                    com.soundboost.ui.components.WebViewHomeScreenPersistent(
-                        state = uiState,
-                        audioLevels = audioLevels,
-                        audioAnalysis = viewModel.audioAnalysis,
-                        onVolumeChange = viewModel::onMasterGainChanged,
-                        onSensitivityChange = viewModel::onSensitivityChanged,
-                        onToggleBoost = {
-                    // Check if boost is being turned ON
-                    if (!uiState.isBoostEnabled) {
-                        // Request permission before starting
-                        (context as? MainActivity)?.checkAndRequestMicrophonePermission()
-                    } else {
-                        // Turning OFF - no permission needed
-                        viewModel.toggleBoost()
+                    Box(modifier = Modifier.fillMaxSize()) {
+                        // Ana WebView ekranı
+                        com.soundboost.ui.components.WebViewHomeScreenPersistent(
+                            state = uiState,
+                            audioLevels = audioLevels,
+                            audioAnalysis = viewModel.audioAnalysis,
+                            onVolumeChange = viewModel::onMasterGainChanged,
+                            onSensitivityChange = viewModel::onSensitivityChanged,
+                            onToggleBoost = {
+                                // Check if boost is being turned ON
+                                if (!uiState.isBoostEnabled) {
+                                    // Request permission before starting
+                                    (context as? MainActivity)?.checkAndRequestMicrophonePermission()
+                                } else {
+                                    // Turning OFF - no permission needed
+                                    viewModel.toggleBoost()
+                                }
+                            },
+                            onThemeChanged = viewModel::onThemeChanged,
+                            onModeChanged = viewModel::onDarkModeChanged,
+                            onNavigateToSettings = { 
+                                navController.navigate("settings")
+                            },
+                            onNavigateToEqualizer = { 
+                                navController.navigate("equalizer")
+                            },
+                            onNavigateToLanguage = { 
+                                navController.navigate("language")
+                            },
+                            currentLanguage = currentLanguage
+                        )
+                        
+                        // YENİ: Onboarding Overlay (WebView üstünde)
+                        if (!isOnboardingCompleted) {
+                            OnboardingOverlayForWebView(
+                                currentStep = onboardingStep,
+                                onStepComplete = viewModel::onOnboardingStepComplete,
+                                onSkip = viewModel::skipOnboarding,
+                                themeColors = themeColors
+                            )
+                        }
                     }
-                },
-                        onThemeChanged = viewModel::onThemeChanged,
-                        onModeChanged = viewModel::onDarkModeChanged,
-                        onNavigateToSettings = { 
-                            navController.navigate("settings")
-                        },
-                        onNavigateToEqualizer = { 
-                            navController.navigate("equalizer")
-                        },
-                        onNavigateToLanguage = { 
-                            navController.navigate("language")
-                        },
-                        currentLanguage = currentLanguage
-                    )
                 }
             )
             

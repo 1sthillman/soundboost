@@ -137,4 +137,16 @@
     <string name="rate_app_desc">5 yıldızla bizi destekle ⭐</string>
     <string name="share_app_desc">Arkadaşlarına bizden bahset</string>
     <string name="help_desc">Sık sorulan sorulara cevap bul</string>
+    
+    <!-- Onboarding -->
+    <string name="onboarding_step1_title">Canlı Sesi Başlat</string>
+    <string name="onboarding_step1_desc">Müziğin ritmini hissetmek için önce Oynat butonuna bas!</string>
+    <string name="onboarding_step2_title">Ayarları İncele</string>
+    <string name="onboarding_step2_desc">Yükseltme ve Hassasiyet sürgülerini ayarlayarak ses seviyesini ve temaların sese duyarlılığını ince ayarla.</string>
+    <string name="onboarding_step3_title">Modunu Seç</string>
+    <string name="onboarding_step3_desc">Moduna uygun bir görsel tema seç. Unutma, görseller sesin ritmine göre canlanacak!</string>
+    <string name="onboarding_skip">Atla</string>
+    <string name="onboarding_next">Devam</string>
+    <string name="onboarding_start">Başla!</string>
+    <string name="onboarding_complete">Harika! Hazırsın 🎉</string>
 </resources>
