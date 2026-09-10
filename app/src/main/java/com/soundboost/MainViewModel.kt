@@ -34,11 +34,21 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         .map { it?.bars }
         .stateIn(viewModelScope, SharingStarted.Eagerly, null)
     
-    fun toggleBoost() {
+    fun toggleBoost(onRequestPermission: (() -> Unit)? = null) {
         viewModelScope.launch {
             val current = uiState.value.isBoostEnabled
             val newState = !current
             android.util.Log.d("MainViewModel", "toggleBoost: $current -> $newState")
+            
+            // CRITICAL: Check microphone permission before starting boost
+            if (newState && onRequestPermission != null) {
+                // Boost açılıyorsa ve izin kontrolü callback'i varsa
+                android.util.Log.d("MainViewModel", "🎤 Checking microphone permission before starting boost")
+                onRequestPermission()
+                // Gerçek boost başlatma onRequestPermission callback'inden yapılacak
+                return@launch
+            }
+            
             prefs.setBoostEnabled(newState)
             
             val intent = Intent(getApplication(), BoostForegroundService::class.java).apply {
@@ -53,6 +63,22 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 android.util.Log.d("MainViewModel", "Stopping audio visualization...")
                 stopAudioVisualization()
             }
+        }
+    }
+    
+    // NEW: Internal function to start boost after permission granted
+    fun startBoostAfterPermission() {
+        viewModelScope.launch {
+            android.util.Log.d("MainViewModel", "✅ Starting boost after permission granted")
+            prefs.setBoostEnabled(true)
+            
+            val intent = Intent(getApplication(), BoostForegroundService::class.java).apply {
+                action = "START_BOOST"
+            }
+            getApplication<Application>().startService(intent)
+            
+            android.util.Log.d("MainViewModel", "Starting audio visualization...")
+            startAudioVisualization()
         }
     }
     
@@ -193,6 +219,13 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     fun onAppRated() {
         viewModelScope.launch {
             prefs.setHasRatedApp(true)
+            prefs.markRateDialogShown()
+        }
+    }
+    
+    fun onRateLater() {
+        viewModelScope.launch {
+            prefs.markRateDialogShown()
         }
     }
     

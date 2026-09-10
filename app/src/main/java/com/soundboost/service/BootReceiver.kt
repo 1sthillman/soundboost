@@ -17,7 +17,16 @@ import kotlinx.coroutines.launch
 class BootReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
-        if (intent.action != Intent.ACTION_BOOT_COMPLETED) return
+        // Tüm boot action'larını yakala
+        val validActions = setOf(
+            Intent.ACTION_BOOT_COMPLETED,
+            "android.intent.action.QUICKBOOT_POWERON",
+            Intent.ACTION_LOCKED_BOOT_COMPLETED
+        )
+        
+        if (intent.action !in validActions) return
+        
+        android.util.Log.d("BootReceiver", "📱 Device boot detected: ${intent.action}")
 
         val pendingResult = goAsync()
         val appContext = context.applicationContext
@@ -27,12 +36,24 @@ class BootReceiver : BroadcastReceiver() {
                 val prefs = BoostPreferences(appContext)
                 val settings = prefs.settings.first()
 
+                android.util.Log.d("BootReceiver", "⚙️ Settings: autoStart=${settings.autoStartOnBoot}, boost=${settings.isBoostEnabled}")
+
                 if (settings.autoStartOnBoot && settings.isBoostEnabled) {
+                    android.util.Log.d("BootReceiver", "🚀 Starting BoostForegroundService...")
                     val serviceIntent = Intent(appContext, BoostForegroundService::class.java).apply {
                         action = "START_BOOST"
                     }
-                    ContextCompat.startForegroundService(appContext, serviceIntent)
+                    try {
+                        ContextCompat.startForegroundService(appContext, serviceIntent)
+                        android.util.Log.d("BootReceiver", "✅ Service started successfully")
+                    } catch (e: Exception) {
+                        android.util.Log.e("BootReceiver", "❌ Failed to start service: ${e.message}")
+                    }
+                } else {
+                    android.util.Log.d("BootReceiver", "⏭️ Auto-start disabled or boost was off")
                 }
+            } catch (e: Exception) {
+                android.util.Log.e("BootReceiver", "❌ Error in boot receiver: ${e.message}", e)
             } finally {
                 pendingResult.finish()
             }

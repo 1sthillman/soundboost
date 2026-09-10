@@ -46,6 +46,7 @@ class BoostPreferences(private val context: Context) {
         val SHOULD_SHOW_RATE_DIALOG = booleanPreferencesKey("should_show_rate_dialog")  // Her açılışta true olur
         val SENSITIVITY = intPreferencesKey("sensitivity")
         val IS_DARK_MODE = stringPreferencesKey("is_dark_mode")  // "system", "light", "dark"
+        val FIRST_LAUNCH_COMPLETED = booleanPreferencesKey("first_launch_completed")  // İlk açılış tamamlandı mı
     }
     
     val settings: Flow<BoostSettings> = context.dataStore.data.map { prefs ->
@@ -127,11 +128,19 @@ class BoostPreferences(private val context: Context) {
         context.dataStore.edit { it[Keys.HAS_RATED_APP] = rated }
     }
     
-    // Check if we should show rate dialog (her açılışta göster, SADECE rated ise gösterme)
+    // Check if we should show rate dialog (sadece boost açılıp denemişse ve rated değilse göster)
     suspend fun shouldShowRateDialog(): Boolean {
         val prefs = context.dataStore.data
         val hasRated = prefs.map { it[Keys.HAS_RATED_APP] ?: false }
-        return !hasRated.first()  // Eğer değerlendirme YAPILMADIYSA true döner
+        val hasShownOnce = prefs.map { it[Keys.SHOULD_SHOW_RATE_DIALOG] ?: false }
+        
+        // İlk kez boost açıldığında bir kez göster, sonra tekrar gösterme
+        return !hasRated.first() && !hasShownOnce.first()
+    }
+    
+    // Mark that rate dialog has been shown
+    suspend fun markRateDialogShown() {
+        context.dataStore.edit { it[Keys.SHOULD_SHOW_RATE_DIALOG] = true }
     }
     
     // "Daha sonra" butonuna basıldığında - hiçbir şey kaydetme, sadece dismiss
@@ -156,5 +165,17 @@ class BoostPreferences(private val context: Context) {
                 null -> "system"
             }
         }
+    }
+    
+    // Check if this is first launch
+    suspend fun isFirstLaunch(): Boolean {
+        val prefs = context.dataStore.data
+        val completed = prefs.map { it[Keys.FIRST_LAUNCH_COMPLETED] ?: false }
+        return !completed.first()
+    }
+    
+    // Mark first launch as completed
+    suspend fun setFirstLaunchCompleted() {
+        context.dataStore.edit { it[Keys.FIRST_LAUNCH_COMPLETED] = true }
     }
 }

@@ -19,7 +19,7 @@
     <string name="bass_boost">低音ブースト</string>
     <string name="virtualizer">3Dバーチャライザー</string>
     <string name="auto_start">起動時に自動開始</string>
-    <string name="auto_start_desc">デバイスの再起動時にブーストが自動的に再開されます</string>
+    <string name="auto_start_desc">デバイスの再起動時にブーストが自動的に再開されます。注意：一部のメーカー（Xiaomi、Huawei、Samsung）では、バッテリー最適化を無効にする必要がある場合があります。</string>
     <string name="about">について</string>
     <string name="about_desc">Sound\'ST BoostはAndroidの公式オーディオエフェクトAPIを使用します。エフェクトの強度はデバイスのハードウェアによって異なる場合があります。</string>
     <string name="microphone_permission">マイクの許可</string>
@@ -114,6 +114,8 @@
     <string name="share_text">Sound\'ST Boostをチェック - 最高の音量ブースターアプリ！🎧🔊\n\n%1$s</string>
     <string name="share_via">共有方法</string>
     <string name="cancel">キャンセル</string>
+    <string name="rate_app_desc">5つ星でサポート ⭐</string>
+    <string name="share_app_desc">友達に教えてください</string>
     
     <!-- Theme Names -->
     <string name="theme_system">システム（自動）</string>

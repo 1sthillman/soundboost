@@ -27,7 +27,7 @@
     
     <!-- Settings -->
     <string name="auto_start">Yeniden başlayınca otomatik başlat</string>
-    <string name="auto_start_desc">Cihaz yeniden başladığında boost otomatik devam eder</string>
+    <string name="auto_start_desc">Cihaz yeniden başladığında boost otomatik devam eder. Not: Bazı üreticilerde (Xiaomi, Huawei, Samsung) batarya optimizasyonu ayarlarının kapatılması gerekebilir.</string>
     <string name="about">Hakkında</string>
     <string name="about_desc">Sound\'ST Boost, Android\'in resmi ses efekti API\'lerini kullanır. Efekt gücü cihaz donanımına göre değişebilir.</string>
     <string name="microphone_permission">Mikrofon İzni</string>
@@ -105,4 +105,36 @@
     <string name="training_theme_title">Adım 3: Temalar</string>
     <string name="training_theme_desc">Üstteki yuvarlak butonlardan farklı temaları seçebilirsiniz</string>
     <string name="training_finish">Tamamlandı!</string>
+    
+    <!-- Help & FAQ -->
+    <string name="help_and_faq">Yardım ve S.S.S.</string>
+    <string name="faq_how_to_use">Nasıl kullanılır?</string>
+    <string name="faq_how_to_use_answer">Boost\'u etkinleştirmek için ortadaki kontrole çift dokunun, ardından ses seviyesini ayarlamak için sürükleyin</string>
+    <string name="faq_not_working">Çalışmıyor mu?</string>
+    <string name="faq_not_working_answer">Mikrofon iznini ve sistem ses seviyesini kontrol edin. Bazı cihazlarda sınırlamalar olabilir</string>
+    <string name="faq_background_work">Arka planda çalışır mı?</string>
+    <string name="faq_background_work_answer">Evet, uygulama kapatıldığında bile boost çalışmaya devam eder</string>
+    <string name="faq_battery">Pil kullanımı?</string>
+    <string name="faq_battery_answer">Minimal pil kullanımı. Ses efektleri çoğu cihazda donanım hızlandırmalıdır</string>
+    <string name="faq_audio_quality">Ses kalitesi?</string>
+    <string name="faq_audio_quality_answer">Yüksek kaliteli işleme kullanır. En iyi sonuçlar için aşırı ayarlardan kaçının</string>
+    <string name="faq_device_support">Cihaz desteği?</string>
+    <string name="faq_device_support_answer">Tüm Android cihazlarda çalışır. Efekt gücü donanıma göre değişir</string>
+    
+    <!-- Rate & Share -->
+    <string name="rate_app_title">Sound\'ST Boost\'u Değerlendirin</string>
+    <string name="rate_app_message">Uygulamayı beğendiniz mi? Değerlendirmeniz bize yardımcı olur!</string>
+    <string name="rate_app_description">Bu uygulamayı değerlendirin</string>
+    <string name="rate_now">Şimdi Değerlendir</string>
+    <string name="maybe_later">Belki Sonra</string>
+    <string name="share_app_title">Sound\'ST Boost\'u Paylaşın</string>
+    <string name="share_app_message">Bu uygulamayı arkadaşlarınızla paylaşın!</string>
+    <string name="share_now">Şimdi Paylaş</string>
+    <string name="share_text">Sound\'ST Boost\'a göz atın - Android için en iyi ses yükseltici!</string>
+    <string name="share_via">Şununla paylaş</string>
+    <string name="cancel">İptal</string>
+    <string name="rate_your_app">Uygulamayı Değerlendir</string>
+    <string name="rate_app_desc">5 yıldızla bizi destekle ⭐</string>
+    <string name="share_app_desc">Arkadaşlarına bizden bahset</string>
+    <string name="help_desc">Sık sorulan sorulara cevap bul</string>
 </resources>

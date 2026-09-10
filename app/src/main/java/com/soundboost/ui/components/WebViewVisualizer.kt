@@ -22,13 +22,18 @@ fun WebViewVisualizer(
     modifier: Modifier = Modifier
 ) {
     val themeName = when (theme) {
+        AppTheme.MEHTAP -> "mehtap"
         AppTheme.SUMI -> "sumi"
         AppTheme.AURORA -> "aurora"
+        AppTheme.FENER -> "fener"
+        AppTheme.ORMAN -> "orman"
         AppTheme.EYES -> "eyes"
         AppTheme.MYCEL -> "mycel"
         AppTheme.REEF -> "reef"
         AppTheme.MONSOON -> "monsoon"
-        else -> "sumi"
+        AppTheme.MUREKKEP -> "murekkep"
+        AppTheme.COL -> "col"
+        AppTheme.DIVIT -> "divit"
     }
     
     AndroidView(

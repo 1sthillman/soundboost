@@ -10,6 +10,8 @@ enum class AppTheme {
     MEHTAP,          // 🌙 Mehtap - Moonlight on still water, patient fisherman
     SUMI,            // 🎨 Sumi-e - Japanese ink painting
     AURORA,          // 🌌 Kutup Şafağı - Northern lights  
+    FENER,           // 🏮 Son Işık - Lighthouse at world's end guiding ships through fog
+    ORMAN,           // 🏕️ Ay Kampı - Fireside by the lake with traveler, dog, and moon
     EYES,            // 👁️ Derin Göz - Ocean eye that weeps tears and reddens with sound
     MYCEL,           // 🍄 Miselyum - Bioluminescent network
     REEF,            // 🐠 Derin Işıltı - Deep sea bioluminescence
@@ -23,6 +25,8 @@ enum class ColorAccent {
     MEHTAP_GOLD,     // #f2b155
     SUMI_RED,        // #c1442c
     AURORA_CYAN,     // #4fd8b0
+    FENER_GOLD,      // #f2b155 (lighthouse beam gold)
+    ORMAN_ORANGE,    // #ffb35c (campfire orange)
     EYES_CYAN,       // #3fe0d0
     MYCEL_GREEN,     // #6dffb0
     REEF_CYAN,       // #12e0bd
@@ -81,6 +85,26 @@ fun getThemeColors(theme: AppTheme, accent: ColorAccent): ThemeColors {
             onSurface = Color(0xFFeef5ff),      // --ink
             accent1 = Color(0xFF33e6a8),        // --a1
             accent2 = Color(0xFF8a6bff),
+            isDark = true
+        )
+        AppTheme.FENER -> ThemeColors(
+            primary = Color(0xFFf2b155),        // --accent (lighthouse beam)
+            secondary = Color(0xFF4a6fa5),      // --a2 (water blue)
+            background = Color(0xFF040910),     // --bg0
+            surface = Color(0xFF0c1e30),        // --bg1
+            onSurface = Color(0xFFeef2f5),      // --ink
+            accent1 = Color(0xFFd9b46a),        // --a1
+            accent2 = Color(0xFF4a6fa5),
+            isDark = true
+        )
+        AppTheme.ORMAN -> ThemeColors(
+            primary = Color(0xFFffb35c),        // --accent (campfire)
+            secondary = Color(0xFF6d87a0),      // --ink-dim
+            background = Color(0xFF020a16),     // --bg0
+            surface = Color(0xFF0a2036),        // --bg1
+            onSurface = Color(0xFFe8f1fa),      // --ink
+            accent1 = Color(0xFFffb35c),
+            accent2 = Color(0xFF6d87a0),
             isDark = true
         )
         AppTheme.EYES -> ThemeColors(
@@ -161,6 +185,8 @@ private fun getAccentColor1(accent: ColorAccent): Color {
         ColorAccent.MEHTAP_GOLD -> Color(0xFFf2b155)
         ColorAccent.SUMI_RED -> Color(0xFFc1442c)
         ColorAccent.AURORA_CYAN -> Color(0xFF4fd8b0)
+        ColorAccent.FENER_GOLD -> Color(0xFFf2b155)
+        ColorAccent.ORMAN_ORANGE -> Color(0xFFffb35c)
         ColorAccent.EYES_CYAN -> Color(0xFF3fe0d0)
         ColorAccent.MYCEL_GREEN -> Color(0xFF6dffb0)
         ColorAccent.REEF_CYAN -> Color(0xFF12e0bd)
@@ -176,6 +202,8 @@ private fun getAccentColor2(accent: ColorAccent): Color {
         ColorAccent.MEHTAP_GOLD -> Color(0xFF4a6fa5)
         ColorAccent.SUMI_RED -> Color(0xFFe9e2d0)
         ColorAccent.AURORA_CYAN -> Color(0xFF8a6bff)
+        ColorAccent.FENER_GOLD -> Color(0xFF4a6fa5)
+        ColorAccent.ORMAN_ORANGE -> Color(0xFF6d87a0)
         ColorAccent.EYES_CYAN -> Color(0xFF0e5f7a)
         ColorAccent.MYCEL_GREEN -> Color(0xFFffd58a)
         ColorAccent.REEF_CYAN -> Color(0xFFff6bcf)

@@ -120,6 +120,8 @@ fun WebViewHomeScreen(
                 com.soundboost.ui.theme.AppTheme.MEHTAP -> "mehtap"
                 com.soundboost.ui.theme.AppTheme.SUMI -> "sumi"
                 com.soundboost.ui.theme.AppTheme.AURORA -> "aurora"
+                com.soundboost.ui.theme.AppTheme.FENER -> "fener"
+                com.soundboost.ui.theme.AppTheme.ORMAN -> "orman"
                 com.soundboost.ui.theme.AppTheme.EYES -> "eyes"
                 com.soundboost.ui.theme.AppTheme.MYCEL -> "mycel"
                 com.soundboost.ui.theme.AppTheme.REEF -> "reef"
@@ -209,6 +211,8 @@ fun WebViewHomeScreen(
             com.soundboost.ui.theme.AppTheme.MEHTAP -> "mehtap"
             com.soundboost.ui.theme.AppTheme.SUMI -> "sumi"
             com.soundboost.ui.theme.AppTheme.AURORA -> "aurora"
+            com.soundboost.ui.theme.AppTheme.FENER -> "fener"
+            com.soundboost.ui.theme.AppTheme.ORMAN -> "orman"
             com.soundboost.ui.theme.AppTheme.EYES -> "eyes"
             com.soundboost.ui.theme.AppTheme.MYCEL -> "mycel"
             com.soundboost.ui.theme.AppTheme.REEF -> "reef"
@@ -369,6 +373,8 @@ fun WebViewHomeScreen(
                 com.soundboost.ui.theme.AppTheme.MEHTAP -> "mehtap"
                 com.soundboost.ui.theme.AppTheme.SUMI -> "sumi"
                 com.soundboost.ui.theme.AppTheme.AURORA -> "aurora"
+                com.soundboost.ui.theme.AppTheme.FENER -> "fener"
+                com.soundboost.ui.theme.AppTheme.ORMAN -> "orman"
                 com.soundboost.ui.theme.AppTheme.EYES -> "eyes"
                 com.soundboost.ui.theme.AppTheme.MYCEL -> "mycel"
                 com.soundboost.ui.theme.AppTheme.REEF -> "reef"
@@ -464,6 +470,8 @@ fun WebViewHomeScreen(
                             com.soundboost.ui.theme.AppTheme.MEHTAP -> "mehtap"
                             com.soundboost.ui.theme.AppTheme.SUMI -> "sumi"
                             com.soundboost.ui.theme.AppTheme.AURORA -> "aurora"
+                            com.soundboost.ui.theme.AppTheme.FENER -> "fener"
+                            com.soundboost.ui.theme.AppTheme.ORMAN -> "orman"
                             com.soundboost.ui.theme.AppTheme.EYES -> "eyes"
                             com.soundboost.ui.theme.AppTheme.MYCEL -> "mycel"
                             com.soundboost.ui.theme.AppTheme.REEF -> "reef"
@@ -514,8 +522,8 @@ fun WebViewHomeScreen(
                                 "mehtap" -> com.soundboost.ui.theme.AppTheme.MEHTAP
                                 "sumi" -> com.soundboost.ui.theme.AppTheme.SUMI
                                 "aurora" -> com.soundboost.ui.theme.AppTheme.AURORA
-                                "fener" -> com.soundboost.ui.theme.AppTheme.AURORA  // Fener -> Aurora (similar lighthouse/northern lights)
-                                "orman" -> com.soundboost.ui.theme.AppTheme.AURORA  // Orman (Moon Camp) -> Aurora (similar night sky)
+                                "fener" -> com.soundboost.ui.theme.AppTheme.FENER
+                                "orman" -> com.soundboost.ui.theme.AppTheme.ORMAN
                                 "eyes" -> com.soundboost.ui.theme.AppTheme.EYES
                                 "mycel" -> com.soundboost.ui.theme.AppTheme.MYCEL
                                 "reef" -> com.soundboost.ui.theme.AppTheme.REEF

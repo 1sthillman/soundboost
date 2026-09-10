@@ -204,7 +204,7 @@ fun SettingsScreen(
             // Help & FAQ
             ModernSettingsCard(
                 title = stringResource(R.string.help_and_faq),
-                description = "Get answers to common questions",
+                description = stringResource(R.string.help_desc),
                 icon = Icons.Default.Help,
                 accentColor = themeColors.accent2,
                 surfaceColor = themeColors.surfaceElevated,
@@ -221,7 +221,7 @@ fun SettingsScreen(
             // Rate App
             ModernSettingsCard(
                 title = stringResource(R.string.rate_your_app),
-                description = "Support us with 5 stars ⭐",
+                description = stringResource(R.string.rate_app_desc),
                 icon = Icons.Default.Star,
                 accentColor = androidx.compose.ui.graphics.Color(0xFFFFD700),
                 surfaceColor = themeColors.surfaceElevated,
@@ -238,7 +238,7 @@ fun SettingsScreen(
             // Share App
             ModernSettingsCard(
                 title = stringResource(R.string.share_app),
-                description = "Tell your friends about us",
+                description = stringResource(R.string.share_app_desc),
                 icon = Icons.Default.Share,
                 accentColor = themeColors.accent1,
                 surfaceColor = themeColors.surfaceElevated,

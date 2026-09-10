@@ -144,6 +144,8 @@ fun WebViewHomeScreenPersistent(
             com.soundboost.ui.theme.AppTheme.MEHTAP -> "mehtap"
             com.soundboost.ui.theme.AppTheme.SUMI -> "sumi"
             com.soundboost.ui.theme.AppTheme.AURORA -> "aurora"
+            com.soundboost.ui.theme.AppTheme.FENER -> "fener"
+            com.soundboost.ui.theme.AppTheme.ORMAN -> "orman"
             com.soundboost.ui.theme.AppTheme.EYES -> "eyes"
             com.soundboost.ui.theme.AppTheme.MYCEL -> "mycel"
             com.soundboost.ui.theme.AppTheme.REEF -> "reef"

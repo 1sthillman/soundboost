@@ -19,7 +19,7 @@
     <string name="bass_boost">Bass-Boost</string>
     <string name="virtualizer">3D-Virtualizer</string>
     <string name="auto_start">Autostart beim Booten</string>
-    <string name="auto_start_desc">Boost wird beim Neustart automatisch fortgesetzt</string>
+    <string name="auto_start_desc">Boost wird beim Neustart automatisch fortgesetzt. Hinweis: Einige Hersteller (Xiaomi, Huawei, Samsung) erfordern möglicherweise, dass die Batterieoptimierung deaktiviert wird.</string>
     <string name="about">Über</string>
     <string name="about_desc">Sound\'ST Boost verwendet die offiziellen Audio-Effekt-APIs von Android. Die Effektstärke kann je nach Gerätehardware variieren.</string>
     <string name="microphone_permission">Mikrofonberechtigung</string>
@@ -114,6 +114,8 @@
     <string name="share_text">Schauen Sie sich Sound\'ST Boost an - die beste Lautstärkeverstärker-App! 🎧🔊\n\n%1$s</string>
     <string name="share_via">Teilen über</string>
     <string name="cancel">Abbrechen</string>
+    <string name="rate_app_desc">Unterstützen Sie uns mit 5 Sternen ⭐</string>
+    <string name="share_app_desc">Erzählen Sie Ihren Freunden von uns</string>
     
     <!-- Theme Names -->
     <string name="theme_system">System (Auto)</string>

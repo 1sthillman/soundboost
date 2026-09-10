@@ -249,6 +249,8 @@ private fun RezonansTrackInfo(theme: AppTheme, themeColors: com.soundboost.ui.th
         AppTheme.MEHTAP -> "Ay Balıkçısı" to "Durgun suda sabırla bekleyen bir sandalın hikâyesi"
         AppTheme.SUMI -> "Mürekkep Nefesi" to "Fırça darbeleriyle beliren tek çizgi"
         AppTheme.AURORA -> "Kutup Şafağı" to "Gökyüzünde süzülen ışık şeritleri"
+        AppTheme.FENER -> "Fenerin Türküsü" to "Dünyanın ucunda, sisli denize yol gösteren bekçi"
+        AppTheme.ORMAN -> "Göl Kenarında Ateş" to "Bir gezgin, bir köpek, közlenen bir ateş ve basın ritmiyle nefes alan mavi bir göl"
         AppTheme.EYES -> "Derin Bakış" to "Okyanusun derinliklerinde açılan göz — bazen yaşar, bazen kızarır"
         AppTheme.MYCEL -> "Yeraltı Fısıltısı" to "Kökler arasında yayılan ışık sinyali"
         AppTheme.REEF -> "Derin Işıltı" to "Karanlıkta parıldayan biyolüminesans"
@@ -423,6 +425,8 @@ private fun RezonansThemeChips(
         AppTheme.MEHTAP to "Mehtap" to Color(0xFFf2b155),
         AppTheme.SUMI to "Sumi-e" to Color(0xFFc1442c),
         AppTheme.AURORA to "Kutup Şafağı" to Color(0xFF4fd8b0),
+        AppTheme.FENER to "Son Işık" to Color(0xFFf2b155),
+        AppTheme.ORMAN to "Ay Kampı" to Color(0xFFffb35c),
         AppTheme.EYES to "Derin Göz" to Color(0xFF3fe0d0),
         AppTheme.MYCEL to "Miselyum" to Color(0xFF6dffb0),
         AppTheme.REEF to "Derin Işıltı" to Color(0xFF12e0bd),

@@ -19,7 +19,7 @@
     <string name="bass_boost">Amplification des Graves</string>
     <string name="virtualizer">Virtualiseur 3D</string>
     <string name="auto_start">Démarrage automatique</string>
-    <string name="auto_start_desc">Le boost reprendra automatiquement au redémarrage de l\'appareil</string>
+    <string name="auto_start_desc">Le boost reprendra automatiquement au redémarrage de l\'appareil. Remarque: Certains fabricants (Xiaomi, Huawei, Samsung) peuvent nécessiter la désactivation de l\'optimisation de la batterie.</string>
     <string name="about">À propos</string>
     <string name="about_desc">Sound\'ST Boost utilise les API officielles d\'effets audio d\'Android. L\'intensité des effets peut varier selon le matériel de l\'appareil.</string>
     <string name="microphone_permission">Autorisation Microphone</string>
@@ -114,6 +114,8 @@
     <string name="share_text">Découvrez Sound\'ST Boost - la meilleure application d\'amplificateur de volume ! 🎧🔊\n\n%1$s</string>
     <string name="share_via">Partager via</string>
     <string name="cancel">Annuler</string>
+    <string name="rate_app_desc">Soutenez-nous avec 5 étoiles ⭐</string>
+    <string name="share_app_desc">Parlez-nous à vos amis</string>
     
     <!-- Theme Names -->
     <string name="theme_system">Système (Auto)</string>

@@ -44,7 +44,9 @@ class MainActivity : ComponentActivity() {
         ActivityResultContracts.RequestPermission()
     ) { isGranted ->
         if (isGranted) {
-            android.util.Log.d("MainActivity", "✅ Mikrofon izni verildi - Görselleştirme aktif")
+            android.util.Log.d("MainActivity", "✅ Mikrofon izni verildi - Boost başlatılıyor")
+            // İzin verildiyse boost'u başlat
+            viewModel.startBoostAfterPermission()
         } else {
             android.util.Log.w("MainActivity", "❌ Mikrofon izni reddedildi - Görselleştirme çalışmayacak")
         }
@@ -62,9 +64,14 @@ class MainActivity : ComponentActivity() {
             notificationPermissionLauncher.launch("android.permission.POST_NOTIFICATIONS")
         }
         
-        // CRITICAL: Request microphone permission for audio visualizer
+        // CRITICAL: Request microphone permission for audio visualizer on first launch
         // This is REQUIRED for RealTimeAudioAnalyzer to work
-        requestMicrophonePermissionIfNeeded()
+        val sp = getSharedPreferences("app_prefs", MODE_PRIVATE)
+        if (!sp.getBoolean("first_launch_done", false)) {
+            android.util.Log.d("MainActivity", "🎤 İlk açılış - mikrofon izni isteniyor")
+            microphonePermissionLauncher.launch(Manifest.permission.RECORD_AUDIO)
+            sp.edit().putBoolean("first_launch_done", true).apply()
+        }
 
         setContent {
             val uiState by viewModel.uiState.collectAsState()
@@ -104,14 +111,15 @@ class MainActivity : ComponentActivity() {
         }
     }
     
-    private fun requestMicrophonePermissionIfNeeded() {
+    fun checkAndRequestMicrophonePermission() {
         when {
             androidx.core.content.ContextCompat.checkSelfPermission(
                 this,
                 Manifest.permission.RECORD_AUDIO
             ) == android.content.pm.PackageManager.PERMISSION_GRANTED -> {
-                // Already granted
-                android.util.Log.d("MainActivity", "✅ Mikrofon izni zaten var")
+                // Already granted - start boost immediately
+                android.util.Log.d("MainActivity", "✅ Mikrofon izni zaten var - Boost başlatılıyor")
+                viewModel.startBoostAfterPermission()
             }
             shouldShowRequestPermissionRationale(Manifest.permission.RECORD_AUDIO) -> {
                 // Show rationale and request
@@ -120,7 +128,7 @@ class MainActivity : ComponentActivity() {
             }
             else -> {
                 // First time - request directly
-                android.util.Log.d("MainActivity", "🎤 İlk mikrofon izni isteniyor")
+                android.util.Log.d("MainActivity", "🎤 Mikrofon izni isteniyor")
                 microphonePermissionLauncher.launch(Manifest.permission.RECORD_AUDIO)
             }
         }
@@ -156,14 +164,17 @@ fun MainScreen(viewModel: MainViewModel) {
     var showRateDialog by remember { mutableStateOf(false) }
     var showShareDialog by remember { mutableStateOf(false) }
     
-    // CRITICAL: Show rate dialog on every app launch (unless already rated)
-    LaunchedEffect(Unit) {
-        kotlinx.coroutines.delay(2000)  // 2 saniye bekle (kullanıcı uygulamaya alışsın)
-        val prefs = com.soundboost.data.BoostPreferences(context)
-        val shouldShow = prefs.shouldShowRateDialog()
-        android.util.Log.d("MainActivity", "🌟 Should show rate dialog: $shouldShow")
-        if (shouldShow) {
-            showRateDialog = true
+    // Show rate dialog only after user has tried the boost feature
+    LaunchedEffect(uiState.isBoostEnabled) {
+        if (uiState.isBoostEnabled) {
+            // User just enabled boost - wait a bit then show rate dialog
+            kotlinx.coroutines.delay(5000)  // 5 saniye boost'u deneseler
+            val prefs = com.soundboost.data.BoostPreferences(context)
+            val shouldShow = prefs.shouldShowRateDialog()
+            android.util.Log.d("MainActivity", "🌟 User tried boost, should show rate: $shouldShow")
+            if (shouldShow) {
+                showRateDialog = true
+            }
         }
     }
     
@@ -184,7 +195,16 @@ fun MainScreen(viewModel: MainViewModel) {
                         audioAnalysis = viewModel.audioAnalysis,
                         onVolumeChange = viewModel::onMasterGainChanged,
                         onSensitivityChange = viewModel::onSensitivityChanged,
-                        onToggleBoost = viewModel::toggleBoost,
+                        onToggleBoost = {
+                    // Check if boost is being turned ON
+                    if (!uiState.isBoostEnabled) {
+                        // Request permission before starting
+                        (context as? MainActivity)?.checkAndRequestMicrophonePermission()
+                    } else {
+                        // Turning OFF - no permission needed
+                        viewModel.toggleBoost()
+                    }
+                },
                         onThemeChanged = viewModel::onThemeChanged,
                         onModeChanged = viewModel::onDarkModeChanged,
                         onNavigateToSettings = { 
@@ -283,7 +303,8 @@ fun MainScreen(viewModel: MainViewModel) {
             com.soundboost.ui.components.RateAppDialog(
                 themeColors = themeColors,
                 onDismiss = { 
-                    // "Daha sonra" butonuna basıldı - hiçbir şey kaydetme
+                    // "Daha sonra" butonuna basıldı - bir daha gösterme
+                    viewModel.onRateLater()
                     showRateDialog = false 
                 },
                 onRated = { 

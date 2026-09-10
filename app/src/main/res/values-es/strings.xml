@@ -19,7 +19,7 @@
     <string name="bass_boost">Amplificación de Graves</string>
     <string name="virtualizer">Virtualizador 3D</string>
     <string name="auto_start">Inicio automático al arrancar</string>
-    <string name="auto_start_desc">El refuerzo se reanudará automáticamente cuando se reinicie el dispositivo</string>
+    <string name="auto_start_desc">El refuerzo se reanudará automáticamente cuando se reinicie el dispositivo. Nota: Algunos fabricantes (Xiaomi, Huawei, Samsung) pueden requerir desactivar la optimización de batería.</string>
     <string name="about">Acerca de</string>
     <string name="about_desc">Sound\'ST Boost utiliza las APIs oficiales de efectos de audio de Android. La intensidad del efecto puede variar según el hardware del dispositivo.</string>
     <string name="microphone_permission">Permiso de Micrófono</string>
@@ -114,6 +114,8 @@
     <string name="share_text">Mira Sound\'ST Boost - ¡la mejor aplicación de amplificador de volumen! 🎧🔊\n\n%1$s</string>
     <string name="share_via">Compartir a través de</string>
     <string name="cancel">Cancelar</string>
+    <string name="rate_app_desc">Apóyanos con 5 estrellas ⭐</string>
+    <string name="share_app_desc">Cuéntale a tus amigos sobre nosotros</string>
     
     <!-- Theme Names -->
     <string name="theme_system">Sistema (Auto)</string>

@@ -132,11 +132,22 @@ object LanguageManager {
     
     /**
      * Get currently selected language from preferences.
+     * If SYSTEM is selected, returns the actual system language.
      */
     fun getCurrentLanguage(context: Context): AppLanguage {
         val code = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
             .getString(KEY_LANGUAGE, AppLanguage.SYSTEM.code) ?: AppLanguage.SYSTEM.code
-        return AppLanguage.fromCode(code)
+        
+        val language = AppLanguage.fromCode(code)
+        
+        // If SYSTEM is selected, resolve to actual system language
+        if (language == AppLanguage.SYSTEM) {
+            val systemLangCode = getSystemLanguage(context)
+            // Try to find matching language, fallback to English if not supported
+            return AppLanguage.values().find { it.code == systemLangCode } ?: AppLanguage.ENGLISH
+        }
+        
+        return language
     }
     
     /**

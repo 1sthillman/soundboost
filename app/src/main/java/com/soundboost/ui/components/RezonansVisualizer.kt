@@ -28,6 +28,8 @@ fun RezonansVisualizer(
         AppTheme.MEHTAP -> MehtapVisualizer(boostedLevels, isActive, true, accent1, accent2, backgroundColor, modifier)
         AppTheme.SUMI -> SumiVisualizer(boostedLevels, isActive, accent1, accent2, backgroundColor, modifier)
         AppTheme.AURORA -> AuroraVisualizer(boostedLevels, isActive, accent1, accent2, backgroundColor, modifier)
+        AppTheme.FENER -> MehtapVisualizer(boostedLevels, isActive, true, accent1, accent2, backgroundColor, modifier)  // Lighthouse theme uses Mehtap water effect
+        AppTheme.ORMAN -> AuroraVisualizer(boostedLevels, isActive, accent1, accent2, backgroundColor, modifier)  // Forest campfire uses aurora effect
         AppTheme.EYES -> EyesVisualizer(boostedLevels, isActive, accent1, accent2, backgroundColor, modifier)
         AppTheme.MYCEL -> MycelVisualizer(boostedLevels, isActive, accent1, accent2, backgroundColor, modifier)
         AppTheme.REEF -> ReefVisualizer(boostedLevels, isActive, accent1, accent2, backgroundColor, modifier)

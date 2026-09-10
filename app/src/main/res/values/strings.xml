@@ -19,7 +19,7 @@
     <string name="bass_boost">Bass Boost</string>
     <string name="virtualizer">3D Virtualizer</string>
     <string name="auto_start">Auto-start on boot</string>
-    <string name="auto_start_desc">Boost will resume automatically when device restarts</string>
+    <string name="auto_start_desc">Boost will resume automatically when device restarts. Note: Some manufacturers (Xiaomi, Huawei, Samsung) may require battery optimization settings to be disabled for this to work.</string>
     <string name="about">About</string>
     <string name="about_desc">Sound\'ST Boost uses Android\'s official audio effect APIs. Effect strength may vary by device hardware.</string>
     <string name="microphone_permission">Microphone Permission</string>
@@ -121,4 +121,7 @@
     <string name="share_app">Share App</string>
     <string name="later">Later</string>
     <string name="rate">Rate</string>
+    <string name="rate_app_desc">Support us with 5 stars ⭐</string>
+    <string name="share_app_desc">Tell your friends about us</string>
+    <string name="help_desc">Get answers to common questions</string>
 </resources>

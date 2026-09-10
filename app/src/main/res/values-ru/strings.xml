@@ -19,7 +19,7 @@
     <string name="bass_boost">Усиление Баса</string>
     <string name="virtualizer">3D Виртуализатор</string>
     <string name="auto_start">Автозапуск при загрузке</string>
-    <string name="auto_start_desc">Усиление возобновится автоматически при перезагрузке устройства</string>
+    <string name="auto_start_desc">Усиление возобновится автоматически при перезагрузке устройства. Примечание: Некоторые производители (Xiaomi, Huawei, Samsung) могут потребовать отключения оптимизации батареи.</string>
     <string name="about">О программе</string>
     <string name="about_desc">Sound\'ST Boost использует официальные API звуковых эффектов Android. Сила эффекта может различаться в зависимости от оборудования устройства.</string>
     <string name="microphone_permission">Разрешение Микрофона</string>
@@ -114,6 +114,8 @@
     <string name="share_text">Посмотрите Sound\'ST Boost - лучшее приложение для усиления громкости! 🎧🔊\n\n%1$s</string>
     <string name="share_via">Поделиться через</string>
     <string name="cancel">Отмена</string>
+    <string name="rate_app_desc">Поддержите нас 5 звездами ⭐</string>
+    <string name="share_app_desc">Расскажите друзьям о нас</string>
     
     <!-- Theme Names -->
     <string name="theme_system">Система (Авто)</string>

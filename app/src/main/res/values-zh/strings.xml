@@ -19,7 +19,7 @@
     <string name="bass_boost">低音增强</string>
     <string name="virtualizer">3D虚拟器</string>
     <string name="auto_start">开机自动启动</string>
-    <string name="auto_start_desc">设备重启时增强将自动恢复</string>
+    <string name="auto_start_desc">设备重启时增强将自动恢复。注意：某些制造商（小米、华为、三星）可能需要禁用电池优化。</string>
     <string name="about">关于</string>
     <string name="about_desc">Sound\'ST Boost使用Android官方音频效果API。效果强度可能因设备硬件而异。</string>
     <string name="microphone_permission">麦克风权限</string>
@@ -114,6 +114,8 @@
     <string name="share_text">看看Sound\'ST Boost - 最好的音量增强应用！🎧🔊\n\n%1$s</string>
     <string name="share_via">分享方式</string>
     <string name="cancel">取消</string>
+    <string name="rate_app_desc">用5星支持我们 ⭐</string>
+    <string name="share_app_desc">告诉你的朋友关于我们</string>
     
     <!-- Theme Names -->
     <string name="theme_system">系统（自动）</string>

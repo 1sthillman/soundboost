@@ -19,7 +19,7 @@
     <string name="bass_boost">تعزيز الجهير</string>
     <string name="virtualizer">المحاكي ثلاثي الأبعاد</string>
     <string name="auto_start">البدء التلقائي عند التشغيل</string>
-    <string name="auto_start_desc">سيستأنف التعزيز تلقائيًا عند إعادة تشغيل الجهاز</string>
+    <string name="auto_start_desc">سيستأنف التعزيز تلقائيًا عند إعادة تشغيل الجهاز. ملاحظة: قد تتطلب بعض الشركات المصنعة (Xiaomi و Huawei و Samsung) تعطيل تحسين البطارية.</string>
     <string name="about">حول</string>
     <string name="about_desc">يستخدم Sound\'ST Boost واجهات برمجة تطبيقات التأثيرات الصوتية الرسمية من Android. قد تختلف قوة التأثير حسب أجهزة الجهاز.</string>
     <string name="microphone_permission">إذن الميكروفون</string>
@@ -114,6 +114,8 @@
     <string name="share_text">تحقق من Sound\'ST Boost - أفضل تطبيق لتعزيز مستوى الصوت! 🎧🔊\n\n%1$s</string>
     <string name="share_via">مشاركة عبر</string>
     <string name="cancel">إلغاء</string>
+    <string name="rate_app_desc">ادعمنا بـ 5 نجوم ⭐</string>
+    <string name="share_app_desc">أخبر أصدقاءك عنا</string>
     
     <!-- Theme Names -->
     <string name="theme_system">النظام (تلقائي)</string>

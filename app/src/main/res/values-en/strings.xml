@@ -79,4 +79,36 @@
     <string name="training_theme_title">Step 3: Themes</string>
     <string name="training_theme_desc">You can select different themes from the round buttons above</string>
     <string name="training_finish">Finished!</string>
+    
+    <!-- Help & FAQ -->
+    <string name="help_and_faq">Help &amp; FAQ</string>
+    <string name="faq_how_to_use">How to use?</string>
+    <string name="faq_how_to_use_answer">Double tap the center control to activate boost, then drag to adjust volume level</string>
+    <string name="faq_not_working">Not working?</string>
+    <string name="faq_not_working_answer">Check microphone permission and system volume. Some devices may have limitations</string>
+    <string name="faq_background_work">Does it work in background?</string>
+    <string name="faq_background_work_answer">Yes, the boost continues working even when the app is closed</string>
+    <string name="faq_battery">Battery usage?</string>
+    <string name="faq_battery_answer">Minimal battery usage. Audio effects are hardware-accelerated on most devices</string>
+    <string name="faq_audio_quality">Audio quality?</string>
+    <string name="faq_audio_quality_answer">Uses high-quality processing. Avoid extreme settings for best results</string>
+    <string name="faq_device_support">Device support?</string>
+    <string name="faq_device_support_answer">Works on all Android devices. Effect strength varies by hardware</string>
+    
+    <!-- Rate & Share -->
+    <string name="rate_app_title">Rate Sound\'ST Boost</string>
+    <string name="rate_app_message">Enjoying the app? Your rating helps us improve!</string>
+    <string name="rate_app_description">Rate this app</string>
+    <string name="rate_now">Rate Now</string>
+    <string name="maybe_later">Maybe Later</string>
+    <string name="share_app_title">Share Sound\'ST Boost</string>
+    <string name="share_app_message">Share this app with your friends!</string>
+    <string name="share_now">Share Now</string>
+    <string name="share_text">Check out Sound\'ST Boost - the best volume booster for Android!</string>
+    <string name="share_via">Share via</string>
+    <string name="cancel">Cancel</string>
+    <string name="rate_your_app">Rate App</string>
+    <string name="rate_app_desc">Support us with 5 stars ⭐</string>
+    <string name="share_app_desc">Tell your friends about us</string>
+    <string name="help_desc">Get answers to common questions</string>
 </resources>
