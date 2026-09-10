@@ -25,6 +25,10 @@ object PersistentWebViewManager {
     private var webView: WebView? = null
     private var isInitialized = false
     
+    // YENİ: Public accessor for onboarding
+    val webViewInstance: WebView?
+        get() = webView
+    
     /**
      * Get or create the persistent WebView instance
      * This WebView will NEVER be destroyed or paused

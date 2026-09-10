@@ -228,6 +228,11 @@ fun MainScreen(viewModel: MainViewModel) {
                         
                         // YENİ: Onboarding Overlay (WebView üstünde)
                         if (!isOnboardingCompleted) {
+                            // WebView referansını al
+                            val webView = remember { 
+                                com.soundboost.ui.components.PersistentWebViewManager.webViewInstance
+                            }
+                            
                             WebViewOnboardingOverlay(
                                 currentStep = onboardingStep,
                                 totalSteps = 3,
@@ -239,7 +244,8 @@ fun MainScreen(viewModel: MainViewModel) {
                                     }
                                 },
                                 onSkip = viewModel::skipOnboarding,
-                                themeColors = themeColors
+                                themeColors = themeColors,
+                                webView = webView
                             )
                         }
                     }

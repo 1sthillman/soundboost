@@ -285,7 +285,7 @@ private fun BoxScope.TooltipCard(
 
 /**
  * WebView için JavaScript tabanlı onboarding
- * JavaScript içindeki elementleri hedefler
+ * JavaScript içindeki elementleri hedefler - GERÇEK KOORDİNATLAR
  */
 @Composable
 fun WebViewOnboardingOverlay(
@@ -293,55 +293,128 @@ fun WebViewOnboardingOverlay(
     totalSteps: Int,
     onNext: () -> Unit,
     onSkip: () -> Unit,
-    themeColors: com.soundboost.ui.theme.ThemeColors
+    themeColors: com.soundboost.ui.theme.ThemeColors,
+    webView: android.webkit.WebView? = null
 ) {
-    // WebView içindeki elementlerin pozisyonlarını JS'den alacağız
-    // Şimdilik sabit koordinatlar kullanalım
-    val density = LocalDensity.current
-    val screenWidth = with(density) {
-        androidx.compose.ui.platform.LocalConfiguration.current.screenWidthDp.dp.toPx()
-    }
-    val screenHeight = with(density) {
-        androidx.compose.ui.platform.LocalConfiguration.current.screenHeightDp.dp.toPx()
-    }
+    // JavaScript'ten gerçek koordinatları al
+    var targetRect by remember { mutableStateOf<Rect?>(null) }
+    var title by remember { mutableStateOf("") }
+    var description by remember { mutableStateOf("") }
     
-    // Her adım için hedef koordinatlar (WebView'deki elementlere göre)
-    val targetRect = remember(currentStep, screenWidth, screenHeight) {
+    // Her adım değiştiğinde JavaScript'ten koordinatları al
+    LaunchedEffect(currentStep, webView) {
+        if (webView == null || currentStep !in 1..totalSteps) {
+            targetRect = null
+            return@LaunchedEffect
+        }
+        
+        // Adıma göre metinleri ayarla
         when (currentStep) {
-            1 -> Rect(
-                // Play butonu (ortada, yukarıda)
-                left = screenWidth * 0.35f,
-                top = screenHeight * 0.25f,
-                right = screenWidth * 0.65f,
-                bottom = screenHeight * 0.35f
-            )
-            2 -> Rect(
-                // Sliders (ortada)
-                left = screenWidth * 0.1f,
-                top = screenHeight * 0.42f,
-                right = screenWidth * 0.9f,
-                bottom = screenHeight * 0.58f
-            )
-            3 -> Rect(
-                // Tema butonları (altta)
-                left = screenWidth * 0.1f,
-                top = screenHeight * 0.65f,
-                right = screenWidth * 0.9f,
-                bottom = screenHeight * 0.75f
-            )
-            else -> null
+            1 -> {
+                title = "Oynat Butonuna Bas"
+                description = "Müziğin görselleşmesi için önce oynat butonuna dokun"
+                
+                // Play butonunun gerçek koordinatlarını al
+                webView.evaluateJavascript(
+                    "(function() { const pos = window.getElementPosition('play'); return pos ? JSON.stringify(pos) : null; })();"
+                ) { result ->
+                    try {
+                        if (result != null && result != "null") {
+                            val json = result.trim('"').replace("\\", "")
+                            val coords = org.json.JSONObject(json)
+                            targetRect = Rect(
+                                left = coords.getDouble("left").toFloat(),
+                                top = coords.getDouble("top").toFloat(),
+                                right = coords.getDouble("right").toFloat(),
+                                bottom = coords.getDouble("bottom").toFloat()
+                            )
+                            android.util.Log.d("Onboarding", "✅ Play button: $targetRect")
+                        }
+                    } catch (e: Exception) {
+                        android.util.Log.e("Onboarding", "❌ Failed to parse play button coords: $e")
+                    }
+                }
+            }
+            2 -> {
+                title = "Ses ve Hassasiyeti Ayarla"
+                description = "Sürgüleri hareket ettirerek sesi ve görsel duyarlılığını ayarlayabilirsin"
+                
+                // Sliders containerının koordinatlarını al
+                webView.evaluateJavascript(
+                    """(function() { 
+                        const vol = document.getElementById('vol');
+                        const sens = document.getElementById('sens');
+                        if (vol && sens) {
+                            const volRect = vol.getBoundingClientRect();
+                            const sensRect = sens.getBoundingClientRect();
+                            return JSON.stringify({
+                                left: Math.min(volRect.left, sensRect.left) - 20,
+                                top: volRect.top - 20,
+                                right: Math.max(volRect.right, sensRect.right) + 20,
+                                bottom: sensRect.bottom + 20
+                            });
+                        }
+                        return null;
+                    })();"""
+                ) { result ->
+                    try {
+                        if (result != null && result != "null") {
+                            val json = result.trim('"').replace("\\", "")
+                            val coords = org.json.JSONObject(json)
+                            targetRect = Rect(
+                                left = coords.getDouble("left").toFloat(),
+                                top = coords.getDouble("top").toFloat(),
+                                right = coords.getDouble("right").toFloat(),
+                                bottom = coords.getDouble("bottom").toFloat()
+                            )
+                            android.util.Log.d("Onboarding", "✅ Sliders: $targetRect")
+                        }
+                    } catch (e: Exception) {
+                        android.util.Log.e("Onboarding", "❌ Failed to parse sliders coords: $e")
+                    }
+                }
+            }
+            3 -> {
+                title = "Tema Seç"
+                description = "Aşağıdaki butonlardan moduna uygun bir görsel tema seçebilirsin"
+                
+                // Theme chips containerının koordinatlarını al
+                webView.evaluateJavascript(
+                    """(function() { 
+                        const container = document.querySelector('.theme-chips');
+                        if (container) {
+                            const rect = container.getBoundingClientRect();
+                            return JSON.stringify({
+                                left: rect.left,
+                                top: rect.top,
+                                right: rect.right,
+                                bottom: rect.bottom
+                            });
+                        }
+                        return null;
+                    })();"""
+                ) { result ->
+                    try {
+                        if (result != null && result != "null") {
+                            val json = result.trim('"').replace("\\", "")
+                            val coords = org.json.JSONObject(json)
+                            targetRect = Rect(
+                                left = coords.getDouble("left").toFloat(),
+                                top = coords.getDouble("top").toFloat(),
+                                right = coords.getDouble("right").toFloat(),
+                                bottom = coords.getDouble("bottom").toFloat()
+                            )
+                            android.util.Log.d("Onboarding", "✅ Theme chips: $targetRect")
+                        }
+                    } catch (e: Exception) {
+                        android.util.Log.e("Onboarding", "❌ Failed to parse theme chips coords: $e")
+                    }
+                }
+            }
         }
     }
     
-    val (title, description) = remember(currentStep) {
-        when (currentStep) {
-            1 -> "Oynat Butonuna Bas" to "Müziğin görselleşmesi için önce oynat butonuna bas"
-            2 -> "Ayarları İncele" to "Yükseltme ve hassasiyet sürgüleriyle ses ve görsel duyarlılığını ayarla"
-            3 -> "Tema Seç" to "Aşağıdaki butonlardan moduna uygun bir tema seç"
-            else -> "" to ""
-        }
-    }
-    
+    // Koordinatlar hazır olduğunda tooltip göster
     if (currentStep in 1..totalSteps && targetRect != null) {
         ModernOnboardingTooltip(
             targetRect = targetRect,
