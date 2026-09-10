@@ -29,7 +29,7 @@ import androidx.core.view.WindowCompat
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.soundboost.ui.components.OnboardingOverlayForWebView
+import com.soundboost.ui.components.WebViewOnboardingOverlay
 import com.soundboost.ui.screens.*
 import com.soundboost.ui.theme.SoundSTBoostTheme
 import com.soundboost.ui.theme.getThemeColors
@@ -228,9 +228,16 @@ fun MainScreen(viewModel: MainViewModel) {
                         
                         // YENİ: Onboarding Overlay (WebView üstünde)
                         if (!isOnboardingCompleted) {
-                            OnboardingOverlayForWebView(
+                            WebViewOnboardingOverlay(
                                 currentStep = onboardingStep,
-                                onStepComplete = viewModel::onOnboardingStepComplete,
+                                totalSteps = 3,
+                                onNext = {
+                                    if (onboardingStep >= 3) {
+                                        viewModel.completeOnboarding()
+                                    } else {
+                                        viewModel.onOnboardingStepComplete()
+                                    }
+                                },
                                 onSkip = viewModel::skipOnboarding,
                                 themeColors = themeColors
                             )

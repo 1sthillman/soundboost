@@ -43,7 +43,7 @@ class OnboardingPreferences(private val context: Context) {
         .map { preferences -> preferences[SETTINGS_BADGE_SHOWN] ?: false }
     
     val currentStep: Flow<Int> = context.onboardingDataStore.data
-        .map { preferences -> preferences[CURRENT_STEP] ?: 0 }
+        .map { preferences -> preferences[CURRENT_STEP] ?: 1 } // 1'den başla
     
     suspend fun completeOnboarding() {
         context.onboardingDataStore.edit { preferences ->
