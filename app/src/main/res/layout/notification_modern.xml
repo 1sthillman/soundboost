@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@drawable/notification_bg">
+
+    <!-- Header with Icon and Title -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="12dp">
+
+        <ImageView
+            android:id="@+id/app_icon"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@mipmap/ic_launcher"
+            android:layout_marginEnd="12dp" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/notification_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sound'ST Boost"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:letterSpacing="0.05" />
+
+            <TextView
+                android:id="@+id/notification_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Active"
+                android:textColor="#4CAF50"
+                android:textSize="11sp"
+                android:layout_marginTop="2dp" />
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/btn_stop"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:src="@drawable/ic_stop_notification"
+            android:background="@drawable/notification_button_bg"
+            android:contentDescription="Stop"
+            android:scaleType="centerInside" />
+    </LinearLayout>
+
+    <!-- Volume Slider -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="8dp">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_volume_notification"
+            android:tint="#00E5FF"
+            android:layout_marginEnd="8dp" />
+
+        <TextView
+            android:id="@+id/volume_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Volume"
+            android:textColor="#B0BEC5"
+            android:textSize="11sp"
+            android:layout_marginEnd="8dp"
+            android:minWidth="48dp" />
+
+        <SeekBar
+            android:id="@+id/volume_slider"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:max="200"
+            android:progress="100"
+            android:progressTint="#00E5FF"
+            android:thumbTint="#00E5FF" />
+
+        <TextView
+            android:id="@+id/volume_value"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:text="100%"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:gravity="end"
+            android:layout_marginStart="8dp" />
+    </LinearLayout>
+
+    <!-- Bass Slider -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="8dp">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_bass_notification"
+            android:tint="#FF6B9D"
+            android:layout_marginEnd="8dp" />
+
+        <TextView
+            android:id="@+id/bass_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bass"
+            android:textColor="#B0BEC5"
+            android:textSize="11sp"
+            android:layout_marginEnd="8dp"
+            android:minWidth="48dp" />
+
+        <SeekBar
+            android:id="@+id/bass_slider"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:max="100"
+            android:progress="0"
+            android:progressTint="#FF6B9D"
+            android:thumbTint="#FF6B9D" />
+
+        <TextView
+            android:id="@+id/bass_value"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:text="0%"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:gravity="end"
+            android:layout_marginStart="8dp" />
+    </LinearLayout>
+
+    <!-- 3D Virtualizer Slider -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_3d_notification"
+            android:tint="#FFD740"
+            android:layout_marginEnd="8dp" />
+
+        <TextView
+            android:id="@+id/virtualizer_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="3D"
+            android:textColor="#B0BEC5"
+            android:textSize="11sp"
+            android:layout_marginEnd="8dp"
+            android:minWidth="48dp" />
+
+        <SeekBar
+            android:id="@+id/virtualizer_slider"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:max="100"
+            android:progress="0"
+            android:progressTint="#FFD740"
+            android:thumbTint="#FFD740" />
+
+        <TextView
+            android:id="@+id/virtualizer_value"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:text="0%"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:gravity="end"
+            android:layout_marginStart="8dp" />
+    </LinearLayout>
+
+</LinearLayout>

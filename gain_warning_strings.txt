@@ -1,0 +1,148 @@
+# Gain Warning Strings for All Languages
+
+## Spanish (es)
+    <!-- Gain Warning Dialog -->
+    <string name="gain_warning_title">⚠️ Advertencia de Alto Volumen</string>
+    <string name="gain_warning_subtitle">Está superando niveles de volumen seguros</string>
+    <string name="gain_warning_level_caution">Zona de Precaución</string>
+    <string name="gain_warning_level_warning">Zona de Advertencia</string>
+    <string name="gain_warning_level_danger">Zona de Peligro</string>
+    <string name="gain_warning_current">Volumen Actual</string>
+    <string name="gain_warning_recommended">Recomendado</string>
+    <string name="gain_warning_max_safe">Máximo Seguro</string>
+    <string name="gain_warning_risks">Riesgos Potenciales:</string>
+    <string name="gain_warning_risk_speaker">• Daño o distorsión del altavoz</string>
+    <string name="gain_warning_risk_audio">• Mala calidad de audio</string>
+    <string name="gain_warning_risk_hearing">• Daño auditivo (auriculares)</string>
+    <string name="gain_warning_risk_warranty">• Garantía anulada por daño de hardware</string>
+    <string name="gain_warning_device_info">Dispositivo: %1$s</string>
+    <string name="gain_warning_tip">Consejo: %1$s</string>
+    <string name="gain_warning_confirm">Entiendo</string>
+    <string name="gain_warning_cancel">Cancelar</string>
+    <string name="gain_warning_agree_checkbox">Entiendo los riesgos y quiero continuar</string>
+
+## French (fr)
+    <!-- Gain Warning Dialog -->
+    <string name="gain_warning_title">⚠️ Avertissement de Volume Élevé</string>
+    <string name="gain_warning_subtitle">Vous dépassez les niveaux de volume sûrs</string>
+    <string name="gain_warning_level_caution">Zone de Prudence</string>
+    <string name="gain_warning_level_warning">Zone d\'Avertissement</string>
+    <string name="gain_warning_level_danger">Zone de Danger</string>
+    <string name="gain_warning_current">Volume Actuel</string>
+    <string name="gain_warning_recommended">Recommandé</string>
+    <string name="gain_warning_max_safe">Maximum Sûr</string>
+    <string name="gain_warning_risks">Risques Potentiels:</string>
+    <string name="gain_warning_risk_speaker">• Dommage ou distorsion du haut-parleur</string>
+    <string name="gain_warning_risk_audio">• Mauvaise qualité audio</string>
+    <string name="gain_warning_risk_hearing">• Dommage auditif (écouteurs)</string>
+    <string name="gain_warning_risk_warranty">• Garantie annulée pour dommage matériel</string>
+    <string name="gain_warning_device_info">Appareil: %1$s</string>
+    <string name="gain_warning_tip">Conseil: %1$s</string>
+    <string name="gain_warning_confirm">Je Comprends</string>
+    <string name="gain_warning_cancel">Annuler</string>
+    <string name="gain_warning_agree_checkbox">Je comprends les risques et veux continuer</string>
+
+## Russian (ru)
+    <!-- Gain Warning Dialog -->
+    <string name="gain_warning_title">⚠️ Предупреждение о Высокой Громкости</string>
+    <string name="gain_warning_subtitle">Вы превышаете безопасные уровни громкости</string>
+    <string name="gain_warning_level_caution">Зона Осторожности</string>
+    <string name="gain_warning_level_warning">Зона Предупреждения</string>
+    <string name="gain_warning_level_danger">Зона Опасности</string>
+    <string name="gain_warning_current">Текущая Громкость</string>
+    <string name="gain_warning_recommended">Рекомендуемо</string>
+    <string name="gain_warning_max_safe">Максимально Безопасно</string>
+    <string name="gain_warning_risks">Потенциальные Риски:</string>
+    <string name="gain_warning_risk_speaker">• Повреждение или искажение динамика</string>
+    <string name="gain_warning_risk_audio">• Плохое качество звука</string>
+    <string name="gain_warning_risk_hearing">• Повреждение слуха (наушники)</string>
+    <string name="gain_warning_risk_warranty">• Гарантия недействительна при повреждении оборудования</string>
+    <string name="gain_warning_device_info">Устройство: %1$s</string>
+    <string name="gain_warning_tip">Совет: %1$s</string>
+    <string name="gain_warning_confirm">Понятно</string>
+    <string name="gain_warning_cancel">Отмена</string>
+    <string name="gain_warning_agree_checkbox">Я понимаю риски и хочу продолжить</string>
+
+## Chinese (zh)
+    <!-- Gain Warning Dialog -->
+    <string name="gain_warning_title">⚠️ 高音量警告</string>
+    <string name="gain_warning_subtitle">您正在超过安全音量水平</string>
+    <string name="gain_warning_level_caution">注意区域</string>
+    <string name="gain_warning_level_warning">警告区域</string>
+    <string name="gain_warning_level_danger">危险区域</string>
+    <string name="gain_warning_current">当前音量</string>
+    <string name="gain_warning_recommended">推荐</string>
+    <string name="gain_warning_max_safe">最大安全</string>
+    <string name="gain_warning_risks">潜在风险：</string>
+    <string name="gain_warning_risk_speaker">• 扬声器损坏或失真</string>
+    <string name="gain_warning_risk_audio">• 音质差</string>
+    <string name="gain_warning_risk_hearing">• 听力损伤（耳机）</string>
+    <string name="gain_warning_risk_warranty">• 硬件损坏保修失效</string>
+    <string name="gain_warning_device_info">设备：%1$s</string>
+    <string name="gain_warning_tip">提示：%1$s</string>
+    <string name="gain_warning_confirm">我明白</string>
+    <string name="gain_warning_cancel">取消</string>
+    <string name="gain_warning_agree_checkbox">我理解风险并想继续</string>
+
+## Japanese (ja)
+    <!-- Gain Warning Dialog -->
+    <string name="gain_warning_title">⚠️ 高音量警告</string>
+    <string name="gain_warning_subtitle">安全な音量レベルを超えています</string>
+    <string name="gain_warning_level_caution">注意ゾーン</string>
+    <string name="gain_warning_level_warning">警告ゾーン</string>
+    <string name="gain_warning_level_danger">危険ゾーン</string>
+    <string name="gain_warning_current">現在の音量</string>
+    <string name="gain_warning_recommended">推奨</string>
+    <string name="gain_warning_max_safe">最大安全</string>
+    <string name="gain_warning_risks">潜在的なリスク：</string>
+    <string name="gain_warning_risk_speaker">• スピーカーの損傷または歪み</string>
+    <string name="gain_warning_risk_audio">• 音質の低下</string>
+    <string name="gain_warning_risk_hearing">• 聴力損傷（ヘッドフォン）</string>
+    <string name="gain_warning_risk_warranty">• ハードウェア損傷の保証無効</string>
+    <string name="gain_warning_device_info">デバイス：%1$s</string>
+    <string name="gain_warning_tip">ヒント：%1$s</string>
+    <string name="gain_warning_confirm">理解しました</string>
+    <string name="gain_warning_cancel">キャンセル</string>
+    <string name="gain_warning_agree_checkbox">リスクを理解して続行します</string>
+
+## Korean (ko)
+    <!-- Gain Warning Dialog -->
+    <string name="gain_warning_title">⚠️ 높은 볼륨 경고</string>
+    <string name="gain_warning_subtitle">안전한 볼륨 수준을 초과하고 있습니다</string>
+    <string name="gain_warning_level_caution">주의 구역</string>
+    <string name="gain_warning_level_warning">경고 구역</string>
+    <string name="gain_warning_level_danger">위험 구역</string>
+    <string name="gain_warning_current">현재 볼륨</string>
+    <string name="gain_warning_recommended">권장</string>
+    <string name="gain_warning_max_safe">최대 안전</string>
+    <string name="gain_warning_risks">잠재적 위험:</string>
+    <string name="gain_warning_risk_speaker">• 스피커 손상 또는 왜곡</string>
+    <string name="gain_warning_risk_audio">• 음질 저하</string>
+    <string name="gain_warning_risk_hearing">• 청력 손상 (헤드폰)</string>
+    <string name="gain_warning_risk_warranty">• 하드웨어 손상 시 보증 무효</string>
+    <string name="gain_warning_device_info">기기: %1$s</string>
+    <string name="gain_warning_tip">팁: %1$s</string>
+    <string name="gain_warning_confirm">이해했습니다</string>
+    <string name="gain_warning_cancel">취소</string>
+    <string name="gain_warning_agree_checkbox">위험을 이해하고 계속하겠습니다</string>
+
+## Arabic (ar)
+    <!-- Gain Warning Dialog -->
+    <string name="gain_warning_title">⚠️ تحذير من الصوت العالي</string>
+    <string name="gain_warning_subtitle">أنت تتجاوز مستويات الصوت الآمنة</string>
+    <string name="gain_warning_level_caution">منطقة الحذر</string>
+    <string name="gain_warning_level_warning">منطقة التحذير</string>
+    <string name="gain_warning_level_danger">منطقة الخطر</string>
+    <string name="gain_warning_current">الصوت الحالي</string>
+    <string name="gain_warning_recommended">الموصى به</string>
+    <string name="gain_warning_max_safe">الحد الأقصى الآمن</string>
+    <string name="gain_warning_risks">المخاطر المحتملة:</string>
+    <string name="gain_warning_risk_speaker">• تلف أو تشويه السماعة</string>
+    <string name="gain_warning_risk_audio">• جودة صوت رديئة</string>
+    <string name="gain_warning_risk_hearing">• ضرر السمع (سماعات الرأس)</string>
+    <string name="gain_warning_risk_warranty">• الضمان لاغي لتلف الأجهزة</string>
+    <string name="gain_warning_device_info">الجهاز: %1$s</string>
+    <string name="gain_warning_tip">نصيحة: %1$s</string>
+    <string name="gain_warning_confirm">أفهم</string>
+    <string name="gain_warning_cancel">إلغاء</string>
+    <string name="gain_warning_agree_checkbox">أفهم المخاطر وأريد المتابعة</string>

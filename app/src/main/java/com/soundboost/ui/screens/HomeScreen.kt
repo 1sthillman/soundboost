@@ -169,9 +169,9 @@ fun HomeScreen(
                             PremiumNeonSlider(
                                 label = "MASTER",
                                 value = state.masterGainPercent.toFloat(),
-                                valueRange = 100f..300f,
+                                valueRange = 60f..500f,  // YENİ: Max 500% desteği
                                 accentColor = CyberBlue,
-                                valueLabel = "+${(state.masterGainPercent - 100) * 20 / 200}dB",
+                                valueLabel = "+${(state.masterGainPercent - 100) * 60 / 400}dB",  // Güncellendi: 400% = 60dB
                                 onValueChange = { onMasterGainChanged(it.toInt()) },
                                 isAudioActive = state.isBoostEnabled
                             )

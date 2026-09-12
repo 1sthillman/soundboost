@@ -123,4 +123,93 @@
     <string name="onboarding_next">Next</string>
     <string name="onboarding_start">Let\'s Go!</string>
     <string name="onboarding_complete">Great! You\'re Ready 🎉</string>
+    
+    <!-- Equalizer Screen UI -->
+    <string name="eq_professional">PROFESSIONAL EQ</string>
+    <string name="eq_10band_parametric">10-BAND PARAMETRIC</string>
+    <string name="eq_back">Back</string>
+    <string name="eq_max_gain">Max Gain</string>
+    <string name="eq_active_preset">ACTIVE PRESET</string>
+    <string name="eq_select_preset">Select Preset</string>
+    <string name="eq_save_preset">Save Preset</string>
+    <string name="eq_reset">Reset</string>
+    <string name="eq_flat_btn">FLAT</string>
+    <string name="eq_bass_btn">BASS</string>
+    <string name="eq_treble_btn">TREBLE</string>
+    <string name="eq_preset_name">Preset Name</string>
+    <string name="eq_save">Save</string>
+    <string name="eq_cancel">Cancel</string>
+    <string name="eq_custom_presets">CUSTOM PRESETS</string>
+    <string name="eq_built_in_presets">BUILT-IN PRESETS</string>
+    <string name="eq_max_gain_settings">Max Gain Settings</string>
+    <string name="eq_max_gain_desc">Maximum boost level per band (15dB - 30dB)</string>
+    <string name="eq_apply">Apply</string>
+    <string name="eq_close">Close</string>
+    
+    <!-- Call Enhancement -->
+    <string name="call_enhancement_title">CALL ENHANCEMENT</string>
+    <string name="call_enhancement_desc">Boosts incoming voice clarity + reduces YOUR background noise during calls</string>
+    <string name="call_enhancement_noise_suppression">Noise Suppression</string>
+    <string name="call_enhancement_auto_gain">Auto Gain</string>
+    
+    <!-- Equalizer Presets -->
+    <string name="eq_flat">Flat</string>
+    <string name="eq_bass_boost">Bass Boost</string>
+    <string name="eq_treble_boost">Treble Boost</string>
+    <string name="eq_deep_bass">Deep Bass</string>
+    <string name="eq_rock">Rock</string>
+    <string name="eq_pop">Pop</string>
+    <string name="eq_jazz">Jazz</string>
+    <string name="eq_classical">Classical</string>
+    <string name="eq_electronic">Electronic</string>
+    <string name="eq_hip_hop">Hip-Hop</string>
+    <string name="eq_rnb">R&amp;B</string>
+    <string name="eq_metal">Heavy Metal</string>
+    <string name="eq_country">Country</string>
+    <string name="eq_latin">Latin</string>
+    <string name="eq_blues">Blues</string>
+    <string name="eq_reggae">Reggae</string>
+    <string name="eq_dance">Dance</string>
+    <string name="eq_vocal_boost">Vocal Boost</string>
+    <string name="eq_acoustic">Acoustic</string>
+    <string name="eq_piano">Piano</string>
+    <string name="eq_small_room">Small Room</string>
+    <string name="eq_medium_room">Medium Room</string>
+    <string name="eq_large_hall">Large Hall</string>
+    <string name="eq_headphones">Headphones</string>
+    <string name="eq_speakers">Speakers</string>
+    <string name="eq_live">Live</string>
+    <string name="eq_vinyl">Vinyl</string>
+    <string name="eq_soft">Soft</string>
+    
+    <!-- Notification -->
+    <string name="notif_volume">Volume</string>
+    <string name="notif_bass">Bass</string>
+    <string name="notif_3d">3D</string>
+    <string name="notif_bass_down">Bass -10</string>
+    <string name="notif_bass_up">Bass +10</string>
+    <string name="notif_3d_down">3D -10</string>
+    <string name="notif_3d_up">3D +10</string>
+    <string name="notif_stop">Stop</string>
+    <string name="notif_active">Active</string>
+    
+    <!-- Gain Warning Dialog -->
+    <string name="gain_warning_title">⚠️ High Volume Warning</string>
+    <string name="gain_warning_subtitle">You are exceeding safe volume levels</string>
+    <string name="gain_warning_level_caution">Caution Zone</string>
+    <string name="gain_warning_level_warning">Warning Zone</string>
+    <string name="gain_warning_level_danger">Danger Zone</string>
+    <string name="gain_warning_current">Current Volume</string>
+    <string name="gain_warning_recommended">Recommended</string>
+    <string name="gain_warning_max_safe">Maximum Safe</string>
+    <string name="gain_warning_risks">Potential Risks:</string>
+    <string name="gain_warning_risk_speaker">• Speaker damage or distortion</string>
+    <string name="gain_warning_risk_audio">• Poor audio quality</string>
+    <string name="gain_warning_risk_hearing">• Hearing damage (headphones)</string>
+    <string name="gain_warning_risk_warranty">• Warranty void for hardware damage</string>
+    <string name="gain_warning_device_info">Device: %1$s</string>
+    <string name="gain_warning_tip">Tip: %1$s</string>
+    <string name="gain_warning_confirm">I Understand</string>
+    <string name="gain_warning_cancel">Cancel</string>
+    <string name="gain_warning_agree_checkbox">I understand the risks and want to continue</string>
 </resources>

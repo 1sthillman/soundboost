@@ -29,8 +29,8 @@ import androidx.core.view.WindowCompat
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.soundboost.ui.components.WebViewOnboardingOverlay
 import com.soundboost.ui.screens.*
+import com.soundboost.ui.screens.ModernEqualizerScreen
 import com.soundboost.ui.theme.SoundSTBoostTheme
 import com.soundboost.ui.theme.getThemeColors
 
@@ -160,10 +160,6 @@ fun MainScreen(viewModel: MainViewModel) {
     val themeColors = getThemeColors(uiState.theme, uiState.colorAccent)
     val context = androidx.compose.ui.platform.LocalContext.current
     
-    // YENİ: Onboarding state
-    val isOnboardingCompleted by viewModel.isOnboardingCompleted.collectAsState()
-    val onboardingStep by viewModel.currentOnboardingStep.collectAsState()
-    
     // CRITICAL: Track language as state to trigger immediate WebView updates
     var currentLanguage by remember { mutableStateOf(viewModel.getCurrentLanguage(context)) }
     
@@ -194,74 +190,48 @@ fun MainScreen(viewModel: MainViewModel) {
             composable(
                 route = "volume",
                 content = {
-                    Box(modifier = Modifier.fillMaxSize()) {
-                        // Ana WebView ekranı
-                        com.soundboost.ui.components.WebViewHomeScreenPersistent(
-                            state = uiState,
-                            audioLevels = audioLevels,
-                            audioAnalysis = viewModel.audioAnalysis,
-                            onVolumeChange = viewModel::onMasterGainChanged,
-                            onSensitivityChange = viewModel::onSensitivityChanged,
-                            onToggleBoost = {
-                                // Check if boost is being turned ON
-                                if (!uiState.isBoostEnabled) {
-                                    // Request permission before starting
-                                    (context as? MainActivity)?.checkAndRequestMicrophonePermission()
-                                } else {
-                                    // Turning OFF - no permission needed
-                                    viewModel.toggleBoost()
-                                }
-                            },
-                            onThemeChanged = viewModel::onThemeChanged,
-                            onModeChanged = viewModel::onDarkModeChanged,
-                            onNavigateToSettings = { 
-                                navController.navigate("settings")
-                            },
-                            onNavigateToEqualizer = { 
-                                navController.navigate("equalizer")
-                            },
-                            onNavigateToLanguage = { 
-                                navController.navigate("language")
-                            },
-                            currentLanguage = currentLanguage
-                        )
-                        
-                        // YENİ: Onboarding Overlay (WebView üstünde)
-                        if (!isOnboardingCompleted) {
-                            // WebView referansını al
-                            val webView = remember { 
-                                com.soundboost.ui.components.PersistentWebViewManager.webViewInstance
+                    // Ana WebView ekranı - doğrudan açılır, hiçbir onboarding yok
+                    com.soundboost.ui.components.WebViewHomeScreenPersistent(
+                        state = uiState,
+                        audioLevels = audioLevels,
+                        audioAnalysis = viewModel.audioAnalysis,
+                        onVolumeChange = viewModel::onMasterGainChanged,
+                        onSensitivityChange = viewModel::onSensitivityChanged,
+                        onToggleBoost = {
+                            // Check if boost is being turned ON
+                            if (!uiState.isBoostEnabled) {
+                                // Request permission before starting
+                                (context as? MainActivity)?.checkAndRequestMicrophonePermission()
+                            } else {
+                                // Turning OFF - no permission needed
+                                viewModel.toggleBoost()
                             }
-                            
-                            WebViewOnboardingOverlay(
-                                currentStep = onboardingStep,
-                                totalSteps = 3,
-                                onNext = {
-                                    if (onboardingStep >= 3) {
-                                        viewModel.completeOnboarding()
-                                    } else {
-                                        viewModel.onOnboardingStepComplete()
-                                    }
-                                },
-                                onSkip = viewModel::skipOnboarding,
-                                themeColors = themeColors,
-                                webView = webView
-                            )
-                        }
-                    }
+                        },
+                        onThemeChanged = viewModel::onThemeChanged,
+                        onModeChanged = viewModel::onDarkModeChanged,
+                        onNavigateToSettings = { 
+                            navController.navigate("settings")
+                        },
+                        onNavigateToEqualizer = { 
+                            navController.navigate("equalizer")
+                        },
+                        onNavigateToLanguage = { 
+                            navController.navigate("language")
+                        },
+                        currentLanguage = currentLanguage
+                    )
                 }
             )
             
             composable("equalizer") {
-                EqualizerScreen(
+                // NEW: 2026 DJ-Style Modern Equalizer
+                ModernEqualizerScreen(
                     state = uiState,
-                    onBassBoostChanged = viewModel::onBassBoostChanged,
-                    onVirtualizerChanged = viewModel::onVirtualizerChanged,
-                    onEqChanged = viewModel::onEqChanged,
-                    onVocalMusicBalanceChanged = viewModel::onVocalMusicBalanceChanged,
-                    onNavigateToAISeparation = {
-                        navController.navigate("ai_vocal_separation")
-                    },
+                    onBandsChanged = viewModel::on10BandEqChanged,
+                    onPresetSelected = viewModel::onPresetSelected,
+                    onSaveCustomPreset = viewModel::onSaveCustomPreset,
+                    onMaxGainChanged = viewModel::onMaxGainChanged,
+                    onCallEnhancementToggled = viewModel::onCallEnhancementToggled,
                     onBack = { 
                         navController.popBackStack()
                     }

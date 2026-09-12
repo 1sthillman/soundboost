@@ -49,6 +49,75 @@
     <string name="theme_forest_green">Orman Yeşili</string>
     <string name="theme_royal_purple">Kraliyet Moru</string>
     
+    <!-- YENİ: Ekolayzer Hazır Ayarları -->
+    <string name="eq_flat">Düz</string>
+    <string name="eq_bass_boost">Bas Güçlendirme</string>
+    <string name="eq_treble_boost">Tiz Güçlendirme</string>
+    <string name="eq_deep_bass">Derin Bas</string>
+    <string name="eq_rock">Rock</string>
+    <string name="eq_pop">Pop</string>
+    <string name="eq_jazz">Caz</string>
+    <string name="eq_classical">Klasik</string>
+    <string name="eq_electronic">Elektronik</string>
+    <string name="eq_hip_hop">Hip-Hop</string>
+    <string name="eq_rnb">R&amp;B</string>
+    <string name="eq_metal">Heavy Metal</string>
+    <string name="eq_country">Country</string>
+    <string name="eq_latin">Latin</string>
+    <string name="eq_blues">Blues</string>
+    <string name="eq_reggae">Reggae</string>
+    <string name="eq_dance">Dans</string>
+    <string name="eq_vocal_boost">Vokal Güçlendirme</string>
+    <string name="eq_acoustic">Akustik</string>
+    <string name="eq_piano">Piyano</string>
+    <string name="eq_small_room">Küçük Oda</string>
+    <string name="eq_medium_room">Orta Oda</string>
+    <string name="eq_large_hall">Büyük Salon</string>
+    <string name="eq_headphones">Kulaklık</string>
+    <string name="eq_speakers">Hoparlör</string>
+    <string name="eq_live">Canlı</string>
+    <string name="eq_vinyl">Plak</string>
+    <string name="eq_soft">Yumuşak</string>
+    
+    <!-- Ekolayzer Ekran UI -->
+    <string name="eq_professional">PROFESYONEL EQ</string>
+    <string name="eq_10band_parametric">10 BANTLI PARAMETRİK</string>
+    <string name="eq_back">Geri</string>
+    <string name="eq_max_gain">Maks Kazanç</string>
+    <string name="eq_active_preset">AKTİF HAZIR AYAR</string>
+    <string name="eq_select_preset">Hazır Ayar Seç</string>
+    <string name="eq_save_preset">Hazır Ayarı Kaydet</string>
+    <string name="eq_reset">Sıfırla</string>
+    <string name="eq_flat_btn">DÜZ</string>
+    <string name="eq_bass_btn">BAS</string>
+    <string name="eq_treble_btn">TİZ</string>
+    <string name="eq_preset_name">Hazır Ayar Adı</string>
+    <string name="eq_save">Kaydet</string>
+    <string name="eq_cancel">İptal</string>
+    <string name="eq_custom_presets">ÖZEL HAZIR AYARLAR</string>
+    <string name="eq_built_in_presets">HAZIR AYARLAR</string>
+    <string name="eq_max_gain_settings">Maksimum Kazanç Ayarları</string>
+    <string name="eq_max_gain_desc">Bant başına maksimum yükseltme seviyesi (15dB - 30dB)</string>
+    <string name="eq_apply">Uygula</string>
+    <string name="eq_close">Kapat</string>
+    
+    <!-- Arama İyileştirme -->
+    <string name="call_enhancement_title">ARAMA İYİLEŞTİRME</string>
+    <string name="call_enhancement_desc">Gelen ses netliğini artırır + aramalarda SİZİN arka plan gürültünüzü azaltır</string>
+    <string name="call_enhancement_noise_suppression">Gürültü Bastırma</string>
+    <string name="call_enhancement_auto_gain">Otomatik Gain</string>
+    
+    <!-- Bildirim -->
+    <string name="notif_volume">Ses</string>
+    <string name="notif_bass">Bas</string>
+    <string name="notif_3d">3D</string>
+    <string name="notif_bass_down">Bas -10</string>
+    <string name="notif_bass_up">Bas +10</string>
+    <string name="notif_3d_down">3D -10</string>
+    <string name="notif_3d_up">3D +10</string>
+    <string name="notif_stop">Durdur</string>
+    <string name="notif_active">Aktif</string>
+    
     <!-- Colors -->
     <string name="color_cyan">Camgöbeği</string>
     <string name="color_pink">Pembe</string>
@@ -149,4 +218,24 @@
     <string name="onboarding_next">Devam</string>
     <string name="onboarding_start">Başla!</string>
     <string name="onboarding_complete">Harika! Hazırsın 🎉</string>
+    
+    <!-- Gain Warning Dialog -->
+    <string name="gain_warning_title">⚠️ Yüksek Ses Uyarısı</string>
+    <string name="gain_warning_subtitle">Güvenli ses seviyelerinin üzerine çıkıyorsunuz</string>
+    <string name="gain_warning_level_caution">Dikkat Bölgesi</string>
+    <string name="gain_warning_level_warning">Uyarı Bölgesi</string>
+    <string name="gain_warning_level_danger">Tehlike Bölgesi</string>
+    <string name="gain_warning_current">Mevcut Seviye</string>
+    <string name="gain_warning_recommended">Önerilen</string>
+    <string name="gain_warning_max_safe">Maksimum Güvenli</string>
+    <string name="gain_warning_risks">Potansiyel Riskler:</string>
+    <string name="gain_warning_risk_speaker">• Hoparlör hasarı veya bozulma</string>
+    <string name="gain_warning_risk_audio">• Düşük ses kalitesi</string>
+    <string name="gain_warning_risk_hearing">• Kulak hasarı (kulaklık kullanımı)</string>
+    <string name="gain_warning_risk_warranty">• Donanım hasarı için garanti geçersiz</string>
+    <string name="gain_warning_device_info">Cihaz: %1$s</string>
+    <string name="gain_warning_tip">İpucu: %1$s</string>
+    <string name="gain_warning_confirm">Anladım</string>
+    <string name="gain_warning_cancel">İptal</string>
+    <string name="gain_warning_agree_checkbox">Riskleri anlıyorum ve devam etmek istiyorum</string>
 </resources>

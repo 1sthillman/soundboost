@@ -24,10 +24,15 @@ import com.soundboost.ui.theme.AppTheme
 object PersistentWebViewManager {
     private var webView: WebView? = null
     private var isInitialized = false
+    private var isPageLoaded = false  // YENİ: Track if page is fully loaded
     
     // YENİ: Public accessor for onboarding
     val webViewInstance: WebView?
         get() = webView
+    
+    // YENİ: Check if WebView is ready for onboarding coordinate queries
+    val isReadyForOnboarding: Boolean
+        get() = isInitialized && isPageLoaded && webView != null
     
     /**
      * Get or create the persistent WebView instance
@@ -227,7 +232,8 @@ object PersistentWebViewManager {
             webViewClient = object : WebViewClient() {
                 override fun onPageFinished(view: WebView?, url: String?) {
                     super.onPageFinished(view, url)
-                    android.util.Log.d("WebViewManager", "✅ Page loaded: $url")
+                    isPageLoaded = true  // YENİ: Mark page as loaded
+                    android.util.Log.d("WebViewManager", "✅ Page loaded and ready for onboarding: $url")
                 }
                 
                 // Block all navigation to prevent reload
@@ -280,5 +286,6 @@ object PersistentWebViewManager {
         webView?.destroy()
         webView = null
         isInitialized = false
+        isPageLoaded = false  // YENİ: Reset page loaded state
     }
 }

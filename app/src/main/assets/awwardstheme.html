@@ -270,7 +270,7 @@
         <div class="sliders">
           <div class="slider-row">
             <label for="boost" data-i18n="boost">Yükseltme</label>
-            <input type="range" id="boost" min="0" max="100" value="65">
+            <input type="range" id="boost" min="0" max="400" value="65">
             <span class="val" id="boostVal">65</span>
           </div>
           <div class="slider-row">
@@ -338,6 +338,24 @@ const i18n = {
     nav_settings: 'Ayarlar',
     nav_equalizer: 'Ekolayzer',
     nav_language: 'Dil',
+    // Gain Warning
+    gain_warning_title: '⚠️ Yüksek Ses Uyarısı',
+    gain_warning_subtitle: 'Güvenli ses seviyelerinin üzerine çıkıyorsunuz',
+    gain_warning_level_caution: 'Dikkat Bölgesi',
+    gain_warning_level_warning: 'Uyarı Bölgesi',
+    gain_warning_level_danger: 'Tehlike Bölgesi',
+    gain_warning_current: 'Mevcut Seviye',
+    gain_warning_recommended: 'Önerilen',
+    gain_warning_max_safe: 'Maksimum Güvenli',
+    gain_warning_risks: 'Potansiyel Riskler:',
+    gain_warning_risk_speaker: 'Hoparlör hasarı veya bozulma',
+    gain_warning_risk_audio: 'Düşük ses kalitesi',
+    gain_warning_risk_hearing: 'Kulak hasarı (kulaklık kullanımı)',
+    gain_warning_risk_warranty: 'Donanım hasarı için garanti geçersiz',
+    gain_warning_tip: 'Cihazınızı korumak için ses seviyesini azaltın',
+    gain_warning_confirm: 'Anladım',
+    gain_warning_cancel: 'İptal',
+    gain_warning_agree: 'Riskleri anlıyorum ve devam etmek istiyorum',
     themes: {
       mehtap: {label:'Mehtap', title:'Ay Balıkçısı', sub:'Durgun suda sabırla bekleyen bir sandalın hikâyesi'},
       sumi: {label:'Sumi-e', title:'Mürekkep Nefesi', sub:'Fırça darbeleriyle beliren tek çizgi'},
@@ -360,6 +378,24 @@ const i18n = {
     nav_settings: 'Settings',
     nav_equalizer: 'Equalizer',
     nav_language: 'Language',
+    // Gain Warning
+    gain_warning_title: '⚠️ High Volume Warning',
+    gain_warning_subtitle: 'You are exceeding safe volume levels',
+    gain_warning_level_caution: 'Caution Zone',
+    gain_warning_level_warning: 'Warning Zone',
+    gain_warning_level_danger: 'Danger Zone',
+    gain_warning_current: 'Current Volume',
+    gain_warning_recommended: 'Recommended',
+    gain_warning_max_safe: 'Maximum Safe',
+    gain_warning_risks: 'Potential Risks:',
+    gain_warning_risk_speaker: 'Speaker damage or distortion',
+    gain_warning_risk_audio: 'Poor audio quality',
+    gain_warning_risk_hearing: 'Hearing damage (headphones)',
+    gain_warning_risk_warranty: 'Warranty void for hardware damage',
+    gain_warning_tip: 'Reduce volume to protect your device',
+    gain_warning_confirm: 'I Understand',
+    gain_warning_cancel: 'Cancel',
+    gain_warning_agree: 'I understand the risks and want to continue',
     themes: {
       mehtap: {label:'Mehtap', title:'Moon Fisher', sub:'A patient boat on still water'},
       sumi: {label:'Sumi-e', title:'Ink Breath', sub:'Single stroke emerging from brush'},
@@ -382,6 +418,24 @@ const i18n = {
     nav_settings: 'Einstellungen',
     nav_equalizer: 'Equalizer',
     nav_language: 'Sprache',
+    // Gain Warning
+    gain_warning_title: '⚠️ Hohe Lautstärke Warnung',
+    gain_warning_subtitle: 'Sie überschreiten sichere Lautstärkepegel',
+    gain_warning_level_caution: 'Vorsichtsbereich',
+    gain_warning_level_warning: 'Warnbereich',
+    gain_warning_level_danger: 'Gefahrenbereich',
+    gain_warning_current: 'Aktuelle Lautstärke',
+    gain_warning_recommended: 'Empfohlen',
+    gain_warning_max_safe: 'Maximal Sicher',
+    gain_warning_risks: 'Potenzielle Risiken:',
+    gain_warning_risk_speaker: 'Lautsprecherschaden oder Verzerrung',
+    gain_warning_risk_audio: 'Schlechte Audioqualität',
+    gain_warning_risk_hearing: 'Hörschäden (Kopfhörer)',
+    gain_warning_risk_warranty: 'Garantie ungültig bei Hardware-Schäden',
+    gain_warning_tip: 'Lautstärke reduzieren um Ihr Gerät zu schützen',
+    gain_warning_confirm: 'Ich verstehe',
+    gain_warning_cancel: 'Abbrechen',
+    gain_warning_agree: 'Ich verstehe die Risiken und möchte fortfahren',
     themes: {
       mehtap: {label:'Mehtap', title:'Mondfischer', sub:'Geduldiges Boot auf stillem Wasser'},
       sumi: {label:'Sumi-e', title:'Tintenatem', sub:'Einzelner Pinselstrich'},
@@ -404,6 +458,24 @@ const i18n = {
     nav_settings: 'Paramètres',
     nav_equalizer: 'Égaliseur',
     nav_language: 'Langue',
+    // Gain Warning
+    gain_warning_title: '⚠️ Avertissement de Volume Élevé',
+    gain_warning_subtitle: 'Vous dépassez les niveaux de volume sûrs',
+    gain_warning_level_caution: 'Zone de Prudence',
+    gain_warning_level_warning: 'Zone d\'Avertissement',
+    gain_warning_level_danger: 'Zone de Danger',
+    gain_warning_current: 'Volume Actuel',
+    gain_warning_recommended: 'Recommandé',
+    gain_warning_max_safe: 'Maximum Sûr',
+    gain_warning_risks: 'Risques Potentiels:',
+    gain_warning_risk_speaker: 'Dommage ou distorsion du haut-parleur',
+    gain_warning_risk_audio: 'Mauvaise qualité audio',
+    gain_warning_risk_hearing: 'Dommage auditif (écouteurs)',
+    gain_warning_risk_warranty: 'Garantie annulée pour dommage matériel',
+    gain_warning_tip: 'Réduisez le volume pour protéger votre appareil',
+    gain_warning_confirm: 'Je Comprends',
+    gain_warning_cancel: 'Annuler',
+    gain_warning_agree: 'Je comprends les risques et veux continuer',
     themes: {
       mehtap: {label:'Mehtap', title:'Pêcheur Lunaire', sub:'Bateau patient sur l\'eau calme'},
       sumi: {label:'Sumi-e', title:'Souffle d\'Encre', sub:'Trait unique émergeant du pinceau'},
@@ -426,6 +498,24 @@ const i18n = {
     nav_settings: 'Ajustes',
     nav_equalizer: 'Ecualizador',
     nav_language: 'Idioma',
+    // Gain Warning
+    gain_warning_title: '⚠️ Advertencia de Alto Volumen',
+    gain_warning_subtitle: 'Está superando niveles de volumen seguros',
+    gain_warning_level_caution: 'Zona de Precaución',
+    gain_warning_level_warning: 'Zona de Advertencia',
+    gain_warning_level_danger: 'Zona de Peligro',
+    gain_warning_current: 'Volumen Actual',
+    gain_warning_recommended: 'Recomendado',
+    gain_warning_max_safe: 'Máximo Seguro',
+    gain_warning_risks: 'Riesgos Potenciales:',
+    gain_warning_risk_speaker: 'Daño o distorsión del altavoz',
+    gain_warning_risk_audio: 'Mala calidad de audio',
+    gain_warning_risk_hearing: 'Daño auditivo (auriculares)',
+    gain_warning_risk_warranty: 'Garantía anulada por daño de hardware',
+    gain_warning_tip: 'Reduzca el volumen para proteger su dispositivo',
+    gain_warning_confirm: 'Entiendo',
+    gain_warning_cancel: 'Cancelar',
+    gain_warning_agree: 'Entiendo los riesgos y quiero continuar',
     themes: {
       mehtap: {label:'Mehtap', title:'Pescador Lunar', sub:'Bote paciente en agua tranquila'},
       sumi: {label:'Sumi-e', title:'Aliento de Tinta', sub:'Trazo único del pincel'},
@@ -448,6 +538,24 @@ const i18n = {
     nav_settings: 'Настройки',
     nav_equalizer: 'Эквалайзер',
     nav_language: 'Язык',
+    // Gain Warning
+    gain_warning_title: '⚠️ Предупреждение о Высокой Громкости',
+    gain_warning_subtitle: 'Вы превышаете безопасные уровни громкости',
+    gain_warning_level_caution: 'Зона Осторожности',
+    gain_warning_level_warning: 'Зона Предупреждения',
+    gain_warning_level_danger: 'Зона Опасности',
+    gain_warning_current: 'Текущая Громкость',
+    gain_warning_recommended: 'Рекомендуемо',
+    gain_warning_max_safe: 'Максимально Безопасно',
+    gain_warning_risks: 'Потенциальные Риски:',
+    gain_warning_risk_speaker: 'Повреждение или искажение динамика',
+    gain_warning_risk_audio: 'Плохое качество звука',
+    gain_warning_risk_hearing: 'Повреждение слуха (наушники)',
+    gain_warning_risk_warranty: 'Гарантия недействительна при повреждении',
+    gain_warning_tip: 'Уменьшите громкость чтобы защитить устройство',
+    gain_warning_confirm: 'Понятно',
+    gain_warning_cancel: 'Отмена',
+    gain_warning_agree: 'Я понимаю риски и хочу продолжить',
     themes: {
       mehtap: {label:'Мехтап', title:'Лунный Рыбак', sub:'Терпеливая лодка на тихой воде'},
       sumi: {label:'Суми-э', title:'Дыхание Чернил', sub:'Единый мазок кисти'},
@@ -470,6 +578,24 @@ const i18n = {
     nav_settings: 'الإعدادات',
     nav_equalizer: 'المعادل',
     nav_language: 'اللغة',
+    // Gain Warning
+    gain_warning_title: '⚠️ تحذير من الصوت العالي',
+    gain_warning_subtitle: 'أنت تتجاوز مستويات الصوت الآمنة',
+    gain_warning_level_caution: 'منطقة الحذر',
+    gain_warning_level_warning: 'منطقة التحذير',
+    gain_warning_level_danger: 'منطقة الخطر',
+    gain_warning_current: 'الصوت الحالي',
+    gain_warning_recommended: 'الموصى به',
+    gain_warning_max_safe: 'الحد الأقصى الآمن',
+    gain_warning_risks: 'المخاطر المحتملة:',
+    gain_warning_risk_speaker: 'تلف أو تشويه السماعة',
+    gain_warning_risk_audio: 'جودة صوت رديئة',
+    gain_warning_risk_hearing: 'ضرر السمع (سماعات الرأس)',
+    gain_warning_risk_warranty: 'الضمان لاغي لتلف الأجهزة',
+    gain_warning_tip: 'خفض مستوى الصوت لحماية جهازك',
+    gain_warning_confirm: 'أفهم',
+    gain_warning_cancel: 'إلغاء',
+    gain_warning_agree: 'أفهم المخاطر وأريد المتابعة',
     themes: {
       mehtap: {label:'مهتاب', title:'صياد القمر', sub:'قارب صبور على ماء ساكن'},
       sumi: {label:'سومي-إي', title:'نفس الحبر', sub:'ضربة فرشاة واحدة'},
@@ -492,6 +618,24 @@ const i18n = {
     nav_settings: '設定',
     nav_equalizer: 'イコライザー',
     nav_language: '言語',
+    // Gain Warning
+    gain_warning_title: '⚠️ 高音量警告',
+    gain_warning_subtitle: '安全な音量レベルを超えています',
+    gain_warning_level_caution: '注意ゾーン',
+    gain_warning_level_warning: '警告ゾーン',
+    gain_warning_level_danger: '危険ゾーン',
+    gain_warning_current: '現在の音量',
+    gain_warning_recommended: '推奨',
+    gain_warning_max_safe: '最大安全',
+    gain_warning_risks: '潜在的なリスク：',
+    gain_warning_risk_speaker: 'スピーカーの損傷または歪み',
+    gain_warning_risk_audio: '音質の低下',
+    gain_warning_risk_hearing: '聴力損傷（ヘッドフォン）',
+    gain_warning_risk_warranty: 'ハードウェア損傷の保証無効',
+    gain_warning_tip: 'デバイスを保護するため音量を下げてください',
+    gain_warning_confirm: '理解しました',
+    gain_warning_cancel: 'キャンセル',
+    gain_warning_agree: 'リスクを理解して続行します',
     themes: {
       mehtap: {label:'月明かり', title:'月の漁師', sub:'静かな水面の忍耐強い船'},
       sumi: {label:'墨絵', title:'墨の息吹', sub:'筆から生まれる一線'},
@@ -514,6 +658,24 @@ const i18n = {
     nav_settings: '设置',
     nav_equalizer: '均衡器',
     nav_language: '语言',
+    // Gain Warning
+    gain_warning_title: '⚠️ 高音量警告',
+    gain_warning_subtitle: '您正在超过安全音量水平',
+    gain_warning_level_caution: '注意区域',
+    gain_warning_level_warning: '警告区域',
+    gain_warning_level_danger: '危险区域',
+    gain_warning_current: '当前音量',
+    gain_warning_recommended: '推荐',
+    gain_warning_max_safe: '最大安全',
+    gain_warning_risks: '潜在风险：',
+    gain_warning_risk_speaker: '扬声器损坏或失真',
+    gain_warning_risk_audio: '音质差',
+    gain_warning_risk_hearing: '听力损伤（耳机）',
+    gain_warning_risk_warranty: '硬件损坏保修失效',
+    gain_warning_tip: '降低音量以保护您的设备',
+    gain_warning_confirm: '我明白',
+    gain_warning_cancel: '取消',
+    gain_warning_agree: '我理解风险并想继续',
     themes: {
       mehtap: {label:'月光', title:'月亮渔夫', sub:'静水上的耐心之舟'},
       sumi: {label:'水墨画', title:'墨息', sub:'毛笔划出的单线'},
@@ -536,6 +698,24 @@ const i18n = {
     nav_settings: '설정',
     nav_equalizer: '이퀄라이저',
     nav_language: '언어',
+    // Gain Warning
+    gain_warning_title: '⚠️ 높은 볼륨 경고',
+    gain_warning_subtitle: '안전한 볼륨 수준을 초과하고 있습니다',
+    gain_warning_level_caution: '주의 구역',
+    gain_warning_level_warning: '경고 구역',
+    gain_warning_level_danger: '위험 구역',
+    gain_warning_current: '현재 볼륨',
+    gain_warning_recommended: '권장',
+    gain_warning_max_safe: '최대 안전',
+    gain_warning_risks: '잠재적 위험:',
+    gain_warning_risk_speaker: '스피커 손상 또는 왜곡',
+    gain_warning_risk_audio: '음질 저하',
+    gain_warning_risk_hearing: '청력 손상 (헤드폰)',
+    gain_warning_risk_warranty: '하드웨어 손상 시 보증 무효',
+    gain_warning_tip: '기기를 보호하기 위해 볼륨을 낮추세요',
+    gain_warning_confirm: '이해했습니다',
+    gain_warning_cancel: '취소',
+    gain_warning_agree: '위험을 이해하고 계속하겠습니다',
     themes: {
       mehtap: {label:'달빛', title:'달의 어부', sub:'잔잔한 물 위의 인내심 있는 배'},
       sumi: {label:'먹그림', title:'먹의 숨결', sub:'붓에서 나오는 한 획'},
@@ -931,13 +1111,15 @@ function applyBoost(){
     bassShelf.gain.setTargetAtTime(db, actx.currentTime, 0.05);
   }
   
+  // Convert to percentage
+  const gainPercent = Math.round(60 + (v / 400) * 440); // 0→60, 400→500
+  
   // DEBOUNCE: Only send to Kotlin after 150ms of no changes
   clearTimeout(boostDebounceTimer);
   boostDebounceTimer = setTimeout(() => {
     if(typeof AndroidBridge !== 'undefined') {
-      const kotlinValue = Math.round(60 + (v / 100) * 140); // 0→60, 100→200
-      console.log('📤 Sending to Kotlin (debounced):', kotlinValue);
-      AndroidBridge.onVolumeChanged(kotlinValue);
+      console.log('📤 Sending to Kotlin (debounced):', gainPercent);
+      AndroidBridge.onVolumeChanged(gainPercent);
     }
   }, 150);
 }
@@ -958,7 +1140,15 @@ function applySensitivity(){
     }
   }, 150);
 }
+
+// Slider event listeners with dragging detection
 boostEl.addEventListener('input', applyBoost);
+boostEl.addEventListener('mousedown', () => { isUserDragging = true; console.log('🖱️ Dragging START'); });
+boostEl.addEventListener('touchstart', () => { isUserDragging = true; console.log('👆 Dragging START'); });
+boostEl.addEventListener('mouseup', () => { isUserDragging = false; console.log('🖱️ Dragging END'); });
+boostEl.addEventListener('touchend', () => { isUserDragging = false; console.log('👆 Dragging END'); });
+boostEl.addEventListener('change', () => { isUserDragging = false; console.log('✅ Change complete'); });
+
 sensEl.addEventListener('input', applySensitivity);
 
 async function togglePlay(){
@@ -3764,11 +3954,19 @@ window.setBoostState = function(enabled) {
   }
 };
 
-// Map Kotlin volume value (60-200) to HTML slider value (0-100)
+// Map Kotlin volume value (60-500) to HTML slider value (0-400)
 let isUpdatingFromKotlin = false; // FLAG to prevent feedback loop
+let isUserDragging = false; // FLAG to prevent Kotlin updates during user interaction
+
 window.setVolumeFromKotlin = function(kotlinValue) {
-  const clamped = Math.max(60, Math.min(200, kotlinValue));
-  const htmlValue = Math.round((clamped - 60) / 140 * 100); // 60→0, 200→100
+  // CRITICAL: Don't update slider while user is dragging!
+  if (isUserDragging) {
+    console.log('⏭️ Skipping Kotlin update - user is dragging');
+    return;
+  }
+  
+  const clamped = Math.max(60, Math.min(500, kotlinValue));  // 60-500 range
+  const htmlValue = Math.round((clamped - 60) / 440 * 400); // 60→0, 500→400
   if(boostEl) {
     isUpdatingFromKotlin = true; // SET FLAG before updating
     boostEl.value = htmlValue;
@@ -3938,3 +4136,820 @@ console.log('✅ Onboarding tracking ready');
 </body>
 </html>
 
+
+<style>
+/* =========== GAIN WARNING DIALOG - CLEAN & VISIBLE =========== */
+.gain-warning-overlay {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  background: rgba(0, 0, 0, 0.85) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  z-index: 99999 !important;
+  display: none;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 20px !important;
+  animation: fadeIn 0.25s ease;
+}
+
+.gain-warning-overlay.show {
+  display: flex !important;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.gain-warning-dialog {
+  position: relative !important;
+  background: linear-gradient(145deg, 
+    rgba(40, 45, 60, 0.98) 0%,
+    rgba(30, 35, 50, 0.98) 100%) !important;
+  border-radius: 20px !important;
+  border: 2px solid rgba(255, 255, 255, 0.25) !important;
+  box-shadow: 
+    0 20px 60px rgba(0, 0, 0, 0.7),
+    0 0 0 1px rgba(255, 255, 255, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+  width: 100% !important;
+  max-width: 520px !important;
+  max-height: 85vh !important;
+  overflow: hidden !important;
+  animation: slideUp 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  display: flex !important;
+  flex-direction: column !important;
+  z-index: 100000 !important;
+}
+
+@keyframes slideUp {
+  from { 
+    opacity: 0;
+    transform: translateY(40px) scale(0.92);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.gain-warning-header {
+  padding: 30px 30px 20px !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
+  position: relative !important;
+  overflow: hidden;
+  flex-shrink: 0 !important;
+  background: transparent !important;
+}
+
+.gain-warning-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, 
+    var(--warning-color, #ff6b35) 0%,
+    var(--warning-color-bright, #ff8c42) 50%,
+    var(--warning-color, #ff6b35) 100%);
+  animation: shimmer 2s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0%, 100% { opacity: 0.8; transform: translateX(-100%); }
+  50% { opacity: 1; transform: translateX(100%); }
+}
+
+.gain-warning-icon {
+  font-size: 52px !important;
+  text-align: center !important;
+  margin-bottom: 14px !important;
+  animation: pulse 2s ease-in-out infinite;
+  filter: drop-shadow(0 0 24px var(--warning-color, #ff6b35)) !important;
+  display: block !important;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 0.9; }
+  50% { transform: scale(1.08); opacity: 1; }
+}
+
+.gain-warning-title {
+  font-family: var(--font-display) !important;
+  font-size: 24px !important;
+  font-weight: 700 !important;
+  text-align: center !important;
+  color: #ffffff !important;
+  margin: 0 0 8px !important;
+  letter-spacing: -0.01em !important;
+  line-height: 1.2 !important;
+  display: block !important;
+}
+
+.gain-warning-subtitle {
+  font-size: 14px !important;
+  text-align: center !important;
+  color: rgba(255, 255, 255, 0.85) !important;
+  margin: 0 !important;
+  line-height: 1.4 !important;
+  display: block !important;
+}
+
+.gain-warning-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, 
+    var(--warning-color, #ff6b35) 0%,
+    var(--warning-color-bright, #ff8c42) 50%,
+    var(--warning-color, #ff6b35) 100%);
+  animation: shimmer 2s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0%, 100% { opacity: 0.8; transform: translateX(-100%); }
+  50% { opacity: 1; transform: translateX(100%); }
+}
+
+.gain-warning-icon {
+  font-size: 56px;
+  text-align: center;
+  margin-bottom: 16px;
+  animation: pulse 2s ease-in-out infinite;
+  filter: drop-shadow(0 0 24px var(--warning-color, #ff6b35));
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 0.9; }
+  50% { transform: scale(1.08); opacity: 1; }
+}
+
+.gain-warning-title {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 700;
+  text-align: center;
+  color: var(--ink, #fff);
+  margin: 0 0 8px;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+.gain-warning-subtitle {
+  font-size: 15px;
+  text-align: center;
+  color: var(--ink-dim, rgba(255, 255, 255, 0.7));
+  margin: 0;
+  line-height: 1.4;
+}
+
+.gain-warning-body {
+  padding: 24px 30px !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  flex: 1 !important;
+  background: transparent !important;
+}
+
+/* Scrollbar styling */
+.gain-warning-body::-webkit-scrollbar {
+  width: 6px !important;
+}
+
+.gain-warning-body::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border-radius: 3px !important;
+}
+
+.gain-warning-body::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.25) !important;
+  border-radius: 3px !important;
+}
+
+.gain-warning-body::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.35) !important;
+}
+
+.gain-level-indicator {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding: 18px !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  border-radius: 14px !important;
+  margin-bottom: 20px !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+}
+
+.gain-level-item {
+  text-align: center !important;
+  flex: 1 !important;
+}
+
+.gain-level-label {
+  font-size: 11px !important;
+  text-transform: uppercase !important;
+  color: rgba(255, 255, 255, 0.6) !important;
+  margin-bottom: 6px !important;
+  letter-spacing: 0.05em !important;
+  display: block !important;
+}
+
+.gain-level-value {
+  font-size: 26px !important;
+  font-weight: 700 !important;
+  font-variant-numeric: tabular-nums !important;
+  color: #ffffff !important;
+  display: block !important;
+}
+
+.gain-level-value {
+  font-size: 24px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.gain-level-value.current {
+  color: var(--warning-color, #ff6b35);
+  animation: flicker 1.5s ease-in-out infinite;
+}
+
+.gain-level-value.recommended {
+  color: var(--accent, #4fd8b0);
+}
+
+.gain-level-value.safe {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+@keyframes flicker {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.85; }
+}
+
+.gain-zone-badge {
+  display: inline-block;
+  padding: 7px 14px;
+  border-radius: 18px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0 auto 18px;
+  display: block;
+  width: fit-content;
+}
+
+.gain-zone-badge.caution {
+  background: rgba(255, 193, 7, 0.15);
+  color: #ffc107;
+  border: 1px solid rgba(255, 193, 7, 0.3);
+}
+
+.gain-zone-badge.warning {
+  background: rgba(255, 107, 53, 0.15);
+  color: #ff6b35;
+  border: 1px solid rgba(255, 107, 53, 0.3);
+}
+
+.gain-zone-badge.danger {
+  background: rgba(244, 67, 54, 0.15);
+  color: #f44336;
+  border: 1px solid rgba(244, 67, 54, 0.3);
+  animation: dangerBlink 1s ease-in-out infinite;
+}
+
+@keyframes dangerBlink {
+  0%, 100% { opacity: 1; box-shadow: 0 0 20px rgba(244, 67, 54, 0.3); }
+  50% { opacity: 0.8; box-shadow: 0 0 30px rgba(244, 67, 54, 0.5); }
+}
+
+.gain-device-info {
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 10px;
+  margin-bottom: 16px;
+  border-left: 3px solid var(--accent, #4fd8b0);
+}
+
+.gain-device-info p {
+  margin: 0;
+  font-size: 12px;
+  color: var(--ink-dim, rgba(255, 255, 255, 0.7));
+  line-height: 1.5;
+}
+
+.gain-device-info strong {
+  color: var(--ink, #fff);
+  font-weight: 600;
+}
+
+.gain-risks-list {
+  margin: 16px 0;
+}
+
+.gain-risks-list h4 {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink, #fff);
+  margin: 0 0 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.gain-risks-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.gain-risks-list li {
+  font-size: 13px;
+  color: var(--ink-dim, rgba(255, 255, 255, 0.7));
+  padding: 6px 0 6px 24px;
+  position: relative;
+  line-height: 1.5;
+}
+
+.gain-risks-list li::before {
+  content: '•';
+  position: absolute;
+  left: 8px;
+  color: var(--warning-color, #ff6b35);
+  font-size: 16px;
+}
+
+.gain-tip-box {
+  padding: 12px 16px;
+  background: rgba(var(--accent-rgb, 79, 216, 176), 0.08);
+  border-radius: 10px;
+  margin-top: 16px;
+  border: 1px solid rgba(var(--accent-rgb, 79, 216, 176), 0.15);
+}
+
+.gain-tip-box p {
+  margin: 0;
+  font-size: 12px;
+  color: var(--ink-dim, rgba(255, 255, 255, 0.8));
+  line-height: 1.5;
+}
+
+.gain-tip-box strong {
+  color: var(--accent, #4fd8b0);
+  font-weight: 600;
+}
+
+.gain-checkbox-wrapper {
+  padding: 20px 30px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.03);
+  flex-shrink: 0;
+}
+
+.gain-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.gain-checkbox input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 22px;
+  height: 22px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 5px;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.gain-checkbox input[type="checkbox"]:checked {
+  background: var(--warning-color, #ff6b35);
+  border-color: var(--warning-color, #ff6b35);
+}
+
+.gain-checkbox input[type="checkbox"]:checked::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.gain-checkbox label {
+  font-size: 14px;
+  color: var(--ink-dim, rgba(255, 255, 255, 0.8));
+  cursor: pointer;
+  line-height: 1.4;
+}
+
+.gain-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.gain-checkbox input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.gain-checkbox input[type="checkbox"]:checked {
+  background: var(--warning-color, #ff6b35);
+  border-color: var(--warning-color, #ff6b35);
+}
+
+.gain-checkbox input[type="checkbox"]:checked::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.gain-checkbox label {
+  font-size: 13px;
+  color: var(--ink-dim, rgba(255, 255, 255, 0.8));
+  cursor: pointer;
+  line-height: 1.4;
+}
+
+.gain-warning-footer {
+  padding: 20px 30px 28px;
+  display: flex;
+  gap: 14px;
+  flex-shrink: 0;
+}
+
+.gain-warning-btn {
+  flex: 1;
+  padding: 15px 24px;
+  border-radius: 12px;
+  border: none;
+  font-family: var(--font-ui);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.gain-warning-btn.cancel {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--ink, rgba(255, 255, 255, 0.9));
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.gain-warning-btn.cancel:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.gain-warning-btn.cancel:active {
+  transform: scale(0.97);
+}
+
+.gain-warning-btn.confirm {
+  background: linear-gradient(135deg, var(--warning-color, #ff6b35), var(--warning-color-bright, #ff8c42));
+  color: white;
+  box-shadow: 
+    0 4px 12px rgba(var(--warning-rgb, 255, 107, 53), 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.gain-warning-btn.confirm.enabled {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.gain-warning-btn.confirm.enabled:hover {
+  box-shadow: 
+    0 6px 16px rgba(var(--warning-rgb, 255, 107, 53), 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+.gain-warning-btn.confirm.enabled:active {
+  transform: scale(0.97);
+}
+
+/* Dark mode adjustments */
+[data-mode="light"] .gain-warning-dialog {
+  background: linear-gradient(135deg, 
+    rgba(255, 255, 255, 0.98) 0%,
+    rgba(250, 250, 252, 0.98) 100%);
+  border-color: rgba(0, 0, 0, 0.12);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(0, 0, 0, 0.06);
+}
+
+[data-mode="light"] .gain-warning-title {
+  color: var(--bg0, #1a1a1a);
+}
+
+[data-mode="light"] .gain-warning-subtitle,
+[data-mode="light"] .gain-level-label,
+[data-mode="light"] .gain-device-info p,
+[data-mode="light"] .gain-risks-list li,
+[data-mode="light"] .gain-tip-box p,
+[data-mode="light"] .gain-checkbox label {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+[data-mode="light"] .gain-level-indicator,
+[data-mode="light"] .gain-device-info,
+[data-mode="light"] .gain-checkbox-wrapper {
+  background: rgba(0, 0, 0, 0.03);
+  border-color: rgba(0, 0, 0, 0.08);
+}
+
+[data-mode="light"] .gain-warning-btn.cancel {
+  background: rgba(0, 0, 0, 0.05);
+  color: var(--bg0, #1a1a1a);
+  border-color: rgba(0, 0, 0, 0.12);
+}
+</style>
+
+<!-- GAIN WARNING DIALOG HTML -->
+<div class="gain-warning-overlay" id="gainWarningOverlay" style="position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.9);z-index:999999;display:none;align-items:center;justify-content:center;padding:20px;">
+  <div class="gain-warning-dialog" style="background:#2a2f3e;border-radius:16px;padding:0;max-width:500px;width:100%;position:relative;z-index:1000000;">
+    <div class="gain-warning-header" style="padding:30px;border-bottom:1px solid rgba(255,255,255,0.2);background:transparent;">
+      <div class="gain-warning-icon" id="gainWarningIcon" style="font-size:48px;text-align:center;margin-bottom:12px;">⚠️</div>
+      <h3 class="gain-warning-title" id="gainWarningTitle" style="font-size:22px;color:#fff;text-align:center;margin:0 0 8px;">High Volume Warning</h3>
+      <p class="gain-warning-subtitle" id="gainWarningSubtitle" style="font-size:14px;color:rgba(255,255,255,0.8);text-align:center;margin:0;">You are exceeding safe volume levels</p>
+    </div>
+    
+    <div class="gain-warning-body" style="padding:24px 30px;overflow-y:auto;max-height:50vh;">
+      <span class="gain-zone-badge" id="gainZoneBadge" style="display:block;padding:6px 12px;background:rgba(255,107,53,0.2);color:#ff6b35;border-radius:12px;font-size:11px;text-align:center;margin:0 auto 16px;width:fit-content;">Warning Zone</span>
+      
+      <div class="gain-level-indicator" style="display:flex;justify-content:space-between;padding:16px;background:rgba(255,255,255,0.08);border-radius:12px;margin-bottom:16px;">
+        <div class="gain-level-item" style="text-align:center;flex:1;">
+          <div class="gain-level-label" id="gainLabelCurrent" style="font-size:10px;color:rgba(255,255,255,0.6);margin-bottom:4px;">Current</div>
+          <div class="gain-level-value current" id="gainValueCurrent" style="font-size:24px;color:#ff6b35;font-weight:700;">300%</div>
+        </div>
+        <div class="gain-level-item" style="text-align:center;flex:1;">
+          <div class="gain-level-label" id="gainLabelRecommended" style="font-size:10px;color:rgba(255,255,255,0.6);margin-bottom:4px;">Recommended</div>
+          <div class="gain-level-value recommended" id="gainValueRecommended" style="font-size:24px;color:#4fd8b0;font-weight:700;">180%</div>
+        </div>
+        <div class="gain-level-item" style="text-align:center;flex:1;">
+          <div class="gain-level-label" id="gainLabelSafe" style="font-size:10px;color:rgba(255,255,255,0.6);margin-bottom:4px;">Max Safe</div>
+          <div class="gain-level-value safe" id="gainValueSafe" style="font-size:24px;color:rgba(255,255,255,0.7);font-weight:700;">200%</div>
+        </div>
+      </div>
+      
+      <div class="gain-device-info" id="gainDeviceInfo" style="padding:12px;background:rgba(76,216,176,0.1);border-left:3px solid #4fd8b0;border-radius:8px;margin-bottom:16px;">
+        <p style="margin:0;font-size:13px;color:rgba(255,255,255,0.8);"><strong style="color:#fff;">Device:</strong> <span id="gainDeviceName">Phone Speaker</span></p>
+      </div>
+      
+      <div class="gain-risks-list" style="margin:16px 0;">
+        <h4 id="gainRisksTitle" style="font-size:13px;color:#ff6b35;margin:0 0 10px;font-weight:600;">Potential Risks:</h4>
+        <ul id="gainRisksList" style="list-style:none;padding:0;margin:0;">
+          <li id="gainRisk1" style="font-size:13px;color:rgba(255,255,255,0.75);margin-bottom:6px;padding-left:16px;position:relative;"><span style="position:absolute;left:0;color:#ff6b35;">•</span> Speaker damage or distortion</li>
+          <li id="gainRisk2" style="font-size:13px;color:rgba(255,255,255,0.75);margin-bottom:6px;padding-left:16px;position:relative;"><span style="position:absolute;left:0;color:#ff6b35;">•</span> Poor audio quality</li>
+          <li id="gainRisk3" style="font-size:13px;color:rgba(255,255,255,0.75);margin-bottom:6px;padding-left:16px;position:relative;"><span style="position:absolute;left:0;color:#ff6b35;">•</span> Hearing damage (headphones)</li>
+          <li id="gainRisk4" style="font-size:13px;color:rgba(255,255,255,0.75);margin-bottom:6px;padding-left:16px;position:relative;"><span style="position:absolute;left:0;color:#ff6b35;">•</span> Warranty void for hardware damage</li>
+        </ul>
+      </div>
+      
+      <div class="gain-tip-box" id="gainTipBox" style="padding:12px;background:rgba(255,107,53,0.1);border-radius:8px;margin-top:16px;">
+        <p style="margin:0;font-size:12px;color:rgba(255,255,255,0.8);"><strong style="color:#ff6b35;">Tip:</strong> <span id="gainTipText">Reduce volume to protect your device</span></p>
+      </div>
+    </div>
+    
+    <div class="gain-checkbox-wrapper" style="padding:20px 30px;border-top:1px solid rgba(255,255,255,0.1);border-bottom:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.03);">
+      <div class="gain-checkbox" style="display:flex;align-items:center;gap:12px;">
+        <input type="checkbox" id="gainAgreeCheckbox" style="width:20px;height:20px;cursor:pointer;">
+        <label for="gainAgreeCheckbox" id="gainAgreeLabel" style="font-size:13px;color:rgba(255,255,255,0.85);cursor:pointer;margin:0;">I understand the risks and want to continue</label>
+      </div>
+    </div>
+    
+    <div class="gain-warning-footer" style="padding:20px 30px 28px;display:flex;gap:12px;">
+      <button class="gain-warning-btn cancel" id="gainCancelBtn" style="flex:1;padding:14px 20px;border-radius:10px;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.1);color:#fff;font-size:14px;font-weight:600;cursor:pointer;">Cancel</button>
+      <button class="gain-warning-btn confirm" id="gainConfirmBtn" style="flex:1;padding:14px 20px;border-radius:10px;border:none;background:linear-gradient(135deg,#ff6b35,#ff8c42);color:#fff;font-size:14px;font-weight:600;cursor:pointer;opacity:0.5;">I Understand</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// =========== GAIN WARNING SYSTEM ===========
+let pendingGainValue = null;
+let lastWarningLevel = null;
+
+// Initialize gain warning dialog
+function initGainWarning() {
+  const checkbox = document.getElementById('gainAgreeCheckbox');
+  const confirmBtn = document.getElementById('gainConfirmBtn');
+  const cancelBtn = document.getElementById('gainCancelBtn');
+  const overlay = document.getElementById('gainWarningOverlay');
+  
+  // Enable confirm button when checkbox is checked
+  checkbox.addEventListener('change', () => {
+    if (checkbox.checked) {
+      confirmBtn.classList.add('enabled');
+    } else {
+      confirmBtn.classList.remove('enabled');
+    }
+  });
+  
+  // Cancel button
+  cancelBtn.addEventListener('click', () => {
+    hideGainWarning();
+    // Reset slider to safe value
+    if (pendingGainValue !== null) {
+      const safeValue = getSafeSliderValue();
+      boostEl.value = safeValue;
+      applyBoost();
+      pendingGainValue = null;
+    }
+  });
+  
+  // Confirm button
+  confirmBtn.addEventListener('click', () => {
+    if (!checkbox.checked) return;
+    
+    // Remember user's choice - don't show warning again
+    localStorage.setItem('highGainAcknowledged', 'true');
+    console.log('💾 User acknowledged high gain risks - will not show again');
+    
+    hideGainWarning();
+    
+    // Apply the pending high gain value
+    if (pendingGainValue !== null) {
+      const sliderValue = pendingGainValue;
+      const kotlinValue = Math.round(60 + (sliderValue / 400) * 440);
+      
+      console.log('📤 User confirmed high gain - applying now!');
+      console.log('   Slider value:', sliderValue);
+      console.log('   Kotlin value:', kotlinValue + '%');
+      
+      // Update slider position to match
+      boostEl.value = sliderValue;
+      boostVal.textContent = sliderValue;
+      
+      // Send to Kotlin immediately
+      if (typeof AndroidBridge !== 'undefined') {
+        AndroidBridge.onVolumeChanged(kotlinValue);
+      }
+      
+      pendingGainValue = null;
+    }
+  });
+  
+  // Close on overlay click
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) {
+      cancelBtn.click();
+    }
+  });
+}
+
+function getSafeSliderValue() {
+  // Convert 200% back to slider value (0-400 range)
+  // 200% = 200, slider formula: v = (percent - 60) / 440 * 400
+  return Math.round((200 - 60) / 440 * 400); // ~127
+}
+
+function showGainWarning(sliderValue, warningData) {
+  const overlay = document.getElementById('gainWarningOverlay');
+  const checkbox = document.getElementById('gainAgreeCheckbox');
+  const confirmBtn = document.getElementById('gainConfirmBtn');
+  
+  console.log('🚨 showGainWarning called - forcing display!');
+  
+  // Store pending value
+  pendingGainValue = sliderValue;
+  
+  // Reset checkbox
+  checkbox.checked = false;
+  confirmBtn.classList.remove('enabled');
+  
+  // Update dialog content based on warning data
+  updateGainWarningContent(warningData);
+  
+  // FORCE SHOW - use inline style to override everything
+  overlay.style.display = 'flex';
+  overlay.classList.add('show');
+  
+  console.log('✅ Dialog should be visible now!');
+  
+  // Animate warning color
+  updateWarningColors(warningData.level);
+}
+
+function hideGainWarning() {
+  const overlay = document.getElementById('gainWarningOverlay');
+  overlay.style.display = 'none';
+  overlay.classList.remove('show');
+}
+  const overlay = document.getElementById('gainWarningOverlay');
+  overlay.classList.remove('show');
+}
+
+function updateGainWarningContent(data) {
+  const lang = i18n[currentLang] || i18n.en;
+  
+  // Update icon based on level
+  const icons = {
+    caution: '⚠️',
+    warning: '⚠️',
+    danger: '🚨'
+  };
+  document.getElementById('gainWarningIcon').textContent = icons[data.level] || '⚠️';
+  
+  // Update title and subtitle
+  document.getElementById('gainWarningTitle').textContent = data.title;
+  document.getElementById('gainWarningSubtitle').textContent = data.subtitle;
+  
+  // Update zone badge
+  const badge = document.getElementById('gainZoneBadge');
+  badge.textContent = data.zoneName;
+  badge.className = `gain-zone-badge ${data.level}`;
+  
+  // Update gain value labels with i18n
+  document.getElementById('gainLabelCurrent').textContent = lang.gain_warning_current || 'Current';
+  document.getElementById('gainLabelRecommended').textContent = lang.gain_warning_recommended || 'Recommended';
+  document.getElementById('gainLabelSafe').textContent = lang.gain_warning_max_safe || 'Max Safe';
+  
+  // Update gain values
+  document.getElementById('gainValueCurrent').textContent = `${data.currentGain}%`;
+  document.getElementById('gainValueRecommended').textContent = `${data.recommendedGain}%`;
+  document.getElementById('gainValueSafe').textContent = `${data.maxSafeGain}%`;
+  
+  // Update device info label
+  document.getElementById('gainDeviceInfo').innerHTML = `<p><strong>${lang.gain_warning_current || 'Device'}:</strong> <span id="gainDeviceName">${data.deviceName}</span></p>`;
+  
+  // Update risks title
+  document.getElementById('gainRisksTitle').textContent = lang.gain_warning_risks || 'Potential Risks:';
+  
+  // Update individual risk items with i18n
+  document.getElementById('gainRisk1').textContent = lang.gain_warning_risk_speaker || 'Speaker damage or distortion';
+  document.getElementById('gainRisk2').textContent = lang.gain_warning_risk_audio || 'Poor audio quality';
+  document.getElementById('gainRisk3').textContent = lang.gain_warning_risk_hearing || 'Hearing damage (headphones)';
+  document.getElementById('gainRisk4').textContent = lang.gain_warning_risk_warranty || 'Warranty void for hardware damage';
+  
+  // Update tip with i18n
+  document.getElementById('gainTipBox').innerHTML = `<p><strong>${lang.gain_warning_tip || 'Tip'}:</strong> <span id="gainTipText">${data.tip}</span></p>`;
+  
+  // Update button labels
+  document.getElementById('gainConfirmBtn').textContent = lang.gain_warning_confirm || 'I Understand';
+  document.getElementById('gainCancelBtn').textContent = lang.gain_warning_cancel || 'Cancel';
+  
+  // Update checkbox label
+  document.getElementById('gainAgreeLabel').textContent = lang.gain_warning_agree || 'I understand the risks and want to continue';
+}
+
+function updateWarningColors(level) {
+  const colors = {
+    caution: { base: '#ffc107', bright: '#ffd54f', rgb: '255, 193, 7' },
+    warning: { base: '#ff6b35', bright: '#ff8c42', rgb: '255, 107, 53' },
+    danger: { base: '#f44336', bright: '#ff5252', rgb: '244, 67, 54' }
+  };
+  
+  const color = colors[level] || colors.warning;
+  const root = document.documentElement;
+  root.style.setProperty('--warning-color', color.base);
+  root.style.setProperty('--warning-color-bright', color.bright);
+  root.style.setProperty('--warning-rgb', color.rgb);
+}
+
+function checkGainWarning(sliderValue) {
+  // WARNING DISABLED - Direct application
+  return false;
+}
+
+// Initialize on load
+document.addEventListener('DOMContentLoaded', initGainWarning);
+</script>

@@ -15,7 +15,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
@@ -27,10 +26,6 @@ import androidx.compose.ui.unit.sp
 import com.soundboost.R
 import com.soundboost.data.BoostSettings
 import com.soundboost.ui.components.RezonansVisualizer
-import com.soundboost.ui.components.OnboardingStep
-import com.soundboost.ui.components.OnboardingOverlay
-import com.soundboost.ui.components.TooltipPosition
-import com.soundboost.ui.components.onboardingTarget
 import com.soundboost.ui.theme.AppTheme
 import com.soundboost.ui.theme.getThemeColors
 
@@ -49,23 +44,11 @@ fun RezonansHomeScreen(
     onOpenSettings: () -> Unit,
     onOpenEqualizer: () -> Unit,
     onThemeChanged: (AppTheme) -> Unit,
-    onOpenLanguage: () -> Unit,
-    // YENİ: Onboarding parametreleri
-    showOnboarding: Boolean = false,
-    onboardingStep: Int = 0,
-    onOnboardingStepComplete: () -> Unit = {},
-    onSkipOnboarding: () -> Unit = {}
+    onOpenLanguage: () -> Unit
 ) {
     val themeColors = getThemeColors(state.theme, state.colorAccent)
     val configuration = LocalConfiguration.current
     val screenHeight = configuration.screenHeightDp.dp
-    
-    // Target bounds for onboarding
-    var targetBounds by remember { mutableStateOf<Map<String, androidx.compose.ui.geometry.Rect>>(emptyMap()) }
-    
-    val onBoundsChanged: (String, androidx.compose.ui.geometry.Rect) -> Unit = { id, bounds ->
-        targetBounds = targetBounds + (id to bounds)
-    }
     
     Box(
         modifier = Modifier
@@ -99,11 +82,6 @@ fun RezonansHomeScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(294.dp)
-                    .then(
-                        if (showOnboarding && onboardingStep == 0) {
-                            Modifier.onboardingTarget("visualizer", onBoundsChanged)
-                        } else Modifier
-                    )
             )
             
             // Track Info
@@ -117,20 +95,14 @@ fun RezonansHomeScreen(
                 onVolumeChange = onVolumeChange,
                 onSensitivityChange = { onSensitivityChange(it.toInt()) },
                 onToggle = onToggleBoost,
-                themeColors = themeColors,
-                showOnboarding = showOnboarding,
-                onboardingStep = onboardingStep,
-                onBoundsChanged = onBoundsChanged
+                themeColors = themeColors
             )
             
             // Theme Chips
             RezonansThemeChips(
                 currentTheme = state.theme,
                 onThemeChanged = onThemeChanged,
-                themeColors = themeColors,
-                showOnboarding = showOnboarding,
-                onboardingStep = onboardingStep,
-                onBoundsChanged = onBoundsChanged
+                themeColors = themeColors
             )
             
             Spacer(Modifier.weight(1f))
@@ -141,41 +113,6 @@ fun RezonansHomeScreen(
                 onOpenEqualizer = onOpenEqualizer,
                 onOpenLanguage = onOpenLanguage,
                 themeColors = themeColors
-            )
-        }
-        
-        // YENİ: Onboarding Overlay
-        if (showOnboarding) {
-            val steps = listOf(
-                OnboardingStep(
-                    title = stringResource(R.string.onboarding_step1_title),
-                    description = stringResource(R.string.onboarding_step1_desc),
-                    targetId = "play_button",
-                    tooltipPosition = TooltipPosition.BOTTOM,
-                    pulseEffect = true
-                ),
-                OnboardingStep(
-                    title = stringResource(R.string.onboarding_step2_title),
-                    description = stringResource(R.string.onboarding_step2_desc),
-                    targetId = "sliders",
-                    tooltipPosition = TooltipPosition.BOTTOM,
-                    pulseEffect = false
-                ),
-                OnboardingStep(
-                    title = stringResource(R.string.onboarding_step3_title),
-                    description = stringResource(R.string.onboarding_step3_desc),
-                    targetId = "themes",
-                    tooltipPosition = TooltipPosition.TOP,
-                    pulseEffect = false
-                )
-            )
-            
-            OnboardingOverlay(
-                steps = steps,
-                currentStep = onboardingStep,
-                onStepComplete = onOnboardingStepComplete,
-                onSkip = onSkipOnboarding,
-                targetBounds = targetBounds
             )
         }
     }
@@ -348,10 +285,7 @@ private fun RezonansTransport(
     onVolumeChange: (Int) -> Unit,
     onSensitivityChange: (Float) -> Unit,
     onToggle: () -> Unit,
-    themeColors: com.soundboost.ui.theme.ThemeColors,
-    showOnboarding: Boolean = false,
-    onboardingStep: Int = 0,
-    onBoundsChanged: ((String, androidx.compose.ui.geometry.Rect) -> Unit)? = null
+    themeColors: com.soundboost.ui.theme.ThemeColors
 ) {
     // Stable callbacks to prevent recomposition
     val stableOnVolumeChange = rememberUpdatedState(onVolumeChange)
@@ -375,12 +309,7 @@ private fun RezonansTransport(
                         )
                     )
                 )
-                .clickable(onClick = { stableOnToggle.value() })
-                .then(
-                    if (showOnboarding && onboardingStep == 0 && onBoundsChanged != null) {
-                        Modifier.onboardingTarget("play_button", onBoundsChanged)
-                    } else Modifier
-                ),
+                .clickable(onClick = { stableOnToggle.value() }),
             contentAlignment = Alignment.Center
         ) {
             Icon(
@@ -393,13 +322,7 @@ private fun RezonansTransport(
         
         // Sliders
         Column(
-            modifier = Modifier
-                .weight(1f)
-                .then(
-                    if (showOnboarding && onboardingStep == 1 && onBoundsChanged != null) {
-                        Modifier.onboardingTarget("sliders", onBoundsChanged)
-                    } else Modifier
-                ),
+            modifier = Modifier.weight(1f),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             // Volume Slider - KEYED to prevent recreation on other state changes
@@ -408,7 +331,7 @@ private fun RezonansTransport(
                     label = "Yükseltme",
                     value = volumePercent,
                     onValueChange = { stableOnVolumeChange.value(it.toInt()) },
-                    valueRange = 60f..200f,
+                    valueRange = 60f..500f,  // YENİ: Max 500% desteği
                     themeColors = themeColors
                 )
             }
@@ -496,10 +419,7 @@ private fun ThrottledSliderRow(
 private fun RezonansThemeChips(
     currentTheme: AppTheme,
     onThemeChanged: (AppTheme) -> Unit,
-    themeColors: com.soundboost.ui.theme.ThemeColors,
-    showOnboarding: Boolean = false,
-    onboardingStep: Int = 0,
-    onBoundsChanged: ((String, androidx.compose.ui.geometry.Rect) -> Unit)? = null
+    themeColors: com.soundboost.ui.theme.ThemeColors
 ) {
     val themes = listOf(
         AppTheme.MEHTAP to "Mehtap" to Color(0xFFf2b155),
@@ -517,12 +437,7 @@ private fun RezonansThemeChips(
         modifier = Modifier
             .fillMaxWidth()
             .horizontalScroll(rememberScrollState())
-            .padding(vertical = 6.dp)
-            .then(
-                if (showOnboarding && onboardingStep == 2 && onBoundsChanged != null) {
-                    Modifier.onboardingTarget("themes", onBoundsChanged)
-                } else Modifier
-            ),
+            .padding(vertical = 6.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         themes.forEach { (themeData, color) ->

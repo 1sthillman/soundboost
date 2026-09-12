@@ -150,4 +150,10 @@
     <string name="haptic_feedback_desc">VibraciÃ³n al ajustar controles</string>
     <string name="high_contrast">Modo de Alto Contraste</string>
     <string name="high_contrast_desc">Visibilidad mejorada para mejor legibilidad</string>
+
+    <!-- Mejora de llamadas -->
+    <string name="call_enhancement_title">MEJORA DE LLAMADAS</string>
+    <string name="call_enhancement_desc">Mejora la claridad de la voz entrante + reduce el ruido de fondo durante las llamadas</string>
+    <string name="call_enhancement_noise_suppression">Supresión de ruido</string>
+    <string name="call_enhancement_auto_gain">Ganancia automática</string>
 </resources>

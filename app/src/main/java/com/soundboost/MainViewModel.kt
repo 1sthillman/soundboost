@@ -18,20 +18,12 @@ import kotlinx.coroutines.launch
 class MainViewModel(application: Application) : AndroidViewModel(application) {
     
     private val prefs = BoostPreferences(application)
-    private val onboardingPrefs = com.soundboost.data.OnboardingPreferences(application) // YENİ
-    private val audioAnalyzer = RealTimeAudioAnalyzer() // YENİ: Profesyonel analyzer
+    private val audioAnalyzer = RealTimeAudioAnalyzer()
     private var analysisJob: Job? = null
     
     val uiState: StateFlow<BoostSettings> = prefs.settings
         .distinctUntilChanged()  // CRITICAL: Only emit when value actually changes
         .stateIn(viewModelScope, SharingStarted.Eagerly, BoostSettings())
-    
-    // YENİ: Onboarding state
-    val isOnboardingCompleted: StateFlow<Boolean> = onboardingPrefs.isOnboardingCompleted
-        .stateIn(viewModelScope, SharingStarted.Eagerly, false)
-    
-    val currentOnboardingStep: StateFlow<Int> = onboardingPrefs.currentStep
-        .stateIn(viewModelScope, SharingStarted.Eagerly, 0)
     
     // YENİ: Tam audio analiz verisi
     private val _audioAnalysis = MutableStateFlow<AudioAnalysis?>(null)
@@ -149,9 +141,66 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
     
+    // NEW: 10-Band EQ
+    fun on10BandEqChanged(bands: FloatArray) {
+        viewModelScope.launch {
+            prefs.set10BandEQ(bands)
+            if (uiState.value.isBoostEnabled) {
+                val intent = Intent(getApplication(), BoostForegroundService::class.java).apply {
+                    action = "UPDATE_EFFECTS"
+                }
+                getApplication<Application>().startService(intent)
+            }
+        }
+    }
+    
+    fun onPresetSelected(preset: com.soundboost.audio.EqualizerPreset) {
+        viewModelScope.launch {
+            prefs.set10BandEQ(preset.toBandArray())
+            prefs.setActivePreset(preset.name)
+            if (uiState.value.isBoostEnabled) {
+                val intent = Intent(getApplication(), BoostForegroundService::class.java).apply {
+                    action = "UPDATE_EFFECTS"
+                }
+                getApplication<Application>().startService(intent)
+            }
+        }
+    }
+    
+    fun onSaveCustomPreset(name: String, bands: FloatArray) {
+        viewModelScope.launch {
+            // Get current custom presets
+            val current = uiState.value.customPresetsJson
+            // TODO: Parse, add new preset, serialize back
+            // For now, simple implementation
+            val newPreset = com.soundboost.audio.EqualizerPreset.fromBandArray(name, name, bands, isCustom = true)
+            // Save to preferences
+            prefs.setActivePreset(name)
+        }
+    }
+    
+    fun onMaxGainChanged(db: Int) {
+        viewModelScope.launch {
+            prefs.setMaxGainDb(db)
+        }
+    }
+    
     fun onVocalMusicBalanceChanged(balance: Float) {
         viewModelScope.launch {
             prefs.setVocalMusicBalance(balance)
+            if (uiState.value.isBoostEnabled) {
+                val intent = Intent(getApplication(), BoostForegroundService::class.java).apply {
+                    action = "UPDATE_EFFECTS"
+                }
+                getApplication<Application>().startService(intent)
+            }
+        }
+    }
+    
+    fun onCallEnhancementToggled(enabled: Boolean) {
+        viewModelScope.launch {
+            android.util.Log.d("MainViewModel", "📞 Call Enhancement: $enabled")
+            prefs.setCallEnhancement(enabled)
             if (uiState.value.isBoostEnabled) {
                 val intent = Intent(getApplication(), BoostForegroundService::class.java).apply {
                     action = "UPDATE_EFFECTS"
@@ -257,26 +306,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     fun onDarkModeChanged(isDark: Boolean?) {
         viewModelScope.launch {
             prefs.setDarkMode(isDark)
-        }
-    }
-    
-    // YENİ: Onboarding fonksiyonları
-    fun onOnboardingStepComplete() {
-        viewModelScope.launch {
-            val nextStep = currentOnboardingStep.value + 1
-            onboardingPrefs.setCurrentStep(nextStep)
-        }
-    }
-    
-    fun completeOnboarding() {
-        viewModelScope.launch {
-            onboardingPrefs.completeOnboarding()
-        }
-    }
-    
-    fun skipOnboarding() {
-        viewModelScope.launch {
-            onboardingPrefs.completeOnboarding()
         }
     }
     

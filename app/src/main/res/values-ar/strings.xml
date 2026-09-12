@@ -150,4 +150,93 @@
     <string name="haptic_feedback_desc">اهتزاز عند ضبط عناصر التحكم</string>
     <string name="high_contrast">وضع التباين العالي</string>
     <string name="high_contrast_desc">رؤية محسنة لقراءة أفضل</string>
+    
+    <!-- Equalizer Presets -->
+    <string name="eq_flat">مسطح</string>
+    <string name="eq_bass_boost">تعزيز الجهير</string>
+    <string name="eq_treble_boost">تعزيز الحاد</string>
+    <string name="eq_deep_bass">جهير عميق</string>
+    <string name="eq_rock">روك</string>
+    <string name="eq_pop">بوب</string>
+    <string name="eq_jazz">جاز</string>
+    <string name="eq_classical">كلاسيكي</string>
+    <string name="eq_electronic">إلكتروني</string>
+    <string name="eq_hip_hop">هيب هوب</string>
+    <string name="eq_rnb">R&amp;B</string>
+    <string name="eq_metal">هيفي ميتال</string>
+    <string name="eq_country">كانتري</string>
+    <string name="eq_latin">لاتيني</string>
+    <string name="eq_blues">بلوز</string>
+    <string name="eq_reggae">ريغي</string>
+    <string name="eq_dance">رقص</string>
+    <string name="eq_vocal_boost">تعزيز الصوت</string>
+    <string name="eq_acoustic">أكوستيك</string>
+    <string name="eq_piano">بيانو</string>
+    <string name="eq_small_room">غرفة صغيرة</string>
+    <string name="eq_medium_room">غرفة متوسطة</string>
+    <string name="eq_large_hall">قاعة كبيرة</string>
+    <string name="eq_headphones">سماعات الرأس</string>
+    <string name="eq_speakers">مكبرات الصوت</string>
+    <string name="eq_live">مباشر</string>
+    <string name="eq_vinyl">فينيل</string>
+    <string name="eq_soft">ناعم</string>
+    
+    <!-- Equalizer Screen UI -->
+    <string name="eq_professional">معادل احترافي</string>
+    <string name="eq_10band_parametric">بارامتري 10 نطاقات</string>
+    <string name="eq_back">رجوع</string>
+    <string name="eq_max_gain">الحد الأقصى للكسب</string>
+    <string name="eq_active_preset">الإعداد المسبق النشط</string>
+    <string name="eq_select_preset">اختر إعداد مسبق</string>
+    <string name="eq_save_preset">حفظ إعداد مسبق</string>
+    <string name="eq_reset">إعادة تعيين</string>
+    <string name="eq_flat_btn">مسطح</string>
+    <string name="eq_bass_btn">جهير</string>
+    <string name="eq_treble_btn">حاد</string>
+    <string name="eq_preset_name">اسم الإعداد المسبق</string>
+    <string name="eq_save">حفظ</string>
+    <string name="eq_cancel">إلغاء</string>
+    <string name="eq_custom_presets">الإعدادات المسبقة المخصصة</string>
+    <string name="eq_built_in_presets">الإعدادات المسبقة المدمجة</string>
+    <string name="eq_max_gain_settings">إعدادات الحد الأقصى للكسب</string>
+    <string name="eq_max_gain_desc">الحد الأقصى لمستوى التعزيز لكل نطاق (15dB - 30dB)</string>
+    <string name="eq_apply">تطبيق</string>
+    <string name="eq_close">إغلاق</string>
+    
+    <!-- تحسين المكالمات -->
+    <string name="call_enhancement_title">تحسين المكالمات</string>
+    <string name="call_enhancement_desc">يعزز وضوح الصوت الوارد + يقلل من ضوضاء الخلفية أثناء المكالمات</string>
+    <string name="call_enhancement_noise_suppression">قمع الضوضاء</string>
+    <string name="call_enhancement_auto_gain">الكسب التلقائي</string>
+    
+    <!-- الإشعار -->
+    <string name="notif_volume">مستوى الصوت</string>
+    <string name="notif_bass">جهير</string>
+    <string name="notif_3d">3D</string>
+    <string name="notif_bass_down">جهير -10</string>
+    <string name="notif_bass_up">جهير +10</string>
+    <string name="notif_3d_down">3D -10</string>
+    <string name="notif_3d_up">3D +10</string>
+    <string name="notif_stop">إيقاف</string>
+    <string name="notif_active">نشط</string>
+    
+    <!-- Gain Warning Dialog -->
+    <string name="gain_warning_title">⚠️ تحذير من الصوت العالي</string>
+    <string name="gain_warning_subtitle">أنت تتجاوز مستويات الصوت الآمنة</string>
+    <string name="gain_warning_level_caution">منطقة الحذر</string>
+    <string name="gain_warning_level_warning">منطقة التحذير</string>
+    <string name="gain_warning_level_danger">منطقة الخطر</string>
+    <string name="gain_warning_current">الصوت الحالي</string>
+    <string name="gain_warning_recommended">الموصى به</string>
+    <string name="gain_warning_max_safe">الحد الأقصى الآمن</string>
+    <string name="gain_warning_risks">المخاطر المحتملة:</string>
+    <string name="gain_warning_risk_speaker">تلف أو تشويه السماعة</string>
+    <string name="gain_warning_risk_audio">جودة صوت رديئة</string>
+    <string name="gain_warning_risk_hearing">ضرر السمع (سماعات الرأس)</string>
+    <string name="gain_warning_risk_warranty">الضمان لاغي لتلف الأجهزة</string>
+    <string name="gain_warning_device_info">الجهاز: %1$s</string>
+    <string name="gain_warning_tip">نصيحة: %1$s</string>
+    <string name="gain_warning_confirm">أفهم</string>
+    <string name="gain_warning_cancel">إلغاء</string>
+    <string name="gain_warning_agree_checkbox">أفهم المخاطر وأريد المتابعة</string>
 </resources>

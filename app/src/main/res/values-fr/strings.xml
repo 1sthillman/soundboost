@@ -150,4 +150,10 @@
     <string name="haptic_feedback_desc">Vibration lors de l\'ajustement des contr√¥les</string>
     <string name="high_contrast">Mode Contraste √âlev√©</string>
     <string name="high_contrast_desc">Visibilit√© am√©lior√©e pour une meilleure lisibilit√©</string>
+
+    <!-- AmÈlioration des appels -->
+    <string name="call_enhancement_title">AM…LIORATION DES APPELS</string>
+    <string name="call_enhancement_desc">AmÈliore la clartÈ de la voix entrante + rÈduit VOTRE bruit de fond pendant les appels</string>
+    <string name="call_enhancement_noise_suppression">Suppression du bruit</string>
+    <string name="call_enhancement_auto_gain">Gain automatique</string>
 </resources>

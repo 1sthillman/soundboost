@@ -31,8 +31,11 @@ fun ModernVolumeDial(
     onToggle: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    // YENİ: Max 500% desteği
+    val maxVolume = 500f
+    
     val animatedProgress by animateFloatAsState(
-        targetValue = volumePercent / 200f,
+        targetValue = volumePercent / maxVolume,
         animationSpec = spring(
             dampingRatio = Spring.DampingRatioMediumBouncy,
             stiffness = Spring.StiffnessLow
