@@ -1,0 +1,188 @@
+═══════════════════════════════════════════════════════
+ENGLISH (en-US) - GOOGLE PLAY CONSOLE STORE LISTING
+═══════════════════════════════════════════════════════
+
+📋 APP NAME (30 chars max):
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Sound'ST Boost
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+📱 SHORT DESCRIPTION (80 chars max):
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Volume booster 500% + 10-band EQ + call enhancer. No ads. Zero data collection.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+📄 FULL DESCRIPTION (4000 chars max):
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+(COPY FROM HERE)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔊 PROFESSIONAL AUDIO ENHANCEMENT WITH COMPLETE PRIVACY
+
+Sound'ST Boost is the most powerful and privacy-focused volume booster and equalizer for Android. Boost your volume up to 500%, enjoy crystal-clear audio with professional 10-band equalizer, and enhance call quality - all while keeping your privacy 100% protected.
+
+✅ ZERO DATA COLLECTION - Nothing leaves your device
+✅ NO ADS, NO TRACKING, NO ANALYTICS
+✅ FULLY OFFLINE - No internet access
+✅ OPEN SOURCE - Verify our code on GitHub
+✅ PROFESSIONAL AUDIO TOOLS - Studio-quality sound
+
+━━━━━━━━━━━━━━━━━━━━━━
+🎚️ VOLUME BOOST (60% - 500%)
+
+• Ultra-powerful LoudnessEnhancer (up to +30dB)
+• Real-time audio amplification for all apps
+• Smart device detection (auto-optimize for headphones/speakers)
+• Multi-stream support (music, videos, games, calls)
+• Safe volume warnings to protect hearing
+• Works with Bluetooth, wired headphones, and speakers
+
+📱 COMPATIBLE APPS:
+YouTube, Spotify, Netflix, Twitch, Amazon Music, Apple Music, Deezer, SoundCloud, Hulu, Disney+, HBO Max
+
+KEYWORDS: volume booster, sound amplifier, audio boost, louder volume, max volume, speaker boost, sound enhancer
+
+━━━━━━━━━━━━━━━━━━━━━━
+🎛️ PROFESSIONAL 10-BAND EQUALIZER
+
+• Parametric EQ (31Hz - 16kHz)
+• 30+ built-in presets (Rock, Pop, Jazz, Electronic, Classical, Hip-Hop, etc.)
+• Create unlimited custom presets
+• ±15dB per band adjustment
+• Real-time frequency visualization
+• Bass Boost & Treble Boost
+• Vocal/Music balance control
+
+KEYWORDS: equalizer, EQ, sound equalizer, bass boost, treble boost, audio equalizer, music equalizer, parametric EQ
+
+━━━━━━━━━━━━━━━━━━━━━━
+📞 CALL ENHANCEMENT (NEW!)
+
+Crystal-clear voice calls with advanced audio processing:
+
+• INCOMING AUDIO: Boost caller's voice clarity
+• YOUR MICROPHONE: Reduce background noise
+• AUTO GAIN CONTROL: Normalize your voice level
+• NOISE SUPPRESSION: Remove ambient sounds
+
+📞 WORKS WITH:
+✓ Phone calls (cellular)
+✓ WhatsApp, Telegram, Signal
+✓ Zoom, Microsoft Teams, Google Meet
+✓ Discord, Slack, Skype
+✓ All VoIP and calling apps
+
+KEYWORDS: call enhancer, voice clarity, noise cancellation, call quality, clear calls, phone audio boost
+
+━━━━━━━━━━━━━━━━━━━━━━
+🎨 STUNNING AUDIO VISUALIZATIONS
+
+• Real-time spectrum analyzer
+• 5 beautiful visual themes (Mehtap, Awwards, Fener, Eyes, Orman)
+• Beat detection & energy analysis
+• Smooth 60 FPS animations
+• Multiple visualization modes
+
+KEYWORDS: music visualizer, spectrum analyzer, audio visualization, sound wave
+
+━━━━━━━━━━━━━━━━━━━━━━
+🔒 PRIVACY & SECURITY
+
+WHY WE'RE TRUSTWORTHY:
+✅ Open source on GitHub - anyone can inspect our code
+✅ Google Play verified "No data collected"
+✅ GDPR, CCPA, COPPA compliant
+✅ No ads = no need to sell your data
+
+WHY WE REQUEST PERMISSIONS:
+
+📱 MODIFY_AUDIO_SETTINGS (Required)
+   → Apply audio effects (volume boost, equalizer, bass)
+   → Does NOT access any personal data
+
+🎤 RECORD_AUDIO (Optional - You can deny)
+   → For audio visualization spectrum analyzer
+   → For call enhancement noise suppression
+   → Audio processed in real-time, NEVER recorded
+   → If denied: Volume boost and equalizer still work perfectly ✅
+
+🔔 POST_NOTIFICATIONS (Optional)
+   → Show boost status in notification bar
+   → Quick controls for adjustments
+
+PRIVACY GUARANTEE:
+✅ ZERO data collection
+✅ NO internet access - fully offline
+✅ NO location, contacts, messages, photos access
+✅ NO ad libraries, NO analytics SDKs
+✅ Open source - verify our claims
+
+━━━━━━━━━━━━━━━━━━━━━━
+⚡ FEATURES AT A GLANCE
+
+✓ Volume boost up to 500%
+✓ Professional 10-band equalizer
+✓ 30+ audio presets
+✓ Call enhancement with noise suppression
+✓ Bass boost & virtualizer (3D sound)
+✓ Real-time spectrum analyzer
+✓ 5 stunning visual themes
+✓ Dark/Light themes
+✓ Material Design 3
+✓ Android 8.0+ support
+
+━━━━━━━━━━━━━━━━━━━━━━
+🎯 WHO IS THIS FOR?
+
+• Music lovers wanting powerful bass and crystal-clear sound
+• Gamers needing enhanced audio (PUBG, Call of Duty, Valorant)
+• Remote workers making frequent video calls (Zoom, Teams)
+• Podcast/audiobook listeners
+• Anyone with hearing difficulties
+• Privacy-conscious users
+• Users with low-volume devices
+
+━━━━━━━━━━━━━━━━━━━━━━
+💡 USE CASES
+
+• Boost quiet YouTube videos
+• Enhance Netflix/streaming audio
+• Amplify music from Spotify/Apple Music
+• Improve game sound effects and footsteps
+• Make phone calls crystal clear
+• Boost WhatsApp voice messages
+• Enhance Zoom/Teams meeting audio
+• Amplify alarm and notification sounds
+• Better car audio via Bluetooth
+
+━━━━━━━━━━━━━━━━━━━━━━
+⭐ WHY CHOOSE SOUND'ST BOOST?
+
+✓ MOST POWERFUL: Up to 500% volume (others: 200-300%)
+✓ MOST PRIVATE: Zero data collection, open source
+✓ MOST PROFESSIONAL: 10-band EQ (others: 3-5 bands)
+✓ NO ADS: Forever free of advertising
+✓ OFFLINE: Works without internet
+✓ FEATURE-RICH: Volume + EQ + Call enhancer + Visualizer
+
+━━━━━━━━━━━━━━━━━━━━━━
+
+Download Sound'ST Boost now and experience professional audio enhancement with complete privacy protection!
+
+KEYWORDS: audio app, sound control, volume manager, hearing aid, sound booster, audio tools, music tools, pro audio
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+(COPY TO HERE - FULL DESCRIPTION ENDS)
+
+
+✅ CHECKLIST:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+☐ App name entered
+☐ Short description entered (check 80 char limit)
+☐ Full description entered (check 4000 char limit)
+☐ Emojis displaying correctly?
+☐ Line breaks correct?

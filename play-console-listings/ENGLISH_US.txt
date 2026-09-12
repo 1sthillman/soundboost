@@ -1,0 +1,130 @@
+=== ENGLISH (US) - Play Console Store Listing ===
+
+SHORT DESCRIPTION (80 chars max):
+Volume booster 500% + 10-band EQ + call enhancer. No ads. Zero data collection.
+
+FULL DESCRIPTION (4000 chars max):
+🔊 PROFESSIONAL AUDIO ENHANCEMENT WITH COMPLETE PRIVACY
+
+Sound'ST Boost is the most powerful and privacy-focused volume booster and equalizer for Android. Boost your volume up to 500%, enjoy crystal-clear audio with professional 10-band equalizer, and enhance call quality - all while keeping your privacy 100% protected.
+
+✅ ZERO DATA COLLECTION - Nothing leaves your device
+✅ NO ADS, NO TRACKING, NO ANALYTICS
+✅ FULLY OFFLINE - No internet access
+✅ OPEN SOURCE - Verify our code on GitHub
+✅ PROFESSIONAL AUDIO TOOLS - Studio-quality sound
+
+━━━━━━━━━━━━━━━━━━━━━━
+🎚️ VOLUME BOOST (60% - 500%)
+━━━━━━━━━━━━━━━━━━━━━━
+
+• Ultra-powerful LoudnessEnhancer (up to +30dB)
+• Real-time audio amplification for all apps
+• Smart device detection (auto-optimize for headphones/speakers)
+• Multi-stream support (music, videos, games, calls)
+• Safe volume warnings to protect hearing
+• Works with Bluetooth, wired headphones, and speakers
+
+KEYWORDS: volume booster, sound amplifier, audio boost, louder volume, max volume, speaker boost, sound enhancer, volume control
+
+━━━━━━━━━━━━━━━━━━━━━━
+🎛️ PROFESSIONAL 10-BAND EQUALIZER
+━━━━━━━━━━━━━━━━━━━━━━
+
+• Parametric EQ (31Hz - 16kHz)
+• 30+ built-in presets (Rock, Pop, Jazz, Electronic, etc.)
+• Create unlimited custom presets
+• ±15dB per band adjustment
+• Real-time frequency visualization
+• Bass Boost & Treble Boost
+• Vocal/Music balance control
+
+KEYWORDS: equalizer, EQ, sound equalizer, bass boost, treble boost, audio equalizer, music equalizer, parametric EQ, frequency control
+
+━━━━━━━━━━━━━━━━━━━━━━
+📞 CALL ENHANCEMENT (NEW!)
+━━━━━━━━━━━━━━━━━━━━━━
+
+Crystal-clear voice calls with advanced audio processing:
+
+• INCOMING AUDIO: Boost caller's voice clarity
+• YOUR MICROPHONE: Reduce background noise
+• AUTO GAIN CONTROL: Normalize your voice level
+• NOISE SUPPRESSION: Remove ambient sounds
+
+Works with:
+✓ Phone calls (cellular)
+✓ WhatsApp, Telegram, Signal
+✓ Zoom, Microsoft Teams, Google Meet
+✓ Discord, Slack, Skype
+✓ All VoIP and calling apps
+
+KEYWORDS: call enhancer, voice clarity, noise cancellation, call quality, clear calls, phone audio boost, voice boost
+
+━━━━━━━━━━━━━━━━━━━━━━
+🎨 STUNNING AUDIO VISUALIZATIONS
+━━━━━━━━━━━━━━━━━━━━━━
+
+• Real-time spectrum analyzer
+• 5 beautiful visual themes (Mehtap, Awwards, Fener, Eyes, Orman)
+• Beat detection & energy analysis
+• Smooth 60 FPS animations
+• Multiple visualization modes
+
+KEYWORDS: music visualizer, spectrum analyzer, audio visualization, sound wave, frequency display
+
+━━━━━━━━━━━━━━━━━━━━━━
+🔒 PRIVACY & SECURITY
+━━━━━━━━━━━━━━━━━━━━━━
+
+WHY WE REQUEST PERMISSIONS:
+
+📱 MODIFY_AUDIO_SETTINGS (Required)
+   → Apply audio effects (volume boost, equalizer, bass)
+   → Does NOT access any personal data
+
+🎤 RECORD_AUDIO (Optional)
+   → For audio visualization spectrum analyzer
+   → For call enhancement noise suppression
+   → Audio processed in real-time, NEVER recorded
+   → NO audio data stored or transmitted
+   → You can deny this - core boost still works
+
+🔔 POST_NOTIFICATIONS (Optional)
+   → Show boost status in notification bar
+   → Quick controls for bass/virtualizer
+
+🔄 FOREGROUND_SERVICE (Required)
+   → Keep audio boost active when screen is off
+   → Maintain effects when switching apps
+
+PRIVACY GUARANTEE:
+✅ ZERO data collection
+✅ NO personal information accessed
+✅ NO internet access - fully offline
+✅ NO analytics or tracking
+✅ NO ads or in-app purchases
+✅ Open source - verify on GitHub
+
+━━━━━━━━━━━━━━━━━━━━━━
+⚡ FEATURES AT A GLANCE
+━━━━━━━━━━━━━━━━━━━━━━
+
+✓ Volume boost up to 500%
+✓ Professional 10-band equalizer
+✓ 30+ audio presets
+✓ Call enhancement with noise suppression
+✓ Bass boost & virtualizer
+✓ Real-time spectrum analyzer
+✓ Beautiful visualizations
+✓ Smart device detection
+✓ Multi-stream audio support
+✓ Custom preset creation
+✓ Dark/Light themes
+✓ Material Design 3
+✓ Tablet optimized
+✓ Android 8.0+ support
+
+Download Sound'ST Boost now and experience professional audio enhancement with complete privacy protection!
+
+KEYWORDS: audio app, sound control, volume manager, hearing aid, sound booster, audio tools, music tools, pro audio
