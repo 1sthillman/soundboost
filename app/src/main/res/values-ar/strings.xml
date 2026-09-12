@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Sound\'ST Boost</string>
+    <string name="app_name">معزز الصوت</string>
     <string name="volume_boost">تعزيز الصوت</string>
     <string name="equalizer">المعادل</string>
     <string name="settings">الإعدادات</string>

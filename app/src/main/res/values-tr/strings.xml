@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Sound\'ST Boost</string>
+    <string name="app_name">Ses Yükseltici</string>
     
     <!-- Main Screen -->
     <string name="volume_boost">Ses Yükseltici</string>

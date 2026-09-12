@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Sound\'ST Boost</string>
+    <string name="app_name">Volume+</string>
     <string name="volume_boost">Amplificateur de Volume</string>
     <string name="equalizer">Ã‰galiseur</string>
     <string name="settings">ParamÃ¨tres</string>
@@ -151,9 +151,9 @@
     <string name="high_contrast">Mode Contraste Ã‰levÃ©</string>
     <string name="high_contrast_desc">VisibilitÃ© amÃ©liorÃ©e pour une meilleure lisibilitÃ©</string>
 
-    <!-- Amélioration des appels -->
-    <string name="call_enhancement_title">AMÉLIORATION DES APPELS</string>
-    <string name="call_enhancement_desc">Améliore la clarté de la voix entrante + réduit VOTRE bruit de fond pendant les appels</string>
+    <!-- Amï¿½lioration des appels -->
+    <string name="call_enhancement_title">AMï¿½LIORATION DES APPELS</string>
+    <string name="call_enhancement_desc">Amï¿½liore la clartï¿½ de la voix entrante + rï¿½duit VOTRE bruit de fond pendant les appels</string>
     <string name="call_enhancement_noise_suppression">Suppression du bruit</string>
     <string name="call_enhancement_auto_gain">Gain automatique</string>
 </resources>

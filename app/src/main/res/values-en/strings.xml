@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Sound\'ST Boost</string>
+    <string name="app_name">Volume Booster</string>
     <string name="volume_boost">Volume Boost</string>
     <string name="equalizer">Equalizer</string>
     <string name="settings">Settings</string>

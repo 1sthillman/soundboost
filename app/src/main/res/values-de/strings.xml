@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Sound\'ST Boost</string>
+    <string name="app_name">LautstÃ¤rke+</string>
     <string name="volume_boost">LautstÃ¤rkeverstÃ¤rker</string>
     <string name="equalizer">Equalizer</string>
     <string name="settings">Einstellungen</string>
@@ -153,7 +153,7 @@
 
     <!-- Anrufverbesserung -->
     <string name="call_enhancement_title">ANRUFVERBESSERUNG</string>
-    <string name="call_enhancement_desc">Verbessert die Klarheit eingehender Stimmen + reduziert IHRE Hintergrundgeräusche während Anrufen</string>
-    <string name="call_enhancement_noise_suppression">Geräuschunterdrückung</string>
-    <string name="call_enhancement_auto_gain">Automatische Verstärkung</string>
+    <string name="call_enhancement_desc">Verbessert die Klarheit eingehender Stimmen + reduziert IHRE Hintergrundgerï¿½usche wï¿½hrend Anrufen</string>
+    <string name="call_enhancement_noise_suppression">Gerï¿½uschunterdrï¿½ckung</string>
+    <string name="call_enhancement_auto_gain">Automatische Verstï¿½rkung</string>
 </resources>
