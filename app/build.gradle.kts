@@ -112,6 +112,10 @@ dependencies {
     // Kotlinx Serialization for Device Profiles (v1.4.0)
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
     
+    // Glance for Widgets (v1.4.0)
+    implementation("androidx.glance:glance-appwidget:1.1.1")
+    implementation("androidx.glance:glance-material3:1.1.1")
+    
     // Coil for image loading
     implementation("io.coil-kt:coil-compose:2.7.0")
     

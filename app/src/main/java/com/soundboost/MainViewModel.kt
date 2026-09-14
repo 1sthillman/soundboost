@@ -21,9 +21,21 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val audioAnalyzer = RealTimeAudioAnalyzer()
     private var analysisJob: Job? = null
     
+    // NEW v1.4.0: Device Profile Monitor
+    private val deviceMonitor = com.soundboost.audio.AudioDeviceMonitor(
+        context = application,
+        scope = viewModelScope
+    )
+    
     val uiState: StateFlow<BoostSettings> = prefs.settings
         .distinctUntilChanged()  // CRITICAL: Only emit when value actually changes
         .stateIn(viewModelScope, SharingStarted.Eagerly, BoostSettings())
+    
+    // NEW v1.4.0: Current audio device type
+    val currentDeviceType = deviceMonitor.currentDeviceType
+    
+    // NEW v1.4.0: Current device profile
+    val currentDeviceProfile = deviceMonitor.currentProfile
     
     // YENİ: Tam audio analiz verisi
     private val _audioAnalysis = MutableStateFlow<AudioAnalysis?>(null)
@@ -33,6 +45,14 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     val audioLevels: StateFlow<FloatArray?> = _audioAnalysis
         .map { it?.bars }
         .stateIn(viewModelScope, SharingStarted.Eagerly, null)
+    
+    init {
+        // Start device monitoring with auto-profile switching
+        deviceMonitor.startMonitoring { profile ->
+            android.util.Log.d("MainViewModel", "📱 Device profile changed: ${profile.deviceType}")
+            applyDeviceProfile(profile)
+        }
+    }
     
     fun toggleBoost(onRequestPermission: (() -> Unit)? = null) {
         viewModelScope.launch {
@@ -312,5 +332,78 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     override fun onCleared() {
         super.onCleared()
         stopAudioVisualization()
+        deviceMonitor.stopMonitoring()
+    }
+    
+    /**
+     * Apply device profile when audio device changes (v1.4.0)
+     */
+    private fun applyDeviceProfile(profile: com.soundboost.data.DeviceProfile) {
+        viewModelScope.launch {
+            android.util.Log.d("MainViewModel", "🎯 Applying device profile: ${profile.deviceType}")
+            
+            // Apply profile settings
+            prefs.setMasterGain(profile.volumeBoostPercent)
+            prefs.setBassBoost(profile.bassBoostPercent)
+            prefs.setVirtualizer(profile.virtualizerPercent)
+            
+            // Apply equalizer preset if available
+            profile.equalizerPresetName?.let { presetName ->
+                try {
+                    val preset = com.soundboost.audio.EqualizerPreset.values()
+                        .firstOrNull { it.name == presetName }
+                    
+                    preset?.let { onPresetSelected(it) }
+                } catch (e: Exception) {
+                    android.util.Log.w("MainViewModel", "Failed to apply preset: $presetName")
+                }
+            }
+            
+            // Update service if boost is active
+            if (uiState.value.isBoostEnabled) {
+                val intent = Intent(getApplication(), BoostForegroundService::class.java).apply {
+                    action = "UPDATE_EFFECTS"
+                }
+                getApplication<Application>().startService(intent)
+            }
+            
+            android.util.Log.d("MainViewModel", "✅ Device profile applied successfully")
+        }
+    }
+    
+    /**
+     * Save current settings as device profile (v1.4.0)
+     */
+    fun onSaveCurrentAsDeviceProfile(autoSwitch: Boolean = true) {
+        viewModelScope.launch {
+            val settings = uiState.value
+            
+            deviceMonitor.saveProfileForCurrentDevice(
+                volumeBoost = settings.masterGainPercent,
+                bassBoost = settings.bassBoostPercent,
+                virtualizer = settings.virtualizerPercent,
+                presetName = settings.activePresetName,
+                autoSwitch = autoSwitch
+            )
+            
+            android.util.Log.d("MainViewModel", "💾 Saved profile for ${deviceMonitor.currentDeviceType.value}")
+        }
+    }
+    
+    /**
+     * Delete profile for current device (v1.4.0)
+     */
+    fun onDeleteCurrentDeviceProfile() {
+        viewModelScope.launch {
+            deviceMonitor.deleteProfileForCurrentDevice()
+            android.util.Log.d("MainViewModel", "🗑️ Deleted profile for ${deviceMonitor.currentDeviceType.value}")
+        }
+    }
+    
+    /**
+     * Check if current device has a saved profile (v1.4.0)
+     */
+    suspend fun hasProfileForCurrentDevice(): Boolean {
+        return deviceMonitor.hasProfileForCurrentDevice()
     }
 }

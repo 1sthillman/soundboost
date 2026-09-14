@@ -242,4 +242,15 @@
     <string name="onboarding_next">Next</string>
     <string name="onboarding_start">Let\'s Go!</string>
     <string name="onboarding_complete">Great! You\'re Ready 🎉</string>
+    
+    <!-- Quick Settings Tile (v1.4.0) -->
+    <string name="tile_label">Sound Boost</string>
+    <string name="tile_subtitle_active">Active</string>
+    <string name="tile_subtitle_inactive">Tap to enable</string>
+    
+    <!-- Home Screen Widgets (v1.4.0) -->
+    <string name="widget_1x1_description">Quick toggle boost on/off</string>
+    <string name="widget_2x1_description">Toggle + volume presets</string>
+    <string name="widget_4x1_description">Full volume control</string>
+    <string name="widget_loading">Loading...</string>
 </resources>

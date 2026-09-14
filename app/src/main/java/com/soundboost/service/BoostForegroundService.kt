@@ -90,6 +90,11 @@ class BoostForegroundService : Service() {
             "BASS_UP" -> adjustBass(10)
             "VIRTUALIZER_DOWN" -> adjustVirtualizer(-10)
             "VIRTUALIZER_UP" -> adjustVirtualizer(10)
+            // NEW: Widget support (v1.4.0)
+            "SET_VOLUME" -> {
+                val percent = intent.getStringExtra("percent")?.toIntOrNull() ?: 150
+                setVolumeFromWidget(percent)
+            }
         }
         return START_STICKY
     }
@@ -496,6 +501,29 @@ class BoostForegroundService : Service() {
             
             val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
+        }
+    }
+    
+    /**
+     * Set volume from widget (v1.4.0)
+     * Enables boost if not already enabled and sets the volume
+     */
+    private fun setVolumeFromWidget(percent: Int) {
+        serviceScope.launch {
+            android.util.Log.d(TAG, "🎛️ Widget volume change: $percent%")
+            
+            // Save new volume to preferences
+            prefs.setMasterGain(percent)
+            
+            // Start boost if not already enabled
+            val settings = prefs.settings.firstOrNull()
+            if (settings?.isBoostEnabled != true) {
+                prefs.setBoostEnabled(true)
+                startBoost()
+            } else {
+                // Just update the volume
+                updateEffects()
+            }
         }
     }
 
