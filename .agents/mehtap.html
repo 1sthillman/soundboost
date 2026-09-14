@@ -1,4 +1,4 @@
-bunu da entegre et lütfen ve insanlar uygulamayı ilk açtıklarında ilk bunu görsünler lütfen en iyi şekilde bunu yap <!DOCTYPE html>
+<!DOCTYPE html>
 
 <html lang="tr">
 
@@ -300,11 +300,49 @@ bunu da entegre et lütfen ve insanlar uygulamayı ilk açtıklarında ilk bunu 
 
   }
 
+/* ============ AÇILIŞ INTRO ============ */
+.intro{position:fixed;inset:0;z-index:60;background:#03070e;overflow:hidden;transition:opacity 1.4s ease,visibility 1.4s;}
+.intro.gone{opacity:0;visibility:hidden;pointer-events:none;}
+#introCanvas{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none;}
+.intro-grain{position:absolute;inset:0;z-index:3;pointer-events:none;mix-blend-mode:overlay;opacity:.05;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");background-size:160px;}
+.intro-vignette{position:absolute;inset:0;z-index:2;pointer-events:none;box-shadow:inset 0 0 130px 34px rgba(0,0,0,.6);}
+.intro-text{position:absolute;top:12.5%;left:0;right:0;z-index:4;display:flex;flex-direction:column;align-items:center;gap:13px;pointer-events:none;}
+.it-line{font-family:'Space Grotesk',system-ui,sans-serif;font-size:11px;letter-spacing:.55em;text-indent:.55em;color:#bfe9e4;opacity:0;text-shadow:0 0 16px rgba(79,216,208,.7);}
+.intro.play .it-line{animation:itIn 1.7s cubic-bezier(.2,.7,.3,1) forwards;animation-delay:var(--d);}
+@keyframes itIn{from{opacity:0;transform:translateY(10px);filter:blur(5px);}to{opacity:.92;transform:none;filter:blur(0);}}
+.intro-caption{position:absolute;bottom:22%;left:0;right:0;z-index:4;text-align:center;font-family:'Fraunces',Georgia,serif;font-style:italic;font-size:14px;color:#7fa8a5;opacity:0;pointer-events:none;}
+.intro.play .intro-caption{animation:itIn 2s ease forwards;animation-delay:var(--d);}
+.intro-tap{position:absolute;bottom:16.5%;left:0;right:0;z-index:4;text-align:center;font-size:9.5px;letter-spacing:.3em;color:#48707a;opacity:0;pointer-events:none;}
+.intro.play .intro-tap{animation:itIn 1.6s ease forwards;animation-delay:3.1s;}
+.intro-enter{position:absolute;bottom:6.5%;left:50%;transform:translateX(-50%);z-index:5;background:rgba(6,22,28,.4);border:1px solid rgba(79,216,208,.32);color:#d6efec;font-family:'Space Grotesk',system-ui,sans-serif;font-size:11.5px;letter-spacing:.32em;text-indent:.32em;padding:15px 32px;border-radius:40px;cursor:pointer;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);opacity:0;transition:border-color .3s,box-shadow .3s,transform .15s;}
+.intro.play .intro-enter{animation:itIn 1.6s ease forwards;animation-delay:2.5s;}
+.intro-enter:active{transform:translateX(-50%) scale(.95);}
+.intro.entering .intro-enter{border-color:rgba(120,230,222,.95);box-shadow:0 0 46px rgba(79,216,208,.5);}
+.ie-ring{position:absolute;inset:-4px;border-radius:44px;border:1px solid rgba(79,216,208,.55);opacity:0;pointer-events:none;}
+.intro.play .intro-enter .ie-ring{animation:iePulse 2.4s ease-out infinite;animation-delay:2.5s;}
+@keyframes iePulse{0%{transform:scale(1);opacity:.65;}100%{transform:scale(1.4);opacity:0;}}
+@media (prefers-reduced-motion:reduce){.intro.play .it-line,.intro.play .intro-caption,.intro.play .intro-tap,.intro.play .intro-enter,.intro.play .intro-enter .ie-ring{animation:none;opacity:.92;}}
+
 </style>
 
 </head>
 
 <body>
+
+<!-- ============ AÇILIŞ INTRO ============ -->
+<div class="intro" id="intro">
+  <canvas id="introCanvas"></canvas>
+  <div class="intro-vignette"></div>
+  <div class="intro-grain"></div>
+  <div class="intro-text">
+    <span class="it-line" style="--d:.5s" data-i18n="intro_line1">WAIT</span>
+    <span class="it-line" style="--d:1.2s" data-i18n="intro_line2">CAST</span>
+    <span class="it-line" style="--d:1.9s" data-i18n="intro_line3">AWAKEN</span>
+  </div>
+  <p class="intro-caption" style="--d:2.7s" data-i18n="intro_caption">— by the moonlit shore —</p>
+  <p class="intro-tap" data-i18n="intro_tap_hint">touch the sky · cast a light</p>
+  <button class="intro-enter" id="introEnter"><span class="ie-ring"></span><span data-i18n="intro_enter">Enter</span></button>
+</div>
 
 <div class="phone" id="phone" data-theme="mehtap" data-mode="dark">
 
@@ -316,11 +354,11 @@ bunu da entegre et lütfen ve insanlar uygulamayı ilk açtıklarında ilk bunu 
 
       <div class="topbar">
 
-        <p class="brand">Mehtap</p>
+        <p class="brand" data-i18n="brand">Mehtap</p>
 
         <div class="topright">
 
-          <button class="modeToggle" id="modeToggle" aria-label="Gece / Gündüz">
+          <button class="modeToggle" id="modeToggle" aria-label="Night / Day">
 
             <span class="modeSwitch"><span class="thumb" id="modeThumb"></span></span>
 
@@ -342,21 +380,21 @@ bunu da entegre et lütfen ve insanlar uygulamayı ilk açtıklarında ilk bunu 
 
         <canvas id="canvas"></canvas>
 
-        <p class="stage-hint" id="stageHint">Oynat'a basarak sessiz denizi uyandırın</p>
+        <p class="stage-hint" id="stageHint" data-i18n="stage_hint">Press Play to awaken the silent sea</p>
 
       </div>
 
       <div class="track">
 
-        <h2 id="trackTitle">Ay Balıkçısı</h2>
+        <h2 id="trackTitle" data-i18n="track_title">Moon Fisherman</h2>
 
-        <p id="trackSub">Durgun suda sabırla bekleyen bir sandalın hikâyesi</p>
+        <p id="trackSub" data-i18n="track_sub">A story of patience in still waters</p>
 
       </div>
 
       <div class="transport">
 
-        <button class="playbtn" id="playBtn" aria-label="Oynat">
+        <button class="playbtn" id="playBtn" aria-label="Play">
 
           <span class="ripple" id="ripple"></span>
 
@@ -368,7 +406,7 @@ bunu da entegre et lütfen ve insanlar uygulamayı ilk açtıklarında ilk bunu 
 
           <div class="slider-row">
 
-            <label for="boost">Dalga</label>
+            <label for="boost" data-i18n="boost_label">Wave</label>
 
             <input type="range" id="boost" min="0" max="100" value="65">
 
@@ -378,7 +416,7 @@ bunu da entegre et lütfen ve insanlar uygulamayı ilk açtıklarında ilk bunu 
 
           <div class="slider-row">
 
-            <label for="sens">Parıltı</label>
+            <label for="sens" data-i18n="sens_label">Shimmer</label>
 
             <input type="range" id="sens" min="0" max="100" value="45">
 
@@ -395,6 +433,113 @@ bunu da entegre et lütfen ve insanlar uygulamayı ilk açtıklarında ilk bunu 
 </div>
 
 <script>
+
+// ============ i18n TRANSLATIONS (10 Languages) ============
+const i18n = {
+  tr: { // Türkçe
+    intro_line1: 'SABRET', intro_line2: 'SAL', intro_line3: 'UYAN',
+    intro_caption: '— mehtabın kıyısında —', intro_tap_hint: 'göğe dokun · bir ışık sal',
+    intro_enter: 'Gir', intro_welcome: '— hoş geldin —',
+    brand: 'Mehtap', stage_hint: "Oynat'a basarak sessiz denizi uyandırın",
+    track_title: 'Ay Balıkçısı', track_sub: 'Durgun suda sabırla bekleyen bir sandalın hikâyesi',
+    boost_label: 'Dalga', sens_label: 'Parıltı', mode_aria: 'Gece / Gündüz', play_aria: 'Oynat'
+  },
+  en: { // English
+    intro_line1: 'WAIT', intro_line2: 'CAST', intro_line3: 'AWAKEN',
+    intro_caption: '— by the moonlit shore —', intro_tap_hint: 'touch the sky · cast a light',
+    intro_enter: 'Enter', intro_welcome: '— welcome —',
+    brand: 'Mehtap', stage_hint: 'Press Play to awaken the silent sea',
+    track_title: 'Moon Fisherman', track_sub: 'A story of patience in still waters',
+    boost_label: 'Wave', sens_label: 'Shimmer', mode_aria: 'Night / Day', play_aria: 'Play'
+  },
+  de: { // Deutsch
+    intro_line1: 'WARTE', intro_line2: 'WIRF', intro_line3: 'ERWACHE',
+    intro_caption: '— am mondbeschienenen Ufer —', intro_tap_hint: 'berühre den himmel · wirf ein licht',
+    intro_enter: 'Eintreten', intro_welcome: '— willkommen —',
+    brand: 'Mehtap', stage_hint: 'Drücken Sie Play, um das stille Meer zu erwecken',
+    track_title: 'Mondfischer', track_sub: 'Eine Geschichte der Geduld in stillen Gewässern',
+    boost_label: 'Welle', sens_label: 'Schimmer', mode_aria: 'Nacht / Tag', play_aria: 'Abspielen'
+  },
+  es: { // Español
+    intro_line1: 'ESPERA', intro_line2: 'LANZA', intro_line3: 'DESPIERTA',
+    intro_caption: '— en la orilla iluminada por la luna —', intro_tap_hint: 'toca el cielo · lanza una luz',
+    intro_enter: 'Entrar', intro_welcome: '— bienvenido —',
+    brand: 'Mehtap', stage_hint: 'Presiona Play para despertar el mar silencioso',
+    track_title: 'Pescador Lunar', track_sub: 'Una historia de paciencia en aguas tranquilas',
+    boost_label: 'Ola', sens_label: 'Destello', mode_aria: 'Noche / Día', play_aria: 'Reproducir'
+  },
+  fr: { // Français
+    intro_line1: 'ATTENDS', intro_line2: 'LANCE', intro_line3: 'RÉVEILLE',
+    intro_caption: '— au bord du clair de lune —', intro_tap_hint: 'touche le ciel · lance une lumière',
+    intro_enter: 'Entrer', intro_welcome: '— bienvenue —',
+    brand: 'Mehtap', stage_hint: 'Appuyez sur Play pour réveiller la mer silencieuse',
+    track_title: 'Pêcheur Lunaire', track_sub: 'Une histoire de patience dans des eaux calmes',
+    boost_label: 'Vague', sens_label: 'Éclat', mode_aria: 'Nuit / Jour', play_aria: 'Jouer'
+  },
+  it: { // Italiano
+    intro_line1: 'ASPETTA', intro_line2: 'LANCIA', intro_line3: 'RISVEGLIA',
+    intro_caption: '— sulla riva illuminata dalla luna —', intro_tap_hint: 'tocca il cielo · lancia una luce',
+    intro_enter: 'Entra', intro_welcome: '— benvenuto —',
+    brand: 'Mehtap', stage_hint: 'Premi Play per risvegliare il mare silenzioso',
+    track_title: 'Pescatore Lunare', track_sub: 'Una storia di pazienza in acque calme',
+    boost_label: 'Onda', sens_label: 'Luccichio', mode_aria: 'Notte / Giorno', play_aria: 'Riproduci'
+  },
+  ja: { // 日本語
+    intro_line1: '待つ', intro_line2: '投げる', intro_line3: '目覚める',
+    intro_caption: '— 月明かりの岸辺で —', intro_tap_hint: '空に触れる・光を投げる',
+    intro_enter: '入る', intro_welcome: '— ようこそ —',
+    brand: 'Mehtap', stage_hint: '再生を押して静かな海を目覚めさせる',
+    track_title: '月の漁師', track_sub: '静かな水での忍耐の物語',
+    boost_label: '波', sens_label: '輝き', mode_aria: '夜 / 昼', play_aria: '再生'
+  },
+  ko: { // 한국어
+    intro_line1: '기다려', intro_line2: '던져', intro_line3: '깨어나',
+    intro_caption: '— 달빛 해안에서 —', intro_tap_hint: '하늘을 만지다 · 빛을 던지다',
+    intro_enter: '들어가기', intro_welcome: '— 환영합니다 —',
+    brand: 'Mehtap', stage_hint: '재생을 눌러 고요한 바다를 깨우세요',
+    track_title: '달 어부', track_sub: '잔잔한 물에서 인내하는 이야기',
+    boost_label: '파도', sens_label: '반짝임', mode_aria: '밤 / 낮', play_aria: '재생'
+  },
+  pt: { // Português
+    intro_line1: 'ESPERA', intro_line2: 'LANÇA', intro_line3: 'DESPERTA',
+    intro_caption: '— na costa iluminada pela lua —', intro_tap_hint: 'toca o céu · lança uma luz',
+    intro_enter: 'Entrar', intro_welcome: '— bem-vindo —',
+    brand: 'Mehtap', stage_hint: 'Pressione Play para despertar o mar silencioso',
+    track_title: 'Pescador Lunar', track_sub: 'Uma história de paciência em águas calmas',
+    boost_label: 'Onda', sens_label: 'Brilho', mode_aria: 'Noite / Dia', play_aria: 'Reproduzir'
+  },
+  ru: { // Русский
+    intro_line1: 'ЖДИ', intro_line2: 'БРОСЬ', intro_line3: 'ПРОСНИСЬ',
+    intro_caption: '— на лунном берегу —', intro_tap_hint: 'коснись неба · брось свет',
+    intro_enter: 'Войти', intro_welcome: '— добро пожаловать —',
+    brand: 'Mehtap', stage_hint: 'Нажмите Play, чтобы пробудить тихое море',
+    track_title: 'Лунный Рыбак', track_sub: 'История терпения в спокойных водах',
+    boost_label: 'Волна', sens_label: 'Мерцание', mode_aria: 'Ночь / День', play_aria: 'Воспроизвести'
+  }
+};
+
+let currentLang = 'en'; // default language
+
+function setLanguage(lang) {
+  if (!i18n[lang]) lang = 'en';
+  currentLang = lang;
+  
+  // Update all text content
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (i18n[lang][key]) el.textContent = i18n[lang][key];
+  });
+  
+  // Update aria-labels
+  const modeToggle = document.getElementById('modeToggle');
+  const playBtn = document.getElementById('playBtn');
+  if(modeToggle && i18n[lang].mode_aria) modeToggle.setAttribute('aria-label', i18n[lang].mode_aria);
+  if(playBtn && i18n[lang].play_aria) playBtn.setAttribute('aria-label', i18n[lang].play_aria);
+}
+
+// Detect browser language
+const browserLang = (navigator.language || navigator.userLanguage || 'en').substring(0, 2);
+setLanguage(i18n[browserLang] ? browserLang : 'en');
 
 const canvas = document.getElementById('canvas');
 
@@ -1935,6 +2080,127 @@ function drawSea(e, horizonY, rig){
 let lastResize = 0;
 
 let lastFrameTime = performance.now();
+
+/* =====================================================================
+   INTRO CANVAS ANIMATION
+   ===================================================================== */
+const introEl = document.getElementById('intro');
+const introCanvas = document.getElementById('introCanvas');
+const introCtx = introCanvas.getContext('2d');
+const introEnterBtn = document.getElementById('introEnter');
+const introEndEl = document.getElementById('introEnd');
+
+let introW, introH, introDPR;
+function resizeIntro(){
+  introDPR = Math.min(2, window.devicePixelRatio || 1);
+  introW = window.innerWidth; introH = window.innerHeight;
+  introCanvas.width = Math.round(introW*introDPR); introCanvas.height = Math.round(introH*introDPR);
+  introCtx.setTransform(introDPR,0,0,introDPR,0,0);
+}
+window.addEventListener('resize', resizeIntro);
+resizeIntro();
+
+let introT = 0;
+let introParticles = [];
+for(let i=0; i<80; i++){
+  introParticles.push({
+    x: Math.random(), y: Math.random(),
+    r: 0.4 + Math.random()*1.1,
+    phase: Math.random()*Math.PI*2,
+    speed: 0.2 + Math.random()*0.9
+  });
+}
+
+function renderIntro(){
+  if(introEl.classList.contains('gone')) return;
+  
+  introT += 0.015;
+  
+  const grad = introCtx.createLinearGradient(0,0,0,introH);
+  grad.addColorStop(0, '#02050b');
+  grad.addColorStop(0.6, '#0a1820');
+  grad.addColorStop(1, '#0e2532');
+  introCtx.fillStyle = grad;
+  introCtx.fillRect(0,0,introW,introH);
+  
+  introParticles.forEach(p=>{
+    const twinkle = 0.3 + 0.7*Math.sin(introT*p.speed + p.phase);
+    const radius = Math.max(0.1, p.r*twinkle); // Prevent negative radius
+    introCtx.beginPath();
+    introCtx.arc(p.x*introW, p.y*introH*0.75, radius, 0, 7);
+    introCtx.fillStyle = `rgba(191,233,228,${Math.max(0,twinkle*0.6)})`;
+    introCtx.fill();
+  });
+  
+  const moonY = introH*0.35;
+  const moonX = introW*0.5 + Math.sin(introT*0.3)*introW*0.05;
+  const moonR = Math.min(introW,introH)*0.1;
+  
+  const moonGlow = introCtx.createRadialGradient(moonX,moonY,moonR*0.2,moonX,moonY,moonR*4);
+  moonGlow.addColorStop(0, 'rgba(217,180,106,0.4)');
+  moonGlow.addColorStop(0.4, 'rgba(217,180,106,0.15)');
+  moonGlow.addColorStop(1, 'rgba(217,180,106,0)');
+  introCtx.fillStyle = moonGlow;
+  introCtx.beginPath(); introCtx.arc(moonX,moonY,moonR*4,0,7); introCtx.fill();
+  
+  const moonBody = introCtx.createRadialGradient(moonX-moonR*0.3,moonY-moonR*0.3,moonR*0.1,moonX,moonY,moonR);
+  moonBody.addColorStop(0, '#fef9e8');
+  moonBody.addColorStop(1, '#d9b46a');
+  introCtx.fillStyle = moonBody;
+  introCtx.beginPath(); introCtx.arc(moonX,moonY,moonR,0,7); introCtx.fill();
+  
+  const waterY = introH*0.75;
+  const waterGrad = introCtx.createLinearGradient(0,waterY,0,introH);
+  waterGrad.addColorStop(0, '#0d2436');
+  waterGrad.addColorStop(1, '#030a12');
+  introCtx.fillStyle = waterGrad;
+  introCtx.fillRect(0,waterY,introW,introH-waterY);
+  
+  for(let i=0; i<20; i++){
+    const p = i/20;
+    const y = waterY + 8 + p*(introH-waterY)*0.8;
+    const fade = 1-p*0.85;
+    const jitter = (Math.random()-0.5)*15*fade;
+    const w = (introW*0.12*(1-p*0.6) + jitter)*fade;
+    const cx = moonX + Math.sin(p*18 + introT)*8*fade;
+    introCtx.fillStyle = `rgba(217,180,106,${(0.08+Math.random()*0.15)*fade})`;
+    introCtx.fillRect(cx-w/2,y,Math.max(0,w),1.2+Math.random()*1.5*fade);
+  }
+  
+  requestAnimationFrame(renderIntro);
+}
+
+renderIntro();
+
+setTimeout(()=>{ introEl.classList.add('play'); }, 300);
+
+introEnterBtn.addEventListener('click', ()=>{
+  introEl.classList.add('entering');
+  
+  // Play chime sounds
+  if(actx){
+    droplet(329.63, 0, 0.7);
+    droplet(493.88, 0.17, 0.6);
+    droplet(659.25, 0.35, 0.55);
+    droplet(987.77, 0.54, 0.45);
+  }
+  
+  setTimeout(()=>{
+    introEl.classList.add('gone');
+    setLanguage(currentLang);
+    
+    // Auto-start playback after intro
+    setTimeout(()=>{
+      if(typeof togglePlay === 'function') {
+        try {
+          togglePlay();
+        } catch(err) {
+          console.log('Auto-play blocked:', err);
+        }
+      }
+    }, 650);
+  }, 300);
+});
 
 function render(){
 

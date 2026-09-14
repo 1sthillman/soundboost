@@ -24,6 +24,20 @@
     <string name="about_desc">يستخدم Sound\'ST Boost واجهات برمجة تطبيقات التأثيرات الصوتية الرسمية من Android. قد تختلف قوة التأثير حسب أجهزة الجهاز.</string>
     <string name="microphone_permission">إذن الميكروفون</string>
     <string name="microphone_permission_desc">مطلوب للتصور الصوتي في الوقت الفعلي</string>
+    
+    <!-- إفصاح بارز لإذن الصوت (مطلوب من Google Play) -->
+    <string name="audio_permission_title">السمات المرئية تحتاج إلى إذن</string>
+    <string name="audio_permission_description">تتزامن سماتنا المرئية مع الموسيقى التي تعمل في الخلفية (Spotify و YouTube وما إلى ذلك). لجعل السمات تتحرك مع الإيقاع، نحتاج إلى إذن تحليل الصوت.</string>
+    <string name="audio_permission_why_title">لماذا نحتاج هذا</string>
+    <string name="audio_permission_why_desc">تستجيب السمات للموسيقى من التطبيقات الخارجية (Spotify و YouTube). يتطلب Android إذن الصوت لتحليل التردد.</string>
+    <string name="audio_permission_privacy_title">خصوصيتك</string>
+    <string name="audio_permission_privacy_desc">يتم تحليل بيانات الصوت في الوقت الفعلي فقط لتحريك السمات. نحن لا نسجل أو نخزن أو نشارك أي بيانات صوتية.</string>
+    <string name="audio_permission_technical_title">التفاصيل التقنية</string>
+    <string name="audio_permission_technical_desc">نستخدم واجهة برمجة تطبيقات Visualizer الرسمية من Android. تتم معالجة الصوت محليًا على جهازك ويتم التخلص منه على الفور.</string>
+    <string name="audio_permission_accept">أوافق</string>
+    <string name="audio_permission_deny">لا شكرًا</string>
+    <string name="audio_permission_footer">يمكنك تغيير هذا الإذن في أي وقت في الإعدادات</string>
+    
     <string name="theme_neon_dark">نيون داكن</string>
     <string name="theme_ocean_blue">أزرق المحيط</string>
     <string name="theme_sunset_orange">برتقالي غروب الشمس</string>
@@ -239,4 +253,27 @@
     <string name="gain_warning_confirm">أفهم</string>
     <string name="gain_warning_cancel">إلغاء</string>
     <string name="gain_warning_agree_checkbox">أفهم المخاطر وأريد المتابعة</string>
+
+    <!-- تحسين البطارية (آمن لـ Google Play) -->
+    <string name="battery_optimization">تحسين البطارية</string>
+    <string name="battery_optimization_desc">موصى به لأجهزة Xiaomi و Samsung و OnePlus لمنع انقطاع الخدمة في الخلفية</string>
+    
+    <!-- مربع حوار تحسين البطارية -->
+    <string name="battery_dialog_title">⚡ إعداد تحسين البطارية</string>
+    <string name="battery_dialog_subtitle">إبقاء Sound Boost يعمل في الخلفية</string>
+    <string name="battery_dialog_desc">بعض الأجهزة (Xiaomi و Samsung و OnePlus و Huawei) تغلق تطبيقات الخلفية بشكل قوي لتوفير البطارية. للحفاظ على تعزيز الصوت نشطًا عندما تكون شاشتك مغلقة، تحتاج إلى تعطيل تحسين البطارية.</string>
+    <string name="battery_dialog_step1_title">الخطوة 1: فتح الإعدادات</string>
+    <string name="battery_dialog_step1_desc">اضغط على الزر أدناه لفتح إعدادات تحسين البطارية</string>
+    <string name="battery_dialog_step2_title">الخطوة 2: البحث عن Sound\'ST Boost</string>
+    <string name="battery_dialog_step2_desc">قم بالتمرير عبر قائمة التطبيقات وابحث عن "Sound\'ST Boost" أو ابحث عنه</string>
+    <string name="battery_dialog_step3_title">الخطوة 3: تعطيل التحسين</string>
+    <string name="battery_dialog_step3_desc">اضغط على التطبيق واختر "عدم التحسين" أو "السماح"</string>
+    <string name="battery_dialog_open_settings">فتح الإعدادات</string>
+    <string name="battery_dialog_cancel">ربما لاحقًا</string>
+    <string name="battery_dialog_device_specific">نصائح خاصة بالجهاز:</string>
+    <string name="battery_dialog_tip_xiaomi">Xiaomi: قم أيضًا بتفعيل "البدء التلقائي" في الإعدادات → التطبيقات → إدارة التطبيقات → Sound\'ST Boost</string>
+    <string name="battery_dialog_tip_samsung">Samsung: قم بالإزالة من "التطبيقات النائمة" في الإعدادات → البطارية → حدود الاستخدام في الخلفية</string>
+    <string name="battery_dialog_tip_oneplus">OnePlus: قم بتفعيل "السماح بالنشاط في الخلفية" في معلومات التطبيق → البطارية</string>
+    <string name="battery_dialog_tip_huawei">Huawei: قم بتفعيل "البدء اليدوي" في مدير الهاتف → بدء التطبيق</string>
+    <string name="language_italian">الإيطالية</string>
 </resources>

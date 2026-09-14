@@ -1,0 +1,114 @@
+═══════════════════════════════════════════════════════════════════
+  SOUND'ST BOOST - SIGNED AAB RELEASE INFO v1.3.8 (Build 26)
+═══════════════════════════════════════════════════════════════════
+
+📦 BUILD DETAILS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+• Version Name:     1.3.8
+• Version Code:     26
+• Build Type:       Release (Signed)
+• File Size:        3.56 MB
+• Build Date:       13 Eylül 2026, 05:43
+
+📍 FILE LOCATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+app/build/outputs/bundle/release/SoundSTBoost-v1.3.8-release.aab
+
+✅ WHAT'S NEW IN v1.3.8
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. ✅ RECORD_AUDIO İzni - Prominent Disclosure Dialog
+   - İlk açılışta kullanıcıya Google Play zorunlu "Prominent Disclosure" gösteriliyor
+   - 12 dilde tam çeviri (EN, TR, DE, ES, FR, IT, AR, KO, JA, RU, ZH)
+   - Spotify/YouTube gibi harici uygulamalardan ses analizi için neden gerekli açıklanıyor
+   - Gizlilik güvencesi: "Ses KAYDETMIYORUZ, SAKLAMIYORUZ, PAYLAŞMIYORUZ"
+
+2. ✅ Native Debug Symbols (FULL)
+   - Google Play Console için tam native debug sembolleri eklendi
+   - AAB içinde gömülü olarak geliyor
+   - Crash/ANR raporlarında detaylı stack trace sağlar
+   - Konfigürasyon: ndk { debugSymbolLevel = "FULL" }
+
+3. ✅ Battery Optimization Dialog (Google Play Safe)
+   - REQUEST_IGNORE_BATTERY_OPTIMIZATIONS izni KALDIRILDı (riskli)
+   - Bunun yerine ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS kullanılıyor
+   - Kullanıcıyı manuel olarak ayarlara yönlendiriyor
+   - Xiaomi, Samsung, OnePlus, Huawei için cihaza özel talimatlar
+   - 12 dilde tam çeviri mevcut
+
+🛡️ GOOGLE PLAY COMPLIANCE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✅ RECORD_AUDIO Prominent Disclosure - TAMAMLANDI
+   → İlk açılışta zorunlu bilgilendirme dialogu
+   → 12 dilde profesyonel açıklama
+   → "Kabul Ediyorum" / "Hayır Teşekkürler" butonları
+
+✅ REQUEST_IGNORE_BATTERY_OPTIMIZATIONS - KALDIRILDI
+   → Riskli pil izni manifest'ten çıkarıldı
+   → Güvenli alternatif implementasyonu mevcut
+
+✅ Native Debug Symbols - EKLENDI
+   → AAB içinde FULL seviye semboller
+   → Crash analiz desteği aktif
+
+✅ FOREGROUND_SERVICE & FOREGROUND_SERVICE_MEDIA_PLAYBACK
+   → Video kanıtı mevcut
+   → Bildirim panelinde servis görünüyor
+
+🔐 SIGNING CONFIGURATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+• Keystore:         soundstboost-release-key.jks
+• Key Alias:        soundstboost
+• Signature:        SHA-256 with RSA
+• Validity:         25 years (2024-2049)
+
+📋 PERMISSIONS USED
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✅ RECORD_AUDIO
+   → Visualizer API ile harici app seslerini analiz
+   → Prominent Disclosure dialog gösteriliyor
+   → Google Play beyanı: "Temalar için frekans analizi"
+
+✅ MODIFY_AUDIO_SETTINGS
+   → Ses yükseltme ve ekolayzır efektleri için
+
+✅ FOREGROUND_SERVICE
+✅ FOREGROUND_SERVICE_MEDIA_PLAYBACK
+   → Arka planda çalışma için
+
+✅ POST_NOTIFICATIONS (Android 13+)
+   → Foreground service bildirimi için
+
+✅ BLUETOOTH_CONNECT (Android 12+)
+   → Bluetooth kulaklık algılama için
+
+❌ REQUEST_IGNORE_BATTERY_OPTIMIZATIONS
+   → KALDIRILDI (Google Play risk)
+
+🎯 GOOGLE PLAY CONSOLE UPLOAD READY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. ✅ AAB imzalanmış ve hazır
+2. ✅ Native debug symbols dahil
+3. ✅ RECORD_AUDIO prominent disclosure mevcut
+4. ✅ Tehlikeli izinler kaldırılmış
+5. ✅ 12 dilde tam çeviri
+
+📝 RELEASE NOTES (Google Play için)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+• Google Play uyumluluk güncellemesi
+• Geliştirilmiş izin yönetimi
+• 12 dilde tam destek
+• Performans iyileştirmeleri
+
+🚀 DEPLOYMENT CHECKLIST
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[ ] AAB dosyasını Google Play Console'a yükle
+[ ] "Uygulama İçeriği" → "RECORD_AUDIO" beyanını güncelle
+[ ] "Uygulama İçeriği" → "Reklam Kimliği" (AD_ID) beyanı yap
+[ ] Kapalı test grubunu oluştur
+[ ] Test kullanıcılarını ekle
+[ ] Prominent Disclosure dialogunu test et
+[ ] İncelemeye gönder
+
+═══════════════════════════════════════════════════════════════════
+Generated: 13 Eylül 2026, 05:43
+═══════════════════════════════════════════════════════════════════

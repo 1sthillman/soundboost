@@ -479,3 +479,4 @@ Sound'ST Boost - Professional audio. Complete privacy.
 
 *Last Updated: December 9, 2026*  
 *Version: 1.3.2*
+   

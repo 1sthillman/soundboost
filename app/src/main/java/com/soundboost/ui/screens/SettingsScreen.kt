@@ -34,6 +34,9 @@ fun SettingsScreen(
     val themeColors = getThemeColors(state.theme, state.colorAccent)
     val context = androidx.compose.ui.platform.LocalContext.current
     
+    // Battery Optimization Dialog State
+    var showBatteryDialog by remember { mutableStateOf(false) }
+    
     // Check microphone permission status
     var micPermissionGranted by remember { mutableStateOf(
         androidx.core.content.ContextCompat.checkSelfPermission(
@@ -127,6 +130,44 @@ fun SettingsScreen(
                     }
                 }
             )
+            
+            // Battery Optimization Settings (Google Play Safe)
+            ModernSettingsCard(
+                title = stringResource(R.string.battery_optimization),
+                description = stringResource(R.string.battery_optimization_desc),
+                icon = Icons.Default.BatteryChargingFull,
+                accentColor = androidx.compose.ui.graphics.Color(0xFF4CAF50),
+                surfaceColor = themeColors.surfaceElevated,
+                onClick = {
+                    // Show dialog first to guide user
+                    showBatteryDialog = true
+                },
+                endContent = {
+                    Icon(
+                        Icons.Default.ChevronRight,
+                        contentDescription = null,
+                        tint = themeColors.onSurfaceVariant
+                    )
+                }
+            )
+            
+            // Battery Optimization Dialog
+            if (showBatteryDialog) {
+                BatteryOptimizationDialog(
+                    themeColors = themeColors,
+                    onOpenSettings = {
+                        try {
+                            val intent = android.content.Intent(
+                                android.provider.Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS
+                            )
+                            context.startActivity(intent)
+                        } catch (e: Exception) {
+                            android.util.Log.e("SettingsScreen", "Failed to open battery settings", e)
+                        }
+                    },
+                    onDismiss = { showBatteryDialog = false }
+                )
+            }
             
             // Theme Section
             ModernSettingsCard(

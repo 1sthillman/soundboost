@@ -24,6 +24,19 @@
     <string name="about_desc">Sound\'ST BoostëŠ” Androidì˜ ê³µì‹ ì˜¤ë””ì˜¤ íš¨ê³¼ APIë¥¼ ì‚¬ìš©í•©ë‹ˆë‹¤. íš¨ê³¼ ê°•ë„ëŠ” ì¥ì¹˜ í•˜ë“œì›¨ì–´ì— ë”°ë¼ ë‹¤ë¥¼ ìˆ˜ ìˆìŠµë‹ˆë‹¤.</string>
     <string name="microphone_permission">ë§ˆì´í¬ ê¶Œí•œ</string>
     <string name="microphone_permission_desc">ì‹¤ì‹œê°„ ì˜¤ë””ì˜¤ ì‹œê°í™”ì— í•„ìš”</string>
+
+    <!-- 오디오 권한 주요 공개 (Google Play 필수) -->
+    <string name="audio_permission_title">비주얼 테마에 권한 필요</string>
+    <string name="audio_permission_description">우리의 비주얼 테마는 백그라운드에서 재생되는 음악(Spotify, YouTube 등)과 동기화됩니다. 테마가 리듬에 맞춰 움직이게 하려면 오디오 분석 권한이 필요합니다.</string>
+    <string name="audio_permission_why_title">왜 필요한가요</string>
+    <string name="audio_permission_why_desc">테마가 외부 앱(Spotify, YouTube)의 음악에 반응합니다. Android는 주파수 분석을 위해 오디오 권한을 요구합니다.</string>
+    <string name="audio_permission_privacy_title">귀하의 개인정보</string>
+    <string name="audio_permission_privacy_desc">오디오 데이터는 테마 애니메이션을 위해 실시간으로만 분석됩니다. 우리는 오디오 데이터를 녹음, 저장 또는 공유하지 않습니다.</string>
+    <string name="audio_permission_technical_title">기술 세부사항</string>
+    <string name="audio_permission_technical_desc">Android의 공식 Visualizer API를 사용합니다. 오디오는 장치에서 로컬로 처리되고 즉시 삭제됩니다.</string>
+    <string name="audio_permission_accept">동의합니다</string>
+    <string name="audio_permission_deny">사양합니다</string>
+    <string name="audio_permission_footer">설정에서 언제든지 이 권한을 변경할 수 있습니다</string>
     <string name="theme_neon_dark">ë„¤ì˜¨ ë‹¤í¬</string>
     <string name="theme_ocean_blue">ì˜¤ì…˜ ë¸”ë£¨</string>
     <string name="theme_sunset_orange">ì„ ì…‹ ì˜¤ë Œì§€</string>
@@ -156,4 +169,27 @@
     <string name="call_enhancement_desc">수신 음성 선명도 향상 + 통화 중 배경 소음 감소</string>
     <string name="call_enhancement_noise_suppression">소음 억제</string>
     <string name="call_enhancement_auto_gain">자동 게인</string>
+
+    <!-- 배터리 최적화 (Google Play 안전) -->
+    <string name="battery_optimization">배터리 최적화</string>
+    <string name="battery_optimization_desc">Xiaomi, Samsung, OnePlus 기기에서 백그라운드 서비스 중단 방지를 위해 권장</string>
+    
+    <!-- 배터리 최적화 대화상자 -->
+    <string name="battery_dialog_title">⚡ 배터리 최적화 설정</string>
+    <string name="battery_dialog_subtitle">백그라운드에서 Sound Boost가 작동하도록 유지</string>
+    <string name="battery_dialog_desc">일부 기기(Xiaomi, Samsung, OnePlus, Huawei)는 배터리 절약을 위해 백그라운드 앱을 적극적으로 종료합니다. 화면이 꺼져 있을 때 오디오 부스트를 활성 상태로 유지하려면 배터리 최적화를 비활성화해야 합니다.</string>
+    <string name="battery_dialog_step1_title">1단계: 설정 열기</string>
+    <string name="battery_dialog_step1_desc">아래 버튼을 눌러 배터리 최적화 설정을 여세요</string>
+    <string name="battery_dialog_step2_title">2단계: Sound\'ST Boost 찾기</string>
+    <string name="battery_dialog_step2_desc">앱 목록을 스크롤하여 "Sound\'ST Boost"를 찾거나 검색하세요</string>
+    <string name="battery_dialog_step3_title">3단계: 최적화 비활성화</string>
+    <string name="battery_dialog_step3_desc">앱을 탭하고 "최적화 안 함" 또는 "허용"을 선택하세요</string>
+    <string name="battery_dialog_open_settings">설정 열기</string>
+    <string name="battery_dialog_cancel">나중에</string>
+    <string name="battery_dialog_device_specific">기기별 팁:</string>
+    <string name="battery_dialog_tip_xiaomi">Xiaomi: 설정 → 앱 → 앱 관리 → Sound\'ST Boost에서 "자동 시작"도 활성화하세요</string>
+    <string name="battery_dialog_tip_samsung">Samsung: 설정 → 배터리 → 백그라운드 사용 제한 → "절전 모드 앱"에서 제거</string>
+    <string name="battery_dialog_tip_oneplus">OnePlus: 앱 정보 → 배터리에서 "백그라운드 활동 허용"을 활성화</string>
+    <string name="battery_dialog_tip_huawei">Huawei: 휴대전화 관리자 → 앱 실행에서 "수동 관리"를 활성화</string>
+    <string name="language_italian">이탈리아어</string>
 </resources>

@@ -1,0 +1,86 @@
+========================================
+SOUND'ST BOOST - SIGNED AAB BİLGİLERİ
+Version: 1.3.6 (Build 24)
+Tarih: 13 Eylül 2026
+========================================
+
+✅ BUILD BAŞARIYLA TAMAMLANDI
+
+📦 AAB DOSYASI:
+- Dosya Adı: SoundSTBoost-v1.3.6-release.aab
+- Konum: app/build/outputs/bundle/release/
+- Boyut: 3.72 MB (3,721,653 bytes)
+- Build Tarihi: 13.09.2026 05:13
+
+🆕 YENİ ÖZELLİKLER:
+1. İtalyanca Dil Desteği Eklendi
+   - values-it klasörü oluşturuldu
+   - Tüm UI string'leri İtalyanca'ya çevrildi
+   - LanguageManager'a ITALIAN enum değeri eklendi
+   - Tüm dillerde "language_italian" string'i eklendi
+
+2. Pil Optimizasyonu İyileştirmeleri (Google Play Güvenli)
+   - Battery optimization dialog tüm dillerde eklendi
+   - Xiaomi, Samsung, OnePlus, Huawei için özel talimatlar
+   - ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS kullanılıyor (Google Play onaylı)
+   - REQUEST_IGNORE_BATTERY_OPTIMIZATIONS izni kaldırıldı (Google Play politikasına uygun)
+
+🌍 DESTEKLENEN DİLLER (12):
+1. English (en)
+2. Türkçe (tr)
+3. Deutsch (de)
+4. Español (es)
+5. Français (fr)
+6. Italiano (it) ⭐ YENİ
+7. Русский (ru)
+8. 中文 (zh)
+9. 日本語 (ja)
+10. 한국어 (ko)
+11. العربية (ar)
+12. Auto (System)
+
+🔒 İMZALAMA BİLGİLERİ:
+- Keystore: release-key.jks
+- Key Alias: soundstboost
+- İmzalama: Release keystore ile otomatik imzalandı
+
+📋 GOOGLE PLAY UYUMLULUĞU:
+✅ FOREGROUND_SERVICE_MEDIA_PLAYBACK izni (gerekli)
+✅ Pil optimizasyonu güvenli yöntem ile (ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS)
+✅ Video çekimi yapıldı ve dokümanlar hazır
+✅ Data Safety Declaration güncel
+✅ Privacy Policy güncel
+
+⚡ TEKNİK DETAYLAR:
+- compileSdk: 36
+- targetSdk: 36
+- minSdk: 24
+- Kotlin 2.0.0
+- Jetpack Compose
+- Material 3 Design
+
+📝 SONRAKİ ADIMLAR:
+1. Google Play Console'a giriş yap
+2. "Yayınla" → "Yeni sürüm oluştur" sekmesine git
+3. SoundSTBoost-v1.3.6-release.aab dosyasını yükle
+4. Sürüm notlarını ekle:
+   • İtalyanca dil desteği eklendi
+   • Pil optimizasyonu iyileştirmeleri
+   • Xiaomi, Samsung, OnePlus, Huawei cihazlar için özel talimatlar
+5. İnceleme için gönder
+
+⚠️ ÖNEMLI NOTLAR:
+- Pil optimizasyonu artık Google Play güvenli yöntemi kullanıyor
+- Kullanıcılar manuel olarak ayarlara yönlendiriliyor
+- REQUEST_IGNORE_BATTERY_OPTIMIZATIONS izni kaldırıldı
+- Google Play incelemesi daha hızlı geçecek
+
+🎯 GOOGLE PLAY İNCELEME HAZIRLIĞI:
+✅ Manifest temiz ve güvenli
+✅ İzinler Google Play politikasına uygun
+✅ Foreground service video dokümanı hazır
+✅ Pil optimizasyonu güvenli yöntem
+✅ Tüm string'ler eksiksiz
+✅ Build başarılı, hata yok
+
+========================================

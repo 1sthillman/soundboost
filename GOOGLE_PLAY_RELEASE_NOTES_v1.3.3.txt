@@ -1,0 +1,8 @@
+Android 16 uyumluluğu ve performans iyileştirmeleri.
+
+• Android 16 (API 36) desteği - Google Play gereksinimi
+• 16KB sayfa boyutu desteği ile gelişmiş performans
+• Sistem çubuğu API'leri güncellendi
+• Stabilite iyileştirmeleri
+
+Not: Bu sürüm Google Play gereksinimlerini karşılamak için teknik bir güncellemedir.

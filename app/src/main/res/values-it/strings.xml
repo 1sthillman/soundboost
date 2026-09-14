@@ -1,0 +1,253 @@
+<resources>
+    <string name="app_name">Amplificatore Volume</string>
+    <string name="volume_boost">Amplificazione Volume</string>
+    <string name="equalizer">Equalizzatore</string>
+    <string name="settings">Impostazioni</string>
+    <string name="themes">Temi</string>
+    <string name="master_volume">VOLUME PRINCIPALE</string>
+    <string name="boost_off">SPENTO</string>
+    <string name="boost_on">ACCESO</string>
+    <string name="max_volume">VOLUME MASSIMO</string>
+    <string name="preset_60">60%</string>
+    <string name="preset_100">100%</string>
+    <string name="preset_160">160%</string>
+    <string name="preset_max">MAX</string>
+    <string name="bass">Bassi</string>
+    <string name="mid">Medi</string>
+    <string name="treble">Alti</string>
+    <string name="bass_boost">Amplificazione Bassi</string>
+    <string name="virtualizer">Virtualizzatore 3D</string>
+    <string name="auto_start">Avvio automatico all\'accensione</string>
+    <string name="auto_start_desc">L\'amplificazione riprenderà automaticamente al riavvio del dispositivo</string>
+    <string name="about">Informazioni</string>
+    <string name="about_desc">Sound\'ST Boost utilizza le API ufficiali degli effetti audio di Android. La forza dell\'effetto può variare in base all\'hardware del dispositivo.</string>
+    <string name="microphone_permission">Permesso Microfono</string>
+    <string name="microphone_permission_required">Permesso Microfono Richiesto</string>
+    <string name="microphone_permission_granted">Permesso concesso</string>
+    <string name="microphone_permission_desc">Necessario per la visualizzazione audio in tempo reale</string>
+    
+    <!-- Divulgazione Prominente del Permesso Audio (Google Play Richiesto) -->
+    <string name="audio_permission_title">I Temi Visivi Richiedono il Permesso</string>
+    <string name="audio_permission_description">I nostri temi visivi si sincronizzano con la musica in riproduzione in background (Spotify, YouTube, ecc.). Per far muovere i temi a ritmo, abbiamo bisogno del permesso di analisi audio.</string>
+    <string name="audio_permission_why_title">Perché Ne Abbiamo Bisogno</string>
+    <string name="audio_permission_why_desc">I temi rispondono alla musica da app esterne (Spotify, YouTube). Android richiede il permesso audio per l\'analisi delle frequenze.</string>
+    <string name="audio_permission_privacy_title">La Tua Privacy</string>
+    <string name="audio_permission_privacy_desc">I dati audio vengono analizzati in tempo reale SOLO per l\'animazione dei temi. NON registriamo, memorizziamo o condividiamo alcun dato audio.</string>
+    <string name="audio_permission_technical_title">Dettagli Tecnici</string>
+    <string name="audio_permission_technical_desc">Utilizziamo l\'API Visualizer ufficiale di Android. L\'audio viene elaborato localmente sul tuo dispositivo e immediatamente scartato.</string>
+    <string name="audio_permission_accept">Accetto</string>
+    <string name="audio_permission_deny">No Grazie</string>
+    <string name="audio_permission_footer">Puoi modificare questo permesso in qualsiasi momento nelle Impostazioni</string>
+    
+    <!-- Ottimizzazione Batteria (Google Play sicuro) -->
+    <string name="battery_optimization">Ottimizzazione Batteria</string>
+    <string name="battery_optimization_desc">Consigliato per dispositivi Xiaomi, Samsung, OnePlus per prevenire l\'interruzione del servizio in background</string>
+    
+    <!-- Finestra Ottimizzazione Batteria -->
+    <string name="battery_dialog_title">⚡ Configurazione Ottimizzazione Batteria</string>
+    <string name="battery_dialog_subtitle">Mantieni Sound Boost attivo in background</string>
+    <string name="battery_dialog_desc">Alcuni dispositivi (Xiaomi, Samsung, OnePlus, Huawei) chiudono aggressivamente le app in background per risparmiare batteria. Per mantenere il potenziamento audio attivo quando lo schermo è spento, è necessario disabilitare l\'ottimizzazione della batteria.</string>
+    <string name="battery_dialog_step1_title">Passaggio 1: Apri Impostazioni</string>
+    <string name="battery_dialog_step1_desc">Tocca il pulsante qui sotto per aprire le impostazioni di ottimizzazione della batteria</string>
+    <string name="battery_dialog_step2_title">Passaggio 2: Trova Sound\'ST Boost</string>
+    <string name="battery_dialog_step2_desc">Scorri l\'elenco delle app e trova "Sound\'ST Boost" o cercala</string>
+    <string name="battery_dialog_step3_title">Passaggio 3: Disabilita Ottimizzazione</string>
+    <string name="battery_dialog_step3_desc">Tocca l\'app e seleziona "Non ottimizzare" o "Consenti"</string>
+    <string name="battery_dialog_open_settings">Apri Impostazioni</string>
+    <string name="battery_dialog_cancel">Forse Più Tardi</string>
+    <string name="battery_dialog_device_specific">Suggerimenti specifici per dispositivo:</string>
+    <string name="battery_dialog_tip_xiaomi">Xiaomi: Abilita anche "Avvio automatico" in Impostazioni → App → Gestisci app → Sound\'ST Boost</string>
+    <string name="battery_dialog_tip_samsung">Samsung: Rimuovi da "App in sospensione" in Impostazioni → Batteria → Limiti utilizzo in background</string>
+    <string name="battery_dialog_tip_oneplus">OnePlus: Abilita "Consenti attività in background" in Informazioni app → Batteria</string>
+    <string name="battery_dialog_tip_huawei">Huawei: Abilita "Avvio manuale" in Gestore telefono → Avvio app</string>
+    <string name="theme_neon_dark">Neon Scuro</string>
+    <string name="theme_ocean_blue">Blu Oceano</string>
+    <string name="theme_sunset_orange">Arancione Tramonto</string>
+    <string name="theme_forest_green">Verde Foresta</string>
+    <string name="theme_royal_purple">Viola Reale</string>
+    <string name="color_cyan">Ciano</string>
+    <string name="color_pink">Rosa</string>
+    <string name="color_orange">Arancione</string>
+    <string name="color_green">Verde</string>
+    <string name="color_purple">Viola</string>
+    <string name="notification_title">Sound Boost Attivo</string>
+    <string name="notification_text">Volume: %1$d%% • Bassi: %2$d%%</string>
+    <string name="language">Lingua</string>
+    <string name="language_system">Auto (Sistema)</string>
+    <string name="language_english">English</string>
+    <string name="language_turkish">Türkçe</string>
+    <string name="language_german">Deutsch</string>
+    <string name="language_spanish">Español</string>
+    <string name="language_french">Français</string>
+    <string name="language_russian">Русский</string>
+    <string name="language_chinese">中文</string>
+    <string name="language_japanese">日本語</string>
+    <string name="language_korean">한국어</string>
+    <string name="language_arabic">العربية</string>
+    <string name="language_italian">Italiano</string>
+    <string name="tap_to_start">Tocca Due Volte al Centro per Iniziare</string>
+    <string name="drag_to_adjust">Trascina per Regolare il Volume</string>
+    <string name="theme_customization">Personalizzazione Tema</string>
+    <string name="language_info_title">ℹ️ Cambio Lingua</string>
+    <string name="language_info_desc">L\'app si aggiornerà automaticamente per mostrare i contenuti nella lingua selezionata.</string>
+    <string name="language_system_desc">Rileva automaticamente la lingua del dispositivo</string>
+    <string name="status_active">ATTIVO</string>
+    <string name="status_double_tap">DOPPIO TOCCO</string>
+    <string name="instruction_drag">Trascina su/giù per regolare</string>
+    <string name="instruction_double_tap">Tocca due volte per iniziare</string>
+    <string name="welcome_title">Benvenuto!</string>
+    <string name="instruction_1_title">Doppio Tocco</string>
+    <string name="instruction_1_desc">Tocca due volte il controllo centrale per avviare l\'amplificatore di volume</string>
+    <string name="instruction_2_title">Trascina e Regola</string>
+    <string name="instruction_2_desc">Muovi il dito con un movimento circolare o trascina su/giù per regolare il livello del volume</string>
+    <string name="instruction_3_title">Scegli il Tema</string>
+    <string name="instruction_3_desc">Seleziona diversi temi dai pulsanti rotondi sopra per cambiare l\'aspetto</string>
+    <string name="got_it">Capito!</string>
+    <string name="training_welcome_title">Benvenuto!</string>
+    <string name="training_welcome_desc">Ti mostriamo come usare Sound\'ST Boost</string>
+    <string name="training_start">Iniziamo</string>
+    <string name="training_double_tap_title">Passo 1: Doppio Tocco</string>
+    <string name="training_double_tap_desc">TOCCA DUE VOLTE il grande controllo centrale per attivare l\'amplificatore di volume</string>
+    <string name="training_understood">Capito</string>
+    <string name="training_waiting_double_tap">Ora tocca due volte...</string>
+    <string name="training_drag_title">Passo 2: Trascina</string>
+    <string name="training_drag_desc">Muovi il dito con un movimento circolare o su/giù per regolare il livello del volume</string>
+    <string name="training_try_it">Prova</string>
+    <string name="training_drag_to_continue">Ora trascina per regolare...</string>
+    <string name="training_theme_title">Passo 3: Temi</string>
+    <string name="training_theme_desc">Puoi selezionare diversi temi dai pulsanti rotondi sopra</string>
+    <string name="training_finish">Finito!</string>
+    
+    <!-- Aiuto e FAQ -->
+    <string name="help_and_faq">Aiuto e FAQ</string>
+    <string name="faq_how_to_use">Come si usa?</string>
+    <string name="faq_how_to_use_answer">Tocca due volte il controllo centrale per attivare l\'amplificazione, poi trascina per regolare il livello del volume</string>
+    <string name="faq_not_working">Non funziona?</string>
+    <string name="faq_not_working_answer">Controlla il permesso del microfono e il volume di sistema. Alcuni dispositivi potrebbero avere limitazioni</string>
+    <string name="faq_background_work">Funziona in background?</string>
+    <string name="faq_background_work_answer">Sì, l\'amplificazione continua a funzionare anche quando l\'app è chiusa</string>
+    <string name="faq_battery">Consumo batteria?</string>
+    <string name="faq_battery_answer">Consumo minimo della batteria. Gli effetti audio sono accelerati dall\'hardware sulla maggior parte dei dispositivi</string>
+    <string name="faq_audio_quality">Qualità audio?</string>
+    <string name="faq_audio_quality_answer">Utilizza un\'elaborazione di alta qualità. Evita impostazioni estreme per risultati migliori</string>
+    <string name="faq_device_support">Supporto dispositivi?</string>
+    <string name="faq_device_support_answer">Funziona su tutti i dispositivi Android. La forza dell\'effetto varia in base all\'hardware</string>
+    
+    <!-- Valuta e Condividi -->
+    <string name="rate_app_title">Valuta Sound\'ST Boost</string>
+    <string name="rate_app_message">Ti piace l\'app? La tua valutazione ci aiuta a migliorare!</string>
+    <string name="rate_app_description">Valuta questa app</string>
+    <string name="rate_now">Valuta Ora</string>
+    <string name="maybe_later">Forse Più Tardi</string>
+    <string name="share_app_title">Condividi Sound\'ST Boost</string>
+    <string name="share_app_message">Condividi questa app con i tuoi amici!</string>
+    <string name="share_now">Condividi Ora</string>
+    <string name="share_text">Dai un\'occhiata a Sound\'ST Boost - il miglior amplificatore di volume per Android!</string>
+    <string name="share_via">Condividi tramite</string>
+    <string name="cancel">Annulla</string>
+    <string name="rate_your_app">Valuta App</string>
+    <string name="rate_app_desc">Supportaci con 5 stelle ⭐</string>
+    <string name="share_app_desc">Parla di noi ai tuoi amici</string>
+    <string name="help_desc">Ottieni risposte alle domande più comuni</string>
+    
+    <!-- Onboarding -->
+    <string name="onboarding_step1_title">Avvia l\'Audio Live</string>
+    <string name="onboarding_step1_desc">Prima, tocca il pulsante Play per sentire il ritmo della musica!</string>
+    <string name="onboarding_step2_title">Regola le Impostazioni</string>
+    <string name="onboarding_step2_desc">Regola i cursori Amplificazione e Sensibilità per ottimizzare il suono e la reattività del tema.</string>
+    <string name="onboarding_step3_title">Scegli il Tuo Stile</string>
+    <string name="onboarding_step3_desc">Scegli un tema che corrisponda al tuo umore. Ricorda, le immagini danzano a ritmo!</string>
+    <string name="onboarding_skip">Salta</string>
+    <string name="onboarding_next">Avanti</string>
+    <string name="onboarding_start">Iniziamo!</string>
+    <string name="onboarding_complete">Ottimo! Sei Pronto 🎉</string>
+    
+    <!-- Interfaccia Schermata Equalizzatore -->
+    <string name="eq_professional">EQ PROFESSIONALE</string>
+    <string name="eq_10band_parametric">PARAMETRICO A 10 BANDE</string>
+    <string name="eq_back">Indietro</string>
+    <string name="eq_max_gain">Guadagno Massimo</string>
+    <string name="eq_active_preset">PRESET ATTIVO</string>
+    <string name="eq_select_preset">Seleziona Preset</string>
+    <string name="eq_save_preset">Salva Preset</string>
+    <string name="eq_reset">Ripristina</string>
+    <string name="eq_flat_btn">PIATTO</string>
+    <string name="eq_bass_btn">BASSI</string>
+    <string name="eq_treble_btn">ALTI</string>
+    <string name="eq_preset_name">Nome Preset</string>
+    <string name="eq_save">Salva</string>
+    <string name="eq_cancel">Annulla</string>
+    <string name="eq_custom_presets">PRESET PERSONALIZZATI</string>
+    <string name="eq_built_in_presets">PRESET PREDEFINITI</string>
+    <string name="eq_max_gain_settings">Impostazioni Guadagno Massimo</string>
+    <string name="eq_max_gain_desc">Livello di amplificazione massimo per banda (15dB - 30dB)</string>
+    <string name="eq_apply">Applica</string>
+    <string name="eq_close">Chiudi</string>
+    
+    <!-- Miglioramento Chiamate -->
+    <string name="call_enhancement_title">MIGLIORAMENTO CHIAMATE</string>
+    <string name="call_enhancement_desc">Aumenta la chiarezza della voce in arrivo + riduce IL TUO rumore di fondo durante le chiamate</string>
+    <string name="call_enhancement_noise_suppression">Soppressione Rumore</string>
+    <string name="call_enhancement_auto_gain">Guadagno Automatico</string>
+    
+    <!-- Preset Equalizzatore -->
+    <string name="eq_flat">Piatto</string>
+    <string name="eq_bass_boost">Amplificazione Bassi</string>
+    <string name="eq_treble_boost">Amplificazione Alti</string>
+    <string name="eq_deep_bass">Bassi Profondi</string>
+    <string name="eq_rock">Rock</string>
+    <string name="eq_pop">Pop</string>
+    <string name="eq_jazz">Jazz</string>
+    <string name="eq_classical">Classica</string>
+    <string name="eq_electronic">Elettronica</string>
+    <string name="eq_hip_hop">Hip-Hop</string>
+    <string name="eq_rnb">R&amp;B</string>
+    <string name="eq_metal">Heavy Metal</string>
+    <string name="eq_country">Country</string>
+    <string name="eq_latin">Latin</string>
+    <string name="eq_blues">Blues</string>
+    <string name="eq_reggae">Reggae</string>
+    <string name="eq_dance">Dance</string>
+    <string name="eq_vocal_boost">Amplificazione Vocale</string>
+    <string name="eq_acoustic">Acustica</string>
+    <string name="eq_piano">Piano</string>
+    <string name="eq_small_room">Stanza Piccola</string>
+    <string name="eq_medium_room">Stanza Media</string>
+    <string name="eq_large_hall">Sala Grande</string>
+    <string name="eq_headphones">Cuffie</string>
+    <string name="eq_speakers">Altoparlanti</string>
+    <string name="eq_live">Live</string>
+    <string name="eq_vinyl">Vinile</string>
+    <string name="eq_soft">Soft</string>
+    
+    <!-- Notifica -->
+    <string name="notif_volume">Volume</string>
+    <string name="notif_bass">Bassi</string>
+    <string name="notif_3d">3D</string>
+    <string name="notif_bass_down">Bassi -10</string>
+    <string name="notif_bass_up">Bassi +10</string>
+    <string name="notif_3d_down">3D -10</string>
+    <string name="notif_3d_up">3D +10</string>
+    <string name="notif_stop">Stop</string>
+    <string name="notif_active">Attivo</string>
+    
+    <!-- Finestra Avviso Volume Alto -->
+    <string name="gain_warning_title">⚠️ Avviso Volume Alto</string>
+    <string name="gain_warning_subtitle">Stai superando i livelli di volume sicuri</string>
+    <string name="gain_warning_level_caution">Zona di Cautela</string>
+    <string name="gain_warning_level_warning">Zona di Avvertimento</string>
+    <string name="gain_warning_level_danger">Zona di Pericolo</string>
+    <string name="gain_warning_current">Volume Attuale</string>
+    <string name="gain_warning_recommended">Consigliato</string>
+    <string name="gain_warning_max_safe">Massimo Sicuro</string>
+    <string name="gain_warning_risks">Rischi Potenziali:</string>
+    <string name="gain_warning_risk_speaker">• Danni o distorsioni agli altoparlanti</string>
+    <string name="gain_warning_risk_audio">• Scarsa qualità audio</string>
+    <string name="gain_warning_risk_hearing">• Danni all\'udito (cuffie)</string>
+    <string name="gain_warning_risk_warranty">• Garanzia annullata per danni hardware</string>
+    <string name="gain_warning_device_info">Dispositivo: %1$s</string>
+    <string name="gain_warning_tip">Suggerimento: %1$s</string>
+    <string name="gain_warning_confirm">Ho Capito</string>
+    <string name="gain_warning_cancel">Annulla</string>
+    <string name="gain_warning_agree_checkbox">Comprendo i rischi e voglio continuare</string>
+</resources>

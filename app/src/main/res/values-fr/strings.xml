@@ -24,6 +24,20 @@
     <string name="about_desc">Sound\'ST Boost utilise les API officielles d\'effets audio d\'Android. L\'intensité des effets peut varier selon le matériel de l\'appareil.</string>
     <string name="microphone_permission">Autorisation Microphone</string>
     <string name="microphone_permission_desc">Requis pour la visualisation audio en temps réel</string>
+    
+    <!-- Divulgation Proéminente de l\'Autorisation Audio (Google Play Requis) -->
+    <string name="audio_permission_title">Les Thèmes Visuels Nécessitent une Autorisation</string>
+    <string name="audio_permission_description">Nos thèmes visuels se synchronisent avec la musique jouant en arrière-plan (Spotify, YouTube, etc.). Pour que les thèmes bougent au rythme, nous avons besoin d\'une autorisation d\'analyse audio.</string>
+    <string name="audio_permission_why_title">Pourquoi Nous en Avons Besoin</string>
+    <string name="audio_permission_why_desc">Les thèmes répondent à la musique des applications externes (Spotify, YouTube). Android nécessite une autorisation audio pour l\'analyse de fréquence.</string>
+    <string name="audio_permission_privacy_title">Votre Confidentialité</string>
+    <string name="audio_permission_privacy_desc">Les données audio sont analysées en temps réel UNIQUEMENT pour l\'animation des thèmes. Nous n\'enregistrons, ne stockons ni ne partageons AUCUNE donnée audio.</string>
+    <string name="audio_permission_technical_title">Détails Techniques</string>
+    <string name="audio_permission_technical_desc">Nous utilisons l\'API Visualizer officielle d\'Android. L\'audio est traité localement sur votre appareil et immédiatement écarté.</string>
+    <string name="audio_permission_accept">J\'Accepte</string>
+    <string name="audio_permission_deny">Non Merci</string>
+    <string name="audio_permission_footer">Vous pouvez modifier cette autorisation à tout moment dans les Paramètres</string>
+    
     <string name="theme_neon_dark">Néon Sombre</string>
     <string name="theme_ocean_blue">Bleu Océan</string>
     <string name="theme_sunset_orange">Orange Coucher de Soleil</string>
@@ -156,4 +170,27 @@
     <string name="call_enhancement_desc">Am�liore la clart� de la voix entrante + r�duit VOTRE bruit de fond pendant les appels</string>
     <string name="call_enhancement_noise_suppression">Suppression du bruit</string>
     <string name="call_enhancement_auto_gain">Gain automatique</string>
+
+    <!-- Optimisation de la Batterie (Google Play sécurisé) -->
+    <string name="battery_optimization">Optimisation de la Batterie</string>
+    <string name="battery_optimization_desc">Recommandé pour les appareils Xiaomi, Samsung, OnePlus pour éviter l\'interruption du service en arrière-plan</string>
+    
+    <!-- Dialogue d\'Optimisation de la Batterie -->
+    <string name="battery_dialog_title">⚡ Configuration de l\'Optimisation de la Batterie</string>
+    <string name="battery_dialog_subtitle">Garder Sound Boost actif en arrière-plan</string>
+    <string name="battery_dialog_desc">Certains appareils (Xiaomi, Samsung, OnePlus, Huawei) ferment agressivement les applications en arrière-plan pour économiser la batterie. Pour garder le boost audio actif lorsque votre écran est éteint, vous devez désactiver l\'optimisation de la batterie.</string>
+    <string name="battery_dialog_step1_title">Étape 1: Ouvrir les Paramètres</string>
+    <string name="battery_dialog_step1_desc">Appuyez sur le bouton ci-dessous pour ouvrir les paramètres d\'optimisation de la batterie</string>
+    <string name="battery_dialog_step2_title">Étape 2: Trouver Sound\'ST Boost</string>
+    <string name="battery_dialog_step2_desc">Parcourez la liste des applications et trouvez "Sound\'ST Boost" ou recherchez-la</string>
+    <string name="battery_dialog_step3_title">Étape 3: Désactiver l\'Optimisation</string>
+    <string name="battery_dialog_step3_desc">Appuyez sur l\'application et sélectionnez "Ne pas optimiser" ou "Autoriser"</string>
+    <string name="battery_dialog_open_settings">Ouvrir les Paramètres</string>
+    <string name="battery_dialog_cancel">Peut-être Plus Tard</string>
+    <string name="battery_dialog_device_specific">Conseils spécifiques à l\'appareil:</string>
+    <string name="battery_dialog_tip_xiaomi">Xiaomi: Activez également "Démarrage automatique" dans Paramètres → Applications → Gérer les applications → Sound\'ST Boost</string>
+    <string name="battery_dialog_tip_samsung">Samsung: Supprimez de "Applications en veille" dans Paramètres → Batterie → Limites d\'utilisation en arrière-plan</string>
+    <string name="battery_dialog_tip_oneplus">OnePlus: Activez "Autoriser l\'activité en arrière-plan" dans Informations sur l\'application → Batterie</string>
+    <string name="battery_dialog_tip_huawei">Huawei: Activez "Lancement manuel" dans Gestionnaire de téléphone → Lancement d\'application</string>
+    <string name="language_italian">Italien</string>
 </resources>

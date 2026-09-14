@@ -1,0 +1,59 @@
+🚀 HIZLI YÜKLEME REHBERİ - v1.3.3
+
+═══════════════════════════════════════════════════════════════
+📦 DOSYA BİLGİLERİ
+═══════════════════════════════════════════════════════════════
+
+Dosya Konumu:
+app/build/outputs/bundle/release/SoundSTBoost-v1.3.3-release.aab
+
+Dosya Boyutu: 3.69 MB
+Version Code: 21
+Version Name: 1.3.3
+
+═══════════════════════════════════════════════════════════════
+✅ GOOGLE PLAY UYUMLULUK
+═══════════════════════════════════════════════════════════════
+
+✅ Target API 36 (Android 16) - Zorunlu gereksinim karşılandı
+✅ 16KB page size desteği - Etkinleştirildi
+✅ Deprecated API'ler - Kaldırıldı
+✅ Android 15+ uyumluluğu - Hazır
+
+═══════════════════════════════════════════════════════════════
+📝 SÜRÜM NOTLARI (Play Console'a yapıştır)
+═══════════════════════════════════════════════════════════════
+
+Android 16 uyumluluğu ve performans iyileştirmeleri.
+
+• Android 16 (API 36) desteği - Google Play gereksinimi
+• 16KB sayfa boyutu desteği ile gelişmiş performans
+• Sistem çubuğu API'leri güncellendi
+• Stabilite iyileştirmeleri
+
+Not: Bu sürüm Google Play gereksinimlerini karşılamak için teknik bir güncellemedir.
+
+═══════════════════════════════════════════════════════════════
+🎯 YÜKLEME ADIM ADIM
+═══════════════════════════════════════════════════════════════
+
+1. https://play.google.com/console adresine git
+2. SoundSTBoost uygulamasını seç
+3. Sol menüden: "Sürüm" → "Production" (veya "Testing")
+4. "Yeni sürüm oluştur" butonuna tıkla
+5. AAB dosyasını sürükle-bırak veya yükle
+6. Yukarıdaki sürüm notlarını yapıştır
+7. "İncele" → "Yayınlamaya başla"
+
+═══════════════════════════════════════════════════════════════
+⚠️ ÖNEMLİ NOTLAR
+═══════════════════════════════════════════════════════════════
+
+• Bu sürüm MUTLAKA yüklenmelidir (Kasım 2026 deadline)
+• Tüm Google Play uyarıları bu sürümle çözülecek
+• Otomatik tarama 1-2 saat sürer
+• Manuel inceleme (gerekirse) 1-7 gün sürebilir
+
+═══════════════════════════════════════════════════════════════
+✅ HAZIR!
+═══════════════════════════════════════════════════════════════

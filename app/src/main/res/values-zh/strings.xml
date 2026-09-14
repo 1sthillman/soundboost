@@ -24,6 +24,19 @@
     <string name="about_desc">Sound\'ST Boostä½¿ç”¨Androidå®˜æ–¹éŸ³é¢‘æ•ˆæœAPIã€‚æ•ˆæœå¼ºåº¦å¯èƒ½å› è®¾å¤‡ç¡¬ä»¶è€Œå¼‚ã€‚</string>
     <string name="microphone_permission">éº¦å…‹é£æƒé™</string>
     <string name="microphone_permission_desc">å®æ—¶éŸ³é¢‘å¯è§†åŒ–æ‰€éœ€</string>
+
+    <!-- 音频权限重要披露（Google Play 必需） -->
+    <string name="audio_permission_title">视觉主题需要权限</string>
+    <string name="audio_permission_description">我们的视觉主题与后台播放的音乐（Spotify、YouTube等）同步。要让主题随节奏移动，我们需要音频分析权限。</string>
+    <string name="audio_permission_why_title">为什么需要此权限</string>
+    <string name="audio_permission_why_desc">主题会响应外部应用（Spotify、YouTube）的音乐。Android需要音频权限进行频率分析。</string>
+    <string name="audio_permission_privacy_title">您的隐私</string>
+    <string name="audio_permission_privacy_desc">音频数据仅实时分析以用于主题动画。我们不会录制、存储或分享任何音频数据。</string>
+    <string name="audio_permission_technical_title">技术细节</string>
+    <string name="audio_permission_technical_desc">我们使用Android的官方Visualizer API。音频在您的设备上本地处理并立即丢弃。</string>
+    <string name="audio_permission_accept">我接受</string>
+    <string name="audio_permission_deny">不了，谢谢</string>
+    <string name="audio_permission_footer">您可以随时在设置中更改此权限</string>
     <string name="theme_neon_dark">éœ“è™¹æš—é»‘</string>
     <string name="theme_ocean_blue">æµ·æ´‹è“</string>
     <string name="theme_sunset_orange">æ—¥è½æ©™</string>
@@ -156,4 +169,27 @@
     <string name="call_enhancement_desc">提升来电语音清晰度 + 减少通话中您的背景噪音</string>
     <string name="call_enhancement_noise_suppression">噪音抑制</string>
     <string name="call_enhancement_auto_gain">自动增益</string>
+
+    <!-- 电池优化（Google Play 安全） -->
+    <string name="battery_optimization">电池优化</string>
+    <string name="battery_optimization_desc">推荐用于小米、三星、一加设备以防止后台服务中断</string>
+    
+    <!-- 电池优化对话框 -->
+    <string name="battery_dialog_title">⚡ 电池优化设置</string>
+    <string name="battery_dialog_subtitle">保持 Sound Boost 在后台运行</string>
+    <string name="battery_dialog_desc">某些设备（小米、三星、一加、华为）会积极关闭后台应用以节省电池。要在屏幕关闭时保持音频增强处于活动状态，您需要禁用电池优化。</string>
+    <string name="battery_dialog_step1_title">步骤 1：打开设置</string>
+    <string name="battery_dialog_step1_desc">点击下面的按钮打开电池优化设置</string>
+    <string name="battery_dialog_step2_title">步骤 2：查找 Sound\'ST Boost</string>
+    <string name="battery_dialog_step2_desc">滚动浏览应用列表并找到"Sound\'ST Boost"或搜索它</string>
+    <string name="battery_dialog_step3_title">步骤 3：禁用优化</string>
+    <string name="battery_dialog_step3_desc">点击应用并选择"不优化"或"允许"</string>
+    <string name="battery_dialog_open_settings">打开设置</string>
+    <string name="battery_dialog_cancel">稍后再说</string>
+    <string name="battery_dialog_device_specific">设备特定提示：</string>
+    <string name="battery_dialog_tip_xiaomi">小米：还需在 设置 → 应用 → 应用管理 → Sound\'ST Boost 中启用"自启动"</string>
+    <string name="battery_dialog_tip_samsung">三星：从 设置 → 电池 → 后台使用限制 → "休眠应用"中移除</string>
+    <string name="battery_dialog_tip_oneplus">一加：在 应用信息 → 电池 中启用"允许后台活动"</string>
+    <string name="battery_dialog_tip_huawei">华为：在 手机管家 → 应用启动管理 中启用"手动管理"</string>
+    <string name="language_italian">意大利语</string>
 </resources>

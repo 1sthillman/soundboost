@@ -30,8 +30,8 @@ android {
         applicationId = "com.soundboost"
         minSdk = 24
         targetSdk = 36
-        versionCode = 20
-        versionName = "1.3.2"
+        versionCode = 29
+        versionName = "1.4.1"
         
         setProperty("archivesBaseName", "SoundSTBoost-v$versionName")
     }
@@ -56,6 +56,10 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            // Generate native debug symbols for Google Play Console
+            ndk {
+                debugSymbolLevel = "FULL"
+            }
         }
     }
 

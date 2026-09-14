@@ -34,6 +34,41 @@
     <string name="microphone_permission_required">Mikrofon İzni Gerekli</string>
     <string name="microphone_permission_granted">İzin verildi - Görselleştirici aktif</string>
     <string name="microphone_permission_desc">Gerçek zamanlı ses görselleştirme için gerekli. Ayarlara gitmek için dokunun.</string>
+    
+    <!-- Ses İzni Prominent Disclosure (Google Play Gerekli) -->
+    <string name="audio_permission_title">Görsel Temalar İçin İzin Gerekli</string>
+    <string name="audio_permission_description">Görsel temalarımız arka planda çalan müziklerle (Spotify, YouTube vb.) senkronize olur. Temaların ritme göre hareket edebilmesi için ses analizi iznine ihtiyacımız var.</string>
+    <string name="audio_permission_why_title">Neden Gerekli</string>
+    <string name="audio_permission_why_desc">Temalar harici uygulamalardaki müziğe (Spotify, YouTube) tepki verir. Android frekans analizi için ses izni gerektirir.</string>
+    <string name="audio_permission_privacy_title">Gizliliğiniz</string>
+    <string name="audio_permission_privacy_desc">Ses verileri SADECE tema animasyonu için gerçek zamanlı analiz edilir. Hiçbir ses verisi kaydetmez, depolamaz veya paylaşmayız.</string>
+    <string name="audio_permission_technical_title">Teknik Detaylar</string>
+    <string name="audio_permission_technical_desc">Android\'in resmi Visualizer API\'sini kullanırız. Ses cihazınızda yerel olarak işlenir ve hemen silinir.</string>
+    <string name="audio_permission_accept">Kabul Ediyorum</string>
+    <string name="audio_permission_deny">Hayır Teşekkürler</string>
+    <string name="audio_permission_footer">Bu izni istediğiniz zaman Ayarlar\'dan değiştirebilirsiniz</string>
+    
+    <!-- Pil Optimizasyonu (Google Play Güvenli) -->
+    <string name="battery_optimization">Pil Optimizasyonu</string>
+    <string name="battery_optimization_desc">Xiaomi, Samsung, OnePlus cihazlarda arka plan servis kesintisini önlemek için önerilir</string>
+    
+    <!-- Pil Optimizasyonu Dialog -->
+    <string name="battery_dialog_title">⚡ Pil Optimizasyonu Ayarı</string>
+    <string name="battery_dialog_subtitle">Ses yükselticiyi arka planda çalışır durumda tutun</string>
+    <string name="battery_dialog_desc">Bazı cihazlar (Xiaomi, Samsung, OnePlus, Huawei) pil tasarrufu için arka plan uygulamalarını agresif şekilde kapatır. Ses yükselticiyi ekran kapalıyken çalışır tutmak için pil optimizasyonunu kapatmanız gerekir.</string>
+    <string name="battery_dialog_step1_title">Adım 1: Ayarları Aç</string>
+    <string name="battery_dialog_step1_desc">Pil optimizasyonu ayarlarını açmak için aşağıdaki butona dokunun</string>
+    <string name="battery_dialog_step2_title">Adım 2: Sound\'ST Boost\'u Bulun</string>
+    <string name="battery_dialog_step2_desc">Uygulama listesinde "Sound\'ST Boost" uygulamasını bulun veya aratın</string>
+    <string name="battery_dialog_step3_title">Adım 3: Optimizasyonu Kapat</string>
+    <string name="battery_dialog_step3_desc">Uygulamaya dokunun ve "Optimize etme" veya "İzin ver" seçeneğini seçin</string>
+    <string name="battery_dialog_open_settings">Ayarları Aç</string>
+    <string name="battery_dialog_cancel">Daha Sonra</string>
+    <string name="battery_dialog_device_specific">Cihaza özel ipuçları:</string>
+    <string name="battery_dialog_tip_xiaomi">Xiaomi: Ayarlar → Uygulamalar → Uygulamaları yönet → Sound\'ST Boost → "Otomatik başlat"ı da açın</string>
+    <string name="battery_dialog_tip_samsung">Samsung: Ayarlar → Pil → Arka plan kullanım limitleri → "Uyuyan uygulamalar"dan kaldırın</string>
+    <string name="battery_dialog_tip_oneplus">OnePlus: Uygulama bilgisi → Pil → "Arka planda çalışmaya izin ver"i açın</string>
+    <string name="battery_dialog_tip_huawei">Huawei: Telefon Yöneticisi → Uygulama başlatma → "Manuel başlatma"yı açın</string>
     <string name="dark_mode">Karanlık Mod</string>
     <string name="dark_mode_system">Sistemi Takip Et</string>
     <string name="dark_mode_on">Her Zaman Karanlık</string>
@@ -238,4 +273,5 @@
     <string name="gain_warning_confirm">Anladım</string>
     <string name="gain_warning_cancel">İptal</string>
     <string name="gain_warning_agree_checkbox">Riskleri anlıyorum ve devam etmek istiyorum</string>
+    <string name="language_italian">İtalyanca</string>
 </resources>

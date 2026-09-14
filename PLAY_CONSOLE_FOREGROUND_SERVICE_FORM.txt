@@ -1,0 +1,97 @@
+═══════════════════════════════════════════════════════════════
+GOOGLE PLAY CONSOLE - FOREGROUND SERVICE FORM
+═══════════════════════════════════════════════════════════════
+
+📋 FORM DOLDURMA REHBERİ
+Konum: Play Console > App Content > Foreground Service Permissions
+
+═══════════════════════════════════════════════════════════════
+✅ FORM ALANLARI
+═══════════════════════════════════════════════════════════════
+
+1. Medya Oynatma (Media Playback)
+   ☑ İŞARETLE - EVET
+
+2. Video Bağlantısı (Video URL)
+   https://youtube.com/shorts/fVS0iChaQtc?si=yfopnibvYKTrJFLX
+
+3. Pencere İçinde Pencere (Picture-in-Picture)
+   ☐ İŞARETLEME - HAYIR
+
+4. Diğer (Other)
+   ☐ İŞARETLEME - HAYIR
+
+═══════════════════════════════════════════════════════════════
+📝 AÇIKLAMA METNİ (İsteğe Bağlı)
+═══════════════════════════════════════════════════════════════
+
+TÜRKÇE:
+-------
+Sound'ST Boost, arka planda çalışan bir ses efekti servisidir. 
+FOREGROUND_SERVICE_MEDIA_PLAYBACK iznini kullanarak tüm 
+müzik/video uygulamalarına (Spotify, YouTube, vb.) gerçek zamanlı 
+ses iyileştirmeleri (Equalizer, Bass Boost, 3D Virtualizer) 
+uygular.
+
+Servis aktifken kalıcı bir bildirim gösterir ve kullanıcılar 
+bildirimden ses ayarlarını kontrol edebilir. Bu izin sadece 
+Android AudioEffect API'sini medya akışlarına uygulamak için 
+kullanılır.
+
+Video, uygulamanın Spotify ile nasıl çalıştığını ve kalıcı 
+bildirim kontrollerini gösterir.
+
+İNGİLİZCE:
+----------
+Sound'ST Boost is a background audio enhancement service. 
+It uses FOREGROUND_SERVICE_MEDIA_PLAYBACK permission to apply 
+real-time audio effects (Equalizer, Bass Boost, 3D Virtualizer) 
+to all music/video apps (Spotify, YouTube, etc.).
+
+When active, the service displays a persistent notification that 
+allows users to control audio settings. This permission is used 
+solely to apply Android AudioEffect API to media playback streams.
+
+The video demonstrates how the app works with Spotify and shows 
+the persistent notification controls.
+
+═══════════════════════════════════════════════════════════════
+✅ VİDEODA GÖSTERDIKLERINIZ
+═══════════════════════════════════════════════════════════════
+
+✅ Uygulama açılışı
+✅ Boost aktivasyonu
+✅ Kalıcı bildirim (persistent notification) görüntüsü
+✅ Spotify ile müzik oynatma
+✅ Ses iyileştirmesi etkisi
+✅ Bildirim kontrolleri (Bass, 3D, Stop)
+
+═══════════════════════════════════════════════════════════════
+🎯 FORMU GÖNDERDIKTEN SONRA
+═══════════════════════════════════════════════════════════════
+
+1. "Kaydet" veya "Gönder" butonuna tıkla
+2. Google Play otomatik kontrol yapacak (1-2 saat)
+3. Manuel inceleme gerekirse 1-7 gün sürebilir
+4. Onay aldıktan sonra uygulamayı yayınlayabilirsin
+
+BEKLENEN SONUÇ: ✅ ONAYLANACAK
+- Video çok net
+- İzin kullanımı meşru
+- Kalıcı bildirim var
+- Medya oynatma ile ilgili
+
+═══════════════════════════════════════════════════════════════
+⚠️ NOTLAR
+═══════════════════════════════════════════════════════════════
+
+• Video linki doğru: https://youtube.com/shorts/fVS0iChaQtc?si=yfopnibvYKTrJFLX
+• Video herkese açık olmalı (Public/Unlisted)
+• Video silinmemeli (Google Play sürekli kontrol edebilir)
+• Her güncelleme için aynı videoyu kullanabilirsin
+
+═══════════════════════════════════════════════════════════════
+✅ HAZIR!
+═══════════════════════════════════════════════════════════════
+
+Formu doldur ve gönder. Google Play senin videondan memnun kalacak!

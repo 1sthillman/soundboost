@@ -37,12 +37,15 @@ import com.soundboost.ui.theme.getThemeColors
 class MainActivity : ComponentActivity() {
 
     private val viewModel: MainViewModel by viewModels()
+    
+    // CRITICAL: Track if we should show prominent disclosure
+    internal var shouldShowAudioDisclosure = false
 
     private val notificationPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { /* İzin reddedilirse sadece bildirim gösterilmez */ }
 
-    private val microphonePermissionLauncher = registerForActivityResult(
+    internal val microphonePermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { isGranted ->
         if (isGranted) {
@@ -66,14 +69,10 @@ class MainActivity : ComponentActivity() {
             notificationPermissionLauncher.launch("android.permission.POST_NOTIFICATIONS")
         }
         
-        // CRITICAL: Request microphone permission for audio visualizer on first launch
-        // This is REQUIRED for RealTimeAudioAnalyzer to work
+        // CRITICAL: Check if we need to show audio permission disclosure on first launch
+        // GOOGLE PLAY POLICY: Prominent disclosure MUST be shown before requesting RECORD_AUDIO
         val sp = getSharedPreferences("app_prefs", MODE_PRIVATE)
-        if (!sp.getBoolean("first_launch_done", false)) {
-            android.util.Log.d("MainActivity", "🎤 İlk açılış - mikrofon izni isteniyor")
-            microphonePermissionLauncher.launch(Manifest.permission.RECORD_AUDIO)
-            sp.edit().putBoolean("first_launch_done", true).apply()
-        }
+        shouldShowAudioDisclosure = !sp.getBoolean("audio_disclosure_shown", false)
 
         setContent {
             val uiState by viewModel.uiState.collectAsState()
@@ -94,11 +93,17 @@ class MainActivity : ComponentActivity() {
                         // Make system bars edge-to-edge
                         WindowCompat.setDecorFitsSystemWindows(window, false)
                         
-                        // Status bar (üst)
-                        window.statusBarColor = android.graphics.Color.TRANSPARENT
-                        
-                        // Navigation bar (alt - geri, home, recent apps)
-                        window.navigationBarColor = themeColors.background.toArgb()
+                        // Set system bar colors - Android 15+ compatible
+                        if (Build.VERSION.SDK_INT >= 35) {
+                            // Android 15+ (API 35): Use modern edge-to-edge approach
+                            // System handles colors automatically, we just set transparency
+                            window.statusBarColor = android.graphics.Color.TRANSPARENT
+                            window.navigationBarColor = android.graphics.Color.TRANSPARENT
+                        } else {
+                            // Android 14 and below: Use traditional approach
+                            window.statusBarColor = android.graphics.Color.TRANSPARENT
+                            window.navigationBarColor = themeColors.background.toArgb()
+                        }
                         
                         // Icon colors - dark icons on light background, light icons on dark
                         WindowCompat.getInsetsController(window, view).apply {
@@ -159,12 +164,16 @@ fun MainScreen(viewModel: MainViewModel) {
     val audioLevels by viewModel.audioLevels.collectAsState()
     val themeColors = getThemeColors(uiState.theme, uiState.colorAccent)
     val context = androidx.compose.ui.platform.LocalContext.current
+    val activity = context as? MainActivity
     
     // CRITICAL: Track language as state to trigger immediate WebView updates
     var currentLanguage by remember { mutableStateOf(viewModel.getCurrentLanguage(context)) }
     
     var showRateDialog by remember { mutableStateOf(false) }
     var showShareDialog by remember { mutableStateOf(false) }
+    
+    // GOOGLE PLAY POLICY: Show prominent disclosure before requesting RECORD_AUDIO
+    var showAudioDisclosure by remember { mutableStateOf(activity?.shouldShowAudioDisclosure ?: false) }
     
     // Show rate dialog only after user has tried the boost feature
     LaunchedEffect(uiState.isBoostEnabled) {
@@ -320,6 +329,33 @@ fun MainScreen(viewModel: MainViewModel) {
             com.soundboost.ui.components.ShareDialog(
                 themeColors = themeColors,
                 onDismiss = { showShareDialog = false }
+            )
+        }
+        
+        // GOOGLE PLAY POLICY: Prominent Disclosure for RECORD_AUDIO permission
+        // MUST be shown BEFORE requesting the permission
+        if (showAudioDisclosure) {
+            com.soundboost.ui.components.AudioPermissionDisclosureDialog(
+                onAccept = {
+                    android.util.Log.d("MainActivity", "✅ Kullanıcı ses izni açıklamasını kabul etti")
+                    showAudioDisclosure = false
+                    // Mark as shown
+                    activity?.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+                        ?.edit()
+                        ?.putBoolean("audio_disclosure_shown", true)
+                        ?.apply()
+                    // Now request the actual Android permission
+                    activity?.microphonePermissionLauncher?.launch(Manifest.permission.RECORD_AUDIO)
+                },
+                onDeny = {
+                    android.util.Log.w("MainActivity", "❌ Kullanıcı ses izni açıklamasını reddetti")
+                    showAudioDisclosure = false
+                    // Mark as shown but don't request permission
+                    activity?.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+                        ?.edit()
+                        ?.putBoolean("audio_disclosure_shown", true)
+                        ?.apply()
+                }
             )
         }
     }

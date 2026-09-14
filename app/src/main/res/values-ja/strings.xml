@@ -24,6 +24,19 @@
     <string name="about_desc">Sound\'ST Boostã¯Androidã®å…¬å¼ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªã‚¨ãƒ•ã‚§ã‚¯ãƒˆAPIã‚’ä½¿ç”¨ã—ã¾ã™ã€‚ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã®å¼·åº¦ã¯ãƒ‡ãƒã‚¤ã‚¹ã®ãƒãƒ¼ãƒ‰ã‚¦ã‚§ã‚¢ã«ã‚ˆã£ã¦ç•°ãªã‚‹å ´åˆãŒã‚ã‚Šã¾ã™ã€‚</string>
     <string name="microphone_permission">ãƒã‚¤ã‚¯ã®è¨±å¯</string>
     <string name="microphone_permission_desc">ãƒªã‚¢ãƒ«ã‚¿ã‚¤ãƒ ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªãƒ“ã‚¸ãƒ¥ã‚¢ãƒ©ã‚¤ã‚¼ãƒ¼ã‚·ãƒ§ãƒ³ã«å¿…è¦</string>
+
+    <!-- オーディオ許可の重要な開示（Google Play必須） -->
+    <string name="audio_permission_title">ビジュアルテーマには許可が必要です</string>
+    <string name="audio_permission_description">私たちのビジュアルテーマは、バックグラウンドで再生される音楽（Spotify、YouTubeなど）と同期します。テーマがリズムに合わせて動くには、オーディオ分析の許可が必要です。</string>
+    <string name="audio_permission_why_title">なぜ必要なのか</string>
+    <string name="audio_permission_why_desc">テーマは外部アプリ（Spotify、YouTube）の音楽に反応します。Androidは周波数分析のためにオーディオ許可を要求します。</string>
+    <string name="audio_permission_privacy_title">あなたのプライバシー</string>
+    <string name="audio_permission_privacy_desc">オーディオデータはテーマアニメーションのためにリアルタイムでのみ分析されます。私たちはオーディオデータを録音、保存、または共有しません。</string>
+    <string name="audio_permission_technical_title">技術的な詳細</string>
+    <string name="audio_permission_technical_desc">Androidの公式Visualizer APIを使用しています。オーディオはデバイス上でローカルに処理され、すぐに破棄されます。</string>
+    <string name="audio_permission_accept">同意します</string>
+    <string name="audio_permission_deny">結構です</string>
+    <string name="audio_permission_footer">設定でいつでもこの許可を変更できます</string>
     <string name="theme_neon_dark">ãƒã‚ªãƒ³ãƒ€ãƒ¼ã‚¯</string>
     <string name="theme_ocean_blue">ã‚ªãƒ¼ã‚·ãƒ£ãƒ³ãƒ–ãƒ«ãƒ¼</string>
     <string name="theme_sunset_orange">ã‚µãƒ³ã‚»ãƒƒãƒˆã‚ªãƒ¬ãƒ³ã‚¸</string>
@@ -156,4 +169,27 @@
     <string name="call_enhancement_desc">着信音声のクリアさを向上 + 通話中のあなたの背景ノイズを削減</string>
     <string name="call_enhancement_noise_suppression">ノイズ抑制</string>
     <string name="call_enhancement_auto_gain">自動ゲイン</string>
+
+    <!-- バッテリー最適化（Google Play安全） -->
+    <string name="battery_optimization">バッテリー最適化</string>
+    <string name="battery_optimization_desc">Xiaomi、Samsung、OnePlusデバイスでバックグラウンドサービスの中断を防ぐために推奨</string>
+    
+    <!-- バッテリー最適化ダイアログ -->
+    <string name="battery_dialog_title">⚡ バッテリー最適化設定</string>
+    <string name="battery_dialog_subtitle">Sound Boostをバックグラウンドで動作させ続ける</string>
+    <string name="battery_dialog_desc">一部のデバイス（Xiaomi、Samsung、OnePlus、Huawei）は、バッテリーを節約するためにバックグラウンドアプリを積極的に終了します。画面がオフの時にオーディオブーストをアクティブに保つには、バッテリー最適化を無効にする必要があります。</string>
+    <string name="battery_dialog_step1_title">ステップ 1：設定を開く</string>
+    <string name="battery_dialog_step1_desc">下のボタンをタップしてバッテリー最適化設定を開く</string>
+    <string name="battery_dialog_step2_title">ステップ 2：Sound\'ST Boostを見つける</string>
+    <string name="battery_dialog_step2_desc">アプリリストをスクロールして「Sound\'ST Boost」を見つけるか検索してください</string>
+    <string name="battery_dialog_step3_title">ステップ 3：最適化を無効にする</string>
+    <string name="battery_dialog_step3_desc">アプリをタップして「最適化しない」または「許可」を選択</string>
+    <string name="battery_dialog_open_settings">設定を開く</string>
+    <string name="battery_dialog_cancel">後で</string>
+    <string name="battery_dialog_device_specific">デバイス固有のヒント：</string>
+    <string name="battery_dialog_tip_xiaomi">Xiaomi：設定 → アプリ → アプリ管理 → Sound\'ST Boost で「自動起動」も有効にしてください</string>
+    <string name="battery_dialog_tip_samsung">Samsung：設定 → バッテリー → バックグラウンド使用制限 → 「スリープ中のアプリ」から削除</string>
+    <string name="battery_dialog_tip_oneplus">OnePlus：アプリ情報 → バッテリー で「バックグラウンド活動を許可」を有効にする</string>
+    <string name="battery_dialog_tip_huawei">Huawei：電話マネージャー → アプリ起動 で「手動管理」を有効にする</string>
+    <string name="language_italian">イタリア語</string>
 </resources>

@@ -24,6 +24,19 @@
     <string name="about_desc">Sound\'ST Boost Ğ¸ÑĞ¿Ğ¾Ğ»ÑŒĞ·ÑƒĞµÑ‚ Ğ¾Ñ„Ğ¸Ñ†Ğ¸Ğ°Ğ»ÑŒĞ½Ñ‹Ğµ API Ğ·Ğ²ÑƒĞºĞ¾Ğ²Ñ‹Ñ… ÑÑ„Ñ„ĞµĞºÑ‚Ğ¾Ğ² Android. Ğ¡Ğ¸Ğ»Ğ° ÑÑ„Ñ„ĞµĞºÑ‚Ğ° Ğ¼Ğ¾Ğ¶ĞµÑ‚ Ñ€Ğ°Ğ·Ğ»Ğ¸Ñ‡Ğ°Ñ‚ÑŒÑÑ Ğ² Ğ·Ğ°Ğ²Ğ¸ÑĞ¸Ğ¼Ğ¾ÑÑ‚Ğ¸ Ğ¾Ñ‚ Ğ¾Ğ±Ğ¾Ñ€ÑƒĞ´Ğ¾Ğ²Ğ°Ğ½Ğ¸Ñ ÑƒÑÑ‚Ñ€Ğ¾Ğ¹ÑÑ‚Ğ²Ğ°.</string>
     <string name="microphone_permission">Ğ Ğ°Ğ·Ñ€ĞµÑˆĞµĞ½Ğ¸Ğµ ĞœĞ¸ĞºÑ€Ğ¾Ñ„Ğ¾Ğ½Ğ°</string>
     <string name="microphone_permission_desc">Ğ¢Ñ€ĞµĞ±ÑƒĞµÑ‚ÑÑ Ğ´Ğ»Ñ Ğ²Ğ¸Ğ·ÑƒĞ°Ğ»Ğ¸Ğ·Ğ°Ñ†Ğ¸Ğ¸ Ğ·Ğ²ÑƒĞºĞ° Ğ² Ñ€ĞµĞ°Ğ»ÑŒĞ½Ğ¾Ğ¼ Ğ²Ñ€ĞµĞ¼ĞµĞ½Ğ¸</string>
+
+    <!-- Важное раскрытие разрешения на аудио (обязательно для Google Play) -->
+    <string name="audio_permission_title">Визуальным Темам Требуется Разрешение</string>
+    <string name="audio_permission_description">Наши визуальные темы синхронизируются с музыкой, воспроизводимой в фоновом режиме (Spotify, YouTube и т.д.). Чтобы темы двигались в ритме, нам нужно разрешение на анализ аудио.</string>
+    <string name="audio_permission_why_title">Почему Это Необходимо</string>
+    <string name="audio_permission_why_desc">Темы реагируют на музыку из внешних приложений (Spotify, YouTube). Android требует разрешение на аудио для анализа частот.</string>
+    <string name="audio_permission_privacy_title">Ваша Конфиденциальность</string>
+    <string name="audio_permission_privacy_desc">Аудио данные анализируются в реальном времени ТОЛЬКО для анимации тем. Мы НЕ записываем, НЕ храним и НЕ передаем аудио данные.</string>
+    <string name="audio_permission_technical_title">Технические Детали</string>
+    <string name="audio_permission_technical_desc">Мы используем официальный Visualizer API Android. Аудио обрабатывается локально на вашем устройстве и немедленно удаляется.</string>
+    <string name="audio_permission_accept">Я Принимаю</string>
+    <string name="audio_permission_deny">Нет, Спасибо</string>
+    <string name="audio_permission_footer">Вы можете изменить это разрешение в любое время в Настройках</string>
     <string name="theme_neon_dark">ĞĞµĞ¾Ğ½Ğ¾Ğ²Ñ‹Ğ¹ Ğ¢ĞµĞ¼Ğ½Ñ‹Ğ¹</string>
     <string name="theme_ocean_blue">ĞĞºĞµĞ°Ğ½ÑĞºĞ¸Ğ¹ Ğ¡Ğ¸Ğ½Ğ¸Ğ¹</string>
     <string name="theme_sunset_orange">Ğ—Ğ°ĞºĞ°Ñ‚Ğ½Ñ‹Ğ¹ ĞÑ€Ğ°Ğ½Ğ¶ĞµĞ²Ñ‹Ğ¹</string>
@@ -156,4 +169,27 @@
     <string name="call_enhancement_desc">Улучшает четкость входящего голоса + снижает ВАШ фоновый шум во время звонков</string>
     <string name="call_enhancement_noise_suppression">Подавление шума</string>
     <string name="call_enhancement_auto_gain">Автоматическое усиление</string>
+
+    <!-- Оптимизация Батареи (безопасно для Google Play) -->
+    <string name="battery_optimization">Оптимизация Батареи</string>
+    <string name="battery_optimization_desc">Рекомендуется для устройств Xiaomi, Samsung, OnePlus для предотвращения прерывания фоновой службы</string>
+    
+    <!-- Диалог Оптимизации Батареи -->
+    <string name="battery_dialog_title">⚡ Настройка Оптимизации Батареи</string>
+    <string name="battery_dialog_subtitle">Держите Sound Boost работающим в фоновом режиме</string>
+    <string name="battery_dialog_desc">Некоторые устройства (Xiaomi, Samsung, OnePlus, Huawei) агрессивно закрывают фоновые приложения для экономии батареи. Чтобы усиление звука оставалось активным, когда экран выключен, нужно отключить оптимизацию батареи.</string>
+    <string name="battery_dialog_step1_title">Шаг 1: Открыть Настройки</string>
+    <string name="battery_dialog_step1_desc">Нажмите кнопку ниже, чтобы открыть настройки оптимизации батареи</string>
+    <string name="battery_dialog_step2_title">Шаг 2: Найти Sound\'ST Boost</string>
+    <string name="battery_dialog_step2_desc">Прокрутите список приложений и найдите "Sound\'ST Boost" или найдите его через поиск</string>
+    <string name="battery_dialog_step3_title">Шаг 3: Отключить Оптимизацию</string>
+    <string name="battery_dialog_step3_desc">Нажмите на приложение и выберите "Не оптимизировать" или "Разрешить"</string>
+    <string name="battery_dialog_open_settings">Открыть Настройки</string>
+    <string name="battery_dialog_cancel">Может Позже</string>
+    <string name="battery_dialog_device_specific">Советы для конкретных устройств:</string>
+    <string name="battery_dialog_tip_xiaomi">Xiaomi: Также включите "Автозапуск" в Настройки → Приложения → Управление приложениями → Sound\'ST Boost</string>
+    <string name="battery_dialog_tip_samsung">Samsung: Удалите из "Спящие приложения" в Настройки → Батарея → Ограничения фоновой активности</string>
+    <string name="battery_dialog_tip_oneplus">OnePlus: Включите "Разрешить фоновую активность" в Информация о приложении → Батарея</string>
+    <string name="battery_dialog_tip_huawei">Huawei: Включите "Ручной запуск" в Менеджер телефона → Запуск приложений</string>
+    <string name="language_italian">Итальянский</string>
 </resources>

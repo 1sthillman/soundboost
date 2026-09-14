@@ -1,0 +1,10 @@
+Kritik güncelleme: Google Play politika uyumluluğu.
+
+• Pil optimizasyonu izni kaldırıldı (Google Play gereksinimi)
+• Ayarlar ekranına pil optimizasyonu butonu eklendi
+• Kullanıcılar manuel olarak pil ayarlarını yapılandırabilir
+• Xiaomi, Samsung, OnePlus cihazlarda daha iyi uyumluluk
+• Android 16 (API 36) desteği
+• 16KB sayfa boyutu desteği
+
+Not: Arka plan çalışması için Ayarlar > Pil Optimizasyonu'ndan uygulamayı beyaz listeye ekleyin.
