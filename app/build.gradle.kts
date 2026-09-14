@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.compose")
+    id("org.jetbrains.kotlin.plugin.serialization") version "2.0.0"
 }
 
 import java.util.Properties
@@ -30,8 +31,8 @@ android {
         applicationId = "com.soundboost"
         minSdk = 24
         targetSdk = 36
-        versionCode = 29
-        versionName = "1.4.1"
+        versionCode = 30
+        versionName = "1.4.0"
         
         setProperty("archivesBaseName", "SoundSTBoost-v$versionName")
     }
@@ -107,6 +108,9 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.7")
     implementation("androidx.navigation:navigation-compose:2.8.5")
     implementation("androidx.datastore:datastore-preferences:1.1.1")
+    
+    // Kotlinx Serialization for Device Profiles (v1.4.0)
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
     
     // Coil for image loading
     implementation("io.coil-kt:coil-compose:2.7.0")

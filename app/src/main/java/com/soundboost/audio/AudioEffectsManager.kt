@@ -309,6 +309,32 @@ class AudioEffectsManager {
     }
     
     fun isCallEnhancementActive(): Boolean = callEnhancer.isActive
+    
+    /**
+     * Boost in-call audio volume (STREAM_VOICE_CALL)
+     * This enhances phone call audio, WhatsApp, Telegram, Zoom calls, etc.
+     * Google Play Compliant: Only modifies volume levels, does NOT record calls
+     */
+    fun boostCallAudio(audioManager: android.media.AudioManager, boostPercent: Int) {
+        try {
+            val maxVolume = audioManager.getStreamMaxVolume(android.media.AudioManager.STREAM_VOICE_CALL)
+            val currentVolume = audioManager.getStreamVolume(android.media.AudioManager.STREAM_VOICE_CALL)
+            
+            // Calculate boost: 100% = normal, 200% = double, etc.
+            val boostedVolume = ((currentVolume * (boostPercent / 100f))).toInt()
+                .coerceIn(0, maxVolume)
+            
+            audioManager.setStreamVolume(
+                android.media.AudioManager.STREAM_VOICE_CALL,
+                boostedVolume,
+                0  // No UI flags during call
+            )
+            
+            Log.d(TAG, "📞 Call Audio Boosted: $currentVolume -> $boostedVolume (max: $maxVolume)")
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ boostCallAudio failed: ${e.message}", e)
+        }
+    }
 
     fun release() {
         try { callEnhancer.release() } catch (_: Exception) {}
