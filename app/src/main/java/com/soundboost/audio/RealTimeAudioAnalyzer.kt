@@ -117,10 +117,10 @@ class RealTimeAudioAnalyzer {
         
         if (energyHistory.size > 30) {
             val avgEnergy = energyHistory.average().toFloat()
-            val targetEnergy = 0.25f
+            val targetEnergy = 0.35f // Increased from 0.25f for stronger signal
             if (avgEnergy > 0.01f) {
-                autoGainFactor = (autoGainFactor * 0.95f + (targetEnergy / avgEnergy) * 0.05f)
-                    .coerceIn(0.5f, 3.0f)
+                autoGainFactor = (autoGainFactor * 0.92f + (targetEnergy / avgEnergy) * 0.08f) // More responsive
+                    .coerceIn(0.5f, 4.0f) // Higher max gain
             }
         }
         
@@ -141,13 +141,13 @@ class RealTimeAudioAnalyzer {
         val presence = analyzeBand(magnitudes, 4000, 6000, fftSize)
         val brilliance = analyzeBand(magnitudes, 6000, 20000, fftSize)
         
-        // Smooth bands
+        // Smooth bands with better responsiveness
         val targetBass = (subBass + bass) / 2f
-        smoothedBass = smoothedBass + (targetBass - smoothedBass) * 0.25f
+        smoothedBass = smoothedBass + (targetBass - smoothedBass) * 0.35f // More responsive
         val targetMid = (lowMid + mid) / 2f
-        smoothedMid = smoothedMid + (targetMid - smoothedMid) * 0.25f
+        smoothedMid = smoothedMid + (targetMid - smoothedMid) * 0.35f
         val targetTreble = (presence + brilliance) / 2f
-        smoothedTreble = smoothedTreble + (targetTreble - smoothedTreble) * 0.25f
+        smoothedTreble = smoothedTreble + (targetTreble - smoothedTreble) * 0.35f
         
         // Visualizer bars
         val bars = createBars(magnitudes, 48)
@@ -195,33 +195,43 @@ class RealTimeAudioAnalyzer {
         val binLow = (freqLow * fftSize / sampleRate).coerceIn(0, magnitudes.size - 1)
         val binHigh = (freqHigh * fftSize / sampleRate).coerceIn(0, magnitudes.size - 1)
         
-        // Sample every 3rd bin for speed
+        // Sample every 2nd bin for speed (was 3rd - too weak)
         var sum = 0f
         var count = 0
         var i = binLow
         while (i <= binHigh) {
             sum += magnitudes[i]
             count++
-            i += 3
+            i += 2
         }
         
         val avg = if (count > 0) sum / count else 0f
-        return (avg * 4f).coerceIn(0f, 1f)
+        
+        // Stronger scaling for better visualization response
+        if (avg <= 0.001f) return 0f
+        
+        // Logarithmic-like scaling without log10 (faster but similar effect)
+        val scaled = sqrt(avg) * 2.5f
+        return scaled.coerceIn(0f, 1f)
     }
     
     private fun createBars(magnitudes: FloatArray, barCount: Int): FloatArray {
         val rawBars = FloatArray(barCount)
         val sampleRate = 44100
-        val maxFreq = 8000f
+        val maxFreq = 10000f // Increased from 8000 for better high-freq response
         
-        // Linear distribution with slight bass emphasis
+        // Exponential distribution for better frequency spread
         for (i in 0 until barCount) {
-            val progress = (i.toFloat() / barCount).pow(1.5f)
+            val progress = (i.toFloat() / barCount).pow(1.8f) // More bass emphasis
             val hz = 20f + (maxFreq - 20f) * progress
             val binIndex = ((hz * magnitudes.size) / sampleRate).toInt()
                 .coerceIn(0, magnitudes.size - 1)
             
-            rawBars[i] = (magnitudes[binIndex] * 3f).coerceIn(0f, 1f)
+            val magnitude = magnitudes[binIndex]
+            
+            // Enhanced scaling with dynamic range compression
+            val scaled = sqrt(magnitude) * 4.5f // Stronger response
+            rawBars[i] = scaled.coerceIn(0f, 1f)
         }
         
         // Initialize smoothing
@@ -230,20 +240,21 @@ class RealTimeAudioAnalyzer {
         
         val result = FloatArray(barCount)
         
-        // Smooth
+        // Attack/Release envelope for musical feel
         var i = 0
         while (i < barCount) {
             val raw = rawBars[i]
             val prev = smoothedBars!![i]
             
+            // Faster attack for responsiveness, slower release for smoothness
             val smoothed = if (raw > prev) {
-                prev + (raw - prev) * 0.4f
+                prev + (raw - prev) * 0.55f // More responsive
             } else {
-                prev + (raw - prev) * 0.3f
+                prev + (raw - prev) * 0.25f // Smooth decay
             }
             
             smoothedBars!![i] = smoothed
-            result[i] = maxOf(smoothed, 0.05f).coerceAtMost(0.95f)
+            result[i] = maxOf(smoothed, 0.05f).coerceAtMost(0.98f) // Higher max
             i++
         }
         
@@ -252,20 +263,31 @@ class RealTimeAudioAnalyzer {
     
     private fun detectTransients(magnitudes: FloatArray, fftSize: Int): TransientAnalysis {
         transientFrameSkip++
-        if (transientFrameSkip % 5 != 0) {
+        if (transientFrameSkip % 4 != 0) { // Changed from 5 to 4 - more responsive
             return cachedTransients
         }
         
         val sampleRate = 44100
         val binToFreq = sampleRate.toFloat() / fftSize
         
-        val kickBin = (80 / binToFreq).toInt().coerceIn(0, magnitudes.size - 1)
-        val snareBin = (6000 / binToFreq).toInt().coerceIn(0, magnitudes.size - 1)
-        val hihatBin = (10000 / binToFreq).toInt().coerceIn(0, magnitudes.size - 1)
+        // Average multiple bins for more stable detection
+        val kickBinStart = (60 / binToFreq).toInt().coerceIn(0, magnitudes.size - 1)
+        val kickBinEnd = (100 / binToFreq).toInt().coerceIn(0, magnitudes.size - 1)
+        var kickSum = 0f
+        for (i in kickBinStart..kickBinEnd) kickSum += magnitudes[i]
+        val kickEnergy = kickSum / (kickBinEnd - kickBinStart + 1)
         
-        val kickEnergy = magnitudes[kickBin]
-        val snareEnergy = magnitudes[snareBin]
-        val hihatEnergy = magnitudes[hihatBin]
+        val snareBinStart = (5000 / binToFreq).toInt().coerceIn(0, magnitudes.size - 1)
+        val snareBinEnd = (7000 / binToFreq).toInt().coerceIn(0, magnitudes.size - 1)
+        var snareSum = 0f
+        for (i in snareBinStart..snareBinEnd) snareSum += magnitudes[i]
+        val snareEnergy = snareSum / (snareBinEnd - snareBinStart + 1)
+        
+        val hihatBinStart = (8000 / binToFreq).toInt().coerceIn(0, magnitudes.size - 1)
+        val hihatBinEnd = (12000 / binToFreq).toInt().coerceIn(0, magnitudes.size - 1)
+        var hihatSum = 0f
+        for (i in hihatBinStart..hihatBinEnd) hihatSum += magnitudes[i]
+        val hihatEnergy = hihatSum / (hihatBinEnd - hihatBinStart + 1)
         
         val kickFlux = kickEnergy - prevKickEnergy
         val snareFlux = snareEnergy - prevSnareEnergy
@@ -276,9 +298,9 @@ class RealTimeAudioAnalyzer {
         prevHiHatEnergy = hihatEnergy
         
         cachedTransients = TransientAnalysis(
-            hasKick = kickFlux > 0.2f,
-            hasSnare = snareFlux > 0.15f,
-            hasHiHat = hiHatFlux > 0.12f
+            hasKick = kickFlux > 0.15f && kickEnergy > 0.3f, // More sensitive
+            hasSnare = snareFlux > 0.12f && snareEnergy > 0.25f,
+            hasHiHat = hiHatFlux > 0.10f && hihatEnergy > 0.3f
         )
         
         return cachedTransients
@@ -286,13 +308,19 @@ class RealTimeAudioAnalyzer {
     
     private fun calculateBrightness(magnitudes: FloatArray): Float {
         val mid = magnitudes.size / 2
-        var sum = 0f
+        var brightSum = 0f
+        var totalSum = 0.001f // Prevent division by zero
         
-        for (i in mid until magnitudes.size step 4) {
-            sum += magnitudes[i]
+        // Check upper frequencies with better sampling
+        for (i in mid until magnitudes.size step 3) { // Every 3rd (was 4th)
+            val mag = magnitudes[i]
+            brightSum += mag
+            totalSum += mag
         }
         
-        return (sum / (magnitudes.size / 2 / 4)).coerceIn(0f, 1f)
+        // Enhanced brightness calculation
+        val brightness = (brightSum / totalSum).coerceIn(0f, 1f)
+        return sqrt(brightness) // More sensitive to changes
     }
     
     private fun createWaveform(magnitudes: FloatArray, pointCount: Int): FloatArray {
@@ -336,13 +364,13 @@ class RealTimeAudioAnalyzer {
         if (fluxHistory.size < 15) return false
         
         val avgFlux = fluxHistory.average().toFloat()
-        val threshold = avgFlux * 2.2f
+        val threshold = avgFlux * 2.0f // More sensitive (was 2.2f)
         
         val now = System.currentTimeMillis()
         val timeSinceLastBeat = now - lastBeatTime
         
         val isBeat = (flux > threshold && 
-                     bassEnergy > 0.25f && 
+                     bassEnergy > 0.20f && // More sensitive (was 0.25f)
                      timeSinceLastBeat > minBeatInterval) || hasKick
         
         if (isBeat) {
@@ -356,14 +384,16 @@ class RealTimeAudioAnalyzer {
         var sum = 0f
         val maxIdx = magnitudes.size / 3
         
-        var i = 0
-        while (i < maxIdx) {
+        // Sample every bin for accurate energy
+        for (i in 0 until maxIdx) {
             sum += magnitudes[i]
-            i += 2
         }
         
-        val avg = sum / (maxIdx / 2)
-        return (avg / 100f).coerceIn(0f, 1f)
+        val avg = sum / maxIdx
+        
+        // Enhanced energy scaling with compression
+        val energy = sqrt(avg) * 1.5f
+        return energy.coerceIn(0f, 1f)
     }
     
     fun stopAnalysis() {
