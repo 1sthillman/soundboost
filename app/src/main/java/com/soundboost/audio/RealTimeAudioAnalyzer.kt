@@ -10,8 +10,15 @@ import kotlin.coroutines.coroutineContext
 import kotlin.math.*
 
 /**
- * PROFESSIONAL REAL-TIME AUDIO ANALYZER
- * Ultra-smooth, artistic visualization with proper audio processing
+ * PROFESSIONAL REAL-TIME AUDIO ANALYZER v2.0
+ * Studio-grade visualization with perceptual frequency weighting
+ * 
+ * NEW FEATURES:
+ * - Mel-scale frequency distribution (matches human hearing)
+ * - A-weighting curve (psychoacoustic correction)
+ * - Transient detection (kick, snare, hihat separation)
+ * - Spectral centroid (brightness/color)
+ * - Improved dynamic range compression
  */
 class RealTimeAudioAnalyzer {
     private var visualizer: Visualizer? = null
@@ -20,12 +27,12 @@ class RealTimeAudioAnalyzer {
     private var smoothedBars: FloatArray? = null
     private var prevSmoothedBars: FloatArray? = null
     private var peakHold: FloatArray? = null
-    private val smoothingFactor = 0.75f // Çok yüksek = daha smooth
-    private val attackTime = 0.35f // HIZLI yükselme - müziğe anında tepki!
-    private val releaseTime = 0.25f // HIZLI düşme - barlar şarkıyı yansıtsın!
+    private val smoothingFactor = 0.75f
+    private val attackTime = 0.30f // Biraz daha hızlı - anında tepki
+    private val releaseTime = 0.20f // Daha hızlı düşme - müzikal
     
     // Beat detection with adaptive threshold
-    private val fluxHistory = ArrayDeque<Float>(90) // 3 saniye
+    private val fluxHistory = ArrayDeque<Float>(90)
     private var prevMagnitudes: FloatArray? = null
     private var lastBeatTime = 0L
     private val minBeatInterval = 250L
@@ -36,17 +43,25 @@ class RealTimeAudioAnalyzer {
     private var smoothedMid = 0f
     private var smoothedTreble = 0f
     
+    // NEW: Transient tracking
+    private var prevKickEnergy = 0f
+    private var prevSnareEnergy = 0f
+    private var prevHiHatEnergy = 0f
+    
     // Calibration - automatic gain adjustment
-    private val energyHistory = ArrayDeque<Float>(300) // 10 saniye
+    private val energyHistory = ArrayDeque<Float>(300)
     private var autoGainFactor = 1.0f
+    
+    // NEW: Peak normalization
+    private val peakHistory = ArrayDeque<Float>(120) // 4 seconds
     
     fun startAnalysis(): Flow<AudioAnalysis> = flow {
         try {
-            android.util.Log.d("AudioAnalyzer", "🎵 Starting professional analyzer with smooth interpolation...")
+            android.util.Log.d("AudioAnalyzer", "🎵 Starting STUDIO-GRADE analyzer with mel-scale + A-weighting...")
             
             visualizer = Visualizer(0).apply {
                 captureSize = Visualizer.getCaptureSizeRange()[1]
-                android.util.Log.d("AudioAnalyzer", "FFT size: $captureSize bins")
+                android.util.Log.d("AudioAnalyzer", "FFT size: $captureSize bins (Professional mode)")
                 
                 setDataCaptureListener(
                     object : Visualizer.OnDataCaptureListener {
@@ -58,7 +73,7 @@ class RealTimeAudioAnalyzer {
                     true
                 )
                 enabled = true
-                android.util.Log.d("AudioAnalyzer", "✅ Analyzer active with ultra-smooth processing")
+                android.util.Log.d("AudioAnalyzer", "✅ Analyzer active - Mel-scale distribution enabled")
             }
             
             val fftBuffer = ByteArray(visualizer?.captureSize ?: 1024)
@@ -68,16 +83,17 @@ class RealTimeAudioAnalyzer {
                 val status = visualizer?.getFft(fftBuffer)
                 
                 if (status == Visualizer.SUCCESS) {
-                    val analysis = analyzeAudioSmooth(fftBuffer)
+                    val analysis = analyzeAudioProfessional(fftBuffer)
                     emit(analysis)
                     
                     if (frameCount % 120 == 0) {
                         android.util.Log.d(
                             "AudioAnalyzer",
                             "Frame $frameCount | Energy: ${String.format("%.2f", analysis.energy)} " +
-                            "Bass: ${String.format("%.2f", analysis.bass)} " +
-                            "AutoGain: ${String.format("%.2f", autoGainFactor)} " +
-                            "${if (analysis.isBeat) "🥁" else ""}"
+                            "Brightness: ${String.format("%.2f", analysis.spectralCentroid)} " +
+                            "${if (analysis.isBeat) "🥁" else ""} " +
+                            "${if (analysis.hasKick) "KICK" else ""} " +
+                            "${if (analysis.hasSnare) "SNARE" else ""}"
                         )
                     }
                     frameCount++
@@ -93,11 +109,14 @@ class RealTimeAudioAnalyzer {
         }
     }.flowOn(Dispatchers.Default)
     
-    private fun analyzeAudioSmooth(fftBytes: ByteArray): AudioAnalysis {
+    /**
+     * PROFESSIONAL AUDIO ANALYSIS with Mel-scale + A-weighting
+     */
+    private fun analyzeAudioProfessional(fftBytes: ByteArray): AudioAnalysis {
         val fftSize = fftBytes.size / 2
         val magnitudes = FloatArray(fftSize)
         
-        // Convert FFT to magnitudes with proper scaling
+        // Convert FFT to magnitudes
         for (i in 0 until fftSize step 2) {
             val real = fftBytes[i].toFloat()
             val imag = fftBytes[i + 1].toFloat()
@@ -105,46 +124,57 @@ class RealTimeAudioAnalyzer {
             magnitudes[i / 2] = magnitude
         }
         
-        // === AUTO-CALIBRATION ===
-        // Adapt to environment noise level
+        // === AUTO-CALIBRATION with Peak Normalization ===
         val totalEnergy = magnitudes.average().toFloat()
         energyHistory.add(totalEnergy)
         if (energyHistory.size > 300) energyHistory.removeFirst()
         
+        // Peak normalization for consistent visualization
+        val currentPeak = magnitudes.maxOrNull() ?: 1f
+        peakHistory.add(currentPeak)
+        if (peakHistory.size > 120) peakHistory.removeFirst()
+        val recentPeak = peakHistory.maxOrNull() ?: 1f
+        
         if (energyHistory.size > 60) {
             val avgEnergy = energyHistory.average().toFloat()
-            val targetEnergy = 0.25f // İdeal seviye
+            val targetEnergy = 0.25f
             if (avgEnergy > 0.01f) {
                 autoGainFactor = (autoGainFactor * 0.99f + (targetEnergy / avgEnergy) * 0.01f)
                     .coerceIn(0.5f, 3.0f)
             }
         }
         
-        // Apply auto-gain
+        // Apply auto-gain with peak normalization
         for (i in magnitudes.indices) {
-            magnitudes[i] *= autoGainFactor
+            magnitudes[i] = (magnitudes[i] / recentPeak.coerceAtLeast(0.1f)) * autoGainFactor
         }
         
-        // === SMOOTH FREQUENCY BANDS ===
-        val subBass = analyzeBandSmooth(magnitudes, 0, 60, fftSize)
-        val bass = analyzeBandSmooth(magnitudes, 60, 250, fftSize)
-        val lowMid = analyzeBandSmooth(magnitudes, 250, 500, fftSize)
-        val mid = analyzeBandSmooth(magnitudes, 500, 2000, fftSize)
-        val highMid = analyzeBandSmooth(magnitudes, 2000, 4000, fftSize)
-        val presence = analyzeBandSmooth(magnitudes, 4000, 6000, fftSize)
-        val brilliance = analyzeBandSmooth(magnitudes, 6000, 20000, fftSize)
+        // === SMOOTH FREQUENCY BANDS with A-weighting ===
+        val subBass = analyzeBandPerceptual(magnitudes, 20, 60, fftSize)
+        val bass = analyzeBandPerceptual(magnitudes, 60, 250, fftSize)
+        val lowMid = analyzeBandPerceptual(magnitudes, 250, 500, fftSize)
+        val mid = analyzeBandPerceptual(magnitudes, 500, 2000, fftSize)
+        val highMid = analyzeBandPerceptual(magnitudes, 2000, 4000, fftSize)
+        val presence = analyzeBandPerceptual(magnitudes, 4000, 6000, fftSize)
+        val brilliance = analyzeBandPerceptual(magnitudes, 6000, 20000, fftSize)
         
         // Smooth energy bands
         smoothedBass = lerp(smoothedBass, (subBass + bass) / 2f, 0.25f)
         smoothedMid = lerp(smoothedMid, (lowMid + mid) / 2f, 0.25f)
         smoothedTreble = lerp(smoothedTreble, (presence + brilliance) / 2f, 0.25f)
         
-        // === ULTRA-SMOOTH VISUALIZER BARS ===
-        val bars = createSmoothBars(magnitudes, 48)
+        // === MEL-SCALE VISUALIZER BARS (Studio-grade!) ===
+        val bars = createMelScaleBars(magnitudes, 48)
+        
+        // === TRANSIENT DETECTION (Kick/Snare/HiHat) ===
+        val transients = detectTransients(magnitudes, fftSize)
         
         // === BEAT DETECTION ===
         val spectralFlux = calculateSpectralFlux(magnitudes)
-        val isBeat = detectBeatSmooth(spectralFlux, smoothedBass)
+        val isBeat = detectBeatProfessional(spectralFlux, smoothedBass, transients.hasKick)
+        
+        // === SPECTRAL CENTROID (Brightness/Color) ===
+        val spectralCentroid = calculateSpectralCentroid(magnitudes)
         
         // === OVERALL ENERGY (smoothed) ===
         val rawEnergy = calculateEnergy(magnitudes)
@@ -156,7 +186,7 @@ class RealTimeAudioAnalyzer {
         return AudioAnalysis(
             bars = bars,
             waveform = waveform,
-            subBass = smoothedBass * 0.8f, // Biraz azalt, aşırı hassas olmasın
+            subBass = smoothedBass * 0.8f,
             bass = smoothedBass,
             lowMid = lowMid * 0.85f,
             mid = smoothedMid,
@@ -165,30 +195,66 @@ class RealTimeAudioAnalyzer {
             brilliance = smoothedTreble,
             energy = smoothedEnergy,
             spectralFlux = spectralFlux,
+            spectralCentroid = spectralCentroid, // NEW
             isBeat = isBeat,
+            hasKick = transients.hasKick, // NEW
+            hasSnare = transients.hasSnare, // NEW
+            hasHiHat = transients.hasHiHat, // NEW
             timestamp = System.currentTimeMillis()
         )
     }
     
     /**
-     * Smooth band analysis with proper frequency weighting
+     * NEW: Mel-scale frequency conversion
+     * Matches human hearing perception - more musical!
      */
-    private fun analyzeBandSmooth(magnitudes: FloatArray, freqLow: Int, freqHigh: Int, fftSize: Int): Float {
+    private fun hzToMel(hz: Float): Float {
+        return 2595f * log10(1 + hz / 700f)
+    }
+    
+    private fun melToHz(mel: Float): Float {
+        return 700f * (10.0.pow((mel / 2595.0).toDouble()) - 1).toFloat()
+    }
+    
+    /**
+     * NEW: A-weighting curve (ISO 226:2003)
+     * Compensates for human ear frequency response
+     */
+    private fun applyAWeighting(frequency: Float): Float {
+        val f2 = frequency * frequency
+        val f4 = f2 * f2
+        
+        val numerator = 12194f * 12194f * f4
+        val denominator = (f2 + 20.6f * 20.6f) * 
+                         sqrt((f2 + 107.7f * 107.7f).toDouble()).toFloat() *
+                         sqrt((f2 + 737.9f * 737.9f).toDouble()).toFloat() *
+                         (f2 + 12194f * 12194f)
+        
+        val weight = numerator / denominator.coerceAtLeast(0.0001f)
+        return weight.coerceIn(0.1f, 2.0f) // Limit range
+    }
+    
+    /**
+     * Perceptual band analysis with A-weighting
+     */
+    private fun analyzeBandPerceptual(magnitudes: FloatArray, freqLow: Int, freqHigh: Int, fftSize: Int): Float {
         val sampleRate = 44100
         val binLow = (freqLow * fftSize / sampleRate).coerceIn(0, magnitudes.size - 1)
         val binHigh = (freqHigh * fftSize / sampleRate).coerceIn(0, magnitudes.size - 1)
         
-        var sum = 0.0
-        var count = 0
+        var weightedSum = 0.0
+        var totalWeight = 0.0
         
         for (i in binLow..binHigh) {
-            sum += magnitudes[i]
-            count++
+            val frequency = (i * sampleRate / fftSize).toFloat()
+            val aWeight = applyAWeighting(frequency)
+            weightedSum += magnitudes[i] * aWeight
+            totalWeight += aWeight
         }
         
-        val avg = if (count > 0) sum / count else 0.0
+        val avg = if (totalWeight > 0) weightedSum / totalWeight else 0.0
         
-        // Perceptual scaling (logarithmic)
+        // Perceptual scaling
         val db = if (avg > 0.001) 20 * log10(avg + 1) else -60.0
         val normalized = ((db + 30) / 45.0).coerceIn(0.0, 1.0)
         
@@ -196,44 +262,42 @@ class RealTimeAudioAnalyzer {
     }
     
     /**
-     * Create ultra-smooth visualizer bars with interpolation
-     * LOGARITHMIC FREQUENCY DISTRIBUTION - Like professional equalizers!
+     * MEL-SCALE BAR DISTRIBUTION - Studio-grade!
+     * Uses mel-scale for perceptually uniform frequency distribution
      */
-    private fun createSmoothBars(magnitudes: FloatArray, barCount: Int): FloatArray {
+    private fun createMelScaleBars(magnitudes: FloatArray, barCount: Int): FloatArray {
         val rawBars = FloatArray(barCount)
         
-        // CRITICAL: Use LOGARITHMIC frequency distribution
-        // Most music energy is in 20Hz - 5kHz range
-        // Professional studio equalizers use this exact distribution!
+        // Mel-scale range: 20Hz - 8000Hz (music sweet spot)
+        val melMin = hzToMel(20f)
+        val melMax = hzToMel(8000f)
+        val sampleRate = 44100
+        
         for (i in 0 until barCount) {
             val progress = i.toFloat() / barCount
             
-            // LOGARITHMIC mapping: compress low freqs, expand high freqs
-            // This makes ALL bars move, not just left side!
-            val logProgress = (exp(progress * 3.5) - 1) / (exp(3.5) - 1)
+            // Linear interpolation in mel-space
+            val mel = melMin + (melMax - melMin) * progress
+            val hz = melToHz(mel)
             
-            // Map to frequency bins (focus on 20Hz - 8kHz where music lives)
-            val binIndex = (logProgress * magnitudes.size * 0.4f).toInt()
+            // Convert to FFT bin
+            val binIndex = ((hz * magnitudes.size) / sampleRate).toInt()
                 .coerceIn(0, magnitudes.size - 1)
             
             val magnitude = magnitudes[binIndex]
             
-            // Enhanced scaling for better visibility across ALL frequencies
-            val db = if (magnitude > 0.001) {
-                (20 * log10((magnitude + 1).toDouble())).toFloat()
+            // Enhanced scaling with A-weighting
+            val aWeight = applyAWeighting(hz)
+            val weightedMagnitude = magnitude * aWeight
+            
+            val db = if (weightedMagnitude > 0.001) {
+                (20 * log10((weightedMagnitude + 1).toDouble())).toFloat()
             } else {
                 -60f
             }
             
-            // Normalize with boosted high frequencies (so right side moves!)
-            val boost = if (i > barCount * 0.6f) {
-                // Boost high frequencies (right side) by 2-3x
-                1.5f + (i.toFloat() / barCount) * 1.5f
-            } else {
-                1.0f
-            }
-            
-            val normalized = ((db + 35f) / 50f * boost).coerceIn(0f, 1f)
+            // Normalize
+            val normalized = ((db + 35f) / 50f).coerceIn(0f, 1f)
             
             rawBars[i] = normalized
         }
@@ -249,35 +313,71 @@ class RealTimeAudioAnalyzer {
             val raw = rawBars[i]
             val prev = smoothedBars!![i]
             
-            // Attack/Release envelope for natural movement
+            // Attack/Release envelope
             val smoothed = if (raw > prev) {
-                // Fast attack - müziğe anında tepki
-                lerp(prev, raw, attackTime)
+                lerp(prev, raw, attackTime) // Fast attack
             } else {
-                // Fast release - barlar hızla düşsün
-                lerp(prev, raw, releaseTime)
+                lerp(prev, raw, releaseTime) // Fast release
             }
             
-            // Peak hold - daha hızlı düşsün
+            // Peak hold
             if (smoothed > peakHold!![i]) {
                 peakHold!![i] = smoothed
             } else {
-                peakHold!![i] *= 0.85f // Hızlı düşüş - barlar dinamik olsun!
+                peakHold!![i] *= 0.85f
             }
             
             smoothedBars!![i] = smoothed
-            
-            // Final value with minimum threshold
             result[i] = maxOf(smoothed, 0.05f).coerceAtMost(0.95f)
         }
         
-        // Interpolate between frames for 120 FPS smoothness
+        // Frame interpolation for 120 FPS smoothness
         for (i in 0 until barCount) {
             result[i] = lerp(prevSmoothedBars!![i], result[i], 0.4f)
             prevSmoothedBars!![i] = result[i]
         }
         
         return result
+    }
+    
+    /**
+     * NEW: Transient detection - separate kick, snare, hihat
+     */
+    private fun detectTransients(magnitudes: FloatArray, fftSize: Int): TransientAnalysis {
+        val kickEnergy = analyzeBandPerceptual(magnitudes, 60, 120, fftSize)
+        val snareBodyEnergy = analyzeBandPerceptual(magnitudes, 150, 300, fftSize)
+        val snareCrackEnergy = analyzeBandPerceptual(magnitudes, 5000, 8000, fftSize)
+        val hiHatEnergy = analyzeBandPerceptual(magnitudes, 8000, 16000, fftSize)
+        
+        val kickFlux = kickEnergy - prevKickEnergy
+        val snareFlux = (snareBodyEnergy + snareCrackEnergy) / 2 - prevSnareEnergy
+        val hiHatFlux = hiHatEnergy - prevHiHatEnergy
+        
+        prevKickEnergy = kickEnergy
+        prevSnareEnergy = (snareBodyEnergy + snareCrackEnergy) / 2
+        prevHiHatEnergy = hiHatEnergy
+        
+        return TransientAnalysis(
+            hasKick = kickFlux > 0.15f && kickEnergy > 0.4f,
+            hasSnare = snareFlux > 0.12f && snareCrackEnergy > 0.3f,
+            hasHiHat = hiHatFlux > 0.10f && hiHatEnergy > 0.4f
+        )
+    }
+    
+    /**
+     * NEW: Spectral centroid - "brightness" of sound
+     */
+    private fun calculateSpectralCentroid(magnitudes: FloatArray): Float {
+        var weightedSum = 0f
+        var totalMagnitude = 0f
+        
+        for (i in magnitudes.indices) {
+            weightedSum += i * magnitudes[i]
+            totalMagnitude += magnitudes[i]
+        }
+        
+        val centroid = if (totalMagnitude > 0) weightedSum / totalMagnitude else 0f
+        return (centroid / magnitudes.size).coerceIn(0f, 1f)
     }
     
     private fun createWaveform(magnitudes: FloatArray, pointCount: Int): FloatArray {
@@ -301,9 +401,8 @@ class RealTimeAudioAnalyzer {
         }
         
         var flux = 0.0
-        
-        // Only positive changes in low/mid frequencies (where beats occur)
         val maxBin = minOf(magnitudes.size / 3, magnitudes.size)
+        
         for (i in 0 until maxBin) {
             val diff = magnitudes[i] - prev[i]
             if (diff > 0) {
@@ -312,30 +411,28 @@ class RealTimeAudioAnalyzer {
         }
         
         prevMagnitudes = magnitudes.copyOf()
-        
         return flux.toFloat()
     }
     
-    private fun detectBeatSmooth(flux: Float, bassEnergy: Float): Boolean {
+    private fun detectBeatProfessional(flux: Float, bassEnergy: Float, hasKick: Boolean): Boolean {
         fluxHistory.add(flux)
         if (fluxHistory.size > 90) fluxHistory.removeFirst()
         
         if (fluxHistory.size < 20) return false
         
-        // Adaptive threshold with statistics
         val avgFlux = fluxHistory.average().toFloat()
         val variance = fluxHistory.map { (it - avgFlux).pow(2) }.average()
         val stdDev = sqrt(variance).toFloat()
-        val threshold = avgFlux + stdDev * 1.8f // Daha az hassas
+        val threshold = avgFlux + stdDev * 1.8f
         
         val now = System.currentTimeMillis()
         val timeSinceLastBeat = now - lastBeatTime
         
-        // Stricter beat criteria
-        val isBeat = flux > threshold && 
-                    flux > avgFlux * 2.5f && // Daha güçlü değişim
-                    bassEnergy > 0.3f && // Daha yüksek bass threshold
-                    timeSinceLastBeat > minBeatInterval
+        // Enhanced beat detection with transient info
+        val isBeat = (flux > threshold && 
+                     flux > avgFlux * 2.5f && 
+                     bassEnergy > 0.3f && 
+                     timeSinceLastBeat > minBeatInterval) || hasKick
         
         if (isBeat) {
             lastBeatTime = now
@@ -365,11 +462,21 @@ class RealTimeAudioAnalyzer {
             prevMagnitudes = null
             fluxHistory.clear()
             energyHistory.clear()
+            peakHistory.clear()
         } catch (e: Exception) {
             android.util.Log.e("AudioAnalyzer", "Error stopping: ${e.message}")
         }
     }
 }
+
+/**
+ * NEW: Transient analysis data
+ */
+data class TransientAnalysis(
+    val hasKick: Boolean,
+    val hasSnare: Boolean,
+    val hasHiHat: Boolean
+)
 
 data class AudioAnalysis(
     val bars: FloatArray = FloatArray(48) { 0.05f },
@@ -383,7 +490,11 @@ data class AudioAnalysis(
     val brilliance: Float = 0f,
     val energy: Float = 0f,
     val spectralFlux: Float = 0f,
+    val spectralCentroid: Float = 0f, // NEW: Brightness (0-1)
     val isBeat: Boolean = false,
+    val hasKick: Boolean = false, // NEW
+    val hasSnare: Boolean = false, // NEW
+    val hasHiHat: Boolean = false, // NEW
     val timestamp: Long = 0L
 ) {
     override fun equals(other: Any?): Boolean {
