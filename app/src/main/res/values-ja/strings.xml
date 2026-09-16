@@ -191,5 +191,15 @@
     <string name="battery_dialog_tip_samsung">Samsung：設定 → バッテリー → バックグラウンド使用制限 → 「スリープ中のアプリ」から削除</string>
     <string name="battery_dialog_tip_oneplus">OnePlus：アプリ情報 → バッテリー で「バックグラウンド活動を許可」を有効にする</string>
     <string name="battery_dialog_tip_huawei">Huawei：電話マネージャー → アプリ起動 で「手動管理」を有効にする</string>
+    
+    <!-- Battery Optimization Onboarding -->
+    <string name="battery_onboarding_title">⚡ 途切れないサウンド</string>
+    <string name="battery_onboarding_subtitle">バックグラウンド推奨</string>
+    <string name="battery_onboarding_chip1">🌙 画面オフでも動作</string>
+    <string name="battery_onboarding_chip2">⚡ より安定したパフォーマンス</string>
+    <string name="battery_onboarding_dismiss">わかりました</string>
+    <string name="battery_onboarding_setup">設定</string>
+    <string name="close">閉じる</string>
+    
     <string name="language_italian">イタリア語</string>
 </resources>

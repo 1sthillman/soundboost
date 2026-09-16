@@ -1,0 +1,50 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="320dp"
+    android:height="80dp"
+    android:viewportWidth="320"
+    android:viewportHeight="80">
+    <!-- MEHTAP Theme Background -->
+    <path
+        android:fillColor="#0c1e30"
+        android:pathData="M0,8 a8,8 0 0,1 8,-8 h304 a8,8 0 0,1 8,8 v64 a8,8 0 0,1 -8,8 h-304 a8,8 0 0,1 -8,-8 z" />
+    
+    <!-- Toggle Button (left) -->
+    <circle
+        android:fillColor="#1a2f45"
+        cx="28"
+        cy="40"
+        r="18" />
+    <path
+        android:fillColor="#f2b155"
+        android:pathData="M20,35 l5,5 v-10 l-5,5 z M30,38 c0,-1 -0.7,-2 -1.5,-2.5 v5 c0.8,-0.5 1.5,-1.5 1.5,-2.5 z" />
+    
+    <!-- Volume Presets (middle) -->
+    <path
+        android:fillColor="#1a2f45"
+        android:pathData="M66,24 h24 a4,4 0 0,1 4,4 v24 a4,4 0 0,1 -4,4 h-24 a4,4 0 0,1 -4,-4 v-24 a4,4 0 0,1 4,-4 z" />
+    <path
+        android:fillColor="#1a2f45"
+        android:pathData="M106,24 h24 a4,4 0 0,1 4,4 v24 a4,4 0 0,1 -4,4 h-24 a4,4 0 0,1 -4,-4 v-24 a4,4 0 0,1 4,-4 z" />
+    <path
+        android:fillColor="#1a2f45"
+        android:pathData="M146,24 h24 a4,4 0 0,1 4,4 v24 a4,4 0 0,1 -4,4 h-24 a4,4 0 0,1 -4,-4 v-24 a4,4 0 0,1 4,-4 z" />
+    <path
+        android:fillColor="#1a2f45"
+        android:pathData="M186,24 h24 a4,4 0 0,1 4,4 v24 a4,4 0 0,1 -4,4 h-24 a4,4 0 0,1 -4,-4 v-24 a4,4 0 0,1 4,-4 z" />
+    <path
+        android:fillColor="#1a2f45"
+        android:pathData="M226,24 h24 a4,4 0 0,1 4,4 v24 a4,4 0 0,1 -4,4 h-24 a4,4 0 0,1 -4,-4 v-24 a4,4 0 0,1 4,-4 z" />
+    
+    <!-- Effect Controls (right side) -->
+    <path
+        android:fillColor="#1a2f45"
+        android:pathData="M269,18 h38 a3,3 0 0,1 3,3 v8 a3,3 0 0,1 -3,3 h-38 a3,3 0 0,1 -3,-3 v-8 a3,3 0 0,1 3,-3 z" />
+    <path
+        android:fillColor="#1a2f45"
+        android:pathData="M269,48 h38 a3,3 0 0,1 3,3 v8 a3,3 0 0,1 -3,3 h-38 a3,3 0 0,1 -3,-3 v-8 a3,3 0 0,1 3,-3 z" />
+    
+    <!-- Accent Highlights -->
+    <path
+        android:fillColor="#f2b155"
+        android:pathData="M70,36 h16 v8 h-16 z M110,36 h16 v8 h-16 z M150,36 h16 v8 h-16 z M190,36 h16 v8 h-16 z M230,36 h16 v8 h-16 z" />
+</vector>

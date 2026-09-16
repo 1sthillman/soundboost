@@ -10,8 +10,18 @@ import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.ui.graphics.Color
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -21,18 +31,26 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.foundation.layout.padding
+import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.soundboost.ui.screens.*
 import com.soundboost.ui.screens.ModernEqualizerScreen
+import com.soundboost.ui.components.BatteryOnboardingCard
 import com.soundboost.ui.theme.SoundSTBoostTheme
 import com.soundboost.ui.theme.getThemeColors
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
 
@@ -51,7 +69,7 @@ class MainActivity : ComponentActivity() {
         if (isGranted) {
             android.util.Log.d("MainActivity", "✅ Mikrofon izni verildi - Boost başlatılıyor")
             // İzin verildiyse boost'u başlat
-            viewModel.startBoostAfterPermission()
+            viewModel.toggleBoost()
         } else {
             android.util.Log.w("MainActivity", "❌ Mikrofon izni reddedildi - Görselleştirme çalışmayacak")
         }
@@ -126,7 +144,7 @@ class MainActivity : ComponentActivity() {
             ) == android.content.pm.PackageManager.PERMISSION_GRANTED -> {
                 // Already granted - start boost immediately
                 android.util.Log.d("MainActivity", "✅ Mikrofon izni zaten var - Boost başlatılıyor")
-                viewModel.startBoostAfterPermission()
+                viewModel.toggleBoost()
             }
             shouldShowRequestPermissionRationale(Manifest.permission.RECORD_AUDIO) -> {
                 // Show rationale and request
@@ -175,6 +193,21 @@ fun MainScreen(viewModel: MainViewModel) {
     // GOOGLE PLAY POLICY: Show prominent disclosure before requesting RECORD_AUDIO
     var showAudioDisclosure by remember { mutableStateOf(activity?.shouldShowAudioDisclosure ?: false) }
     
+    // NEW: Battery Onboarding Card - İlk açılışta göster
+    var showBatteryOnboarding by remember { mutableStateOf(false) }
+    
+    // Check if we should show battery onboarding - ASYNC to avoid blocking UI
+    LaunchedEffect(Unit) {
+        kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) {
+            val prefs = com.soundboost.data.BoostPreferences(context)
+            val shouldShow = prefs.shouldShowBatteryOnboarding()
+            kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Main) {
+                showBatteryOnboarding = shouldShow
+                android.util.Log.d("MainActivity", "🔋 Should show battery onboarding: $shouldShow")
+            }
+        }
+    }
+    
     // Show rate dialog only after user has tried the boost feature
     LaunchedEffect(uiState.isBoostEnabled) {
         if (uiState.isBoostEnabled) {
@@ -195,7 +228,8 @@ fun MainScreen(viewModel: MainViewModel) {
         modifier = Modifier.fillMaxSize(),
         color = themeColors.background
     ) {
-        NavHost(navController = navController, startDestination = "volume") {
+        Box(modifier = Modifier.fillMaxSize()) {
+            NavHost(navController = navController, startDestination = "volume") {
             composable(
                 route = "volume",
                 content = {
@@ -308,6 +342,71 @@ fun MainScreen(viewModel: MainViewModel) {
             }
         }
         
+        // NEW: Battery Onboarding Card - Modern overlay with scrim
+        AnimatedVisibility(
+            visible = showBatteryOnboarding,
+            enter = fadeIn(),
+            exit = fadeOut()
+        ) {
+            // Semi-transparent background scrim
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.Black.copy(alpha = 0.4f))
+                    .clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = null
+                    ) {
+                        // Dismiss when clicking outside
+                        CoroutineScope(Dispatchers.Main).launch {
+                            val prefs = com.soundboost.data.BoostPreferences(context)
+                            prefs.setBatteryOnboardingShown()
+                            showBatteryOnboarding = false
+                        }
+                    }
+            ) {
+                // Card positioned in bottom area but with safe margins
+                Box(
+                    modifier = Modifier
+                        .align(Alignment.BottomCenter)
+                        .fillMaxWidth()
+                        .padding(bottom = 16.dp) // Safe margin from bottom
+                        .navigationBarsPadding()
+                ) {
+                    BatteryOnboardingCard(
+                        themeColors = themeColors,
+                        isVisible = showBatteryOnboarding,
+                        onOpenSettings = {
+                            // Direkt pil optimizasyon ayarlarını aç
+                            try {
+                                val intent = android.content.Intent(
+                                    android.provider.Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS
+                                )
+                                context.startActivity(intent)
+                            } catch (e: Exception) {
+                                android.util.Log.e("MainActivity", "Failed to open battery settings", e)
+                            }
+                            // Onboarding'i dismiss et
+                            CoroutineScope(Dispatchers.Main).launch {
+                                val prefs = com.soundboost.data.BoostPreferences(context)
+                                prefs.setBatteryOnboardingShown()
+                                showBatteryOnboarding = false
+                            }
+                        },
+                        onDismiss = {
+                            CoroutineScope(Dispatchers.Main).launch {
+                                val prefs = com.soundboost.data.BoostPreferences(context)
+                                prefs.setBatteryOnboardingShown()
+                                showBatteryOnboarding = false
+                                android.util.Log.d("MainActivity", "✅ Battery onboarding dismissed")
+                            }
+                        }
+                    )
+                }
+            }
+        }
+        
+        // Dialogs
         // Dialogs
         if (showRateDialog) {
             com.soundboost.ui.components.RateAppDialog(
@@ -357,6 +456,7 @@ fun MainScreen(viewModel: MainViewModel) {
                         ?.apply()
                 }
             )
+        }
         }
     }
 }

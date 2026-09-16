@@ -76,27 +76,16 @@
             </intent-filter>
         </service>
 
-        <!-- Home Screen Widgets (v1.4.0) -->
+        <!-- Premium Rezonans Widget (v1.4.0) - Glance Compose Widget -->
         <receiver
-            android:name=".ui.widgets.VolumeBoostWidgetReceiver"
+            android:name=".ui.widgets.RezonansGlanceWidgetReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/widget_1x1_info" />
-        </receiver>
-
-        <receiver
-            android:name=".ui.widgets.VolumeBoostWidget2x1Receiver"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-            </intent-filter>
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/widget_2x1_info" />
+                android:resource="@xml/widget_rezonans_info" />
         </receiver>
 
     </application>

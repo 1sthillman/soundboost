@@ -60,15 +60,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             val newState = !current
             android.util.Log.d("MainViewModel", "toggleBoost: $current -> $newState")
             
-            // CRITICAL: Check microphone permission before starting boost
-            if (newState && onRequestPermission != null) {
-                // Boost açılıyorsa ve izin kontrolü callback'i varsa
-                android.util.Log.d("MainViewModel", "🎤 Checking microphone permission before starting boost")
-                onRequestPermission()
-                // Gerçek boost başlatma onRequestPermission callback'inden yapılacak
-                return@launch
-            }
-            
             prefs.setBoostEnabled(newState)
             
             val intent = Intent(getApplication(), BoostForegroundService::class.java).apply {
@@ -83,22 +74,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 android.util.Log.d("MainViewModel", "Stopping audio visualization...")
                 stopAudioVisualization()
             }
-        }
-    }
-    
-    // NEW: Internal function to start boost after permission granted
-    fun startBoostAfterPermission() {
-        viewModelScope.launch {
-            android.util.Log.d("MainViewModel", "✅ Starting boost after permission granted")
-            prefs.setBoostEnabled(true)
-            
-            val intent = Intent(getApplication(), BoostForegroundService::class.java).apply {
-                action = "START_BOOST"
-            }
-            getApplication<Application>().startService(intent)
-            
-            android.util.Log.d("MainViewModel", "Starting audio visualization...")
-            startAudioVisualization()
         }
     }
     
@@ -348,14 +323,17 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             prefs.setVirtualizer(profile.virtualizerPercent)
             
             // Apply equalizer preset if available
-            profile.equalizerPresetName?.let { presetName ->
+            if (profile.equalizerPresetName != null) {
                 try {
-                    val preset = com.soundboost.audio.EqualizerPreset.values()
+                    val presetName = profile.equalizerPresetName
+                    val preset = com.soundboost.audio.EqualizerPreset.ALL_PRESETS
                         .firstOrNull { it.name == presetName }
                     
-                    preset?.let { onPresetSelected(it) }
+                    if (preset != null) {
+                        onPresetSelected(preset)
+                    }
                 } catch (e: Exception) {
-                    android.util.Log.w("MainViewModel", "Failed to apply preset: $presetName")
+                    android.util.Log.w("MainViewModel", "Failed to apply preset: ${profile.equalizerPresetName}")
                 }
             }
             

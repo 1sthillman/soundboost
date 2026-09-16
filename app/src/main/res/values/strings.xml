@@ -61,6 +61,16 @@
     <string name="battery_dialog_tip_samsung">Samsung: Remove from "Sleeping apps" in Settings → Battery → Background usage limits</string>
     <string name="battery_dialog_tip_oneplus">OnePlus: Enable "Allow background activity" in App info → Battery</string>
     <string name="battery_dialog_tip_huawei">Huawei: Enable "Manual launch" in Phone Manager → App launch</string>
+    
+    <!-- Battery Optimization Onboarding -->
+    <string name="battery_onboarding_title">⚡ Uninterrupted Sound</string>
+    <string name="battery_onboarding_subtitle">Recommended for background</string>
+    <string name="battery_onboarding_chip1">🌙 Works even when screen is off</string>
+    <string name="battery_onboarding_chip2">⚡ More stable performance</string>
+    <string name="battery_onboarding_dismiss">Got it</string>
+    <string name="battery_onboarding_setup">Set up</string>
+    <string name="close">Close</string>
+    
     <string name="dark_mode">Dark Mode</string>
     <string name="dark_mode_system">Follow System</string>
     <string name="dark_mode_on">Always Dark</string>
@@ -253,4 +263,5 @@
     <string name="widget_2x1_description">Toggle + volume presets</string>
     <string name="widget_4x1_description">Full volume control</string>
     <string name="widget_loading">Loading...</string>
+    <string name="widget_rezonans_description">Premium widget with award-winning themes</string>
 </resources>

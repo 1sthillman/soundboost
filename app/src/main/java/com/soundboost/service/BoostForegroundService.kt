@@ -44,6 +44,24 @@ class BoostForegroundService : Service() {
     
     private lateinit var volumeController: SystemVolumeController
     private lateinit var prefs: BoostPreferences
+    
+    /**
+     * Update all home screen widgets (Glance)
+     */
+    private fun updateWidgets() {
+        try {
+            // Glance widget'ları otomatik olarak StateFlow değişikliklerini dinler
+            // Manuel update için GlanceAppWidgetManager kullanılabilir
+            val updateIntent = Intent(this, com.soundboost.ui.widgets.RezonansGlanceWidgetReceiver::class.java).apply {
+                action = android.appwidget.AppWidgetManager.ACTION_APPWIDGET_UPDATE
+            }
+            sendBroadcast(updateIntent)
+            
+            android.util.Log.d(TAG, "✅ Glance widget update broadcast sent")
+        } catch (e: Exception) {
+            android.util.Log.e(TAG, "❌ Failed to update Glance widgets: ${e.message}")
+        }
+    }
 
     override fun onCreate() {
         super.onCreate()
@@ -219,6 +237,9 @@ class BoostForegroundService : Service() {
             
             val notification = createNotification(settings.masterGainPercent, settings.bassBoostPercent)
             startForeground(NOTIFICATION_ID, notification)
+            
+            // Update widgets
+            updateWidgets()
         }
     }
 
@@ -231,6 +252,9 @@ class BoostForegroundService : Service() {
         } else {
             audioEffects.release()
         }
+        
+        // Update widgets
+        updateWidgets()
         
         stopForeground(STOP_FOREGROUND_REMOVE)
         stopSelf()
@@ -524,6 +548,9 @@ class BoostForegroundService : Service() {
                 // Just update the volume
                 updateEffects()
             }
+            
+            // Update widgets to show new state
+            updateWidgets()
         }
     }
 

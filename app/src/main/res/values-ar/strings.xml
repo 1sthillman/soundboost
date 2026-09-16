@@ -275,5 +275,15 @@
     <string name="battery_dialog_tip_samsung">Samsung: قم بالإزالة من "التطبيقات النائمة" في الإعدادات → البطارية → حدود الاستخدام في الخلفية</string>
     <string name="battery_dialog_tip_oneplus">OnePlus: قم بتفعيل "السماح بالنشاط في الخلفية" في معلومات التطبيق → البطارية</string>
     <string name="battery_dialog_tip_huawei">Huawei: قم بتفعيل "البدء اليدوي" في مدير الهاتف → بدء التطبيق</string>
+    
+    <!-- Battery Optimization Onboarding -->
+    <string name="battery_onboarding_title">⚡ صوت متواصل</string>
+    <string name="battery_onboarding_subtitle">موصى به للخلفية</string>
+    <string name="battery_onboarding_chip1">🌙 يعمل عند إطفاء الشاشة</string>
+    <string name="battery_onboarding_chip2">⚡ أداء أكثر استقرارًا</string>
+    <string name="battery_onboarding_dismiss">فهمت</string>
+    <string name="battery_onboarding_setup">إعداد</string>
+    <string name="close">إغلاق</string>
+    
     <string name="language_italian">الإيطالية</string>
 </resources>

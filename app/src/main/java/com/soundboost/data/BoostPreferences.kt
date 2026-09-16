@@ -98,6 +98,7 @@ class BoostPreferences(private val context: Context) {
         val SENSITIVITY = intPreferencesKey("sensitivity")
         val IS_DARK_MODE = stringPreferencesKey("is_dark_mode")
         val FIRST_LAUNCH_COMPLETED = booleanPreferencesKey("first_launch_completed")
+        val BATTERY_ONBOARDING_SHOWN = booleanPreferencesKey("battery_onboarding_shown")
     }
     
     val settings: Flow<BoostSettings> = context.dataStore.data.map { prefs ->
@@ -281,5 +282,17 @@ class BoostPreferences(private val context: Context) {
     // Mark first launch as completed
     suspend fun setFirstLaunchCompleted() {
         context.dataStore.edit { it[Keys.FIRST_LAUNCH_COMPLETED] = true }
+    }
+    
+    // Check if battery onboarding has been shown
+    suspend fun shouldShowBatteryOnboarding(): Boolean {
+        val prefs = context.dataStore.data
+        val shown = prefs.map { it[Keys.BATTERY_ONBOARDING_SHOWN] ?: false }
+        return !shown.first()
+    }
+    
+    // Mark battery onboarding as shown
+    suspend fun setBatteryOnboardingShown() {
+        context.dataStore.edit { it[Keys.BATTERY_ONBOARDING_SHOWN] = true }
     }
 }

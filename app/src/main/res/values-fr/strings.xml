@@ -192,5 +192,15 @@
     <string name="battery_dialog_tip_samsung">Samsung: Supprimez de "Applications en veille" dans Paramètres → Batterie → Limites d\'utilisation en arrière-plan</string>
     <string name="battery_dialog_tip_oneplus">OnePlus: Activez "Autoriser l\'activité en arrière-plan" dans Informations sur l\'application → Batterie</string>
     <string name="battery_dialog_tip_huawei">Huawei: Activez "Lancement manuel" dans Gestionnaire de téléphone → Lancement d\'application</string>
+    
+    <!-- Battery Optimization Onboarding -->
+    <string name="battery_onboarding_title">⚡ Son Ininterrompu</string>
+    <string name="battery_onboarding_subtitle">Recommandé pour l\'arrière-plan</string>
+    <string name="battery_onboarding_chip1">🌙 Fonctionne écran éteint</string>
+    <string name="battery_onboarding_chip2">⚡ Performance plus stable</string>
+    <string name="battery_onboarding_dismiss">Compris</string>
+    <string name="battery_onboarding_setup">Configurer</string>
+    <string name="close">Fermer</string>
+    
     <string name="language_italian">Italien</string>
 </resources>

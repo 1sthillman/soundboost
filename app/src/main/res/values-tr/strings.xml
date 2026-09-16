@@ -69,6 +69,16 @@
     <string name="battery_dialog_tip_samsung">Samsung: Ayarlar → Pil → Arka plan kullanım limitleri → "Uyuyan uygulamalar"dan kaldırın</string>
     <string name="battery_dialog_tip_oneplus">OnePlus: Uygulama bilgisi → Pil → "Arka planda çalışmaya izin ver"i açın</string>
     <string name="battery_dialog_tip_huawei">Huawei: Telefon Yöneticisi → Uygulama başlatma → "Manuel başlatma"yı açın</string>
+    
+    <!-- Pil Optimizasyonu Onboarding -->
+    <string name="battery_onboarding_title">⚡ Kesintisiz Ses</string>
+    <string name="battery_onboarding_subtitle">Arka plan için önerilen ayar</string>
+    <string name="battery_onboarding_chip1">🌙 Ekran kapansa bile çalışır</string>
+    <string name="battery_onboarding_chip2">⚡ Daha stabil performans</string>
+    <string name="battery_onboarding_dismiss">Anladım</string>
+    <string name="battery_onboarding_setup">Ayarla</string>
+    <string name="close">Kapat</string>
+    
     <string name="dark_mode">Karanlık Mod</string>
     <string name="dark_mode_system">Sistemi Takip Et</string>
     <string name="dark_mode_on">Her Zaman Karanlık</string>

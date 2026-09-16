@@ -191,5 +191,15 @@
     <string name="battery_dialog_tip_samsung">Samsung: Удалите из "Спящие приложения" в Настройки → Батарея → Ограничения фоновой активности</string>
     <string name="battery_dialog_tip_oneplus">OnePlus: Включите "Разрешить фоновую активность" в Информация о приложении → Батарея</string>
     <string name="battery_dialog_tip_huawei">Huawei: Включите "Ручной запуск" в Менеджер телефона → Запуск приложений</string>
+    
+    <!-- Battery Optimization Onboarding -->
+    <string name="battery_onboarding_title">⚡ Непрерывный звук</string>
+    <string name="battery_onboarding_subtitle">Рекомендуется для фона</string>
+    <string name="battery_onboarding_chip1">🌙 Работает при выключенном экране</string>
+    <string name="battery_onboarding_chip2">⚡ Более стабильная работа</string>
+    <string name="battery_onboarding_dismiss">Понятно</string>
+    <string name="battery_onboarding_setup">Настроить</string>
+    <string name="close">Закрыть</string>
+    
     <string name="language_italian">Итальянский</string>
 </resources>

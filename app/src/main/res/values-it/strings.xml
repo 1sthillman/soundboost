@@ -60,6 +60,16 @@
     <string name="battery_dialog_tip_samsung">Samsung: Rimuovi da "App in sospensione" in Impostazioni → Batteria → Limiti utilizzo in background</string>
     <string name="battery_dialog_tip_oneplus">OnePlus: Abilita "Consenti attività in background" in Informazioni app → Batteria</string>
     <string name="battery_dialog_tip_huawei">Huawei: Abilita "Avvio manuale" in Gestore telefono → Avvio app</string>
+    
+    <!-- Battery Optimization Onboarding -->
+    <string name="battery_onboarding_title">⚡ Suono Ininterrotto</string>
+    <string name="battery_onboarding_subtitle">Consigliato per background</string>
+    <string name="battery_onboarding_chip1">🌙 Funziona a schermo spento</string>
+    <string name="battery_onboarding_chip2">⚡ Prestazioni più stabili</string>
+    <string name="battery_onboarding_dismiss">Ho capito</string>
+    <string name="battery_onboarding_setup">Configura</string>
+    <string name="close">Chiudi</string>
+    
     <string name="theme_neon_dark">Neon Scuro</string>
     <string name="theme_ocean_blue">Blu Oceano</string>
     <string name="theme_sunset_orange">Arancione Tramonto</string>

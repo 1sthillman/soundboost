@@ -192,5 +192,15 @@
     <string name="battery_dialog_tip_samsung">Samsung: Entfernen Sie aus "Schlafende Apps" in Einstellungen → Batterie → Hintergrundnutzungslimits</string>
     <string name="battery_dialog_tip_oneplus">OnePlus: Aktivieren Sie "Hintergrundaktivität zulassen" in App-Info → Batterie</string>
     <string name="battery_dialog_tip_huawei">Huawei: Aktivieren Sie "Manueller Start" in Telefon-Manager → App-Start</string>
+    
+    <!-- Battery Optimization Onboarding -->
+    <string name="battery_onboarding_title">⚡ Ununterbrochener Sound</string>
+    <string name="battery_onboarding_subtitle">Empfohlen für Hintergrund</string>
+    <string name="battery_onboarding_chip1">🌙 Funktioniert bei ausgeschaltetem Bildschirm</string>
+    <string name="battery_onboarding_chip2">⚡ Stabilere Leistung</string>
+    <string name="battery_onboarding_dismiss">Verstanden</string>
+    <string name="battery_onboarding_setup">Einrichten</string>
+    <string name="close">Schließen</string>
+    
     <string name="language_italian">Italienisch</string>
 </resources>

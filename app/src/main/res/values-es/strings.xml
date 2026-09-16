@@ -192,5 +192,15 @@
     <string name="battery_dialog_tip_samsung">Samsung: Elimina de "Aplicaciones inactivas" en Configuración → Batería → Límites de uso en segundo plano</string>
     <string name="battery_dialog_tip_oneplus">OnePlus: Activa "Permitir actividad en segundo plano" en Información de la aplicación → Batería</string>
     <string name="battery_dialog_tip_huawei">Huawei: Activa "Inicio manual" en Administrador de teléfono → Inicio de aplicaciones</string>
+    
+    <!-- Battery Optimization Onboarding -->
+    <string name="battery_onboarding_title">⚡ Sonido Ininterrumpido</string>
+    <string name="battery_onboarding_subtitle">Recomendado para segundo plano</string>
+    <string name="battery_onboarding_chip1">🌙 Funciona con pantalla apagada</string>
+    <string name="battery_onboarding_chip2">⚡ Rendimiento más estable</string>
+    <string name="battery_onboarding_dismiss">Entendido</string>
+    <string name="battery_onboarding_setup">Configurar</string>
+    <string name="close">Cerrar</string>
+    
     <string name="language_italian">Italiano</string>
 </resources>
