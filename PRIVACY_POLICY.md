@@ -2,7 +2,7 @@
 
 **Effective Date:** September 18, 2026  
 **Last Updated:** September 18, 2026  
-**Version:** 1.4.6
+**Version:** 1.4.7
 
 ---
 
@@ -171,49 +171,71 @@ Sound'ST Boost requests the following Android permissions. Each permission is ex
 
 ---
 
-### 3.6 REQUEST_IGNORE_BATTERY_OPTIMIZATIONS
+### 3.6 Battery Optimization (User Manual Control)
 
-**Permission Type:** Special (requires user interaction)  
-**Purpose:** Prevent Android from killing the boost service  
+**Permission Type:** NOT REQUESTED  
+**Purpose:** Guide users to manually exempt app from battery optimization  
 **Required:** No - Optional for better reliability  
 **Data Access:** None  
 
 **What it does:**
-- Requests exemption from battery optimization
+- App provides guidance to navigate to battery settings
+- User manually adds app to battery optimization exemption list
 - Helps maintain audio boost when device is idle
-- Improves reliability on aggressive battery savers
+- Improves reliability on aggressive battery savers (Samsung, Xiaomi, Huawei)
 
-**Privacy Impact:** Only affects power management. Does not access any data.
+**Privacy & Compliance Notes:**
+- App does NOT request `REQUEST_IGNORE_BATTERY_OPTIMIZATIONS` permission
+- App does NOT use `ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS` (auto-request)
+- App only uses `ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS` (opens settings list)
+- User must manually select and exempt the app
+- Fully compliant with Google Play policies
+- Optional feature - app works without it
+
+**Why This Approach:**
+Google Play requires that battery optimization exemptions must be user-initiated and cannot be automatically requested. Our implementation respects this by only providing guidance and letting users make the choice themselves.
 
 ---
 
-### 3.7 Explicitly Removed Permissions (v1.4.6)
+### 3.7 Explicitly Removed Permissions (v1.4.7)
 
 **For Maximum Privacy:** The following permissions are explicitly removed from the app manifest to prevent any third-party libraries from adding them:
 
-❌ **ACCESS_NETWORK_STATE** - Removed  
+❌ **ACCESS_NETWORK_STATE** - Removed (v1.4.6)  
 Purpose: Would allow checking internet connection  
 Why removed: App is 100% offline, no network checks needed
 
-❌ **INTERNET** - Removed  
+❌ **INTERNET** - Removed (v1.4.6)  
 Purpose: Would allow network communication  
 Why removed: App has zero online features
 
-❌ **WAKE_LOCK** - Removed  
+❌ **WAKE_LOCK** - Removed (v1.4.6)  
 Purpose: Would prevent device from sleeping  
 Why removed: Not needed for audio processing
 
+❌ **REQUEST_IGNORE_BATTERY_OPTIMIZATIONS** - Removed (v1.4.7)  
+Purpose: Would allow auto-requesting battery exemption  
+Why removed: Google Play policy compliance - users must manually exempt app  
+Alternative: App guides users to battery settings for manual exemption
+
 **Technical Implementation:**
 ```xml
+<!-- v1.4.6 -->
 <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" 
     tools:node="remove" />
 <uses-permission android:name="android.permission.INTERNET" 
     tools:node="remove" />
 <uses-permission android:name="android.permission.WAKE_LOCK" 
     tools:node="remove" />
+
+<!-- v1.4.7 -->
+<!-- REQUEST_IGNORE_BATTERY_OPTIMIZATIONS NOT requested -->
+<!-- Uses ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS instead -->
 ```
 
-This ensures absolute privacy by making it technically impossible for the app to access the internet, even if a vulnerability existed.
+This ensures absolute privacy and Google Play compliance by:
+1. Making it technically impossible for the app to access the internet
+2. Preventing auto-requests for battery exemption (requires user manual action)
 
 ---
 
@@ -567,6 +589,7 @@ We may update this Privacy Policy to:
 - Minor clarifications: No notification required
 
 **Version History:**
+- v1.4.7 (Sep 18, 2026): Removed REQUEST_IGNORE_BATTERY_OPTIMIZATIONS permission for Google Play compliance
 - v1.4.6 (Sep 18, 2026): Updated manifest permissions, removed unnecessary network permissions
 - v1.4.0 (Jan 15, 2026): Added widgets, quick settings tile, device profiles
 - v1.3.2 (Dec 9, 2026): Added Call Enhancement feature details
@@ -755,7 +778,7 @@ This Privacy Policy constitutes the entire agreement between you and Sound'ST Bo
 ---
 
 **Last Updated:** September 18, 2026  
-**Version:** 1.4.6  
+**Version:** 1.4.7  
 **Effective Date:** September 18, 2026
 
 ---
