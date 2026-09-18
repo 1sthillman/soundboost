@@ -8,9 +8,6 @@
     <!-- Ses görselleştirici için (Visualizer API, tehlikeli izin - kullanıcıya sorulur) -->
     <!-- ÖNEMLI: Sadece görselleştirme için kullanılır, kayıt yapılmaz -->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    
-    <!-- Akıllı pil optimizasyonu ayarlarına yönlendirme için (opsiyonel) -->
-    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
 
     <!-- Boost'u arka planda (ekran kapalıyken) sürdürmek için -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
