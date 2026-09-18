@@ -21,6 +21,9 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val audioAnalyzer = RealTimeAudioAnalyzer()
     private var analysisJob: Job? = null
     
+    // NEW v1.4.7: Bass-Synchronized Flashlight
+    private val bassFlashSync = com.soundboost.audio.BassFlashlightSync(application)
+    
     // NEW v1.4.0: Device Profile Monitor
     private val deviceMonitor = com.soundboost.audio.AudioDeviceMonitor(
         context = application,
@@ -45,6 +48,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     val audioLevels: StateFlow<FloatArray?> = _audioAnalysis
         .map { it?.bars }
         .stateIn(viewModelScope, SharingStarted.Eagerly, null)
+    
+    // NEW v1.4.7: Bass flash state
+    val isBassFlashEnabled = bassFlashSync.isEnabled
+    val bassLevel = bassFlashSync.bassLevel
     
     init {
         // Start device monitoring with auto-profile switching
@@ -121,6 +128,19 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 }
                 getApplication<Application>().startService(intent)
             }
+        }
+    }
+    
+    // NEW v1.4.7: Bass Flash Toggle
+    fun toggleBassFlash() {
+        if (isBassFlashEnabled.value) {
+            bassFlashSync.stop()
+        } else {
+            bassFlashSync.start()
+        }
+    }
+    
+    fun hasBassFlashSupport(): Boolean = bassFlashSync.hasFlashSupport()
         }
     }
     
@@ -308,6 +328,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         super.onCleared()
         stopAudioVisualization()
         deviceMonitor.stopMonitoring()
+        bassFlashSync.release() // NEW v1.4.7
     }
     
     /**

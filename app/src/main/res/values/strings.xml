@@ -152,6 +152,12 @@
     <string name="call_enhancement_noise_suppression">Noise Suppression</string>
     <string name="call_enhancement_auto_gain">Auto Gain</string>
     
+    <!-- Bass Flash Sync (v1.4.7) -->
+    <string name="bass_flash_title">BASS FLASH SYNC</string>
+    <string name="bass_flash_subtitle">Real-time flashlight beats</string>
+    <string name="bass_flash_level">Bass Level</string>
+    <string name="bass_flash_description">Syncs flashlight with bass beats. Ultra-fast &lt;50ms response. Requires RECORD_AUDIO &amp; CAMERA permissions.</string>
+    
     <!-- Notification -->
     <string name="notif_volume">Volume</string>
     <string name="notif_bass">Bass</string>

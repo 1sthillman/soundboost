@@ -8,6 +8,10 @@
     <!-- Ses görselleştirici için (Visualizer API, tehlikeli izin - kullanıcıya sorulur) -->
     <!-- ÖNEMLI: Sadece görselleştirme için kullanılır, kayıt yapılmaz -->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    
+    <!-- v1.4.7: Bass-synchronized flashlight feature -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera.flash" android:required="false" />
 
     <!-- Boost'u arka planda (ekran kapalıyken) sürdürmek için -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />

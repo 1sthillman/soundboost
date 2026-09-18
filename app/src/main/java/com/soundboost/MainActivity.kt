@@ -272,6 +272,9 @@ fun MainScreen(viewModel: MainViewModel) {
             
             composable("equalizer") {
                 // NEW: 2026 DJ-Style Modern Equalizer
+                val isBassFlashEnabled by viewModel.isBassFlashEnabled.collectAsState()
+                val bassLevel by viewModel.bassLevel.collectAsState()
+                
                 ModernEqualizerScreen(
                     state = uiState,
                     onBandsChanged = viewModel::on10BandEqChanged,
@@ -279,6 +282,10 @@ fun MainScreen(viewModel: MainViewModel) {
                     onSaveCustomPreset = viewModel::onSaveCustomPreset,
                     onMaxGainChanged = viewModel::onMaxGainChanged,
                     onCallEnhancementToggled = viewModel::onCallEnhancementToggled,
+                    onBassFlashToggled = viewModel::toggleBassFlash, // NEW v1.4.7
+                    isBassFlashEnabled = isBassFlashEnabled, // NEW v1.4.7
+                    bassLevel = bassLevel, // NEW v1.4.7
+                    hasBassFlashSupport = viewModel.hasBassFlashSupport(), // NEW v1.4.7
                     onBack = { 
                         navController.popBackStack()
                     }

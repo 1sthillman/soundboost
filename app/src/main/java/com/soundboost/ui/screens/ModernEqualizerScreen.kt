@@ -50,6 +50,10 @@ fun ModernEqualizerScreen(
     onSaveCustomPreset: (String, FloatArray) -> Unit,
     onMaxGainChanged: (Int) -> Unit,
     onCallEnhancementToggled: (Boolean) -> Unit,
+    onBassFlashToggled: () -> Unit, // NEW v1.4.7
+    isBassFlashEnabled: Boolean, // NEW v1.4.7
+    bassLevel: Float, // NEW v1.4.7
+    hasBassFlashSupport: Boolean, // NEW v1.4.7
     onBack: () -> Unit
 ) {
     val themeColors = getThemeColors(state.theme, state.colorAccent)
@@ -186,6 +190,17 @@ fun ModernEqualizerScreen(
                 onToggle = onCallEnhancementToggled,
                 themeColors = themeColors
             )
+            
+            // NEW v1.4.7: Bass Flash Sync
+            if (hasBassFlashSupport) {
+                Spacer(Modifier.height(12.dp))
+                BassFlashCard(
+                    isEnabled = isBassFlashEnabled,
+                    bassLevel = bassLevel,
+                    onToggle = onBassFlashToggled,
+                    themeColors = themeColors
+                )
+            }
             
             Spacer(Modifier.height(16.dp))
         }
@@ -1077,4 +1092,173 @@ private fun MaxGainDialog(
             }
         }
     )
+}
+
+
+/**
+ * NEW v1.4.7: Bass-Synchronized Flashlight Card
+ * Ultra-optimized real-time flash sync with bass
+ */
+@Composable
+private fun BassFlashCard(
+    isEnabled: Boolean,
+    bassLevel: Float,
+    onToggle: () -> Unit,
+    themeColors: ThemeColors
+) {
+    val infiniteTransition = rememberInfiniteTransition(label = "bassGlow")
+    val glowAlpha by infiniteTransition.animateFloat(
+        initialValue = 0.3f,
+        targetValue = 0.8f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(1000, easing = FastOutSlowInEasing),
+            repeatMode = RepeatMode.Reverse
+        ),
+        label = "glowAlpha"
+    )
+    
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = themeColors.surfaceVariant.copy(alpha = 0.5f)
+        ),
+        shape = RoundedCornerShape(20.dp)
+    ) {
+        Column(
+            modifier = Modifier.padding(20.dp)
+        ) {
+            // Header
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    // Flash Icon with Glow
+                    Box(
+                        modifier = Modifier
+                            .size(48.dp)
+                            .background(
+                                if (isEnabled) {
+                                    Brush.radialGradient(
+                                        colors = listOf(
+                                            themeColors.primary.copy(alpha = glowAlpha),
+                                            themeColors.primary.copy(alpha = 0.2f)
+                                        )
+                                    )
+                                } else {
+                                    Brush.radialGradient(
+                                        colors = listOf(
+                                            Color.Gray.copy(alpha = 0.3f),
+                                            Color.Transparent
+                                        )
+                                    )
+                                },
+                                shape = CircleShape
+                            ),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.FlashOn,
+                            contentDescription = null,
+                            tint = if (isEnabled) Color.Yellow else Color.Gray,
+                            modifier = Modifier.size(28.dp)
+                        )
+                    }
+                    
+                    Column {
+                        Text(
+                            text = stringResource(R.string.bass_flash_title),
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.Bold,
+                            color = themeColors.onBackground
+                        )
+                        Text(
+                            text = stringResource(R.string.bass_flash_subtitle),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = themeColors.onBackground.copy(alpha = 0.7f),
+                            fontSize = 11.sp
+                        )
+                    }
+                }
+                
+                // Toggle Switch
+                Switch(
+                    checked = isEnabled,
+                    onCheckedChange = { onToggle() },
+                    colors = SwitchDefaults.colors(
+                        checkedThumbColor = Color.Yellow,
+                        checkedTrackColor = themeColors.primary,
+                        uncheckedThumbColor = Color.Gray,
+                        uncheckedTrackColor = Color.DarkGray
+                    )
+                )
+            }
+            
+            // Bass Level Visualizer (when enabled)
+            if (isEnabled) {
+                Spacer(Modifier.height(16.dp))
+                
+                // Real-time Bass Bar
+                Column {
+                    Text(
+                        text = stringResource(R.string.bass_flash_level),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = themeColors.onBackground.copy(alpha = 0.6f),
+                        fontSize = 10.sp
+                    )
+                    
+                    Spacer(Modifier.height(4.dp))
+                    
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(8.dp)
+                            .clip(RoundedCornerShape(4.dp))
+                            .background(Color.DarkGray.copy(alpha = 0.3f))
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxHeight()
+                                .fillMaxWidth(bassLevel.coerceIn(0f, 1f))
+                                .clip(RoundedCornerShape(4.dp))
+                                .background(
+                                    Brush.horizontalGradient(
+                                        colors = listOf(
+                                            Color.Yellow,
+                                            themeColors.primary
+                                        )
+                                    )
+                                )
+                        )
+                    }
+                    
+                    Spacer(Modifier.height(4.dp))
+                    
+                    Text(
+                        text = "${(bassLevel * 100).toInt()}%",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = themeColors.primary,
+                        fontSize = 10.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            }
+            
+            // Description
+            Spacer(Modifier.height(12.dp))
+            Text(
+                text = stringResource(R.string.bass_flash_description),
+                style = MaterialTheme.typography.bodySmall,
+                color = themeColors.onBackground.copy(alpha = 0.6f),
+                fontSize = 11.sp,
+                lineHeight = 14.sp
+            )
+        }
+    }
 }
