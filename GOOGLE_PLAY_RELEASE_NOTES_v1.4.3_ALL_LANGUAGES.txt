@@ -1,0 +1,428 @@
+tr-TR
+🎵 v1.4.3 - Profesyonel Ses Yönetimi
+
+✨ ÖNE ÇIKAN ÖZELLİKLER
+• 10 Bantlı Profesyonel Ekolayzer - Her frekansı hassas kontrol
+• Gelişmiş Ses Güçlendirme - %200'e kadar güvenli boost
+• Gerçek Zamanlı Ses Görselleştirme - Müziğinizle dans eden temalar
+• Akıllı Cihaz Profilleri - Hoparlörünüze özel optimizasyon
+• Hızlı Ayarlar Tile - Bildirim panelinden tek dokunuşla kontrol
+
+🎨 GÖRSEL DENEYIM
+• 11 Premium Tema - Modern, minimal ve şık tasarım
+• Ödüllü Animasyonlar - Awwwards tarzı görsel efektler
+• Glassmorphism UI - Cam efektli modern arayüz
+• Karanlık/Aydınlık Mod - Gözlerinizi korur
+
+🔊 SES KALİTESİ
+• Bass Boost - Güçlü bas desteği
+• 3D Virtualizer - Kulaklıkta sinema deneyimi
+• Çağrı İyileştirme - Net ve anlaşılır görüşmeler
+• Multi-Stream Yönetim - Her uygulama için ayrı kontrol
+
+🛡️ GİZLİLİK VE GÜVENLİK
+• Reklam yok, veri toplama yok
+• Tüm işlemler cihazınızda
+• Açık kaynak felsefesi
+• Kullanıcı gizliliğine tam saygı
+
+⚡ PERFORMANS
+• Android 16 (API 36) tam desteği
+• Minimum pil tüketimi
+• Donanım hızlandırma
+• Arka planda kesintisiz çalışma
+
+🌍 11 DİL DESTEĞİ
+Türkçe, İngilizce, Almanca, Fransızca, İspanyolca, Rusça, Çince, Japonca, Korece, Arapça, İtalyanca
+
+Bu güncelleme Google Play politika uyumluluğu ve kullanıcı deneyimi iyileştirmeleri için yayınlandı.
+
+ar
+🎵 الإصدار 1.4.1 - إدارة صوت احترافية
+
+✨ الميزات البارزة
+• معادل صوت احترافي 10 نطاقات - تحكم دقيق في كل تردد
+• تعزيز صوت متقدم - دعم آمن حتى 200%
+• تصور صوتي في الوقت الفعلي - سمات ترقص مع موسيقاك
+• ملفات تعريف ذكية للأجهزة - تحسين مخصص لمكبر الصوت
+• لوحة الإعدادات السريعة - تحكم بلمسة واحدة من لوحة الإشعارات
+
+🎨 تجربة بصرية
+• 11 سمة مميزة - تصميم حديث وأنيق وبسيط
+• رسوم متحركة حائزة على جوائز - تأثيرات بصرية بأسلوب Awwwards
+• واجهة Glassmorphism - واجهة حديثة بتأثير زجاجي
+• الوضع الداكن/الفاتح - يحمي عينيك
+
+🔊 جودة الصوت
+• Bass Boost - دعم باس قوي
+• 3D Virtualizer - تجربة سينمائية في السماعات
+• تحسين المكالمات - محادثات واضحة ومفهومة
+• إدارة متعددة التدفقات - تحكم منفصل لكل تطبيق
+
+🛡️ الخصوصية والأمان
+• بدون إعلانات، بدون جمع بيانات
+• جميع العمليات على جهازك
+• فلسفة المصدر المفتوح
+• احترام كامل لخصوصية المستخدم
+
+⚡ الأداء
+• دعم كامل لـ Android 16 (API 36)
+• استهلاك بطارية أدنى
+• تسريع الأجهزة
+• عمل مستمر في الخلفية
+
+🌍 دعم 11 لغة
+التركية، الإنجليزية، الألمانية، الفرنسية، الإسبانية، الروسية، الصينية، اليابانية، الكورية، العربية، الإيطالية
+
+تم إصدار هذا التحديث للامتثال لسياسات Google Play وتحسينات تجربة المستخدم.
+
+de-DE
+🎵 v1.4.3 - Professionelle Klangverwaltung
+
+✨ HIGHLIGHTS
+• 10-Band Profi-Equalizer - Präzise Kontrolle jeder Frequenz
+• Erweiterte Sound-Verstärkung - Sicherer Boost bis zu 200%
+• Echtzeit-Audio-Visualisierung - Themen tanzen mit Ihrer Musik
+• Intelligente Geräteprofile - Optimierung für Ihren Lautsprecher
+• Schnelleinstellungen-Kachel - Ein-Tap-Kontrolle vom Benachrichtigungsfeld
+
+🎨 VISUELLE ERFAHRUNG
+• 11 Premium-Themen - Modernes, minimales und elegantes Design
+• Preisgekrönte Animationen - Visuelle Effekte im Awwwards-Stil
+• Glassmorphism UI - Moderne Oberfläche mit Glaseffekt
+• Dunkler/Heller Modus - Schont Ihre Augen
+
+🔊 KLANGQUALITÄT
+• Bass Boost - Kraftvolle Bassunterstützung
+• 3D Virtualizer - Kinoerlebnis im Kopfhörer
+• Anrufverbesserung - Klare und verständliche Gespräche
+• Multi-Stream-Verwaltung - Separate Kontrolle für jede App
+
+🛡️ DATENSCHUTZ UND SICHERHEIT
+• Keine Werbung, keine Datenerfassung
+• Alle Verarbeitungen auf Ihrem Gerät
+• Open-Source-Philosophie
+• Volle Achtung der Privatsphäre
+
+⚡ LEISTUNG
+• Volle Unterstützung für Android 16 (API 36)
+• Minimaler Batterieverbrauch
+• Hardware-Beschleunigung
+• Unterbrechungsfreier Hintergrundbetrieb
+
+🌍 11 SPRACHEN UNTERSTÜTZT
+Türkisch, Englisch, Deutsch, Französisch, Spanisch, Russisch, Chinesisch, Japanisch, Koreanisch, Arabisch, Italienisch
+
+Dieses Update wurde für Google Play-Richtlinien und Verbesserungen der Benutzererfahrung veröffentlicht.
+
+en-US
+� v1.4.3 - Professional Audio Management
+
+✨ KEY FEATURES
+• 10-Band Professional Equalizer - Precise control of every frequency
+• Advanced Sound Boost - Safe boost up to 200%
+• Real-Time Audio Visualization - Themes dancing with your music
+• Smart Device Profiles - Optimization tailored to your speaker
+• Quick Settings Tile - One-tap control from notification panel
+
+🎨 VISUAL EXPERIENCE
+• 11 Premium Themes - Modern, minimal and elegant design
+• Award-Winning Animations - Awwwards-style visual effects
+• Glassmorphism UI - Modern interface with glass effect
+• Dark/Light Mode - Protects your eyes
+
+🔊 SOUND QUALITY
+• Bass Boost - Powerful bass support
+• 3D Virtualizer - Cinema experience in headphones
+• Call Enhancement - Clear and understandable conversations
+• Multi-Stream Management - Separate control for each app
+
+🛡️ PRIVACY & SECURITY
+• No ads, no data collection
+• All processing on your device
+• Open-source philosophy
+• Full respect for user privacy
+
+⚡ PERFORMANCE
+• Full Android 16 (API 36) support
+• Minimal battery consumption
+• Hardware acceleration
+• Uninterrupted background operation
+
+🌍 11 LANGUAGES SUPPORTED
+Turkish, English, German, French, Spanish, Russian, Chinese, Japanese, Korean, Arabic, Italian
+
+This update is published for Google Play policy compliance and user experience improvements.
+
+es-ES
+🎵 v1.4.3 - Gestión de Audio Profesional
+
+✨ CARACTERÍSTICAS DESTACADAS
+• Ecualizador Profesional de 10 Bandas - Control preciso de cada frecuencia
+• Amplificación de Sonido Avanzada - Impulso seguro hasta 200%
+• Visualización de Audio en Tiempo Real - Temas que bailan con tu música
+• Perfiles Inteligentes de Dispositivo - Optimización adaptada a tu altavoz
+• Tile de Configuración Rápida - Control con un toque desde panel de notificaciones
+
+🎨 EXPERIENCIA VISUAL
+• 11 Temas Premium - Diseño moderno, minimalista y elegante
+• Animaciones Premiadas - Efectos visuales estilo Awwwards
+• Interfaz Glassmorphism - Interfaz moderna con efecto de cristal
+• Modo Oscuro/Claro - Protege tus ojos
+
+🔊 CALIDAD DE SONIDO
+• Bass Boost - Soporte de graves potente
+• 3D Virtualizer - Experiencia de cine en auriculares
+• Mejora de Llamadas - Conversaciones claras y comprensibles
+• Gestión Multi-Stream - Control separado para cada app
+
+🛡️ PRIVACIDAD Y SEGURIDAD
+• Sin anuncios, sin recopilación de datos
+• Todo el procesamiento en tu dispositivo
+• Filosofía de código abierto
+• Respeto total por la privacidad del usuario
+
+⚡ RENDIMIENTO
+• Soporte completo para Android 16 (API 36)
+• Consumo mínimo de batería
+• Aceleración por hardware
+• Operación ininterrumpida en segundo plano
+
+🌍 11 IDIOMAS SOPORTADOS
+Turco, Inglés, Alemán, Francés, Español, Ruso, Chino, Japonés, Coreano, Árabe, Italiano
+
+Esta actualización se publica para el cumplimiento de políticas de Google Play y mejoras en la experiencia del usuario.
+
+fr-FR
+🎵 v1.4.3 - Gestion Audio Professionnelle
+
+✨ FONCTIONNALITÉS CLÉS
+• Égaliseur Professionnel 10 Bandes - Contrôle précis de chaque fréquence
+• Amplification Sonore Avancée - Boost sécurisé jusqu'à 200%
+• Visualisation Audio en Temps Réel - Thèmes dansant avec votre musique
+• Profils Intelligents d'Appareil - Optimisation adaptée à votre haut-parleur
+• Tuile Paramètres Rapides - Contrôle en un tap depuis le panneau de notifications
+
+� EXPÉRIENCE VISUELLE
+• 11 Thèmes Premium - Design moderne, minimal et élégant
+• Animations Primées - Effets visuels style Awwwards
+• Interface Glassmorphism - Interface moderne avec effet de verre
+• Mode Sombre/Clair - Protège vos yeux
+
+🔊 QUALITÉ SONORE
+• Bass Boost - Support de basses puissant
+• 3D Virtualizer - Expérience cinéma dans les écouteurs
+• Amélioration d'Appel - Conversations claires et compréhensibles
+• Gestion Multi-Stream - Contrôle séparé pour chaque app
+
+🛡️ CONFIDENTIALITÉ ET SÉCURITÉ
+• Pas de publicités, pas de collecte de données
+• Tout le traitement sur votre appareil
+• Philosophie open-source
+• Respect total de la vie privée
+
+⚡ PERFORMANCE
+• Support complet d'Android 16 (API 36)
+• Consommation minimale de batterie
+• Accélération matérielle
+• Fonctionnement ininterrompu en arrière-plan
+
+🌍 11 LANGUES SUPPORTÉES
+Turc, Anglais, Allemand, Français, Espagnol, Russe, Chinois, Japonais, Coréen, Arabe, Italien
+
+Cette mise à jour est publiée pour la conformité aux politiques Google Play et les améliorations de l'expérience utilisateur.
+
+it-IT
+🎵 v1.4.3 - Gestione Audio Professionale
+
+✨ CARATTERISTICHE PRINCIPALI
+• Equalizzatore Professionale a 10 Bande - Controllo preciso di ogni frequenza
+• Amplificazione Audio Avanzata - Boost sicuro fino al 200%
+• Visualizzazione Audio in Tempo Reale - Temi che danzano con la tua musica
+• Profili Dispositivo Intelligenti - Ottimizzazione su misura per il tuo altoparlante
+• Tile Impostazioni Rapide - Controllo con un tap dal pannello notifiche
+
+� ESPERIENZA VISIVA
+• 11 Temi Premium - Design moderno, minimale ed elegante
+• Animazioni Premiate - Effetti visuali stile Awwwards
+• Interfaccia Glassmorphism - Interfaccia moderna con effetto vetro
+• Modalità Scura/Chiara - Protegge i tuoi occhi
+
+🔊 QUALITÀ AUDIO
+• Bass Boost - Supporto bassi potente
+• 3D Virtualizer - Esperienza cinema nelle cuffie
+• Miglioramento Chiamate - Conversazioni chiare e comprensibili
+• Gestione Multi-Stream - Controllo separato per ogni app
+
+🛡️ PRIVACY E SICUREZZA
+• Nessuna pubblicità, nessuna raccolta dati
+• Tutta l'elaborazione sul tuo dispositivo
+• Filosofia open-source
+• Pieno rispetto della privacy dell'utente
+
+⚡ PRESTAZIONI
+• Supporto completo per Android 16 (API 36)
+• Consumo minimo della batteria
+• Accelerazione hardware
+• Funzionamento ininterrotto in background
+
+🌍 11 LINGUE SUPPORTATE
+Turco, Inglese, Tedesco, Francese, Spagnolo, Russo, Cinese, Giapponese, Coreano, Arabo, Italiano
+
+Questo aggiornamento è pubblicato per la conformità alle politiche di Google Play e miglioramenti dell'esperienza utente.
+
+ja-JP
+🎵 v1.4.3 - プロフェッショナルオーディオ管理
+
+✨ 主要機能
+• 10バンドプロフェッショナルイコライザー - 各周波数の精密制御
+• 高度なサウンドブースト - 200%まで安全にブースト
+• リアルタイムオーディオビジュアライゼーション - 音楽と踊るテーマ
+• スマートデバイスプロファイル - スピーカーに合わせた最適化
+• クイック設定タイル - 通知パネルからワンタップで制御
+
+🎨 ビジュアル体験
+• 11種類のプレミアムテーマ - モダン、ミニマル、エレガントなデザイン
+• 受賞歴のあるアニメーション - Awwwardsスタイルのビジュアルエフェクト
+• グラスモーフィズムUI - ガラス効果を持つモダンなインターフェース
+• ダーク/ライトモード - 目を保護
+
+🔊 音質
+• Bass Boost - パワフルな低音サポート
+• 3D Virtualizer - ヘッドホンでシネマ体験
+• 通話強化 - クリアで理解しやすい会話
+• マルチストリーム管理 - 各アプリの個別制御
+
+🛡️ プライバシーとセキュリティ
+• 広告なし、データ収集なし
+• すべての処理はデバイス上で
+• オープンソースの哲学
+• ユーザーのプライバシーを完全に尊重
+
+⚡ パフォーマンス
+• Android 16 (API 36) 完全サポート
+• 最小限のバッテリー消費
+• ハードウェアアクセラレーション
+• バックグラウンドで中断なく動作
+
+🌍 11言語対応
+トルコ語、英語、ドイツ語、フランス語、スペイン語、ロシア語、中国語、日本語、韓国語、アラビア語、イタリア語
+
+このアップデートはGoogle Playポリシー準拠とユーザーエクスペリエンス向上のために公開されました。
+
+ko-KR
+🎵 v1.4.3 - 전문 오디오 관리
+
+✨ 주요 기능
+• 10밴드 프로페셔널 이퀄라이저 - 모든 주파수의 정밀 제어
+• 고급 사운드 부스트 - 200%까지 안전한 부스트
+• 실시간 오디오 시각화 - 음악과 함께 춤추는 테마
+• 스마트 기기 프로필 - 스피커에 맞춤 최적화
+• 빠른 설정 타일 - 알림 패널에서 원탭 제어
+
+🎨 시각적 경험
+• 11개 프리미엄 테마 - 현대적이고 미니멀하며 우아한 디자인
+• 수상 경력의 애니메이션 - Awwwards 스타일 비주얼 효과
+• 글래스모피즘 UI - 유리 효과의 현대적 인터페이스
+• 다크/라이트 모드 - 눈 보호
+
+🔊 사운드 품질
+• Bass Boost - 강력한 베이스 지원
+• 3D Virtualizer - 헤드폰에서 시네마 경험
+• 통화 향상 - 명확하고 이해하기 쉬운 대화
+• 멀티 스트림 관리 - 각 앱의 개별 제어
+
+🛡️ 개인정보 보호 및 보안
+• 광고 없음, 데이터 수집 없음
+• 모든 처리는 기기에서
+• 오픈 소스 철학
+• 사용자 개인정보 완전 존중
+
+⚡ 성능
+• Android 16 (API 36) 완전 지원
+• 최소 배터리 소비
+• 하드웨어 가속
+• 백그라운드에서 중단 없는 작동
+
+� 11개 언어 지원
+터키어, 영어, 독일어, 프랑스어, 스페인어, 러시아어, 중국어, 일본어, 한국어, 아랍어, 이탈리아어
+
+이 업데이트는 Google Play 정책 준수 및 사용자 경험 개선을 위해 출시되었습니다.
+
+ru-RU
+🎵 v1.4.3 - Профессиональное Управление Звуком
+
+✨ КЛЮЧЕВЫЕ ФУНКЦИИ
+• 10-полосный Профессиональный Эквалайзер - Точный контроль каждой частоты
+• Продвинутое Усиление Звука - Безопасный буст до 200%
+• Визуализация Аудио в Реальном Времени - Темы танцуют под вашу музыку
+• Умные Профили Устройств - Оптимизация под ваш динамик
+• Плитка Быстрых Настроек - Управление одним касанием из панели уведомлений
+
+🎨 ВИЗУАЛЬНЫЙ ОПЫТ
+• 11 Премиум-тем - Современный, минималистичный и элегантный дизайн
+• Награжденные Анимации - Визуальные эффекты в стиле Awwwards
+• Glassmorphism UI - Современный интерфейс с эффектом стекла
+• Темный/Светлый Режим - Защищает глаза
+
+🔊 КАЧЕСТВО ЗВУКА
+• Bass Boost - Мощная поддержка басов
+• 3D Virtualizer - Кинематографический опыт в наушниках
+• Улучшение Звонков - Четкие и понятные разговоры
+• Мульти-Поточное Управление - Отдельный контроль для каждого приложения
+ 
+🛡️ КОНФИДЕНЦИАЛЬНОСТЬ И БЕЗОПАСНОСТЬ
+• Без рекламы, без сбора данных
+• Вся обработка на вашем устройстве
+• Философия открытого исходного кода
+• Полное уважение к конфиденциальности
+
+⚡ ПРОИЗВОДИТЕЛЬНОСТЬ
+• Полная поддержка Android 16 (API 36)
+• Минимальное потребление батареи
+• Аппаратное ускорение
+• Непрерывная работа в фоне
+
+🌍 11 ПОДДЕРЖИВАЕМЫХ ЯЗЫКОВ
+Турецкий, Английский, Немецкий, Французский, Испанский, Русский, Китайский, Японский, Корейский, Арабский, Итальянский
+
+Это обновление опубликовано для соответствия политикам Google Play и улучшений пользовательского опыта.
+
+zh-CN
+🎵 v1.4.3 - 专业音频管理
+
+✨ 主要功能
+• 10频段专业均衡器 - 精确控制每个频率
+• 高级声音增强 - 安全提升至200%
+• 实时音频可视化 - 主题随音乐舞动
+• 智能设备配置文件 - 针对扬声器优化
+• 快速设置磁贴 - 从通知面板一键控制
+
+🎨 视觉体验
+• 11个高级主题 - 现代、简约、优雅的设计
+• 获奖动画 - Awwwards风格视觉效果
+• 玻璃态UI - 具有玻璃效果的现代界面
+• 深色/浅色模式 - 保护您的眼睛
+
+🔊 音质
+• 低音增强 - 强大的低音支持
+• 3D虚拟器 - 耳机中的影院体验
+• 通话增强 - 清晰易懂的对话
+• 多流管理 - 每个应用单独控制
+
+🛡️ 隐私与安全
+• 无广告，无数据收集
+• 所有处理在您的设备上
+• 开源理念
+• 完全尊重用户隐私
+
+⚡ 性能
+• 完全支持 Android 16 (API 36)
+• 最小电池消耗
+• 硬件加速
+• 后台不间断运行
+
+� 支持11种语言
+土耳其语、英语、德语、法语、西班牙语、俄语、中文、日语、韩语、阿拉伯语、意大利语
+
+此更新是为了符合 Google Play 政策和改善用户体验而发布的。

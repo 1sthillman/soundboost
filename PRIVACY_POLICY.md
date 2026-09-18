@@ -1,8 +1,8 @@
 # Privacy Policy for Sound'ST Boost
 
-**Effective Date:** December 9, 2026  
-**Last Updated:** December 9, 2026  
-**Version:** 1.3.2
+**Effective Date:** September 18, 2026  
+**Last Updated:** September 18, 2026  
+**Version:** 1.4.6
 
 ---
 
@@ -187,9 +187,104 @@ Sound'ST Boost requests the following Android permissions. Each permission is ex
 
 ---
 
+### 3.7 Explicitly Removed Permissions (v1.4.6)
+
+**For Maximum Privacy:** The following permissions are explicitly removed from the app manifest to prevent any third-party libraries from adding them:
+
+❌ **ACCESS_NETWORK_STATE** - Removed  
+Purpose: Would allow checking internet connection  
+Why removed: App is 100% offline, no network checks needed
+
+❌ **INTERNET** - Removed  
+Purpose: Would allow network communication  
+Why removed: App has zero online features
+
+❌ **WAKE_LOCK** - Removed  
+Purpose: Would prevent device from sleeping  
+Why removed: Not needed for audio processing
+
+**Technical Implementation:**
+```xml
+<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" 
+    tools:node="remove" />
+<uses-permission android:name="android.permission.INTERNET" 
+    tools:node="remove" />
+<uses-permission android:name="android.permission.WAKE_LOCK" 
+    tools:node="remove" />
+```
+
+This ensures absolute privacy by making it technically impossible for the app to access the internet, even if a vulnerability existed.
+
+---
+
 ## 4. Features and Privacy Details
 
-### 4.1 Core Audio Enhancement
+---
+
+### 4.4 Home Screen Widgets (NEW in v1.4.0)
+
+**Features:**
+- Quick access volume controls from home screen
+- 3 widget sizes (1x1, 2x1, 4x1)
+- Preset buttons and volume adjustments
+- Built with Jetpack Glance (modern Compose UI)
+
+**Privacy:**
+- Widgets only control app's own audio settings
+- No data collection or transmission
+- No tracking of widget interactions
+- Uses standard Android widget APIs
+- All processing happens locally
+
+---
+
+### 4.5 Quick Settings Tile (NEW in v1.4.0)
+
+**Features:**
+- Toggle boost on/off from notification shade
+- Quick access without opening app
+- Shows current boost status
+
+**Privacy:**
+- Standard Android Quick Settings API
+- No data collection
+- No usage tracking
+- Purely UI convenience feature
+
+---
+
+### 4.6 Device Profile Memory (NEW in v1.4.0)
+
+**Features:**
+- Remembers volume settings per audio device type
+- Automatically adjusts when device changes
+- Optimizes for speakers, headphones, Bluetooth
+
+**Privacy:**
+- Only stores device TYPE (speaker, wired headphone, bluetooth)
+- Does NOT store device names, addresses, or identifiers
+- No device tracking or profiling
+- All data stored locally
+- Deleted on app uninstall
+
+**Technical Implementation:**
+```
+Stored data per profile:
+✅ Device type (enum: SPEAKER, WIRED, BLUETOOTH)
+✅ User's preferred volume level (%)
+✅ Equalizer preset name (optional)
+
+NOT stored:
+❌ Bluetooth device name
+❌ MAC address
+❌ Device manufacturer
+❌ Pairing history
+❌ Any unique identifiers
+```
+
+---
+
+### 4.7 Core Audio Enhancement
 
 **Features:**
 - Volume boost (60% - 500%)
@@ -201,7 +296,7 @@ Sound'ST Boost requests the following Android permissions. Each permission is ex
 
 ---
 
-### 4.2 Call Enhancement (NEW in v1.3.2)
+### 4.8 Call Enhancement (v1.3.2)
 
 **Features:**
 - Incoming voice clarity boost
@@ -226,7 +321,7 @@ Sound'ST Boost requests the following Android permissions. Each permission is ex
 
 ---
 
-### 4.3 Audio Visualization
+### 4.9 Audio Visualization
 
 **Features:**
 - Real-time spectrum analyzer
@@ -243,7 +338,7 @@ Sound'ST Boost requests the following Android permissions. Each permission is ex
 
 ---
 
-### 4.4 Multi-Stream Audio Management
+### 4.10 Multi-Stream Audio Management
 
 **Features:**
 - Detects and enhances multiple audio streams
@@ -472,6 +567,8 @@ We may update this Privacy Policy to:
 - Minor clarifications: No notification required
 
 **Version History:**
+- v1.4.6 (Sep 18, 2026): Updated manifest permissions, removed unnecessary network permissions
+- v1.4.0 (Jan 15, 2026): Added widgets, quick settings tile, device profiles
 - v1.3.2 (Dec 9, 2026): Added Call Enhancement feature details
 - v1.2.0 (Aug 27, 2026): Initial comprehensive policy
 
@@ -657,9 +754,9 @@ This Privacy Policy constitutes the entire agreement between you and Sound'ST Bo
 
 ---
 
-**Last Updated:** December 9, 2026  
-**Version:** 1.3.2  
-**Effective Date:** December 9, 2026
+**Last Updated:** September 18, 2026  
+**Version:** 1.4.6  
+**Effective Date:** September 18, 2026
 
 ---
 

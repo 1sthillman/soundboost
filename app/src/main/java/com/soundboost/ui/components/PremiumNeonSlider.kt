@@ -18,16 +18,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.draw.shadow
+import dev.chrisbanes.haze.HazeState
+import dev.chrisbanes.haze.hazeEffect
+import dev.chrisbanes.haze.hazeSource
+import dev.chrisbanes.haze.materials.HazeMaterials
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.unit.dp
 import com.soundboost.ui.theme.MonoTypography
-import dev.chrisbanes.haze.HazeState
-import dev.chrisbanes.haze.haze
-import dev.chrisbanes.haze.hazeChild
-import dev.chrisbanes.haze.materials.HazeMaterials
 
 /**
  * Premium Neon Slider - taste-skill compliant
@@ -103,7 +103,7 @@ fun PremiumNeonSlider(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(48.dp)
-                .haze(state = hazeState)
+                .hazeSource(state = hazeState)
                 .clip(RoundedCornerShape(24.dp))
                 .background(
                     Brush.horizontalGradient(
@@ -113,7 +113,7 @@ fun PremiumNeonSlider(
                         )
                     )
                 )
-                .hazeChild(
+                .hazeEffect(
                     state = hazeState,
                     style = HazeMaterials.thin()
                 ),

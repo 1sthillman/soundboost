@@ -1,0 +1,263 @@
+# Signed AAB Information - v1.4.6
+
+## Build Details
+
+**Version Code:** 36  
+**Version Name:** 1.4.6  
+**Build Date:** September 18, 2026 13:42:20  
+**File Name:** SoundSTBoost-v1.4.6-release.aab  
+**File Size:** 5.98 MB  
+**Location:** app\build\outputs\bundle\release\  
+
+---
+
+## Build Configuration
+
+**Target SDK:** 36 (Android 15)  
+**Compile SDK:** 36  
+**Min SDK:** 24 (Android 7.0)  
+**NDK Version:** 28.0.12674087  
+**Kotlin Version:** 2.0.0  
+**Gradle Version:** 8.9  
+**JDK Version:** OpenJDK 17.0.13+11  
+
+---
+
+## Critical Changes in v1.4.6
+
+### Manifest Permission Changes
+
+✅ **Explicitly Removed Permissions:**
+- `com.google.android.gms.permission.AD_ID` (tools:node="remove")
+- `android.permission.ACCESS_NETWORK_STATE` (tools:node="remove")
+- `android.permission.INTERNET` (tools:node="remove")
+- `android.permission.WAKE_LOCK` (tools:node="remove")
+
+### Why This Matters
+
+**Problem:** v1.4.2 was rejected by Google Play because the build included `ACCESS_NETWORK_STATE` permission (added by a dependency), which contradicted our "no data collection" declaration.
+
+**Solution:** v1.4.6 explicitly removes all network-related permissions using `tools:node="remove"` in AndroidManifest.xml, ensuring:
+- 100% offline operation
+- No network access possible
+- Full privacy compliance
+- Google Play approval
+
+---
+
+## Permissions Included (All Required)
+
+✅ `MODIFY_AUDIO_SETTINGS` - Core audio effects  
+✅ `RECORD_AUDIO` - Optional visualization & call enhancement  
+✅ `FOREGROUND_SERVICE` - Background boost  
+✅ `FOREGROUND_SERVICE_MEDIA_PLAYBACK` - Media service type  
+✅ `POST_NOTIFICATIONS` - Status notification (Android 13+)  
+✅ `RECEIVE_BOOT_COMPLETED` - Auto-start on boot (optional)  
+✅ `REQUEST_IGNORE_BATTERY_OPTIMIZATIONS` - Battery exemption (optional)  
+
+---
+
+## Features (v1.4.x)
+
+### Core Features
+- 🔊 Volume Boost (60% - 500%)
+- 🎛️ Professional 10-Band Equalizer
+- 🎵 Bass Boost & 3D Virtualizer
+- 📞 Call Enhancement
+- 🎨 Audio Visualizations (11 themes)
+
+### v1.4.0+ Features
+- 🏠 Home Screen Widgets (1x1, 2x1, 4x1)
+- ⚡ Quick Settings Tile
+- 🎧 Device Profile Memory
+- 🔇 Smart Volume Limits
+- 🌐 10 Languages Supported
+
+---
+
+## Google Play Console Upload Steps
+
+### 1. Navigate to Release
+
+1. Open [Google Play Console](https://play.google.com/console)
+2. Select "Rezonans - Volume Booster" app
+3. Go to "Production" or "Testing" track
+4. Click "Create new release"
+
+### 2. Upload AAB
+
+```
+File: app\build\outputs\bundle\release\SoundSTBoost-v1.4.6-release.aab
+Size: 5.98 MB
+Version: 36 (1.4.6)
+```
+
+### 3. Release Notes (Copy-Paste)
+
+**Turkish:**
+```
+🔒 Google Play Politika Uyumu Güncellemesi
+
+✅ Gereksiz izinler kaldırıldı
+✅ %100 çevrimdışı çalışma garantisi
+✅ Gizlilik politikası güncellendi
+✅ Veri toplama: SIFIR
+
+Tüm özellikler korundu - sadece gizlilik iyileştirmeleri.
+```
+
+**English:**
+```
+🔒 Google Play Policy Compliance Update
+
+✅ Removed unnecessary permissions
+✅ 100% offline operation guarantee
+✅ Privacy policy updated
+✅ Data collection: ZERO
+
+All features preserved - privacy improvements only.
+```
+
+(See GOOGLE_PLAY_RELEASE_NOTES_v1.4.6.txt for all 10 languages)
+
+### 4. Update App Content (If Asked)
+
+**Data Safety:**
+- Collects personal data: ❌ NO
+- Shares data: ❌ NO
+- Uses advertising ID: ❌ NO
+- Accesses network: ❌ NO
+
+**Privacy Policy URL:**
+```
+https://github.com/1sthillman/soundboost/blob/main/PRIVACY_POLICY.md
+```
+
+### 5. Review & Publish
+
+1. Review release details
+2. Click "Review release"
+3. Click "Start rollout to Production"
+
+---
+
+## Expected Review Time
+
+**Normal:** 24-48 hours  
+**This update:** Likely faster (compliance fix, no functional changes)
+
+---
+
+## Verification Checklist
+
+Before submitting, verify:
+
+- [x] AAB file signed with release key
+- [x] Version code incremented (35 → 36)
+- [x] Version name updated (1.4.5 → 1.4.6)
+- [x] Privacy policy updated to v1.4.6
+- [x] Release notes prepared in 10 languages
+- [x] Manifest permissions cleaned
+- [x] Build successful (no errors)
+- [x] File size reasonable (5.98 MB)
+
+---
+
+## Post-Submission
+
+### Monitor Review Status
+
+1. Check email for Google Play notifications
+2. Watch Console for review progress
+3. Respond promptly if questions arise
+
+### If Approved
+
+✅ App will be live within 2-6 hours  
+✅ Users will receive update notification  
+✅ Policy compliance restored  
+
+### If Rejected (Unlikely)
+
+1. Read rejection reason carefully
+2. Check Console for specific feedback
+3. Contact developer support if unclear
+4. Make necessary changes
+5. Resubmit with explanation
+
+---
+
+## Comparison with v1.4.2 (Rejected)
+
+### v1.4.2 Build Permissions
+```
+android.permission.ACCESS_NETWORK_STATE ❌ (caused rejection)
+android.permission.FOREGROUND_SERVICE ✅
+android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK ✅
+android.permission.MODIFY_AUDIO_SETTINGS ✅
+android.permission.POST_NOTIFICATIONS ✅
+android.permission.RECEIVE_BOOT_COMPLETED ✅
+android.permission.RECORD_AUDIO ✅
+android.permission.WAKE_LOCK ❌ (unnecessary)
+```
+
+### v1.4.6 Build Permissions (This Version)
+```
+android.permission.FOREGROUND_SERVICE ✅
+android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK ✅
+android.permission.MODIFY_AUDIO_SETTINGS ✅
+android.permission.POST_NOTIFICATIONS ✅
+android.permission.RECEIVE_BOOT_COMPLETED ✅
+android.permission.RECORD_AUDIO ✅
+android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS ✅
+```
+
+**Network permissions explicitly removed:**
+- ACCESS_NETWORK_STATE ❌ Removed
+- INTERNET ❌ Removed  
+- WAKE_LOCK ❌ Removed
+
+---
+
+## Technical Details
+
+### Build Command Used
+
+```powershell
+$env:JAVA_HOME="$PWD\jdk-17.0.13+11"
+$env:PATH="$env:JAVA_HOME\bin;$env:PATH"
+./gradlew clean bundleRelease
+```
+
+### Build Output
+
+```
+BUILD SUCCESSFUL in 2m 25s
+48 actionable tasks: 45 executed, 3 up-to-date
+```
+
+### Warnings (Non-Critical)
+
+- Some deprecated Android APIs (Virtualizer, AudioManager methods)
+- Manifest tool warnings (expected for permission removal)
+- Gradle 9.0 compatibility warnings (informational)
+
+None of these warnings affect functionality or Google Play compliance.
+
+---
+
+## Support & Contact
+
+**Developer:** 1sthillman  
+**GitHub:** https://github.com/1sthillman/soundboost  
+**Issues:** https://github.com/1sthillman/soundboost/issues
+
+---
+
+**Build Status:** ✅ READY FOR GOOGLE PLAY SUBMISSION  
+**Compliance Status:** ✅ FULLY COMPLIANT  
+**Expected Approval:** ✅ HIGH CONFIDENCE
+
+---
+
+*Last Updated: September 18, 2026 13:42:20*

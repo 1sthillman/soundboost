@@ -5,6 +5,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.Help
+import androidx.compose.material.icons.automirrored.filled.VolumeUp
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -68,7 +71,7 @@ fun SettingsScreen(
                 },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = null)
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = null)
                     }
                 },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
@@ -236,7 +239,7 @@ fun SettingsScreen(
             // Maximize Volume Button
             ModernButton(
                 text = stringResource(R.string.max_volume),
-                icon = Icons.Default.VolumeUp,
+                icon = Icons.AutoMirrored.Filled.VolumeUp,
                 accentColor = themeColors.accent1,
                 onClick = onMaximizeVolume,
                 modifier = Modifier.fillMaxWidth()
@@ -246,7 +249,7 @@ fun SettingsScreen(
             ModernSettingsCard(
                 title = stringResource(R.string.help_and_faq),
                 description = stringResource(R.string.help_desc),
-                icon = Icons.Default.Help,
+                icon = Icons.AutoMirrored.Filled.Help,
                 accentColor = themeColors.accent2,
                 surfaceColor = themeColors.surfaceElevated,
                 onClick = onOpenHelp,

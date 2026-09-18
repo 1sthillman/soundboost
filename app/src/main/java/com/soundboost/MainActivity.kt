@@ -115,11 +115,15 @@ class MainActivity : ComponentActivity() {
                         if (Build.VERSION.SDK_INT >= 35) {
                             // Android 15+ (API 35): Use modern edge-to-edge approach
                             // System handles colors automatically, we just set transparency
+                            @Suppress("DEPRECATION")
                             window.statusBarColor = android.graphics.Color.TRANSPARENT
+                            @Suppress("DEPRECATION")
                             window.navigationBarColor = android.graphics.Color.TRANSPARENT
                         } else {
                             // Android 14 and below: Use traditional approach
+                            @Suppress("DEPRECATION")
                             window.statusBarColor = android.graphics.Color.TRANSPARENT
+                            @Suppress("DEPRECATION")
                             window.navigationBarColor = themeColors.background.toArgb()
                         }
                         

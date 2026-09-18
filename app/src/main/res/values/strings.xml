@@ -264,4 +264,59 @@
     <string name="widget_4x1_description">Full volume control</string>
     <string name="widget_loading">Loading...</string>
     <string name="widget_rezonans_description">Premium widget with award-winning themes</string>
+    
+    <!-- Volume Presets -->
+    <string name="preset_50">50%</string>
+    <string name="preset_70">70%</string>
+    <string name="preset_150">150%</string>
+    <string name="preset_200_max">200% MAX</string>
+    
+    <!-- Themes -->
+    <string name="theme_coral">Coral</string>
+    <string name="theme_forest">Forest</string>
+    <string name="theme_galaxy">Galaxy</string>
+    <string name="theme_ice">Ice</string>
+    <string name="theme_lava">Lava</string>
+    <string name="theme_midnight">Midnight</string>
+    <string name="theme_neon">Neon</string>
+    <string name="theme_neon_light">Neon Light</string>
+    <string name="theme_royal">Royal</string>
+    <string name="theme_sun">Sun</string>
+    <string name="theme_synth">Synth</string>
+    <string name="theme_system">System</string>
+    <string name="theme_vinyl">Vinyl</string>
+    <string name="theme_water">Water</string>
+    <string name="themes_label">Themes</string>
+    
+    <!-- Accessibility -->
+    <string name="accessibility_features">Accessibility Features</string>
+    <string name="haptic_feedback">Haptic Feedback</string>
+    <string name="haptic_feedback_desc">Vibration response on touch</string>
+    <string name="high_contrast">High Contrast</string>
+    <string name="high_contrast_desc">Enhanced visibility for better accessibility</string>
+    <string name="visual_feedback">Visual Feedback</string>
+    <string name="visual_feedback_desc">Enhanced visual indicators for audio changes</string>
+    
+    <!-- Gain Warning Dialog -->
+    <string name="gain_warning_title">⚠️ High Volume Warning</string>
+    <string name="gain_warning_subtitle">You are exceeding safe volume levels</string>
+    <string name="gain_warning_level_caution">Caution Zone</string>
+    <string name="gain_warning_level_warning">Warning Zone</string>
+    <string name="gain_warning_level_danger">Danger Zone</string>
+    <string name="gain_warning_current">Current Level</string>
+    <string name="gain_warning_recommended">Recommended Max</string>
+    <string name="gain_warning_max_safe">Safe Maximum</string>
+    <string name="gain_warning_device_info">Device Info</string>
+    <string name="gain_warning_risks">Potential Risks:</string>
+    <string name="gain_warning_risk_hearing">• Permanent hearing damage</string>
+    <string name="gain_warning_risk_speaker">• Speaker damage</string>
+    <string name="gain_warning_risk_audio">• Audio distortion</string>
+    <string name="gain_warning_risk_warranty">• Warranty void</string>
+    <string name="gain_warning_tip">💡 Tip: Use headphones for better quality at lower volumes</string>
+    <string name="gain_warning_agree_checkbox">I understand the risks and want to proceed</string>
+    <string name="gain_warning_confirm">Proceed Anyway</string>
+    <string name="gain_warning_cancel">Use Safe Level</string>
+    
+    <!-- Italian Language -->
+    <string name="language_italian">Italiano</string>
 </resources>

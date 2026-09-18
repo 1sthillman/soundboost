@@ -13,12 +13,12 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import dev.chrisbanes.haze.HazeState
+import dev.chrisbanes.haze.hazeEffect
+import dev.chrisbanes.haze.hazeSource
+import dev.chrisbanes.haze.materials.HazeMaterials
 import com.soundboost.ui.theme.GlassWhite
 import com.soundboost.ui.theme.PanelDarkElevated
-import dev.chrisbanes.haze.HazeState
-import dev.chrisbanes.haze.haze
-import dev.chrisbanes.haze.hazeChild
-import dev.chrisbanes.haze.materials.HazeMaterials
 
 /**
  * CyberCard - Glassmorphism container
@@ -54,7 +54,7 @@ fun CyberCard(
     
     Surface(
         modifier = modifier
-            .haze(state = hazeState)
+            .hazeSource(state = hazeState)
             .clip(RoundedCornerShape(cornerRadius)),
         shape = RoundedCornerShape(cornerRadius),
         color = backgroundColor.copy(alpha = 0.7f),
@@ -63,7 +63,7 @@ fun CyberCard(
     ) {
         androidx.compose.foundation.layout.Column(
             modifier = Modifier
-                .hazeChild(
+                .hazeEffect(
                     state = hazeState,
                     style = HazeMaterials.thick()
                 )

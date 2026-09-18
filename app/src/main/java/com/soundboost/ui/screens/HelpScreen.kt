@@ -12,6 +12,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.HelpOutline
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -45,7 +47,7 @@ fun HelpScreen(
                 },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = null)
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = null)
                     }
                 },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
@@ -139,7 +141,7 @@ private fun FAQItem(
                     horizontalArrangement = Arrangement.spacedBy(Spacing.sm)
                 ) {
                     Icon(
-                        Icons.Default.HelpOutline,
+                        Icons.AutoMirrored.Filled.HelpOutline,
                         contentDescription = null,
                         tint = themeColors.accent1,
                         modifier = Modifier.size(24.dp)
@@ -166,7 +168,7 @@ private fun FAQItem(
             ) {
                 Column {
                     Spacer(Modifier.height(Spacing.sm))
-                    Divider(color = themeColors.outline.copy(alpha = 0.3f))
+                    HorizontalDivider(color = themeColors.outline.copy(alpha = 0.3f))
                     Spacer(Modifier.height(Spacing.sm))
                     Text(
                         answer,

@@ -26,15 +26,23 @@ configurations.all {
 android {
     namespace = "com.soundboost"
     compileSdk = 36
+    
+    ndkVersion = "28.0.12674087"  // 16 KB page size support
 
     defaultConfig {
         applicationId = "com.soundboost"
         minSdk = 24
         targetSdk = 36
-        versionCode = 30
-        versionName = "1.4.0"
+        versionCode = 36
+        versionName = "1.4.6"
         
         setProperty("archivesBaseName", "SoundSTBoost-v$versionName")
+        
+        // 16 KB page size support
+        ndk {
+            //noinspection ChromeOsAbiSupport
+            abiFilters += listOf("arm64-v8a", "armeabi-v7a", "x86", "x86_64")
+        }
     }
     
     signingConfigs {
@@ -51,7 +59,7 @@ android {
     buildTypes {
         getByName("release") {
             isMinifyEnabled = true
-            isShrinkResources = false
+            isShrinkResources = true
             signingConfig = signingConfigs.getByName("release")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -61,6 +69,12 @@ android {
             ndk {
                 debugSymbolLevel = "FULL"
             }
+        }
+    }
+    
+    packaging {
+        jniLibs {
+            keepDebugSymbols += listOf("**/*.so")
         }
     }
 
@@ -87,7 +101,7 @@ android {
 }
 
 dependencies {
-    // Compose BOM for version alignment
+    // Compose BOM for version alignment (updated to latest)
     implementation(platform("androidx.compose:compose-bom:2024.12.01"))
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
@@ -99,8 +113,8 @@ dependencies {
     
     implementation("androidx.activity:activity-compose:1.9.3")
     implementation("androidx.appcompat:appcompat:1.7.0")
-    implementation("androidx.core:core-ktx:1.13.1")
-    implementation("androidx.core:core-splashscreen:1.0.1")
+    implementation("androidx.core:core-ktx:1.15.0")
+    implementation("androidx.core:core-splashscreen:1.2.0-alpha02")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.7")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.7")
     implementation("androidx.media:media:1.7.0")
@@ -119,7 +133,7 @@ dependencies {
     // Coil for image loading
     implementation("io.coil-kt:coil-compose:2.7.0")
     
-    // System UI Controller
+    // System UI Controller (updated to latest)
     implementation("com.google.accompanist:accompanist-systemuicontroller:0.36.0")
     
     // Glassmorphism & Advanced Effects
