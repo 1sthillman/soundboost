@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+    
+    <!-- Header -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingBottom="12dp">
+        
+        <ImageView
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:src="@mipmap/ic_launcher" />
+        
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="12dp"
+            android:orientation="vertical">
+            
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sound'ST Boost"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:textColor="?android:attr/textColorPrimary" />
+            
+            <TextView
+                android:id="@+id/notif_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/notif_active"
+                android:textSize="12sp"
+                android:textColor="?android:attr/textColorSecondary" />
+        </LinearLayout>
+    </LinearLayout>
+    
+    <!-- Volume -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingVertical="6dp">
+        
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/notif_volume"
+            android:textSize="12sp"
+            android:minWidth="60dp"
+            android:textColor="?android:attr/textColorPrimary" />
+        
+        <TextView
+            android:id="@+id/notif_volume_value"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="150%"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:gravity="end"
+            android:textColor="?android:attr/textColorPrimary" />
+    </LinearLayout>
+    
+    <!-- Bass -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingVertical="6dp">
+        
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/notif_bass"
+            android:textSize="12sp"
+            android:minWidth="60dp"
+            android:textColor="?android:attr/textColorPrimary" />
+        
+        <TextView
+            android:id="@+id/notif_bass_value"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="50%"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:gravity="end"
+            android:textColor="?android:attr/textColorPrimary" />
+    </LinearLayout>
+    
+    <!-- 3D -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingVertical="6dp">
+        
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/notif_3d"
+            android:textSize="12sp"
+            android:minWidth="60dp"
+            android:textColor="?android:attr/textColorPrimary" />
+        
+        <TextView
+            android:id="@+id/notif_3d_value"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="30%"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:gravity="end"
+            android:textColor="?android:attr/textColorPrimary" />
+    </LinearLayout>
+    
+    <!-- Flash -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingVertical="6dp">
+        
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Flash"
+            android:textSize="12sp"
+            android:minWidth="60dp"
+            android:textColor="?android:attr/textColorPrimary" />
+        
+        <TextView
+            android:id="@+id/notif_flash_value"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/notif_flash_off"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:gravity="end"
+            android:textColor="?android:attr/textColorSecondary" />
+    </LinearLayout>
+    
+</LinearLayout>

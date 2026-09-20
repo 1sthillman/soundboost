@@ -101,13 +101,16 @@ class BoostForegroundService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         when (intent?.action) {
             "START_BOOST" -> startBoost()
-            "STOP_BOOST" -> stopBoost()
+            "STOP_BOOST" -> {
+                android.util.Log.d(TAG, "🛑 STOP_BOOST action received - stopping service completely")
+                stopBoost()
+                return START_NOT_STICKY  // Don't restart service after stop
+            }
             "UPDATE_EFFECTS" -> updateEffects()
             "MAXIMIZE_VOLUME" -> maximizeVolume()
             "BASS_DOWN" -> adjustBass(-10)
             "BASS_UP" -> adjustBass(10)
-            "VIRTUALIZER_DOWN" -> adjustVirtualizer(-10)
-            "VIRTUALIZER_UP" -> adjustVirtualizer(10)
+            "TOGGLE_FLASH" -> toggleFlash()
             // NEW: Widget support (v1.4.0)
             "SET_VOLUME" -> {
                 val percent = intent.getStringExtra("percent")?.toIntOrNull() ?: 150
@@ -136,22 +139,23 @@ class BoostForegroundService : Service() {
         }
     }
 
-    private fun adjustVirtualizer(delta: Int) {
+
+    private fun toggleFlash() {
         serviceScope.launch {
+            android.util.Log.d(TAG, "⚡ Toggle flash from notification")
+            
+            // Get current flash state from prefs and toggle it
             val settings = prefs.settings.firstOrNull() ?: return@launch
-            val newVirtualizer = (settings.virtualizerPercent + delta).coerceIn(0, 100)
             
-            prefs.setVirtualizer(newVirtualizer)
-            
-            if (useMultiStream) {
-                multiStreamManager?.setVirtualizerForAllStreams(newVirtualizer)
-            } else {
-                audioEffects.setVirtualizer(newVirtualizer)
+            // We need to store flash state in preferences
+            // For now, send intent to MainActivity
+            val intent = Intent(this@BoostForegroundService, MainActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP
+                putExtra("TOGGLE_FLASH", true)
             }
+            startActivity(intent)
             
-            val notification = createNotification(settings.masterGainPercent, settings.bassBoostPercent)
-            val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.notify(NOTIFICATION_ID, notification)
+            android.util.Log.d(TAG, "✅ Flash toggle intent sent to MainActivity")
         }
     }
 
@@ -244,20 +248,35 @@ class BoostForegroundService : Service() {
     }
 
     private fun stopBoost() {
-        android.util.Log.d(TAG, "🛑 Stopping boost service...")
+        android.util.Log.d(TAG, "🛑 Stopping boost service COMPLETELY...")
         
+        // Turn off boost in preferences so it doesn't restart
+        serviceScope.launch {
+            prefs.setBoostEnabled(false)
+            android.util.Log.d(TAG, "✅ Boost disabled in preferences")
+        }
+        
+        // Release all audio resources
         if (useMultiStream) {
             multiStreamManager?.release()
             multiStreamManager = null
+            android.util.Log.d(TAG, "✅ Multi-stream manager released")
         } else {
             audioEffects.release()
+            android.util.Log.d(TAG, "✅ Audio effects released")
         }
         
-        // Update widgets
+        // Stop monitoring
+        audioOutputMonitor?.stopMonitoring()
+        android.util.Log.d(TAG, "✅ Audio output monitor stopped")
+        
+        // Update widgets to show stopped state
         updateWidgets()
         
+        // Stop foreground and kill service
         stopForeground(STOP_FOREGROUND_REMOVE)
         stopSelf()
+        android.util.Log.d(TAG, "✅ Service stopped completely")
     }
 
     private fun updateEffects() {
@@ -360,24 +379,23 @@ class BoostForegroundService : Service() {
             // Gain log
             smartGainAdvisor.logGainChange(settings.masterGainPercent, device)
             
-            // Bildirimde göster
+            // Bildirimde göster (NO EMOJIS)
             val deviceText = when (device) {
-                AudioOutputMonitor.OutputDevice.BLUETOOTH_HEADSET -> "🎧 Bluetooth: $name"
-                AudioOutputMonitor.OutputDevice.BLUETOOTH_SPEAKER -> "📢 Bluetooth Hoparlör: $name"
-                AudioOutputMonitor.OutputDevice.WIRED_HEADSET -> "🎧 Kablolu Kulaklık"
-                AudioOutputMonitor.OutputDevice.WIRED_HEADPHONE -> "🎧 Kulaklık"
-                AudioOutputMonitor.OutputDevice.USB_HEADSET -> "🔌 USB-C Kulaklık"
-                AudioOutputMonitor.OutputDevice.USB_DEVICE -> "🔌 USB DAC: $name"
-                AudioOutputMonitor.OutputDevice.PHONE_SPEAKER -> "📢 Telefon Hoparlörü"
-                else -> "🔊 Ses Cihazı"
+                AudioOutputMonitor.OutputDevice.BLUETOOTH_HEADSET -> "Bluetooth: $name"
+                AudioOutputMonitor.OutputDevice.BLUETOOTH_SPEAKER -> "Bluetooth Speaker: $name"
+                AudioOutputMonitor.OutputDevice.WIRED_HEADSET -> "Wired Headset"
+                AudioOutputMonitor.OutputDevice.WIRED_HEADPHONE -> "Headphone"
+                AudioOutputMonitor.OutputDevice.USB_HEADSET -> "USB-C Headset"
+                AudioOutputMonitor.OutputDevice.USB_DEVICE -> "USB DAC: $name"
+                AudioOutputMonitor.OutputDevice.PHONE_SPEAKER -> "Phone Speaker"
+                else -> "Audio Device"
             }
             
-            // Uyarı seviyesini bildirimine ekle
-            val warningEmoji = smartGainAdvisor.getGainEmoji(settings.masterGainPercent)
-            val deviceTextWithWarning = "$warningEmoji $deviceText"
+            // NO warning emoji
+            val deviceTextClean = deviceText
             
-            // Notification güncelle (cihaz bilgisi + uyarı ile)
-            val notification = createNotificationWithDevice(settings.masterGainPercent, settings.bassBoostPercent, deviceTextWithWarning)
+            // Notification güncelle (cihaz bilgisi, NO EMOJIS)
+            val notification = createNotificationWithDevice(settings.masterGainPercent, settings.bassBoostPercent, deviceTextClean)
             val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.notify(NOTIFICATION_ID, notification)
         }
@@ -387,8 +405,8 @@ class BoostForegroundService : Service() {
         val deviceInfo = audioOutputMonitor?.let {
             val (device, name) = it.detectCurrentDevice()
             when (device) {
-                AudioOutputMonitor.OutputDevice.BLUETOOTH_HEADSET -> "🎧 BT: ${name ?: "Kulaklık"}"
-                AudioOutputMonitor.OutputDevice.WIRED_HEADSET -> "🎧 Kablolu"
+                AudioOutputMonitor.OutputDevice.BLUETOOTH_HEADSET -> "BT: ${name ?: "Headset"}"
+                AudioOutputMonitor.OutputDevice.WIRED_HEADSET -> "Wired"
                 else -> null
             }
         }
@@ -430,38 +448,25 @@ class BoostForegroundService : Service() {
             this, 3, bassUpIntent,
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
-
-        // Virtualizer Down action
-        val virtualizerDownIntent = Intent(this, BoostForegroundService::class.java).apply {
-            action = "VIRTUALIZER_DOWN"
+        
+        // Flash Toggle action
+        val flashToggleIntent = Intent(this, BoostForegroundService::class.java).apply {
+            action = "TOGGLE_FLASH"
         }
-        val virtualizerDownPendingIntent = PendingIntent.getService(
-            this, 4, virtualizerDownIntent,
+        val flashTogglePendingIntent = PendingIntent.getService(
+            this, 6, flashToggleIntent,
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
 
-        // Virtualizer Up action
-        val virtualizerUpIntent = Intent(this, BoostForegroundService::class.java).apply {
-            action = "VIRTUALIZER_UP"
-        }
-        val virtualizerUpPendingIntent = PendingIntent.getService(
-            this, 5, virtualizerUpIntent,
-            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
-        )
-
-        // Get current settings
-        val virtualizerPercent = runBlocking {
-            prefs.settings.firstOrNull()?.virtualizerPercent ?: 0
-        }
-
-        // Build rich content
+        // Build modern content (NO EMOJIS - clean professional look)
         val volumeLabel = getString(R.string.notif_volume)
         val bassLabel = getString(R.string.notif_bass)
-        val label3D = getString(R.string.notif_3d)
-        val contentText = "$volumeLabel: $volumePercent% | $bassLabel: $bassPercent% | $label3D: $virtualizerPercent%"
         
-        // SubText: Cihaz bilgisi göster
-        val subText = deviceText ?: getString(R.string.notif_active)
+        // Clean content text - only Volume and Bass
+        val contentText = "$volumeLabel $volumePercent% • $bassLabel $bassPercent%"
+        
+        // SubText: Device info (clean, no emojis)
+        val subText = deviceText?.replace(Regex("[\\p{So}\\p{Cn}]"), "")?.trim() ?: getString(R.string.notif_active)
 
         return NotificationCompat.Builder(this, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_notification)
@@ -483,7 +488,7 @@ class BoostForegroundService : Service() {
             .setContentIntent(pendingIntent)
             .setShowWhen(false)
             .setColorized(true)
-            .setColor(0xFF6200EE.toInt())
+            .setColor(0xFFFFB74D.toInt()) // Modern orange color
             .addAction(
                 R.drawable.ic_bass_down,
                 getString(R.string.notif_bass_down),
@@ -495,14 +500,9 @@ class BoostForegroundService : Service() {
                 bassUpPendingIntent
             )
             .addAction(
-                R.drawable.ic_3d_down,
-                getString(R.string.notif_3d_down),
-                virtualizerDownPendingIntent
-            )
-            .addAction(
-                R.drawable.ic_3d_up,
-                getString(R.string.notif_3d_up),
-                virtualizerUpPendingIntent
+                R.drawable.ic_flash,
+                "Flash",
+                flashTogglePendingIntent
             )
             .addAction(
                 R.drawable.ic_stop_notification,

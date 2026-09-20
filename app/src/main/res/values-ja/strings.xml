@@ -169,6 +169,20 @@
     <string name="call_enhancement_desc">着信音声のクリアさを向上 + 通話中のあなたの背景ノイズを削減</string>
     <string name="call_enhancement_noise_suppression">ノイズ抑制</string>
     <string name="call_enhancement_auto_gain">自動ゲイン</string>
+    
+    <!-- ベースフラッシュシンク -->
+    <string name="flash_sync_title">ベースフラッシュシンク</string>
+    <string name="flash_sync_desc">フラッシュがベースキックとリアルタイムで同期します</string>
+    <string name="flash_sync_instant_kick">瞬時検出</string>
+    <string name="flash_sync_zero_delay">遅延ゼロ</string>
+    <string name="flash_intensity_dialog_title">フラッシュ強度</string>
+    <string name="flash_intensity_light">ライト</string>
+    <string name="flash_intensity_light_desc">ソフト • 低感度 • 超高速 (25ms)</string>
+    <string name="flash_intensity_normal">ノーマル</string>
+    <string name="flash_intensity_normal_desc">バランス • 即応 (30ms)</string>
+    <string name="flash_intensity_strong">ストロング</string>
+    <string name="flash_intensity_strong_desc">アグレッシブ • 高感度 • 最小クールダウン (40ms)</string>
+    <string name="flash_dialog_close">閉じる</string>
 
     <!-- バッテリー最適化（Google Play安全） -->
     <string name="battery_optimization">バッテリー最適化</string>

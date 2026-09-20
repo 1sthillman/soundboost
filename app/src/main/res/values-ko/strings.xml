@@ -169,6 +169,20 @@
     <string name="call_enhancement_desc">수신 음성 선명도 향상 + 통화 중 배경 소음 감소</string>
     <string name="call_enhancement_noise_suppression">소음 억제</string>
     <string name="call_enhancement_auto_gain">자동 게인</string>
+    
+    <!-- 베이스 플래시 동기화 -->
+    <string name="flash_sync_title">베이스 플래시 동기화</string>
+    <string name="flash_sync_desc">플래시가 베이스 킥과 실시간 동기화됩니다</string>
+    <string name="flash_sync_instant_kick">즉각적인 감지</string>
+    <string name="flash_sync_zero_delay">지연 없음</string>
+    <string name="flash_intensity_dialog_title">플래시 강도</string>
+    <string name="flash_intensity_light">부드럽게</string>
+    <string name="flash_intensity_light_desc">온화함 • 낮은 감도 • 초고속 (25ms)</string>
+    <string name="flash_intensity_normal">보통</string>
+    <string name="flash_intensity_normal_desc">균형잡힌 • 즉시 반응 (30ms)</string>
+    <string name="flash_intensity_strong">강력함</string>
+    <string name="flash_intensity_strong_desc">공격적 • 매우 민감 • 최소 대기시간 (40ms)</string>
+    <string name="flash_dialog_close">닫기</string>
 
     <!-- 배터리 최적화 (Google Play 안전) -->
     <string name="battery_optimization">배터리 최적화</string>

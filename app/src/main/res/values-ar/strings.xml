@@ -223,6 +223,20 @@
     <string name="call_enhancement_noise_suppression">قمع الضوضاء</string>
     <string name="call_enhancement_auto_gain">الكسب التلقائي</string>
     
+    <!-- مزامنة فلاش البيس -->
+    <string name="flash_sync_title">مزامنة فلاش البيس</string>
+    <string name="flash_sync_desc">الفلاش يتزامن مع ضربات البيس في الوقت الحقيقي</string>
+    <string name="flash_sync_instant_kick">كشف فوري</string>
+    <string name="flash_sync_zero_delay">بدون تأخير</string>
+    <string name="flash_intensity_dialog_title">شدة الفلاش</string>
+    <string name="flash_intensity_light">خفيف</string>
+    <string name="flash_intensity_light_desc">لطيف • أقل حساسية • سريع جداً (25ms)</string>
+    <string name="flash_intensity_normal">عادي</string>
+    <string name="flash_intensity_normal_desc">متوازن • استجابة فورية (30ms)</string>
+    <string name="flash_intensity_strong">قوي</string>
+    <string name="flash_intensity_strong_desc">عدواني • حساس جداً • تهدئة دنيا (40ms)</string>
+    <string name="flash_dialog_close">إغلاق</string>
+    
     <!-- الإشعار -->
     <string name="notif_volume">مستوى الصوت</string>
     <string name="notif_bass">جهير</string>

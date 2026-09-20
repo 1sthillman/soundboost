@@ -152,9 +152,24 @@
     <string name="call_enhancement_noise_suppression">Gürültü Bastırma</string>
     <string name="call_enhancement_auto_gain">Otomatik Gain</string>
     
+    <!-- Bass Flaş Senkronizasyonu -->
+    <string name="flash_sync_title">BASS FLAŞ SYNC</string>
+    <string name="flash_sync_desc">Flaş, bass atışlarıyla gerçek zamanlı senkronize yanar</string>
+    <string name="flash_sync_instant_kick">Anlık Kick Tespiti</string>
+    <string name="flash_sync_zero_delay">Sıfır Gecikme</string>
+    <string name="flash_intensity_dialog_title">FLAŞ ŞİDDETİ</string>
+    <string name="flash_intensity_light">Hafif</string>
+    <string name="flash_intensity_light_desc">Yumuşak • Az hassas • Ultra hızlı (25ms)</string>
+    <string name="flash_intensity_normal">Normal</string>
+    <string name="flash_intensity_normal_desc">Dengeli • Anlık yanıt (30ms)</string>
+    <string name="flash_intensity_strong">Güçlü</string>
+    <string name="flash_intensity_strong_desc">Agresif • Çok hassas • Minimum bekleme (40ms)</string>
+    <string name="flash_dialog_close">KAPAT</string>
+    
     <!-- Bildirim -->
     <string name="notif_volume">Ses</string>
     <string name="notif_bass">Bas</string>
+    <string name="notif_treble">Tiz</string>
     <string name="notif_3d">3D</string>
     <string name="notif_bass_down">Bas -10</string>
     <string name="notif_bass_up">Bas +10</string>
@@ -162,6 +177,8 @@
     <string name="notif_3d_up">3D +10</string>
     <string name="notif_stop">Durdur</string>
     <string name="notif_active">Aktif</string>
+    <string name="notif_flash_on">AÇIK</string>
+    <string name="notif_flash_off">KAPALI</string>
     
     <!-- Colors -->
     <string name="color_cyan">Camgöbeği</string>

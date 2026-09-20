@@ -50,7 +50,11 @@ import com.soundboost.ui.theme.getThemeColors
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.launch
+import android.widget.Toast
+import android.os.VibrationEffect
+import android.os.Vibrator
+import androidx.lifecycle.lifecycleScope
+import android.net.Uri
 
 class MainActivity : ComponentActivity() {
 
@@ -92,8 +96,8 @@ class MainActivity : ComponentActivity() {
         val sp = getSharedPreferences("app_prefs", MODE_PRIVATE)
         shouldShowAudioDisclosure = !sp.getBoolean("audio_disclosure_shown", false)
         
-        // Handle flash toggle from notification
-        handleIntent(intent)
+        // Handle Google Assistant voice commands
+        handleVoiceCommand(intent)
 
         setContent {
             val uiState by viewModel.uiState.collectAsState()
@@ -179,22 +183,6 @@ class MainActivity : ComponentActivity() {
         // This ensures RTL support and system locale detection work correctly
         com.soundboost.data.LanguageManager.applyLanguage(newBase)
         super.attachBaseContext(newBase)
-    }
-    
-    private fun handleIntent(intent: Intent?) {
-        intent?.let {
-            if (it.getBooleanExtra("TOGGLE_FLASH", false)) {
-                android.util.Log.d("MainActivity", "⚡ Toggling flash from notification")
-                val currentState = viewModel.isFlashEnabled.value
-                viewModel.onFlashToggled(!currentState)
-            }
-        }
-    }
-    
-    override fun onNewIntent(intent: Intent) {
-        super.onNewIntent(intent)
-        setIntent(intent)
-        handleIntent(intent)
     }
 }
 
@@ -291,8 +279,9 @@ fun MainScreen(viewModel: MainViewModel) {
             
             composable("equalizer") {
                 // NEW: 2026 DJ-Style Modern Equalizer
-                val isFlashEnabled by viewModel.isFlashEnabled.collectAsState()
-                val flashIntensity by viewModel.flashIntensity.collectAsState()
+                val isBassFlashEnabled by viewModel.isBassFlashEnabled.collectAsState()
+                val bassLevel by viewModel.bassLevel.collectAsState()
+                val bassFlashIntensity by viewModel.bassFlashIntensity.collectAsState()
                 
                 ModernEqualizerScreen(
                     state = uiState,
@@ -301,11 +290,12 @@ fun MainScreen(viewModel: MainViewModel) {
                     onSaveCustomPreset = viewModel::onSaveCustomPreset,
                     onMaxGainChanged = viewModel::onMaxGainChanged,
                     onCallEnhancementToggled = viewModel::onCallEnhancementToggled,
-                    onFlashToggled = viewModel::onFlashToggled,
-                    onFlashIntensityChanged = viewModel::onFlashIntensityChanged,
-                    isFlashEnabled = isFlashEnabled,
-                    flashIntensity = flashIntensity,
-                    hasFlashSupport = viewModel.hasFlashSupport(),
+                    onBassFlashToggled = viewModel::toggleBassFlash,
+                    onBassFlashIntensityChanged = viewModel::setBassFlashIntensity,
+                    isBassFlashEnabled = isBassFlashEnabled,
+                    bassLevel = bassLevel,
+                    bassFlashIntensity = bassFlashIntensity,
+                    hasBassFlashSupport = viewModel.hasBassFlashSupport(),
                     onBack = { 
                         navController.popBackStack()
                     }
@@ -488,6 +478,197 @@ fun MainScreen(viewModel: MainViewModel) {
                 }
             )
         }
+    }
+    
+    /**
+     * Handle new intents (e.g. Google Assistant voice commands while app is running)
+     */
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        handleVoiceCommand(intent)
+    }
+    
+    /**
+     * GOOGLE ASSISTANT VOICE COMMAND HANDLER
+     * 
+     * Supports natural language commands:
+     * - Volume control: "sesi yükselt", "sesi yüz elli yap", "increase volume"
+     * - Bass control: "bassı artır", "bass seksen yap", "boost bass"
+     * - Presets: "müzik modu", "gaming mode", "oyun modu"
+     * - Boost toggle: "boost aç", "turn on boost"
+     * 
+     * URL scheme: soundboost://command/{feature.name}
+     */
+    private fun handleVoiceCommand(intent: Intent?) {
+        val data: Uri = intent?.data ?: return
+        
+        // Check if it's our voice command scheme
+        if (data.scheme != "soundboost") return
+        
+        val featureName = data.lastPathSegment ?: return
+        
+        android.util.Log.d("VoiceCommand", "🎤 Received command: $featureName")
+        
+        lifecycleScope.launch {
+            try {
+                when {
+                    // Volume controls
+                    featureName.startsWith("volume_up") -> handleVolumeUp()
+                    featureName.startsWith("volume_down") -> handleVolumeDown()
+                    featureName.startsWith("volume_") -> handleVolumeSet(featureName)
+                    
+                    // Bass controls
+                    featureName.startsWith("bass_up") -> handleBassUp()
+                    featureName.startsWith("bass_down") -> handleBassDown()
+                    featureName.startsWith("bass_") -> handleBassSet(featureName)
+                    
+                    // Presets/Modes
+                    featureName.endsWith("_mode") -> handleModeActivation(featureName)
+                    
+                    // Boost toggle
+                    featureName == "boost_on" -> handleBoostOn()
+                    featureName == "boost_off" -> handleBoostOff()
+                    
+                    else -> {
+                        android.util.Log.w("VoiceCommand", "⚠️ Unknown command: $featureName")
+                        showVoiceConfirmation("❌ Bilinmeyen komut")
+                    }
+                }
+            } catch (e: Exception) {
+                android.util.Log.e("VoiceCommand", "❌ Error handling voice command", e)
+                showVoiceConfirmation("❌ Komut işlenemedi")
+            }
         }
+    }
+    
+    private suspend fun handleVolumeUp() {
+        val currentVolume = viewModel.uiState.value.masterGainPercent
+        val newVolume = (currentVolume + 10).coerceIn(60, 500)
+        
+        viewModel.setMasterGain(newVolume)
+        showVoiceConfirmation("🔊 Ses yükseltildi: %$newVolume")
+    }
+    
+    private suspend fun handleVolumeDown() {
+        val currentVolume = viewModel.uiState.value.masterGainPercent
+        val newVolume = (currentVolume - 10).coerceIn(60, 500)
+        
+        viewModel.setMasterGain(newVolume)
+        showVoiceConfirmation("🔉 Ses düşürüldü: %$newVolume")
+    }
+    
+    private suspend fun handleVolumeSet(featureName: String) {
+        val level = when (featureName) {
+            "volume_150" -> 150
+            "volume_200" -> 200
+            else -> return
+        }
+        
+        viewModel.setMasterGain(level)
+        ensureBoostEnabled()
+        showVoiceConfirmation("✅ Ses seviyesi: %$level")
+    }
+    
+    private suspend fun handleBassUp() {
+        val currentBass = viewModel.uiState.value.bassBoostPercent
+        val newBass = (currentBass + 10).coerceIn(0, 100)
+        
+        viewModel.setBassBoost(newBass)
+        showVoiceConfirmation("🎵 Bass artırıldı: %$newBass")
+    }
+    
+    private suspend fun handleBassDown() {
+        val currentBass = viewModel.uiState.value.bassBoostPercent
+        val newBass = (currentBass - 10).coerceIn(0, 100)
+        
+        viewModel.setBassBoost(newBass)
+        showVoiceConfirmation("🎵 Bass azaltıldı: %$newBass")
+    }
+    
+    private suspend fun handleBassSet(featureName: String) {
+        val level = when (featureName) {
+            "bass_80" -> 80
+            else -> return
+        }
+        
+        viewModel.setBassBoost(level)
+        showVoiceConfirmation("🎵 Bass seviyesi: %$level")
+    }
+    
+    private suspend fun handleModeActivation(featureName: String) {
+        when (featureName) {
+            "music_mode" -> {
+                viewModel.setMasterGain(130)
+                viewModel.setBassBoost(70)
+                viewModel.setVirtualizer(50)
+                ensureBoostEnabled()
+                showVoiceConfirmation("🎵 Müzik modu aktif!")
+            }
+            "gaming_mode" -> {
+                viewModel.setMasterGain(150)
+                viewModel.setBassBoost(80)
+                viewModel.setVirtualizer(70)
+                ensureBoostEnabled()
+                showVoiceConfirmation("🎮 Oyun modu aktif!")
+            }
+            "call_mode" -> {
+                viewModel.setMasterGain(150)
+                viewModel.setBassBoost(20)
+                viewModel.setVirtualizer(0)
+                viewModel.onCallEnhancementToggled(true)
+                ensureBoostEnabled()
+                showVoiceConfirmation("📞 Arama modu aktif!")
+            }
+        }
+    }
+    
+    private suspend fun handleBoostOn() {
+        if (!viewModel.uiState.value.isBoostEnabled) {
+            viewModel.toggleBoost()
+            showVoiceConfirmation("✅ Boost açıldı!")
+        } else {
+            showVoiceConfirmation("ℹ️ Boost zaten açık")
+        }
+    }
+    
+    private suspend fun handleBoostOff() {
+        if (viewModel.uiState.value.isBoostEnabled) {
+            viewModel.toggleBoost()
+            showVoiceConfirmation("⏹️ Boost kapatıldı")
+        } else {
+            showVoiceConfirmation("ℹ️ Boost zaten kapalı")
+        }
+    }
+    
+    private suspend fun ensureBoostEnabled() {
+        if (!viewModel.uiState.value.isBoostEnabled) {
+            viewModel.toggleBoost()
+        }
+    }
+    
+    /**
+     * Show visual + haptic + audio feedback for voice commands
+     */
+    private fun showVoiceConfirmation(message: String) {
+        // Visual feedback (Toast)
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+        
+        // Haptic feedback (vibration)
+        try {
+            val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as? Vibrator
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                vibrator?.vibrate(
+                    VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE)
+                )
+            } else {
+                @Suppress("DEPRECATION")
+                vibrator?.vibrate(100)
+            }
+        } catch (e: Exception) {
+            android.util.Log.w("VoiceCommand", "Vibration failed: ${e.message}")
+        }
+        
+        android.util.Log.d("VoiceCommand", "✅ Confirmation shown: $message")
     }
 }

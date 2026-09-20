@@ -1,6 +1,10 @@
 package com.soundboost.ui.screens
 
 import androidx.compose.animation.core.*
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -50,6 +54,11 @@ fun ModernEqualizerScreen(
     onSaveCustomPreset: (String, FloatArray) -> Unit,
     onMaxGainChanged: (Int) -> Unit,
     onCallEnhancementToggled: (Boolean) -> Unit,
+    onFlashToggled: (Boolean) -> Unit,
+    onFlashIntensityChanged: (com.soundboost.audio.BassFlashlightSync.FlashIntensity) -> Unit,
+    isFlashEnabled: Boolean,
+    flashIntensity: com.soundboost.audio.BassFlashlightSync.FlashIntensity,
+    hasFlashSupport: Boolean,
     onBack: () -> Unit
 ) {
     val themeColors = getThemeColors(state.theme, state.colorAccent)
@@ -186,6 +195,17 @@ fun ModernEqualizerScreen(
                 onToggle = onCallEnhancementToggled,
                 themeColors = themeColors
             )
+            
+            // Flash Sync (Bass-synchronized flashlight)
+            if (hasFlashSupport) {
+                BassFlashSyncCard(
+                    isEnabled = isFlashEnabled,
+                    intensity = flashIntensity,
+                    onToggle = onFlashToggled,
+                    onIntensityChanged = onFlashIntensityChanged,
+                    themeColors = themeColors
+                )
+            }
             
             Spacer(Modifier.height(16.dp))
         }
@@ -569,6 +589,361 @@ private fun QuickActionButton(
 
 @Composable
 private fun CallEnhancementCard(
+    isEnabled: Boolean,
+    onToggle: (Boolean) -> Unit,
+    themeColors: ThemeColors
+) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp),
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = if (isEnabled) {
+                themeColors.accent1.copy(alpha = 0.15f)
+            } else {
+                themeColors.surface
+            }
+        )
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            // Info Column
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        Icons.Default.Phone,
+                        contentDescription = null,
+                        tint = if (isEnabled) themeColors.accent1 else themeColors.onSurface.copy(alpha = 0.7f),
+                        modifier = Modifier.size(24.dp)
+                    )
+                    Text(
+                        stringResource(R.string.call_enhancement_title),
+                        fontSize = 13.sp,
+                        fontWeight = FontWeight.Black,
+                        letterSpacing = 1.sp,
+                        color = if (isEnabled) themeColors.accent1 else themeColors.onSurface
+                    )
+                }
+                
+                Text(
+                    stringResource(R.string.call_enhancement_desc),
+                    fontSize = 11.sp,
+                    color = themeColors.onSurface.copy(alpha = 0.7f),
+                    lineHeight = 16.sp
+                )
+                
+                if (isEnabled) {
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        modifier = Modifier.padding(top = 4.dp)
+                    ) {
+                        Surface(
+                            shape = RoundedCornerShape(8.dp),
+                            color = themeColors.accent1.copy(alpha = 0.2f)
+                        ) {
+                            Text(
+                                "✓ ${stringResource(R.string.call_enhancement_noise_suppression)}",
+                                fontSize = 9.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = themeColors.accent1,
+                                modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+                            )
+                        }
+                        Surface(
+                            shape = RoundedCornerShape(8.dp),
+                            color = themeColors.accent2.copy(alpha = 0.2f)
+                        ) {
+                            Text(
+                                "✓ ${stringResource(R.string.call_enhancement_auto_gain)}",
+                                fontSize = 9.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = themeColors.accent2,
+                                modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+                            )
+                        }
+                    }
+                }
+            }
+            
+            // Toggle Switch
+            Switch(
+                checked = isEnabled,
+                onCheckedChange = onToggle,
+                colors = SwitchDefaults.colors(
+                    checkedThumbColor = themeColors.accent1,
+                    checkedTrackColor = themeColors.accent1.copy(alpha = 0.3f),
+                    uncheckedThumbColor = themeColors.onSurface.copy(alpha = 0.3f),
+                    uncheckedTrackColor = themeColors.onSurface.copy(alpha = 0.1f)
+                )
+            )
+        }
+    }
+}
+
+@Composable
+private fun BassFlashSyncCard(
+    isEnabled: Boolean,
+    intensity: com.soundboost.audio.BassFlashlightSync.FlashIntensity,
+    onToggle: (Boolean) -> Unit,
+    onIntensityChanged: (com.soundboost.audio.BassFlashlightSync.FlashIntensity) -> Unit,
+    themeColors: ThemeColors
+) {
+    // Animated pulse for active state
+    val infiniteTransition = rememberInfiniteTransition(label = "flashPulse")
+    val pulseScale by infiniteTransition.animateFloat(
+        initialValue = 1f,
+        targetValue = 1.05f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(1500, easing = FastOutSlowInEasing),
+            repeatMode = RepeatMode.Reverse
+        ),
+        label = "pulseScale"
+    )
+    
+    val flashColor = Color(0xFFFFB74D) // Warmer orange
+    
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp),
+        shape = RoundedCornerShape(20.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = if (isEnabled) {
+                flashColor.copy(alpha = 0.08f)
+            } else {
+                themeColors.surface
+            }
+        )
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(20.dp),
+            verticalArrangement = Arrangement.spacedBy(18.dp)
+        ) {
+            // Header
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(16.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.weight(1f)
+                ) {
+                    // Flash Icon
+                    Box(
+                        modifier = Modifier
+                            .size(48.dp)
+                            .scale(if (isEnabled) pulseScale else 1f)
+                            .background(
+                                brush = Brush.linearGradient(
+                                    colors = if (isEnabled) {
+                                        listOf(flashColor.copy(alpha = 0.3f), flashColor.copy(alpha = 0.1f))
+                                    } else {
+                                        listOf(
+                                            themeColors.onSurface.copy(alpha = 0.1f),
+                                            themeColors.onSurface.copy(alpha = 0.05f)
+                                        )
+                                    }
+                                ),
+                                shape = CircleShape
+                            ),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            Icons.Default.FlashOn,
+                            contentDescription = null,
+                            tint = if (isEnabled) flashColor else themeColors.onSurface.copy(alpha = 0.5f),
+                            modifier = Modifier.size(26.dp)
+                        )
+                    }
+                    
+                    Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                        Text(
+                            stringResource(R.string.flash_sync_title),
+                            fontSize = 15.sp,
+                            fontWeight = FontWeight.Bold,
+                            letterSpacing = 0.5.sp,
+                            color = if (isEnabled) flashColor else themeColors.onSurface
+                        )
+                        Text(
+                            stringResource(R.string.flash_sync_desc),
+                            fontSize = 12.sp,
+                            color = themeColors.onSurface.copy(alpha = 0.6f),
+                            lineHeight = 16.sp
+                        )
+                    }
+                }
+                
+                Switch(
+                    checked = isEnabled,
+                    onCheckedChange = onToggle,
+                    colors = SwitchDefaults.colors(
+                        checkedThumbColor = flashColor,
+                        checkedTrackColor = flashColor.copy(alpha = 0.4f),
+                        uncheckedThumbColor = themeColors.onSurface.copy(alpha = 0.3f),
+                        uncheckedTrackColor = themeColors.onSurface.copy(alpha = 0.1f)
+                    )
+                )
+            }
+            
+            // Inline Intensity Selector (Only when enabled)
+            androidx.compose.animation.AnimatedVisibility(
+                visible = isEnabled,
+                enter = expandVertically() + fadeIn(),
+                exit = shrinkVertically() + fadeOut()
+            ) {
+                Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            "Response Speed",
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.Medium,
+                            color = themeColors.onSurface.copy(alpha = 0.7f)
+                        )
+                        Text(
+                            "${intensity.duration}ms • ${intensity.cooldown}ms cooldown",
+                            fontSize = 11.sp,
+                            color = flashColor.copy(alpha = 0.8f),
+                            fontWeight = FontWeight.Medium
+                        )
+                    }
+                    
+                    // Segmented Control Style
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(
+                                themeColors.onSurface.copy(alpha = 0.05f),
+                                RoundedCornerShape(12.dp)
+                            )
+                            .padding(4.dp),
+                        horizontalArrangement = Arrangement.spacedBy(4.dp)
+                    ) {
+                        IntensityButton(
+                            label = stringResource(R.string.flash_intensity_light),
+                            isSelected = intensity == com.soundboost.audio.BassFlashlightSync.FlashIntensity.LIGHT,
+                            onClick = { onIntensityChanged(com.soundboost.audio.BassFlashlightSync.FlashIntensity.LIGHT) },
+                            flashColor = flashColor,
+                            themeColors = themeColors,
+                            modifier = Modifier.weight(1f)
+                        )
+                        IntensityButton(
+                            label = stringResource(R.string.flash_intensity_normal),
+                            isSelected = intensity == com.soundboost.audio.BassFlashlightSync.FlashIntensity.NORMAL,
+                            onClick = { onIntensityChanged(com.soundboost.audio.BassFlashlightSync.FlashIntensity.NORMAL) },
+                            flashColor = flashColor,
+                            themeColors = themeColors,
+                            modifier = Modifier.weight(1f)
+                        )
+                        IntensityButton(
+                            label = stringResource(R.string.flash_intensity_strong),
+                            isSelected = intensity == com.soundboost.audio.BassFlashlightSync.FlashIntensity.STRONG,
+                            onClick = { onIntensityChanged(com.soundboost.audio.BassFlashlightSync.FlashIntensity.STRONG) },
+                            flashColor = flashColor,
+                            themeColors = themeColors,
+                            modifier = Modifier.weight(1f)
+                        )
+                    }
+                    
+                    // Feature Pills
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        FeaturePill(
+                            text = stringResource(R.string.flash_sync_instant_kick),
+                            color = themeColors.accent1,
+                            modifier = Modifier.weight(1f)
+                        )
+                        FeaturePill(
+                            text = stringResource(R.string.flash_sync_zero_delay),
+                            color = themeColors.accent2,
+                            modifier = Modifier.weight(1f)
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun IntensityButton(
+    label: String,
+    isSelected: Boolean,
+    onClick: () -> Unit,
+    flashColor: Color,
+    themeColors: ThemeColors,
+    modifier: Modifier = Modifier
+) {
+    Surface(
+        onClick = onClick,
+        modifier = modifier,
+        shape = RoundedCornerShape(8.dp),
+        color = if (isSelected) flashColor else Color.Transparent
+    ) {
+        Box(
+            modifier = Modifier.padding(vertical = 10.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                label,
+                fontSize = 12.sp,
+                fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium,
+                color = if (isSelected) Color.White else themeColors.onSurface.copy(alpha = 0.6f)
+            )
+        }
+    }
+}
+
+@Composable
+private fun FeaturePill(
+    text: String,
+    color: Color,
+    modifier: Modifier = Modifier
+) {
+    Surface(
+        modifier = modifier,
+        shape = RoundedCornerShape(8.dp),
+        color = color.copy(alpha = 0.12f)
+    ) {
+        Box(
+            modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text,
+                fontSize = 10.sp,
+                fontWeight = FontWeight.Medium,
+                color = color,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+        }
+    }
+}
+
+@Composable
+private fun CallEnhancementCardOLD(
     isEnabled: Boolean,
     onToggle: (Boolean) -> Unit,
     themeColors: ThemeColors

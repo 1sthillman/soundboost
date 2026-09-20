@@ -298,7 +298,7 @@ class RealTimeAudioAnalyzer {
         prevHiHatEnergy = hihatEnergy
         
         cachedTransients = TransientAnalysis(
-            hasKick = kickFlux > 0.15f && kickEnergy > 0.3f, // More sensitive
+            hasKick = kickFlux > 0.08f && kickEnergy > 0.20f, // HYPER-SENSITIVE for instant flash response!
             hasSnare = snareFlux > 0.12f && snareEnergy > 0.25f,
             hasHiHat = hiHatFlux > 0.10f && hihatEnergy > 0.3f
         )
@@ -364,13 +364,13 @@ class RealTimeAudioAnalyzer {
         if (fluxHistory.size < 15) return false
         
         val avgFlux = fluxHistory.average().toFloat()
-        val threshold = avgFlux * 2.0f // More sensitive (was 2.2f)
+        val threshold = avgFlux * 1.7f // HYPER-SENSITIVE for instant flash! (was 2.0f)
         
         val now = System.currentTimeMillis()
         val timeSinceLastBeat = now - lastBeatTime
         
         val isBeat = (flux > threshold && 
-                     bassEnergy > 0.20f && // More sensitive (was 0.25f)
+                     bassEnergy > 0.18f && // HYPER-SENSITIVE! (was 0.20f)
                      timeSinceLastBeat > minBeatInterval) || hasKick
         
         if (isBeat) {

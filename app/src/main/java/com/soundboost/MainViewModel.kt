@@ -5,6 +5,7 @@ import android.content.Intent
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.soundboost.audio.AudioAnalysis
+import com.soundboost.audio.BassFlashlightSync
 import com.soundboost.audio.RealTimeAudioAnalyzer
 import com.soundboost.data.BoostPreferences
 import com.soundboost.data.BoostSettings
@@ -20,6 +21,12 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val prefs = BoostPreferences(application)
     private val audioAnalyzer = RealTimeAudioAnalyzer()
     private var analysisJob: Job? = null
+    
+    // Flash özelliği
+    private val bassFlashSync = BassFlashlightSync(application)
+    val isFlashEnabled = bassFlashSync.isEnabled
+    val flashIntensity = bassFlashSync.intensity
+    val flashBassLevel = bassFlashSync.bassLevel
     
     // NEW v1.4.0: Device Profile Monitor
     private val deviceMonitor = com.soundboost.audio.AudioDeviceMonitor(
@@ -37,13 +44,13 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     // NEW v1.4.0: Current device profile
     val currentDeviceProfile = deviceMonitor.currentProfile
     
-    // YENİ: Tam audio analiz verisi
-    private val _audioAnalysis = MutableStateFlow<AudioAnalysis?>(null)
-    val audioAnalysis: StateFlow<AudioAnalysis?> = _audioAnalysis.asStateFlow()
+    // YENİ: Tam audio analiz verisi (SharedFlow for flash sync)
+    private val _audioAnalysis = MutableSharedFlow<AudioAnalysis>(replay = 0, extraBufferCapacity = 1)
+    val audioAnalysis: SharedFlow<AudioAnalysis> = _audioAnalysis.asSharedFlow()
     
     // LEGACY: Bar seviyeler (eski visualizer'lar için)
     val audioLevels: StateFlow<FloatArray?> = _audioAnalysis
-        .map { it?.bars }
+        .map { it.bars }
         .stateIn(viewModelScope, SharingStarted.Eagerly, null)
     
     init {
@@ -205,6 +212,27 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
     
+    fun onFlashToggled(enabled: Boolean) {
+        viewModelScope.launch {
+            android.util.Log.d("MainViewModel", "⚡ Flash Sync: $enabled")
+            if (enabled && bassFlashSync.hasFlashSupport()) {
+                // Start flash with shared audio analysis flow
+                bassFlashSync.start(_audioAnalysis)
+            } else {
+                bassFlashSync.stop()
+            }
+        }
+    }
+    
+    fun onFlashIntensityChanged(intensity: BassFlashlightSync.FlashIntensity) {
+        viewModelScope.launch {
+            android.util.Log.d("MainViewModel", "⚡ Flash Intensity: $intensity")
+            bassFlashSync.setIntensity(intensity)
+        }
+    }
+    
+    fun hasFlashSupport(): Boolean = bassFlashSync.hasFlashSupport()
+    
     fun onAutoStartToggled(enabled: Boolean) {
         viewModelScope.launch {
             prefs.setAutoStart(enabled)
@@ -251,7 +279,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         analysisJob = viewModelScope.launch {
             android.util.Log.d("MainViewModel", "Collecting real-time audio data...")
             audioAnalyzer.startAnalysis().collect { analysis: AudioAnalysis ->
-                _audioAnalysis.value = analysis
+                _audioAnalysis.emit(analysis)
                 
                 // Log significant events
                 if (analysis.isBeat) {
@@ -265,7 +293,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         android.util.Log.d("MainViewModel", "Stopping audio visualization")
         analysisJob?.cancel()
         audioAnalyzer.stopAnalysis()
-        _audioAnalysis.value = null
     }
     
     fun onAppRated() {
@@ -308,6 +335,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         super.onCleared()
         stopAudioVisualization()
         deviceMonitor.stopMonitoring()
+        bassFlashSync.release()
     }
     
     /**

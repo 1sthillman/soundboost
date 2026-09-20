@@ -169,6 +169,20 @@
     <string name="call_enhancement_desc">Улучшает четкость входящего голоса + снижает ВАШ фоновый шум во время звонков</string>
     <string name="call_enhancement_noise_suppression">Подавление шума</string>
     <string name="call_enhancement_auto_gain">Автоматическое усиление</string>
+    
+    <!-- Синхронизация вспышки с басом -->
+    <string name="flash_sync_title">СИНХРОНИЗАЦИЯ ВСПЫШКИ</string>
+    <string name="flash_sync_desc">Вспышка синхронизируется с басовыми ударами в реальном времени</string>
+    <string name="flash_sync_instant_kick">Мгновенное обнаружение</string>
+    <string name="flash_sync_zero_delay">Нулевая задержка</string>
+    <string name="flash_intensity_dialog_title">ИНТЕНСИВНОСТЬ ВСПЫШКИ</string>
+    <string name="flash_intensity_light">Легкая</string>
+    <string name="flash_intensity_light_desc">Мягкая • Менее чувствительная • Ультрабыстрая (25мс)</string>
+    <string name="flash_intensity_normal">Нормальная</string>
+    <string name="flash_intensity_normal_desc">Сбалансированная • Мгновенный отклик (30мс)</string>
+    <string name="flash_intensity_strong">Сильная</string>
+    <string name="flash_intensity_strong_desc">Агрессивная • Очень чувствительная • Минимальная пауза (40мс)</string>
+    <string name="flash_dialog_close">ЗАКРЫТЬ</string>
 
     <!-- Оптимизация Батареи (безопасно для Google Play) -->
     <string name="battery_optimization">Оптимизация Батареи</string>

@@ -169,6 +169,20 @@
     <string name="call_enhancement_desc">提升来电语音清晰度 + 减少通话中您的背景噪音</string>
     <string name="call_enhancement_noise_suppression">噪音抑制</string>
     <string name="call_enhancement_auto_gain">自动增益</string>
+    
+    <!-- 低音闪光同步 -->
+    <string name="flash_sync_title">低音闪光同步</string>
+    <string name="flash_sync_desc">闪光灯与低音节拍实时同步</string>
+    <string name="flash_sync_instant_kick">即时检测</string>
+    <string name="flash_sync_zero_delay">零延迟</string>
+    <string name="flash_intensity_dialog_title">闪光强度</string>
+    <string name="flash_intensity_light">轻柔</string>
+    <string name="flash_intensity_light_desc">温和 • 较低灵敏度 • 超快速 (25ms)</string>
+    <string name="flash_intensity_normal">正常</string>
+    <string name="flash_intensity_normal_desc">平衡 • 即时响应 (30ms)</string>
+    <string name="flash_intensity_strong">强力</string>
+    <string name="flash_intensity_strong_desc">激进 • 非常灵敏 • 最小冷却 (40ms)</string>
+    <string name="flash_dialog_close">关闭</string>
 
     <!-- 电池优化（Google Play 安全） -->
     <string name="battery_optimization">电池优化</string>

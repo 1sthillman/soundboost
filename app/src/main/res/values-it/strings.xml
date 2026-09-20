@@ -200,6 +200,20 @@
     <string name="call_enhancement_noise_suppression">Soppressione Rumore</string>
     <string name="call_enhancement_auto_gain">Guadagno Automatico</string>
     
+    <!-- Sincronizzazione Flash Bassi -->
+    <string name="flash_sync_title">SYNC FLASH BASSI</string>
+    <string name="flash_sync_desc">Il flash si sincronizza con i colpi di basso in tempo reale</string>
+    <string name="flash_sync_instant_kick">Rilevamento istantaneo</string>
+    <string name="flash_sync_zero_delay">Nessun ritardo</string>
+    <string name="flash_intensity_dialog_title">INTENSITÀ FLASH</string>
+    <string name="flash_intensity_light">Leggero</string>
+    <string name="flash_intensity_light_desc">Delicato • Meno sensibile • Ultra veloce (25ms)</string>
+    <string name="flash_intensity_normal">Normale</string>
+    <string name="flash_intensity_normal_desc">Bilanciato • Risposta istantanea (30ms)</string>
+    <string name="flash_intensity_strong">Forte</string>
+    <string name="flash_intensity_strong_desc">Aggressivo • Molto sensibile • Raffreddamento minimo (40ms)</string>
+    <string name="flash_dialog_close">CHIUDI</string>
+    
     <!-- Preset Equalizzatore -->
     <string name="eq_flat">Piatto</string>
     <string name="eq_bass_boost">Amplificazione Bassi</string>

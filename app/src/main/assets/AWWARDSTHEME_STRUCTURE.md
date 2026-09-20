@@ -1,3 +1,4 @@
+./gradlew installdebug
 # awwardstheme.html - Dosya Yapısı ve Bakım Kılavuzu
 
 ## 📁 Dosya Boyutu
