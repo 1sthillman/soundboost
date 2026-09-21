@@ -349,11 +349,8 @@ fun ModernDJDeckOverlay(
                         value = volumeLevel,
                         color = Color(0xFFFFB74D),
                         icon = Icons.Default.VolumeUp,
-                        isActive = currentGesture is DJGesture.ThumbsUp || 
-                                   currentGesture is DJGesture.ThumbsDown || 
-                                   currentGesture is DJGesture.SwipeVolume ||
-                                   currentGesture is DJGesture.OpenHand ||
-                                   currentGesture is DJGesture.Fist,
+                        isActive = currentGesture is DJGesture.SwipeVolume || 
+                                   currentGesture is DJGesture.OpenHand,
                         modifier = Modifier.weight(1f)
                     )
                     
@@ -371,7 +368,7 @@ fun ModernDJDeckOverlay(
                         value = trebleLevel,
                         color = Color(0xFFFF5252),
                         icon = Icons.Default.GraphicEq,
-                        isActive = false, // Treble removed for simplicity
+                        isActive = false,
                         modifier = Modifier.weight(1f)
                     )
                 }
@@ -638,24 +635,20 @@ fun GestureGuideOverlay(
                 // Gesture Name
                 Text(
                     text = when (currentGesture) {
-                        is DJGesture.ThumbsUp -> "👍 VOLUME UP"
-                        is DJGesture.ThumbsDown -> "👎 VOLUME DOWN"
-                        is DJGesture.PeaceSign -> "✌️ BASS PRESET"
-                        is DJGesture.OkSign -> "👌 FLAT PRESET"
-                        is DJGesture.RockSign -> "🤘 ROCK PRESET"
-                        is DJGesture.OpenHand -> "🖐️ MAX VOLUME"
-                        is DJGesture.Fist -> "✊ MUTE"
+                        is DJGesture.SwipeVolume -> if ((currentGesture as DJGesture.SwipeVolume).delta > 0) "⬆️ VOLUME UP" else "⬇️ VOLUME DOWN"
                         is DJGesture.TwoHandsBass -> "🙌 BASS CONTROL"
-                        is DJGesture.SwipeVolume -> "👆 FINE VOLUME"
-                        else -> "IDLE"
+                        is DJGesture.Fist -> "✊ FLAT PRESET"
+                        is DJGesture.PeaceSign -> "✌️ BASS PRESET"
+                        is DJGesture.OkSign -> "👌 TREBLE PRESET"
+                        is DJGesture.OpenHand -> "🖐️ MAX VOLUME"
+                        else -> "READY"
                     },
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Black,
                     color = when (currentGesture) {
-                        is DJGesture.ThumbsUp, is DJGesture.ThumbsDown, 
-                        is DJGesture.SwipeVolume, is DJGesture.OpenHand, is DJGesture.Fist -> Color(0xFFFFB74D)
+                        is DJGesture.SwipeVolume, is DJGesture.OpenHand -> Color(0xFFFFB74D)
                         is DJGesture.TwoHandsBass -> Color(0xFF00E5FF)
-                        is DJGesture.PeaceSign, is DJGesture.OkSign, is DJGesture.RockSign -> Color(0xFF00E5FF)
+                        is DJGesture.Fist, is DJGesture.PeaceSign, is DJGesture.OkSign -> Color(0xFF00E5FF)
                         else -> Color.White
                     },
                     letterSpacing = 2.sp
@@ -692,16 +685,13 @@ fun GestureGuideOverlay(
                 // Instruction
                 Text(
                     text = when (currentGesture) {
-                        is DJGesture.ThumbsUp -> "Keep thumb up to increase volume"
-                        is DJGesture.ThumbsDown -> "Keep thumb down to decrease volume"
-                        is DJGesture.PeaceSign -> "Hold peace sign for Bass preset"
-                        is DJGesture.OkSign -> "Hold OK sign for Flat preset"
-                        is DJGesture.RockSign -> "Hold rock sign for Rock preset"
-                        is DJGesture.OpenHand -> "Open hand fully for max volume"
-                        is DJGesture.Fist -> "Make fist to mute"
-                        is DJGesture.TwoHandsBass -> "Move hands apart/together"
-                        is DJGesture.SwipeVolume -> "Swipe up/down for fine control"
-                        else -> ""
+                        is DJGesture.SwipeVolume -> "Keep hand high/low to adjust volume"
+                        is DJGesture.TwoHandsBass -> "Move hands apart/together for bass"
+                        is DJGesture.Fist -> "Keep fist closed for Flat preset"
+                        is DJGesture.PeaceSign -> "Hold 2 fingers for Bass preset"
+                        is DJGesture.OkSign -> "Hold 3 fingers for Treble preset"
+                        is DJGesture.OpenHand -> "Hold 5 fingers open for max volume"
+                        else -> "Show your hand to control audio"
                     },
                     fontSize = 12.sp,
                     color = Color.White.copy(alpha = 0.8f),

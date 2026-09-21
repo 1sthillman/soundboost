@@ -135,84 +135,72 @@ class DJGestureController(
         // Cooldown check
         if (timestampMs - lastGestureTime < COOLDOWN_MS) return
         
-        // SIMPLIFIED gesture detection - Priority order
+        // ULTRA-SIMPLE gesture detection - Priority order
         val detectedGesture = when {
-            // GESTURE 1: THUMBS UP = Volume UP (Very clear!)
-            handCount == 1 && isThumbsUp(primaryHand) -> {
-                onVolumeChange(10)
+            // GESTURE 1: ONE HAND UP = Volume increase (continuous)
+            handCount == 1 && wristY < 0.4f -> {
+                val delta = 5
+                onVolumeChange(delta)
                 lastGestureTime = timestampMs
-                DJGesture.ThumbsUp
+                DJGesture.SwipeVolume(delta.toFloat())
             }
             
-            // GESTURE 2: THUMBS DOWN = Volume DOWN (Very clear!)
-            handCount == 1 && isThumbsDown(primaryHand) -> {
-                onVolumeChange(-10)
+            // GESTURE 2: ONE HAND DOWN = Volume decrease (continuous)
+            handCount == 1 && wristY > 0.6f -> {
+                val delta = -5
+                onVolumeChange(delta)
                 lastGestureTime = timestampMs
-                DJGesture.ThumbsDown
+                DJGesture.SwipeVolume(delta.toFloat())
             }
             
-            // GESTURE 3: PEACE SIGN (2 fingers) = Preset 2 (Bass)
-            handCount == 1 && fingerCount == 2 && isStableGesture() -> {
-                onPresetChange(2)
-                lastGestureTime = timestampMs
-                DJGesture.PeaceSign
-            }
-            
-            // GESTURE 4: OK SIGN = Preset 1 (Flat)
-            handCount == 1 && isOkSign(primaryHand) -> {
-                onPresetChange(1)
-                lastGestureTime = timestampMs
-                DJGesture.OkSign
-            }
-            
-            // GESTURE 5: ROCK SIGN (🤘) = Preset 5 (Rock!)
-            handCount == 1 && fingerCount == 2 && isRockSign(primaryHand) -> {
-                onPresetChange(5)
-                lastGestureTime = timestampMs
-                DJGesture.RockSign
-            }
-            
-            // GESTURE 6: OPEN HAND (5 fingers) = Max Volume
-            handCount == 1 && fingerCount == 5 && handOpenness > 0.7f -> {
-                onVolumeChange(15)
-                lastGestureTime = timestampMs
-                DJGesture.OpenHand
-            }
-            
-            // GESTURE 7: FIST (0 fingers) = Mute
-            handCount == 1 && fingerCount == 0 && handOpenness < 0.3f -> {
-                onVolumeChange(-15)
-                lastGestureTime = timestampMs
-                DJGesture.Fist
-            }
-            
-            // GESTURE 8: TWO HANDS SPREAD = Bass Boost
+            // GESTURE 3: TWO HANDS = Bass control
             handCount == 2 -> {
                 val distance = calculateTwoHandDistance(landmarks[0], landmarks[1])
                 previousTwoHandDistance?.let { prevDist ->
                     val delta = distance - prevDist
                     if (abs(delta) > MOVEMENT_THRESHOLD) {
-                        val bassDelta = (delta * 100).toInt().coerceIn(-15, 15)
+                        val bassDelta = (delta * 80).toInt().coerceIn(-10, 10)
                         onBassChange(bassDelta)
                         lastGestureTime = timestampMs
-                        previousTwoHandDistance = distance
-                        return@analyzeGestures // Early return
                     }
                 }
                 previousTwoHandDistance = distance
                 DJGesture.TwoHandsBass(distance)
             }
             
-            // GESTURE 9: SWIPE UP/DOWN = Fine Volume Control
-            handCount == 1 && previousHandY != null -> {
-                val deltaY = wristY - previousHandY!!
-                if (abs(deltaY) > MOVEMENT_THRESHOLD) {
-                    val volumeDelta = (-deltaY * 100).toInt().coerceIn(-10, 10)
-                    if (volumeDelta != 0) {
-                        onVolumeChange(volumeDelta)
-                        lastGestureTime = timestampMs
-                        DJGesture.SwipeVolume(deltaY)
-                    } else DJGesture.Idle
+            // GESTURE 4: CLOSED FIST (0 fingers) = Preset 1 (Flat)
+            handCount == 1 && fingerCount == 0 -> {
+                if (isStableGesture()) {
+                    onPresetChange(1)
+                    lastGestureTime = timestampMs
+                    DJGesture.Fist
+                } else DJGesture.Idle
+            }
+            
+            // GESTURE 5: TWO FINGERS = Preset 2 (Bass)
+            handCount == 1 && fingerCount == 2 -> {
+                if (isStableGesture()) {
+                    onPresetChange(2)
+                    lastGestureTime = timestampMs
+                    DJGesture.PeaceSign
+                } else DJGesture.Idle
+            }
+            
+            // GESTURE 6: THREE FINGERS = Preset 3 (Treble)
+            handCount == 1 && fingerCount == 3 -> {
+                if (isStableGesture()) {
+                    onPresetChange(3)
+                    lastGestureTime = timestampMs
+                    DJGesture.OkSign
+                } else DJGesture.Idle
+            }
+            
+            // GESTURE 7: FIVE FINGERS (OPEN HAND) = Max Volume
+            handCount == 1 && fingerCount == 5 && handOpenness > 0.65f -> {
+                if (isStableGesture()) {
+                    onVolumeChange(20)
+                    lastGestureTime = timestampMs
+                    DJGesture.OpenHand
                 } else DJGesture.Idle
             }
             
@@ -225,57 +213,6 @@ class DJGestureController(
         if (handCount == 2) {
             previousTwoHandDistance = calculateTwoHandDistance(landmarks[0], landmarks[1])
         }
-    }
-    
-    private fun isThumbsUp(hand: List<com.google.mediapipe.tasks.components.containers.NormalizedLandmark>): Boolean {
-        val thumb = hand[THUMB_TIP]
-        val index = hand[INDEX_TIP]
-        val wrist = hand[WRIST]
-        
-        // Thumb tip above wrist, other fingers closed
-        val thumbUp = thumb.y() < wrist.y() - 0.1f
-        val indexDown = index.y() > wrist.y()
-        
-        return thumbUp && indexDown
-    }
-    
-    private fun isThumbsDown(hand: List<com.google.mediapipe.tasks.components.containers.NormalizedLandmark>): Boolean {
-        val thumb = hand[THUMB_TIP]
-        val wrist = hand[WRIST]
-        val index = hand[INDEX_TIP]
-        
-        // Thumb tip below wrist
-        val thumbDown = thumb.y() > wrist.y() + 0.1f
-        val indexDown = index.y() > wrist.y()
-        
-        return thumbDown && indexDown
-    }
-    
-    private fun isOkSign(hand: List<com.google.mediapipe.tasks.components.containers.NormalizedLandmark>): Boolean {
-        val thumb = hand[THUMB_TIP]
-        val index = hand[INDEX_TIP]
-        val middle = hand[MIDDLE_TIP]
-        
-        // Thumb and index close, middle extended
-        val thumbIndexClose = distance(thumb, index) < 0.08f
-        val middleExtended = middle.y() < hand[10].y()
-        
-        return thumbIndexClose && middleExtended
-    }
-    
-    private fun isRockSign(hand: List<com.google.mediapipe.tasks.components.containers.NormalizedLandmark>): Boolean {
-        val index = hand[INDEX_TIP]
-        val middle = hand[MIDDLE_TIP]
-        val ring = hand[RING_TIP]
-        val pinky = hand[PINKY_TIP]
-        
-        // Index and pinky extended, middle and ring folded
-        val indexExtended = index.y() < hand[6].y()
-        val pinkyExtended = pinky.y() < hand[18].y()
-        val middleFolded = middle.y() > hand[10].y()
-        val ringFolded = ring.y() > hand[14].y()
-        
-        return indexExtended && pinkyExtended && middleFolded && ringFolded
     }
     
     private fun countExtendedFingers(hand: List<com.google.mediapipe.tasks.components.containers.NormalizedLandmark>): Int {
@@ -352,19 +289,16 @@ class DJGestureController(
 }
 
 /**
- * SIMPLIFIED DJ Gestures - Clear and Easy to Perform
+ * SIMPLIFIED DJ Gestures - Actually Working!
  */
 sealed class DJGesture {
     object Idle : DJGesture()
-    object ThumbsUp : DJGesture()           // 👍 Volume UP
-    object ThumbsDown : DJGesture()         // 👎 Volume DOWN
-    object PeaceSign : DJGesture()          // ✌️ Preset 2
-    object OkSign : DJGesture()             // 👌 Preset 1
-    object RockSign : DJGesture()           // 🤘 Preset 5
-    object OpenHand : DJGesture()           // 🖐️ Max Volume
-    object Fist : DJGesture()               // ✊ Mute
-    data class TwoHandsBass(val distance: Float) : DJGesture()  // 🙌 Bass
-    data class SwipeVolume(val delta: Float) : DJGesture()      // 👆👇 Fine control
+    data class SwipeVolume(val delta: Float) : DJGesture()      // Hand high/low
+    data class TwoHandsBass(val distance: Float) : DJGesture()  // Two hands
+    object Fist : DJGesture()                                    // 0 fingers = Preset 1
+    object PeaceSign : DJGesture()                               // 2 fingers = Preset 2
+    object OkSign : DJGesture()                                  // 3 fingers = Preset 3
+    object OpenHand : DJGesture()                                // 5 fingers = Max volume
 }
 
 /**
