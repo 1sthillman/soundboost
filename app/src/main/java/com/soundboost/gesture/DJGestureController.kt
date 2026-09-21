@@ -35,11 +35,11 @@ class DJGestureController(
         private const val MIN_DETECTION_CONFIDENCE = 0.5f
         private const val MIN_TRACKING_CONFIDENCE = 0.5f
         
-        // SIMPLIFIED thresholds - easier to trigger
-        private const val MOVEMENT_THRESHOLD = 0.015f  // More sensitive
-        private const val ROTATION_THRESHOLD = 0.1f    // More sensitive
-        private const val OPENNESS_THRESHOLD = 0.08f   // More sensitive
-        private const val COOLDOWN_MS = 200L           // Faster response
+        // ULTRA-FAST thresholds for instant response
+        private const val MOVEMENT_THRESHOLD = 0.012f  // Very sensitive
+        private const val ROTATION_THRESHOLD = 0.08f    // Very sensitive
+        private const val OPENNESS_THRESHOLD = 0.06f    // Very sensitive
+        private const val COOLDOWN_MS = 150L            // Ultra fast!
         
         // Landmark indices
         private const val WRIST = 0
@@ -60,22 +60,15 @@ class DJGestureController(
     private val _gestureMetrics = MutableStateFlow(GestureMetrics())
     val gestureMetrics: StateFlow<GestureMetrics> = _gestureMetrics.asStateFlow()
     
-    private val _gestureConfidence = MutableStateFlow(0f)
-    val gestureConfidence: StateFlow<Float> = _gestureConfidence.asStateFlow()
-    
-    private val _handLandmarks = MutableStateFlow<List<Pair<Float, Float>>>(emptyList())
-    val handLandmarks: StateFlow<List<Pair<Float, Float>>> = _handLandmarks.asStateFlow()
-    
-    // State tracking
+    // State tracking - Minimal for performance
     private var previousHandY: Float? = null
-    private var previousHandOpenness: Float? = null
     private var previousTwoHandDistance: Float? = null
     private var lastGestureTime = 0L
     private var gestureStableFrames = 0
     
-    // Gesture history for smoothing
+    // Ultra-fast gesture history
     private val gestureHistory = mutableListOf<DJGesture>()
-    private val historySize = 3
+    private val historySize = 2  // Reduced for faster response
     
     fun initialize() {
         try {
@@ -109,8 +102,6 @@ class DJGestureController(
             val result = landmarker.detectForVideo(mpImage, timestampMs)
             
             if (result.landmarks().isNotEmpty()) {
-                // Update hand landmarks for visualization
-                updateHandLandmarks(result)
                 analyzeGestures(result, timestampMs)
             } else {
                 resetGestureState()
@@ -120,17 +111,6 @@ class DJGestureController(
         }
     }
     
-    private fun updateHandLandmarks(result: HandLandmarkerResult) {
-        val landmarks = result.landmarks()
-        if (landmarks.isEmpty()) return
-        
-        val primaryHand = landmarks[0]
-        val points = primaryHand.map { landmark ->
-            Pair(landmark.x(), landmark.y())
-        }
-        _handLandmarks.value = points
-    }
-    
     private fun analyzeGestures(result: HandLandmarkerResult, timestampMs: Long) {
         val landmarks = result.landmarks()
         if (landmarks.isEmpty()) return
@@ -138,22 +118,18 @@ class DJGestureController(
         val primaryHand = landmarks[0]
         val handCount = landmarks.size
         
-        // Calculate basic metrics
+        // Calculate basic metrics - Only what's needed
         val fingerCount = countExtendedFingers(primaryHand)
         val handOpenness = calculateHandOpenness(primaryHand)
         val wristY = primaryHand[WRIST].y()
         
-        // Calculate confidence (0-1)
-        val confidence = calculateGestureConfidence(fingerCount, handOpenness, handCount)
-        _gestureConfidence.value = confidence
-        
-        // Update metrics for UI
+        // Update minimal metrics for UI
         _gestureMetrics.value = GestureMetrics(
             fingerCount = fingerCount,
             handOpenness = handOpenness,
             handRotation = 0f,
             twoHandDistance = if (handCount == 2) calculateTwoHandDistance(landmarks[0], landmarks[1]) else 0f,
-            confidence = confidence
+            confidence = 1f  // Always confident for performance
         )
         
         // Cooldown check
@@ -246,7 +222,9 @@ class DJGestureController(
         // Update state with smoothing
         updateGestureWithSmoothing(detectedGesture)
         previousHandY = wristY
-        previousHandOpenness = handOpenness
+        if (handCount == 2) {
+            previousTwoHandDistance = calculateTwoHandDistance(landmarks[0], landmarks[1])
+        }
     }
     
     private fun isThumbsUp(hand: List<com.google.mediapipe.tasks.components.containers.NormalizedLandmark>): Boolean {
@@ -337,19 +315,9 @@ class DJGestureController(
         return sqrt(dx * dx + dy * dy)
     }
     
-    private fun calculateGestureConfidence(fingerCount: Int, openness: Float, handCount: Int): Float {
-        // Simple confidence based on clear states
-        return when {
-            fingerCount == 0 || fingerCount == 5 -> 0.95f  // Very clear
-            fingerCount == 2 -> 0.85f                       // Clear
-            handCount == 2 -> 0.9f                         // Clear
-            else -> 0.7f
-        }
-    }
-    
     private fun isStableGesture(): Boolean {
         gestureStableFrames++
-        return gestureStableFrames > 3
+        return gestureStableFrames > 2  // Faster stable detection
     }
     
     private fun updateGestureWithSmoothing(gesture: DJGesture) {
@@ -369,10 +337,7 @@ class DJGestureController(
     
     private fun resetGestureState() {
         _currentGesture.value = DJGesture.Idle
-        _handLandmarks.value = emptyList()
-        _gestureConfidence.value = 0f
         previousHandY = null
-        previousHandOpenness = null
         previousTwoHandDistance = null
         gestureStableFrames = 0
         gestureHistory.clear()

@@ -82,8 +82,6 @@ fun DJGestureScreen(
     
     val gestureState by gestureController.currentGesture.collectAsState()
     val metricsState by gestureController.gestureMetrics.collectAsState()
-    val confidenceState by gestureController.gestureConfidence.collectAsState()
-    val handLandmarksState by gestureController.handLandmarks.collectAsState()
     
     LaunchedEffect(gestureState) {
         currentGesture = gestureState
@@ -116,19 +114,12 @@ fun DJGestureScreen(
             )
     ) {
         if (cameraPermissionState.status.isGranted) {
-            // Camera Preview
+            // Camera Preview (Clean - No overlays)
             CameraPreview(
                 modifier = Modifier.fillMaxSize(),
                 onFrameReady = { bitmap, timestamp ->
                     gestureController.processFrame(bitmap, timestamp)
                 }
-            )
-            
-            // Hand Overlay - Show detected hand points
-            HandOverlay(
-                modifier = Modifier.fillMaxSize(),
-                handLandmarks = handLandmarksState,
-                confidence = confidenceState
             )
             
             // Overlay gradient for better readability
@@ -160,7 +151,7 @@ fun DJGestureScreen(
                 gestureMetrics = gestureMetrics
             )
             
-            // Top Gesture Guide
+            // Top Gesture Guide (Only when active)
             GestureGuideOverlay(
                 modifier = Modifier
                     .align(Alignment.TopCenter)
@@ -169,14 +160,6 @@ fun DJGestureScreen(
                     .padding(horizontal = 16.dp),
                 currentGesture = currentGesture,
                 gestureMetrics = gestureMetrics
-            )
-            
-            // Confidence Bar
-            ConfidenceBar(
-                modifier = Modifier
-                    .align(Alignment.TopEnd)
-                    .padding(top = 100.dp, end = 16.dp),
-                confidence = confidenceState
             )
         } else {
             CameraPermissionRequest(
@@ -243,112 +226,6 @@ fun DJGestureScreen(
                 }
             }
         }
-    }
-}
-
-@Composable
-fun HandOverlay(
-    modifier: Modifier = Modifier,
-    handLandmarks: List<Pair<Float, Float>>,
-    confidence: Float
-) {
-    if (handLandmarks.isEmpty()) return
-    
-    Canvas(modifier = modifier) {
-        val width = size.width
-        val height = size.height
-        
-        // Draw hand skeleton
-        val connections = listOf(
-            // Thumb
-            0 to 1, 1 to 2, 2 to 3, 3 to 4,
-            // Index
-            0 to 5, 5 to 6, 6 to 7, 7 to 8,
-            // Middle
-            0 to 9, 9 to 10, 10 to 11, 11 to 12,
-            // Ring
-            0 to 13, 13 to 14, 14 to 15, 15 to 16,
-            // Pinky
-            0 to 17, 17 to 18, 18 to 19, 19 to 20
-        )
-        
-        // Draw lines
-        connections.forEach { (start, end) ->
-            if (start < handLandmarks.size && end < handLandmarks.size) {
-                val p1 = handLandmarks[start]
-                val p2 = handLandmarks[end]
-                
-                drawLine(
-                    color = Color(0xFF00E5FF).copy(alpha = confidence),
-                    start = Offset(p1.first * width, p1.second * height),
-                    end = Offset(p2.first * width, p2.second * height),
-                    strokeWidth = 4f
-                )
-            }
-        }
-        
-        // Draw points
-        handLandmarks.forEach { (x, y) ->
-            drawCircle(
-                color = Color(0xFFFFB74D).copy(alpha = confidence),
-                radius = 6f,
-                center = Offset(x * width, y * height)
-            )
-        }
-    }
-}
-
-@Composable
-fun ConfidenceBar(
-    modifier: Modifier = Modifier,
-    confidence: Float
-) {
-    Column(
-        modifier = modifier,
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(4.dp)
-    ) {
-        Text(
-            "Detection Quality",
-            fontSize = 10.sp,
-            fontWeight = FontWeight.Bold,
-            color = Color.White.copy(alpha = 0.7f)
-        )
-        
-        Row(
-            modifier = Modifier
-                .width(200.dp)
-                .height(8.dp)
-                .clip(RoundedCornerShape(4.dp))
-                .background(Color.White.copy(alpha = 0.2f)),
-            horizontalArrangement = Arrangement.Start
-        ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .fillMaxWidth(confidence)
-                    .background(
-                        Brush.horizontalGradient(
-                            colors = listOf(
-                                Color(0xFFFF5252),
-                                Color(0xFFFFB74D),
-                                Color(0xFF00E5FF)
-                            )
-                        )
-                    )
-            )
-        }
-        
-        Text(
-            "${(confidence * 100).toInt()}%",
-            fontSize = 12.sp,
-            fontWeight = FontWeight.Black,
-            color = when {
-                confidence > 0.8f -> Color(0xFF00E5FF)
-                confidence > 0.5f -> Color(0xFFFFB74D)
-                else -> Color(0xFFFF5252)
-            }
-        )
     }
 }
 
