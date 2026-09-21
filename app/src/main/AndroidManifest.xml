@@ -8,6 +8,10 @@
     <!-- Ses görselleştirici için (Visualizer API, tehlikeli izin - kullanıcıya sorulur) -->
     <!-- ÖNEMLI: Sadece görselleştirme için kullanılır, kayıt yapılmaz -->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    
+    <!-- DJ Gesture Control için kamera izni (tehlikeli izin - kullanıcıya sorulur) -->
+    <!-- ÖNEMLI: Sadece el hareketlerini algılamak için kullanılır, kayıt yapılmaz -->
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <!-- Boost'u arka planda (ekran kapalıyken) sürdürmek için -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />

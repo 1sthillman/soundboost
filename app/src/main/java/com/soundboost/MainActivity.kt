@@ -308,6 +308,9 @@ fun MainScreen(viewModel: MainViewModel) {
                     hasFlashSupport = viewModel.hasFlashSupport(),
                     onBack = { 
                         navController.popBackStack()
+                    },
+                    onNavigateToDJGesture = {
+                        navController.navigate("dj_gesture")
                     }
                 )
             }
@@ -368,6 +371,20 @@ fun MainScreen(viewModel: MainViewModel) {
                     state = uiState,
                     onBack = { 
                         navController.popBackStack()
+                    }
+                )
+            }
+            
+            composable("dj_gesture") {
+                DJGestureScreen(
+                    onBack = { 
+                        navController.popBackStack()
+                    },
+                    onVolumeChange = { percent ->
+                        viewModel.onMasterGainChanged(percent)
+                    },
+                    onBassChange = { percent ->
+                        viewModel.onBassBoostChanged(percent)
                     }
                 )
             }

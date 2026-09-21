@@ -139,6 +139,17 @@ dependencies {
     // Glassmorphism & Advanced Effects
     implementation("dev.chrisbanes.haze:haze:1.2.0")
     implementation("dev.chrisbanes.haze:haze-materials:1.2.0")
+    
+    // MediaPipe for DJ Gesture Control (v1.5.0)
+    implementation("com.google.mediapipe:tasks-vision:0.10.14")
+    
+    // CameraX for camera feed in DJ mode
+    implementation("androidx.camera:camera-camera2:1.3.4")
+    implementation("androidx.camera:camera-lifecycle:1.3.4")
+    implementation("androidx.camera:camera-view:1.3.4")
+    
+    // Accompanist Permissions for runtime permissions
+    implementation("com.google.accompanist:accompanist-permissions:0.34.0")
 
     debugImplementation("androidx.compose.ui:ui-tooling")
 }

@@ -166,6 +166,13 @@
     <string name="flash_intensity_strong_desc">Aggressive • Very sensitive • Minimum cooldown (40ms)</string>
     <string name="flash_dialog_close">CLOSE</string>
     
+    <!-- DJ Gesture Control (v1.5.0) -->
+    <string name="dj_gesture_title">DJ GESTURE CONTROL</string>
+    <string name="dj_gesture_subtitle">Control audio with hand gestures</string>
+    <string name="dj_gesture_camera_permission">Camera needed for hand tracking</string>
+    <string name="dj_gesture_volume">Volume Control</string>
+    <string name="dj_gesture_bass">Bass Control</string>
+    
     <!-- Notification -->
     <string name="notif_volume">Volume</string>
     <string name="notif_bass">Bass</string>
