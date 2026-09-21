@@ -8,18 +8,19 @@ import androidx.compose.animation.*
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Videocam
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
@@ -28,11 +29,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import com.google.accompanist.permissions.*
 import com.soundboost.gesture.DJGesture
 import com.soundboost.gesture.DJGestureController
+import com.soundboost.gesture.GestureMetrics
 import kotlinx.coroutines.delay
 import java.util.concurrent.Executors
 import kotlin.math.sin
@@ -51,7 +54,10 @@ fun DJGestureScreen(
     
     var volumeLevel by remember { mutableStateOf(50) }
     var bassLevel by remember { mutableStateOf(50) }
-    var currentGesture by remember { mutableStateOf<DJGesture>(DJGesture.None) }
+    var trebleLevel by remember { mutableStateOf(50) }
+    var activePreset by remember { mutableStateOf(0) }
+    var currentGesture by remember { mutableStateOf<DJGesture>(DJGesture.Idle) }
+    var gestureMetrics by remember { mutableStateOf(GestureMetrics()) }
     
     val gestureController = remember {
         DJGestureController(
@@ -63,14 +69,25 @@ fun DJGestureScreen(
             onBassChange = { delta ->
                 bassLevel = (bassLevel + delta).coerceIn(0, 100)
                 onBassChange(bassLevel)
+            },
+            onTrebleChange = { delta ->
+                trebleLevel = (trebleLevel + delta).coerceIn(0, 100)
+            },
+            onPresetChange = { fingerCount ->
+                activePreset = fingerCount
             }
         )
     }
     
     val gestureState by gestureController.currentGesture.collectAsState()
+    val metricsState by gestureController.gestureMetrics.collectAsState()
     
     LaunchedEffect(gestureState) {
         currentGesture = gestureState
+    }
+    
+    LaunchedEffect(metricsState) {
+        gestureMetrics = metricsState
     }
     
     LaunchedEffect(Unit) {
@@ -86,9 +103,17 @@ fun DJGestureScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFF0A0E14))
+            .background(
+                Brush.verticalGradient(
+                    colors = listOf(
+                        Color(0xFF0A0E14),
+                        Color(0xFF151B24)
+                    )
+                )
+            )
     ) {
         if (cameraPermissionState.status.isGranted) {
+            // Camera Preview
             CameraPreview(
                 modifier = Modifier.fillMaxSize(),
                 onFrameReady = { bitmap, timestamp ->
@@ -96,21 +121,44 @@ fun DJGestureScreen(
                 }
             )
             
-            DJDeckOverlay(
+            // Overlay gradient for better readability
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(
+                        Brush.verticalGradient(
+                            colors = listOf(
+                                Color.Black.copy(alpha = 0.3f),
+                                Color.Transparent,
+                                Color.Black.copy(alpha = 0.5f)
+                            )
+                        )
+                    )
+            )
+            
+            // Professional DJ Deck UI
+            ModernDJDeckOverlay(
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
                     .fillMaxWidth()
-                    .height(350.dp),
+                    .height(400.dp),
                 volumeLevel = volumeLevel,
                 bassLevel = bassLevel,
-                currentGesture = currentGesture
+                trebleLevel = trebleLevel,
+                activePreset = activePreset,
+                currentGesture = currentGesture,
+                gestureMetrics = gestureMetrics
             )
             
-            GestureIndicator(
+            // Top Gesture Guide
+            GestureGuideOverlay(
                 modifier = Modifier
                     .align(Alignment.TopCenter)
-                    .padding(top = 80.dp),
-                gesture = currentGesture
+                    .padding(top = 80.dp)
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
+                currentGesture = currentGesture,
+                gestureMetrics = gestureMetrics
             )
         } else {
             CameraPermissionRequest(
@@ -118,17 +166,65 @@ fun DJGestureScreen(
             )
         }
         
-        TopAppBar(
-            title = { Text("DJ Gesture Control", color = Color.White) },
-            navigationIcon = {
+        // Top Bar
+        Surface(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(80.dp),
+            color = Color(0xFF0A0E14).copy(alpha = 0.95f)
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 16.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 IconButton(onClick = onBack) {
-                    Icon(Icons.Default.ArrowBack, "Back", tint = Color.White)
+                    Icon(
+                        Icons.Default.ArrowBack,
+                        "Back",
+                        tint = Color.White,
+                        modifier = Modifier.size(28.dp)
+                    )
                 }
-            },
-            colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = Color(0xFF0A0E14).copy(alpha = 0.9f)
-            )
-        )
+                
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text(
+                        "DJ GESTURE CONTROL",
+                        color = Color.White,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Black,
+                        letterSpacing = 2.sp
+                    )
+                    Text(
+                        "Professional Audio Control",
+                        color = Color.White.copy(alpha = 0.6f),
+                        fontSize = 11.sp,
+                        fontWeight = FontWeight.Medium
+                    )
+                }
+                
+                // Status indicator
+                Box(
+                    modifier = Modifier
+                        .size(40.dp)
+                        .background(
+                            if (currentGesture != DJGesture.Idle) Color(0xFF00E5FF).copy(alpha = 0.2f)
+                            else Color.White.copy(alpha = 0.1f),
+                            CircleShape
+                        ),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        Icons.Default.Videocam,
+                        null,
+                        tint = if (currentGesture != DJGesture.Idle) Color(0xFF00E5FF) else Color.White.copy(alpha = 0.5f),
+                        modifier = Modifier.size(20.dp)
+                    )
+                }
+            }
+        }
     }
 }
 
@@ -189,135 +285,273 @@ fun CameraPreview(
 }
 
 @Composable
-fun DJDeckOverlay(
+fun ModernDJDeckOverlay(
     modifier: Modifier = Modifier,
     volumeLevel: Int,
     bassLevel: Int,
-    currentGesture: DJGesture
+    trebleLevel: Int,
+    activePreset: Int,
+    currentGesture: DJGesture,
+    gestureMetrics: GestureMetrics
 ) {
     val infiniteTransition = rememberInfiniteTransition(label = "pulse")
     val pulseAlpha by infiniteTransition.animateFloat(
-        initialValue = 0.3f,
-        targetValue = 0.8f,
+        initialValue = 0.4f,
+        targetValue = 0.9f,
         animationSpec = infiniteRepeatable(
-            animation = tween(1000),
+            animation = tween(1200, easing = FastOutSlowInEasing),
             repeatMode = RepeatMode.Reverse
         ),
         label = "pulseAlpha"
     )
     
-    Box(
-        modifier = modifier
-            .background(
-                Brush.verticalGradient(
-                    colors = listOf(
-                        Color(0xFF0A0E14).copy(alpha = 0.7f),
-                        Color(0xFF0A0E14).copy(alpha = 0.95f)
-                    )
-                ),
-                shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp)
-            )
-            .padding(24.dp)
+    Surface(
+        modifier = modifier,
+        color = Color.Transparent
     ) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 24.dp),
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ) {
-                DJFader(
-                    label = "VOLUME",
-                    value = volumeLevel,
-                    color = Color(0xFFFFB74D),
-                    isActive = currentGesture is DJGesture.VolumeFader
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(
+                    Brush.verticalGradient(
+                        colors = listOf(
+                            Color(0xFF0A0E14).copy(alpha = 0.85f),
+                            Color(0xFF0A0E14).copy(alpha = 0.98f)
+                        )
+                    ),
+                    shape = RoundedCornerShape(topStart = 40.dp, topEnd = 40.dp)
                 )
+                .padding(24.dp)
+        ) {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.spacedBy(20.dp)
+            ) {
+                // Preset Selector Pills
+                if (activePreset > 0) {
+                    PresetIndicator(
+                        activePreset = activePreset,
+                        pulseAlpha = pulseAlpha
+                    )
+                }
                 
-                DJFader(
-                    label = "BASS",
-                    value = bassLevel,
-                    color = Color(0xFF00E5FF),
-                    isActive = currentGesture is DJGesture.BassCrossfader
+                // Three Professional Faders
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f),
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    ProfessionalFader(
+                        label = "VOLUME",
+                        value = volumeLevel,
+                        color = Color(0xFFFFB74D),
+                        icon = Icons.Default.VolumeUp,
+                        isActive = currentGesture is DJGesture.VolumeControl || currentGesture is DJGesture.MasterFader,
+                        modifier = Modifier.weight(1f)
+                    )
+                    
+                    ProfessionalFader(
+                        label = "BASS",
+                        value = bassLevel,
+                        color = Color(0xFF00E5FF),
+                        icon = Icons.Default.MusicNote,
+                        isActive = currentGesture is DJGesture.BassBoost,
+                        modifier = Modifier.weight(1f)
+                    )
+                    
+                    ProfessionalFader(
+                        label = "TREBLE",
+                        value = trebleLevel,
+                        color = Color(0xFFFF5252),
+                        icon = Icons.Default.GraphicEq,
+                        isActive = currentGesture is DJGesture.TrebleControl,
+                        modifier = Modifier.weight(1f)
+                    )
+                }
+                
+                // Advanced Waveform Visualizer
+                AdvancedWaveformVisualizer(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(100.dp),
+                    volumeLevel = volumeLevel,
+                    bassLevel = bassLevel,
+                    trebleLevel = trebleLevel,
+                    pulseAlpha = pulseAlpha,
+                    gestureMetrics = gestureMetrics
                 )
             }
-            
-            Spacer(modifier = Modifier.height(16.dp))
-            
-            WaveformVisualizer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(80.dp),
-                volumeLevel = volumeLevel,
-                bassLevel = bassLevel,
-                pulseAlpha = pulseAlpha
-            )
         }
     }
 }
 
 @Composable
-fun DJFader(
+fun PresetIndicator(
+    activePreset: Int,
+    pulseAlpha: Float
+) {
+    val presetNames = listOf("FLAT", "BASS", "TREBLE", "VOCAL", "ROCK")
+    
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.Center
+    ) {
+        Surface(
+            shape = RoundedCornerShape(20.dp),
+            color = Color(0xFF00E5FF).copy(alpha = 0.15f),
+            modifier = Modifier.animateContentSize()
+        ) {
+            Row(
+                modifier = Modifier.padding(horizontal = 20.dp, vertical = 12.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    Icons.Default.TouchApp,
+                    null,
+                    tint = Color(0xFF00E5FF).copy(alpha = pulseAlpha),
+                    modifier = Modifier.size(20.dp)
+                )
+                Text(
+                    "PRESET: ${presetNames.getOrElse(activePreset - 1) { "CUSTOM" }}",
+                    color = Color.White,
+                    fontSize = 13.sp,
+                    fontWeight = FontWeight.Black,
+                    letterSpacing = 1.5.sp
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun ProfessionalFader(
     label: String,
     value: Int,
     color: Color,
-    isActive: Boolean
+    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    isActive: Boolean,
+    modifier: Modifier = Modifier
 ) {
+    val scale by animateFloatAsState(
+        targetValue = if (isActive) 1.08f else 1f,
+        animationSpec = spring(
+            dampingRatio = Spring.DampingRatioMediumBouncy,
+            stiffness = Spring.StiffnessLow
+        ),
+        label = "faderScale"
+    )
+    
     Column(
+        modifier = modifier.scale(scale),
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.width(100.dp)
+        verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        Text(
-            text = label,
-            style = MaterialTheme.typography.labelSmall,
-            color = if (isActive) color else Color.White.copy(alpha = 0.5f),
-            fontWeight = if (isActive) FontWeight.Bold else FontWeight.Normal
-        )
-        
-        Spacer(modifier = Modifier.height(8.dp))
-        
+        // Icon
         Box(
             modifier = Modifier
-                .width(40.dp)
-                .height(150.dp)
-                .background(Color.White.copy(alpha = 0.1f), RoundedCornerShape(20.dp))
+                .size(48.dp)
+                .background(
+                    if (isActive) color.copy(alpha = 0.25f) else Color.White.copy(alpha = 0.08f),
+                    CircleShape
+                ),
+            contentAlignment = Alignment.Center
         ) {
-            Box(
-                modifier = Modifier
-                    .size(40.dp, 30.dp)
-                    .align(Alignment.TopCenter)
-                    .offset(y = (150.dp * (1f - value / 100f) - 15.dp))
-                    .background(
-                        color = if (isActive) color else Color.White.copy(alpha = 0.7f),
-                        shape = RoundedCornerShape(15.dp)
-                    )
+            Icon(
+                icon,
+                null,
+                tint = if (isActive) color else Color.White.copy(alpha = 0.5f),
+                modifier = Modifier.size(24.dp)
             )
         }
         
-        Spacer(modifier = Modifier.height(8.dp))
+        // Label
         Text(
-            text = "$value%",
-            style = MaterialTheme.typography.bodySmall,
-            color = Color.White,
-            fontWeight = FontWeight.Bold
+            label,
+            fontSize = 11.sp,
+            fontWeight = FontWeight.Black,
+            color = if (isActive) color else Color.White.copy(alpha = 0.6f),
+            letterSpacing = 1.5.sp
         )
+        
+        // Fader Track
+        Box(
+            modifier = Modifier
+                .width(50.dp)
+                .height(180.dp)
+                .background(
+                    Brush.verticalGradient(
+                        colors = listOf(
+                            color.copy(alpha = 0.15f),
+                            Color.White.copy(alpha = 0.05f),
+                            Color.White.copy(alpha = 0.05f)
+                        )
+                    ),
+                    shape = RoundedCornerShape(25.dp)
+                ),
+            contentAlignment = Alignment.BottomCenter
+        ) {
+            // Fill indicator
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight(value / 100f)
+                    .background(
+                        Brush.verticalGradient(
+                            colors = listOf(
+                                color.copy(alpha = 0.3f),
+                                color.copy(alpha = 0.6f)
+                            )
+                        ),
+                        shape = RoundedCornerShape(25.dp)
+                    )
+            )
+            
+            // Thumb
+            val thumbOffset = (1f - value / 100f) * 160f
+            Box(
+                modifier = Modifier
+                    .align(Alignment.TopCenter)
+                    .offset(y = thumbOffset.dp)
+                    .size(50.dp, 35.dp)
+                    .background(
+                        color = if (isActive) color else Color.White.copy(alpha = 0.9f),
+                        shape = RoundedCornerShape(18.dp)
+                    )
+                    .border(
+                        width = 2.dp,
+                        color = Color.White.copy(alpha = 0.3f),
+                        shape = RoundedCornerShape(18.dp)
+                    ),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    "$value",
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Black,
+                    color = if (isActive) Color.White else Color.Black
+                )
+            }
+        }
     }
 }
 
 @Composable
-fun WaveformVisualizer(
+fun AdvancedWaveformVisualizer(
     modifier: Modifier = Modifier,
     volumeLevel: Int,
     bassLevel: Int,
-    pulseAlpha: Float
+    trebleLevel: Int,
+    pulseAlpha: Float,
+    gestureMetrics: GestureMetrics
 ) {
     var phase by remember { mutableStateOf(0f) }
     
     LaunchedEffect(Unit) {
         while (true) {
-            phase += 0.1f
+            phase += 0.12f
             delay(16)
         }
     }
@@ -327,52 +561,170 @@ fun WaveformVisualizer(
         val height = size.height
         val centerY = height / 2
         
-        val path = Path()
-        path.moveTo(0f, centerY)
-        
-        for (x in 0..width.toInt() step 10) {
+        // Bass wave (thick, slow)
+        val bassPath = Path()
+        bassPath.moveTo(0f, centerY)
+        for (x in 0..width.toInt() step 8) {
             val normalizedX = x / width
-            val amplitude = (volumeLevel / 100f) * height / 2
-            val bassBoost = (bassLevel / 100f) * 0.5f + 0.5f
-            
-            val y = centerY + sin((normalizedX * 10 + phase) * bassBoost) * amplitude
-            path.lineTo(x.toFloat(), y)
+            val bassAmplitude = (bassLevel / 100f) * height / 3
+            val y = centerY + sin((normalizedX * 3 + phase * 0.7) * 2.0 * Math.PI).toFloat() * bassAmplitude
+            bassPath.lineTo(x.toFloat(), y)
         }
-        
         drawPath(
-            path = path,
-            color = Color(0xFFFFB74D).copy(alpha = pulseAlpha),
+            path = bassPath,
+            color = Color(0xFF00E5FF).copy(alpha = 0.4f * pulseAlpha),
+            style = Stroke(width = 4f)
+        )
+        
+        // Volume wave (medium)
+        val volumePath = Path()
+        volumePath.moveTo(0f, centerY)
+        for (x in 0..width.toInt() step 6) {
+            val normalizedX = x / width
+            val volumeAmplitude = (volumeLevel / 100f) * height / 2.5f
+            val y = centerY + sin((normalizedX * 8 + phase) * 2.0 * Math.PI).toFloat() * volumeAmplitude
+            volumePath.lineTo(x.toFloat(), y)
+        }
+        drawPath(
+            path = volumePath,
+            color = Color(0xFFFFB74D).copy(alpha = 0.6f * pulseAlpha),
             style = Stroke(width = 3f)
+        )
+        
+        // Treble wave (thin, fast)
+        val treblePath = Path()
+        treblePath.moveTo(0f, centerY)
+        for (x in 0..width.toInt() step 4) {
+            val normalizedX = x / width
+            val trebleAmplitude = (trebleLevel / 100f) * height / 4
+            val y = centerY + sin((normalizedX * 15 + phase * 1.5) * 2.0 * Math.PI).toFloat() * trebleAmplitude
+            treblePath.lineTo(x.toFloat(), y)
+        }
+        drawPath(
+            path = treblePath,
+            color = Color(0xFFFF5252).copy(alpha = 0.5f * pulseAlpha),
+            style = Stroke(width = 2f)
         )
     }
 }
 
 @Composable
-fun GestureIndicator(
+fun GestureGuideOverlay(
     modifier: Modifier = Modifier,
-    gesture: DJGesture
+    currentGesture: DJGesture,
+    gestureMetrics: GestureMetrics
 ) {
     AnimatedVisibility(
-        visible = gesture !is DJGesture.None,
-        enter = fadeIn() + slideInVertically(),
-        exit = fadeOut() + slideOutVertically(),
+        visible = currentGesture != DJGesture.Idle,
+        enter = fadeIn() + expandVertically(),
+        exit = fadeOut() + shrinkVertically(),
         modifier = modifier
     ) {
         Surface(
-            modifier = Modifier.padding(16.dp),
-            shape = RoundedCornerShape(16.dp),
-            color = Color(0xFF1E2530).copy(alpha = 0.9f)
+            shape = RoundedCornerShape(24.dp),
+            color = Color(0xFF1E2530).copy(alpha = 0.95f),
+            shadowElevation = 8.dp
+        ) {
+            Column(
+                modifier = Modifier.padding(20.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                // Gesture Name
+                Text(
+                    text = when (currentGesture) {
+                        is DJGesture.PresetSelect -> "PRESET SELECTOR"
+                        is DJGesture.VolumeControl -> "VOLUME CONTROL"
+                        is DJGesture.BassBoost -> "BASS BOOST"
+                        is DJGesture.TrebleControl -> "TREBLE CONTROL"
+                        is DJGesture.MasterFader -> "MASTER FADER"
+                        else -> "IDLE"
+                    },
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Black,
+                    color = when (currentGesture) {
+                        is DJGesture.PresetSelect -> Color(0xFF00E5FF)
+                        is DJGesture.VolumeControl, is DJGesture.MasterFader -> Color(0xFFFFB74D)
+                        is DJGesture.BassBoost -> Color(0xFF00E5FF)
+                        is DJGesture.TrebleControl -> Color(0xFFFF5252)
+                        else -> Color.White
+                    },
+                    letterSpacing = 2.sp
+                )
+                
+                // Gesture Details
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(16.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    if (gestureMetrics.fingerCount > 0) {
+                        MetricPill(
+                            label = "Fingers",
+                            value = gestureMetrics.fingerCount.toString(),
+                            color = Color(0xFF00E5FF)
+                        )
+                    }
+                    if (gestureMetrics.handOpenness > 0.1f) {
+                        MetricPill(
+                            label = "Open",
+                            value = "${(gestureMetrics.handOpenness * 100).toInt()}%",
+                            color = Color(0xFFFFB74D)
+                        )
+                    }
+                    if (gestureMetrics.twoHandDistance > 0.1f) {
+                        MetricPill(
+                            label = "Distance",
+                            value = "${(gestureMetrics.twoHandDistance * 100).toInt()}%",
+                            color = Color(0xFF00E5FF)
+                        )
+                    }
+                }
+                
+                // Instruction
+                Text(
+                    text = when (currentGesture) {
+                        is DJGesture.PresetSelect -> "Hold ${(currentGesture as DJGesture.PresetSelect).fingerCount} fingers steady"
+                        is DJGesture.VolumeControl -> "Open/close hand to adjust volume"
+                        is DJGesture.BassBoost -> "Move hands apart/together"
+                        is DJGesture.TrebleControl -> "Rotate hand left/right"
+                        is DJGesture.MasterFader -> "Move hand up/down"
+                        else -> ""
+                    },
+                    fontSize = 12.sp,
+                    color = Color.White.copy(alpha = 0.8f),
+                    textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun MetricPill(
+    label: String,
+    value: String,
+    color: Color
+) {
+    Surface(
+        shape = RoundedCornerShape(12.dp),
+        color = color.copy(alpha = 0.15f)
+    ) {
+        Row(
+            modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+            horizontalArrangement = Arrangement.spacedBy(6.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = when (gesture) {
-                    is DJGesture.VolumeFader -> "Volume Control"
-                    is DJGesture.BassCrossfader -> "Bass Control"
-                    else -> ""
-                },
-                modifier = Modifier.padding(16.dp),
-                style = MaterialTheme.typography.titleMedium,
-                color = Color.White,
-                fontWeight = FontWeight.Bold
+                label,
+                fontSize = 10.sp,
+                fontWeight = FontWeight.Bold,
+                color = color.copy(alpha = 0.7f)
+            )
+            Text(
+                value,
+                fontSize = 11.sp,
+                fontWeight = FontWeight.Black,
+                color = color
             )
         }
     }
