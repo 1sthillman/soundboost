@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
@@ -81,6 +82,8 @@ fun DJGestureScreen(
     
     val gestureState by gestureController.currentGesture.collectAsState()
     val metricsState by gestureController.gestureMetrics.collectAsState()
+    val confidenceState by gestureController.gestureConfidence.collectAsState()
+    val handLandmarksState by gestureController.handLandmarks.collectAsState()
     
     LaunchedEffect(gestureState) {
         currentGesture = gestureState
@@ -121,6 +124,13 @@ fun DJGestureScreen(
                 }
             )
             
+            // Hand Overlay - Show detected hand points
+            HandOverlay(
+                modifier = Modifier.fillMaxSize(),
+                handLandmarks = handLandmarksState,
+                confidence = confidenceState
+            )
+            
             // Overlay gradient for better readability
             Box(
                 modifier = Modifier
@@ -159,6 +169,14 @@ fun DJGestureScreen(
                     .padding(horizontal = 16.dp),
                 currentGesture = currentGesture,
                 gestureMetrics = gestureMetrics
+            )
+            
+            // Confidence Bar
+            ConfidenceBar(
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .padding(top = 100.dp, end = 16.dp),
+                confidence = confidenceState
             )
         } else {
             CameraPermissionRequest(
@@ -225,6 +243,112 @@ fun DJGestureScreen(
                 }
             }
         }
+    }
+}
+
+@Composable
+fun HandOverlay(
+    modifier: Modifier = Modifier,
+    handLandmarks: List<Pair<Float, Float>>,
+    confidence: Float
+) {
+    if (handLandmarks.isEmpty()) return
+    
+    Canvas(modifier = modifier) {
+        val width = size.width
+        val height = size.height
+        
+        // Draw hand skeleton
+        val connections = listOf(
+            // Thumb
+            0 to 1, 1 to 2, 2 to 3, 3 to 4,
+            // Index
+            0 to 5, 5 to 6, 6 to 7, 7 to 8,
+            // Middle
+            0 to 9, 9 to 10, 10 to 11, 11 to 12,
+            // Ring
+            0 to 13, 13 to 14, 14 to 15, 15 to 16,
+            // Pinky
+            0 to 17, 17 to 18, 18 to 19, 19 to 20
+        )
+        
+        // Draw lines
+        connections.forEach { (start, end) ->
+            if (start < handLandmarks.size && end < handLandmarks.size) {
+                val p1 = handLandmarks[start]
+                val p2 = handLandmarks[end]
+                
+                drawLine(
+                    color = Color(0xFF00E5FF).copy(alpha = confidence),
+                    start = Offset(p1.first * width, p1.second * height),
+                    end = Offset(p2.first * width, p2.second * height),
+                    strokeWidth = 4f
+                )
+            }
+        }
+        
+        // Draw points
+        handLandmarks.forEach { (x, y) ->
+            drawCircle(
+                color = Color(0xFFFFB74D).copy(alpha = confidence),
+                radius = 6f,
+                center = Offset(x * width, y * height)
+            )
+        }
+    }
+}
+
+@Composable
+fun ConfidenceBar(
+    modifier: Modifier = Modifier,
+    confidence: Float
+) {
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(4.dp)
+    ) {
+        Text(
+            "Detection Quality",
+            fontSize = 10.sp,
+            fontWeight = FontWeight.Bold,
+            color = Color.White.copy(alpha = 0.7f)
+        )
+        
+        Row(
+            modifier = Modifier
+                .width(200.dp)
+                .height(8.dp)
+                .clip(RoundedCornerShape(4.dp))
+                .background(Color.White.copy(alpha = 0.2f)),
+            horizontalArrangement = Arrangement.Start
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .fillMaxWidth(confidence)
+                    .background(
+                        Brush.horizontalGradient(
+                            colors = listOf(
+                                Color(0xFFFF5252),
+                                Color(0xFFFFB74D),
+                                Color(0xFF00E5FF)
+                            )
+                        )
+                    )
+            )
+        }
+        
+        Text(
+            "${(confidence * 100).toInt()}%",
+            fontSize = 12.sp,
+            fontWeight = FontWeight.Black,
+            color = when {
+                confidence > 0.8f -> Color(0xFF00E5FF)
+                confidence > 0.5f -> Color(0xFFFFB74D)
+                else -> Color(0xFFFF5252)
+            }
+        )
     }
 }
 
@@ -348,7 +472,11 @@ fun ModernDJDeckOverlay(
                         value = volumeLevel,
                         color = Color(0xFFFFB74D),
                         icon = Icons.Default.VolumeUp,
-                        isActive = currentGesture is DJGesture.VolumeControl || currentGesture is DJGesture.MasterFader,
+                        isActive = currentGesture is DJGesture.ThumbsUp || 
+                                   currentGesture is DJGesture.ThumbsDown || 
+                                   currentGesture is DJGesture.SwipeVolume ||
+                                   currentGesture is DJGesture.OpenHand ||
+                                   currentGesture is DJGesture.Fist,
                         modifier = Modifier.weight(1f)
                     )
                     
@@ -357,7 +485,7 @@ fun ModernDJDeckOverlay(
                         value = bassLevel,
                         color = Color(0xFF00E5FF),
                         icon = Icons.Default.MusicNote,
-                        isActive = currentGesture is DJGesture.BassBoost,
+                        isActive = currentGesture is DJGesture.TwoHandsBass,
                         modifier = Modifier.weight(1f)
                     )
                     
@@ -366,7 +494,7 @@ fun ModernDJDeckOverlay(
                         value = trebleLevel,
                         color = Color(0xFFFF5252),
                         icon = Icons.Default.GraphicEq,
-                        isActive = currentGesture is DJGesture.TrebleControl,
+                        isActive = false, // Treble removed for simplicity
                         modifier = Modifier.weight(1f)
                     )
                 }
@@ -633,20 +761,24 @@ fun GestureGuideOverlay(
                 // Gesture Name
                 Text(
                     text = when (currentGesture) {
-                        is DJGesture.PresetSelect -> "PRESET SELECTOR"
-                        is DJGesture.VolumeControl -> "VOLUME CONTROL"
-                        is DJGesture.BassBoost -> "BASS BOOST"
-                        is DJGesture.TrebleControl -> "TREBLE CONTROL"
-                        is DJGesture.MasterFader -> "MASTER FADER"
+                        is DJGesture.ThumbsUp -> "👍 VOLUME UP"
+                        is DJGesture.ThumbsDown -> "👎 VOLUME DOWN"
+                        is DJGesture.PeaceSign -> "✌️ BASS PRESET"
+                        is DJGesture.OkSign -> "👌 FLAT PRESET"
+                        is DJGesture.RockSign -> "🤘 ROCK PRESET"
+                        is DJGesture.OpenHand -> "🖐️ MAX VOLUME"
+                        is DJGesture.Fist -> "✊ MUTE"
+                        is DJGesture.TwoHandsBass -> "🙌 BASS CONTROL"
+                        is DJGesture.SwipeVolume -> "👆 FINE VOLUME"
                         else -> "IDLE"
                     },
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Black,
                     color = when (currentGesture) {
-                        is DJGesture.PresetSelect -> Color(0xFF00E5FF)
-                        is DJGesture.VolumeControl, is DJGesture.MasterFader -> Color(0xFFFFB74D)
-                        is DJGesture.BassBoost -> Color(0xFF00E5FF)
-                        is DJGesture.TrebleControl -> Color(0xFFFF5252)
+                        is DJGesture.ThumbsUp, is DJGesture.ThumbsDown, 
+                        is DJGesture.SwipeVolume, is DJGesture.OpenHand, is DJGesture.Fist -> Color(0xFFFFB74D)
+                        is DJGesture.TwoHandsBass -> Color(0xFF00E5FF)
+                        is DJGesture.PeaceSign, is DJGesture.OkSign, is DJGesture.RockSign -> Color(0xFF00E5FF)
                         else -> Color.White
                     },
                     letterSpacing = 2.sp
@@ -683,11 +815,15 @@ fun GestureGuideOverlay(
                 // Instruction
                 Text(
                     text = when (currentGesture) {
-                        is DJGesture.PresetSelect -> "Hold ${(currentGesture as DJGesture.PresetSelect).fingerCount} fingers steady"
-                        is DJGesture.VolumeControl -> "Open/close hand to adjust volume"
-                        is DJGesture.BassBoost -> "Move hands apart/together"
-                        is DJGesture.TrebleControl -> "Rotate hand left/right"
-                        is DJGesture.MasterFader -> "Move hand up/down"
+                        is DJGesture.ThumbsUp -> "Keep thumb up to increase volume"
+                        is DJGesture.ThumbsDown -> "Keep thumb down to decrease volume"
+                        is DJGesture.PeaceSign -> "Hold peace sign for Bass preset"
+                        is DJGesture.OkSign -> "Hold OK sign for Flat preset"
+                        is DJGesture.RockSign -> "Hold rock sign for Rock preset"
+                        is DJGesture.OpenHand -> "Open hand fully for max volume"
+                        is DJGesture.Fist -> "Make fist to mute"
+                        is DJGesture.TwoHandsBass -> "Move hands apart/together"
+                        is DJGesture.SwipeVolume -> "Swipe up/down for fine control"
                         else -> ""
                     },
                     fontSize = 12.sp,

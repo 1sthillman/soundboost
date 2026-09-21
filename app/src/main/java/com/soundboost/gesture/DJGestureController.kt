@@ -12,33 +12,34 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlin.math.abs
 import kotlin.math.atan2
-import kotlin.math.hypot
 import kotlin.math.sqrt
 
 /**
- * PROFESSIONAL DJ GESTURE CONTROLLER v2.0
- * Advanced hand gesture recognition with 6 distinct gesture types
- * Optimized for real-time audio control with MediaPipe
+ * ENHANCED DJ GESTURE CONTROLLER v3.0
+ * Simplified, reliable, and intuitive gesture detection
+ * Focus: Clear gestures that ALWAYS work
  */
 class DJGestureController(
     private val context: Context,
     private val onVolumeChange: (Int) -> Unit,
     private val onBassChange: (Int) -> Unit,
     private val onTrebleChange: (Int) -> Unit,
-    private val onPresetChange: (Int) -> Unit  // 1-5 based on finger count
+    private val onPresetChange: (Int) -> Unit
 ) {
     
     companion object {
         private const val TAG = "DJGestureController"
         private const val MODEL_NAME = "hand_landmarker.task"
-        private const val MIN_DETECTION_CONFIDENCE = 0.6f
-        private const val MIN_TRACKING_CONFIDENCE = 0.6f
         
-        // Gesture thresholds
-        private const val MOVEMENT_THRESHOLD = 0.02f
-        private const val ROTATION_THRESHOLD = 0.15f
-        private const val OPENNESS_THRESHOLD = 0.12f
-        private const val COOLDOWN_MS = 300L
+        // RELAXED detection for better recognition
+        private const val MIN_DETECTION_CONFIDENCE = 0.5f
+        private const val MIN_TRACKING_CONFIDENCE = 0.5f
+        
+        // SIMPLIFIED thresholds - easier to trigger
+        private const val MOVEMENT_THRESHOLD = 0.015f  // More sensitive
+        private const val ROTATION_THRESHOLD = 0.1f    // More sensitive
+        private const val OPENNESS_THRESHOLD = 0.08f   // More sensitive
+        private const val COOLDOWN_MS = 200L           // Faster response
         
         // Landmark indices
         private const val WRIST = 0
@@ -59,17 +60,23 @@ class DJGestureController(
     private val _gestureMetrics = MutableStateFlow(GestureMetrics())
     val gestureMetrics: StateFlow<GestureMetrics> = _gestureMetrics.asStateFlow()
     
+    private val _gestureConfidence = MutableStateFlow(0f)
+    val gestureConfidence: StateFlow<Float> = _gestureConfidence.asStateFlow()
+    
+    private val _handLandmarks = MutableStateFlow<List<Pair<Float, Float>>>(emptyList())
+    val handLandmarks: StateFlow<List<Pair<Float, Float>>> = _handLandmarks.asStateFlow()
+    
     // State tracking
     private var previousHandY: Float? = null
-    private var previousHandRotation: Float? = null
     private var previousHandOpenness: Float? = null
     private var previousTwoHandDistance: Float? = null
     private var lastGestureTime = 0L
-    private var consecutiveFramesWithSameGesture = 0
+    private var gestureStableFrames = 0
     
-    /**
-     * Initialize MediaPipe Hand Landmarker
-     */
+    // Gesture history for smoothing
+    private val gestureHistory = mutableListOf<DJGesture>()
+    private val historySize = 3
+    
     fun initialize() {
         try {
             val baseOptions = BaseOptions.builder()
@@ -87,16 +94,13 @@ class DJGestureController(
             handLandmarker = HandLandmarker.createFromOptions(context, options)
             _isInitialized.value = true
             
-            Log.d(TAG, "✅ DJ Gesture Controller v2.0 initialized")
+            Log.d(TAG, "✅ DJ Gesture Controller v3.0 initialized (Enhanced)")
         } catch (e: Exception) {
             Log.e(TAG, "❌ Failed to initialize: ${e.message}", e)
             _isInitialized.value = false
         }
     }
     
-    /**
-     * Process camera frame for gesture detection
-     */
     fun processFrame(bitmap: android.graphics.Bitmap, timestampMs: Long) {
         val landmarker = handLandmarker ?: return
         
@@ -105,6 +109,8 @@ class DJGestureController(
             val result = landmarker.detectForVideo(mpImage, timestampMs)
             
             if (result.landmarks().isNotEmpty()) {
+                // Update hand landmarks for visualization
+                updateHandLandmarks(result)
                 analyzeGestures(result, timestampMs)
             } else {
                 resetGestureState()
@@ -114,9 +120,17 @@ class DJGestureController(
         }
     }
     
-    /**
-     * Advanced gesture analysis with multiple detection algorithms
-     */
+    private fun updateHandLandmarks(result: HandLandmarkerResult) {
+        val landmarks = result.landmarks()
+        if (landmarks.isEmpty()) return
+        
+        val primaryHand = landmarks[0]
+        val points = primaryHand.map { landmark ->
+            Pair(landmark.x(), landmark.y())
+        }
+        _handLandmarks.value = points
+    }
+    
     private fun analyzeGestures(result: HandLandmarkerResult, timestampMs: Long) {
         val landmarks = result.landmarks()
         if (landmarks.isEmpty()) return
@@ -124,109 +138,175 @@ class DJGestureController(
         val primaryHand = landmarks[0]
         val handCount = landmarks.size
         
-        // Calculate hand metrics
+        // Calculate basic metrics
         val fingerCount = countExtendedFingers(primaryHand)
         val handOpenness = calculateHandOpenness(primaryHand)
-        val handRotation = calculateHandRotation(primaryHand)
         val wristY = primaryHand[WRIST].y()
+        
+        // Calculate confidence (0-1)
+        val confidence = calculateGestureConfidence(fingerCount, handOpenness, handCount)
+        _gestureConfidence.value = confidence
         
         // Update metrics for UI
         _gestureMetrics.value = GestureMetrics(
             fingerCount = fingerCount,
             handOpenness = handOpenness,
-            handRotation = handRotation,
-            twoHandDistance = if (handCount == 2) calculateTwoHandDistance(landmarks[0], landmarks[1]) else 0f
+            handRotation = 0f,
+            twoHandDistance = if (handCount == 2) calculateTwoHandDistance(landmarks[0], landmarks[1]) else 0f,
+            confidence = confidence
         )
         
         // Cooldown check
         if (timestampMs - lastGestureTime < COOLDOWN_MS) return
         
-        // Priority-based gesture detection
+        // SIMPLIFIED gesture detection - Priority order
         val detectedGesture = when {
-            // GESTURE 1: Finger Count Presets (Highest Priority - Static)
-            fingerCount in 1..5 && handCount == 1 -> {
-                if (isHandStable(wristY, handOpenness, handRotation)) {
-                    consecutiveFramesWithSameGesture++
-                    if (consecutiveFramesWithSameGesture > 5) {
-                        onPresetChange(fingerCount)
-                        lastGestureTime = timestampMs
-                        DJGesture.PresetSelect(fingerCount)
-                    } else DJGesture.Idle
-                } else {
-                    consecutiveFramesWithSameGesture = 0
-                    DJGesture.Idle
-                }
+            // GESTURE 1: THUMBS UP = Volume UP (Very clear!)
+            handCount == 1 && isThumbsUp(primaryHand) -> {
+                onVolumeChange(10)
+                lastGestureTime = timestampMs
+                DJGesture.ThumbsUp
             }
             
-            // GESTURE 2: Hand Openness = Volume Control
-            handCount == 1 && previousHandOpenness != null -> {
-                val opennessDelta = handOpenness - previousHandOpenness!!
-                if (abs(opennessDelta) > OPENNESS_THRESHOLD) {
-                    val volumeDelta = (opennessDelta * 100).toInt().coerceIn(-15, 15)
-                    onVolumeChange(volumeDelta)
-                    lastGestureTime = timestampMs
-                    DJGesture.VolumeControl(handOpenness)
-                } else DJGesture.Idle
+            // GESTURE 2: THUMBS DOWN = Volume DOWN (Very clear!)
+            handCount == 1 && isThumbsDown(primaryHand) -> {
+                onVolumeChange(-10)
+                lastGestureTime = timestampMs
+                DJGesture.ThumbsDown
             }
             
-            // GESTURE 3: Two Hand Distance = Bass Boost
-            handCount == 2 && previousTwoHandDistance != null -> {
+            // GESTURE 3: PEACE SIGN (2 fingers) = Preset 2 (Bass)
+            handCount == 1 && fingerCount == 2 && isStableGesture() -> {
+                onPresetChange(2)
+                lastGestureTime = timestampMs
+                DJGesture.PeaceSign
+            }
+            
+            // GESTURE 4: OK SIGN = Preset 1 (Flat)
+            handCount == 1 && isOkSign(primaryHand) -> {
+                onPresetChange(1)
+                lastGestureTime = timestampMs
+                DJGesture.OkSign
+            }
+            
+            // GESTURE 5: ROCK SIGN (🤘) = Preset 5 (Rock!)
+            handCount == 1 && fingerCount == 2 && isRockSign(primaryHand) -> {
+                onPresetChange(5)
+                lastGestureTime = timestampMs
+                DJGesture.RockSign
+            }
+            
+            // GESTURE 6: OPEN HAND (5 fingers) = Max Volume
+            handCount == 1 && fingerCount == 5 && handOpenness > 0.7f -> {
+                onVolumeChange(15)
+                lastGestureTime = timestampMs
+                DJGesture.OpenHand
+            }
+            
+            // GESTURE 7: FIST (0 fingers) = Mute
+            handCount == 1 && fingerCount == 0 && handOpenness < 0.3f -> {
+                onVolumeChange(-15)
+                lastGestureTime = timestampMs
+                DJGesture.Fist
+            }
+            
+            // GESTURE 8: TWO HANDS SPREAD = Bass Boost
+            handCount == 2 -> {
                 val distance = calculateTwoHandDistance(landmarks[0], landmarks[1])
-                val distanceDelta = distance - previousTwoHandDistance!!
-                if (abs(distanceDelta) > MOVEMENT_THRESHOLD) {
-                    val bassDelta = (distanceDelta * 150).toInt().coerceIn(-20, 20)
-                    onBassChange(bassDelta)
-                    lastGestureTime = timestampMs
-                    DJGesture.BassBoost(distance)
-                } else DJGesture.Idle
+                previousTwoHandDistance?.let { prevDist ->
+                    val delta = distance - prevDist
+                    if (abs(delta) > MOVEMENT_THRESHOLD) {
+                        val bassDelta = (delta * 100).toInt().coerceIn(-15, 15)
+                        onBassChange(bassDelta)
+                        lastGestureTime = timestampMs
+                        previousTwoHandDistance = distance
+                        return@analyzeGestures // Early return
+                    }
+                }
+                previousTwoHandDistance = distance
+                DJGesture.TwoHandsBass(distance)
             }
             
-            // GESTURE 4: Hand Rotation = Treble Control
-            handCount == 1 && previousHandRotation != null -> {
-                val rotationDelta = handRotation - previousHandRotation!!
-                if (abs(rotationDelta) > ROTATION_THRESHOLD) {
-                    val trebleDelta = (rotationDelta * 80).toInt().coerceIn(-15, 15)
-                    onTrebleChange(trebleDelta)
-                    lastGestureTime = timestampMs
-                    DJGesture.TrebleControl(handRotation)
-                } else DJGesture.Idle
-            }
-            
-            // GESTURE 5: Vertical Movement = Master Fader
+            // GESTURE 9: SWIPE UP/DOWN = Fine Volume Control
             handCount == 1 && previousHandY != null -> {
                 val deltaY = wristY - previousHandY!!
                 if (abs(deltaY) > MOVEMENT_THRESHOLD) {
-                    val volumeDelta = (-deltaY * 150).toInt().coerceIn(-20, 20)
-                    onVolumeChange(volumeDelta)
-                    lastGestureTime = timestampMs
-                    DJGesture.MasterFader(deltaY)
+                    val volumeDelta = (-deltaY * 100).toInt().coerceIn(-10, 10)
+                    if (volumeDelta != 0) {
+                        onVolumeChange(volumeDelta)
+                        lastGestureTime = timestampMs
+                        DJGesture.SwipeVolume(deltaY)
+                    } else DJGesture.Idle
                 } else DJGesture.Idle
             }
             
             else -> DJGesture.Idle
         }
         
-        _currentGesture.value = detectedGesture
-        
-        // Update state
+        // Update state with smoothing
+        updateGestureWithSmoothing(detectedGesture)
         previousHandY = wristY
         previousHandOpenness = handOpenness
-        previousHandRotation = handRotation
-        if (handCount == 2) {
-            previousTwoHandDistance = calculateTwoHandDistance(landmarks[0], landmarks[1])
-        }
     }
     
-    /**
-     * Count extended fingers (1-5)
-     */
+    private fun isThumbsUp(hand: List<com.google.mediapipe.tasks.components.containers.NormalizedLandmark>): Boolean {
+        val thumb = hand[THUMB_TIP]
+        val index = hand[INDEX_TIP]
+        val wrist = hand[WRIST]
+        
+        // Thumb tip above wrist, other fingers closed
+        val thumbUp = thumb.y() < wrist.y() - 0.1f
+        val indexDown = index.y() > wrist.y()
+        
+        return thumbUp && indexDown
+    }
+    
+    private fun isThumbsDown(hand: List<com.google.mediapipe.tasks.components.containers.NormalizedLandmark>): Boolean {
+        val thumb = hand[THUMB_TIP]
+        val wrist = hand[WRIST]
+        val index = hand[INDEX_TIP]
+        
+        // Thumb tip below wrist
+        val thumbDown = thumb.y() > wrist.y() + 0.1f
+        val indexDown = index.y() > wrist.y()
+        
+        return thumbDown && indexDown
+    }
+    
+    private fun isOkSign(hand: List<com.google.mediapipe.tasks.components.containers.NormalizedLandmark>): Boolean {
+        val thumb = hand[THUMB_TIP]
+        val index = hand[INDEX_TIP]
+        val middle = hand[MIDDLE_TIP]
+        
+        // Thumb and index close, middle extended
+        val thumbIndexClose = distance(thumb, index) < 0.08f
+        val middleExtended = middle.y() < hand[10].y()
+        
+        return thumbIndexClose && middleExtended
+    }
+    
+    private fun isRockSign(hand: List<com.google.mediapipe.tasks.components.containers.NormalizedLandmark>): Boolean {
+        val index = hand[INDEX_TIP]
+        val middle = hand[MIDDLE_TIP]
+        val ring = hand[RING_TIP]
+        val pinky = hand[PINKY_TIP]
+        
+        // Index and pinky extended, middle and ring folded
+        val indexExtended = index.y() < hand[6].y()
+        val pinkyExtended = pinky.y() < hand[18].y()
+        val middleFolded = middle.y() > hand[10].y()
+        val ringFolded = ring.y() > hand[14].y()
+        
+        return indexExtended && pinkyExtended && middleFolded && ringFolded
+    }
+    
     private fun countExtendedFingers(hand: List<com.google.mediapipe.tasks.components.containers.NormalizedLandmark>): Int {
         var count = 0
         
-        // Thumb - check if tip is farther from wrist than base
+        // Thumb
         if (distance(hand[THUMB_TIP], hand[WRIST]) > distance(hand[2], hand[WRIST])) count++
         
-        // Other fingers - check if tip is higher than middle joint
+        // Other fingers
         if (hand[INDEX_TIP].y() < hand[6].y()) count++
         if (hand[MIDDLE_TIP].y() < hand[10].y()) count++
         if (hand[RING_TIP].y() < hand[14].y()) count++
@@ -235,9 +315,6 @@ class DJGestureController(
         return count
     }
     
-    /**
-     * Calculate hand openness (0.0 = closed, 1.0 = open)
-     */
     private fun calculateHandOpenness(hand: List<com.google.mediapipe.tasks.components.containers.NormalizedLandmark>): Float {
         val wrist = hand[WRIST]
         val avgFingerDistance = listOf(INDEX_TIP, MIDDLE_TIP, RING_TIP, PINKY_TIP)
@@ -245,33 +322,14 @@ class DJGestureController(
             .average()
             .toFloat()
         
-        return (avgFingerDistance * 2.5f).coerceIn(0f, 1f)
+        return (avgFingerDistance * 2.0f).coerceIn(0f, 1f)
     }
     
-    /**
-     * Calculate hand rotation angle (-1.0 to 1.0)
-     */
-    private fun calculateHandRotation(hand: List<com.google.mediapipe.tasks.components.containers.NormalizedLandmark>): Float {
-        val wrist = hand[WRIST]
-        val middleFinger = hand[MIDDLE_TIP]
-        val angle = atan2(
-            (middleFinger.x() - wrist.x()).toDouble(),
-            (middleFinger.y() - wrist.y()).toDouble()
-        ).toFloat()
-        return (angle / Math.PI.toFloat()).coerceIn(-1f, 1f)
-    }
-    
-    /**
-     * Calculate distance between two hands
-     */
     private fun calculateTwoHandDistance(hand1: List<com.google.mediapipe.tasks.components.containers.NormalizedLandmark>, 
                                         hand2: List<com.google.mediapipe.tasks.components.containers.NormalizedLandmark>): Float {
         return distance(hand1[WRIST], hand2[WRIST])
     }
     
-    /**
-     * Distance helper
-     */
     private fun distance(p1: com.google.mediapipe.tasks.components.containers.NormalizedLandmark,
                         p2: com.google.mediapipe.tasks.components.containers.NormalizedLandmark): Float {
         val dx = p1.x() - p2.x()
@@ -279,31 +337,47 @@ class DJGestureController(
         return sqrt(dx * dx + dy * dy)
     }
     
-    /**
-     * Check if hand is stable (not moving)
-     */
-    private fun isHandStable(currentY: Float, currentOpenness: Float, currentRotation: Float): Boolean {
-        val yStable = previousHandY?.let { abs(currentY - it) < MOVEMENT_THRESHOLD / 2 } ?: true
-        val opennessStable = previousHandOpenness?.let { abs(currentOpenness - it) < OPENNESS_THRESHOLD / 2 } ?: true
-        val rotationStable = previousHandRotation?.let { abs(currentRotation - it) < ROTATION_THRESHOLD / 2 } ?: true
-        return yStable && opennessStable && rotationStable
+    private fun calculateGestureConfidence(fingerCount: Int, openness: Float, handCount: Int): Float {
+        // Simple confidence based on clear states
+        return when {
+            fingerCount == 0 || fingerCount == 5 -> 0.95f  // Very clear
+            fingerCount == 2 -> 0.85f                       // Clear
+            handCount == 2 -> 0.9f                         // Clear
+            else -> 0.7f
+        }
     }
     
-    /**
-     * Reset gesture state
-     */
+    private fun isStableGesture(): Boolean {
+        gestureStableFrames++
+        return gestureStableFrames > 3
+    }
+    
+    private fun updateGestureWithSmoothing(gesture: DJGesture) {
+        gestureHistory.add(gesture)
+        if (gestureHistory.size > historySize) {
+            gestureHistory.removeAt(0)
+        }
+        
+        // Use most common gesture in history
+        val mostCommon = gestureHistory.groupingBy { it }.eachCount().maxByOrNull { it.value }?.key
+        _currentGesture.value = mostCommon ?: gesture
+        
+        if (gesture != DJGesture.Idle) {
+            gestureStableFrames = 0
+        }
+    }
+    
     private fun resetGestureState() {
         _currentGesture.value = DJGesture.Idle
+        _handLandmarks.value = emptyList()
+        _gestureConfidence.value = 0f
         previousHandY = null
         previousHandOpenness = null
-        previousHandRotation = null
         previousTwoHandDistance = null
-        consecutiveFramesWithSameGesture = 0
+        gestureStableFrames = 0
+        gestureHistory.clear()
     }
     
-    /**
-     * Release resources
-     */
     fun release() {
         handLandmarker?.close()
         handLandmarker = null
@@ -313,23 +387,28 @@ class DJGestureController(
 }
 
 /**
- * DJ Gesture Types - Professional Audio Control
+ * SIMPLIFIED DJ Gestures - Clear and Easy to Perform
  */
 sealed class DJGesture {
     object Idle : DJGesture()
-    data class PresetSelect(val fingerCount: Int) : DJGesture()  // 1-5 fingers
-    data class VolumeControl(val openness: Float) : DJGesture()  // Hand open/close
-    data class BassBoost(val distance: Float) : DJGesture()      // Two hand distance
-    data class TrebleControl(val rotation: Float) : DJGesture()  // Hand rotation
-    data class MasterFader(val deltaY: Float) : DJGesture()      // Vertical movement
+    object ThumbsUp : DJGesture()           // 👍 Volume UP
+    object ThumbsDown : DJGesture()         // 👎 Volume DOWN
+    object PeaceSign : DJGesture()          // ✌️ Preset 2
+    object OkSign : DJGesture()             // 👌 Preset 1
+    object RockSign : DJGesture()           // 🤘 Preset 5
+    object OpenHand : DJGesture()           // 🖐️ Max Volume
+    object Fist : DJGesture()               // ✊ Mute
+    data class TwoHandsBass(val distance: Float) : DJGesture()  // 🙌 Bass
+    data class SwipeVolume(val delta: Float) : DJGesture()      // 👆👇 Fine control
 }
 
 /**
- * Real-time gesture metrics for UI display
+ * Enhanced gesture metrics with confidence
  */
 data class GestureMetrics(
     val fingerCount: Int = 0,
     val handOpenness: Float = 0f,
     val handRotation: Float = 0f,
-    val twoHandDistance: Float = 0f
+    val twoHandDistance: Float = 0f,
+    val confidence: Float = 0f
 )
