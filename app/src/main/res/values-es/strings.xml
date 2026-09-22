@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Amplificar Volumen</string>
     <string name="volume_boost">Amplificador de Volumen</string>
@@ -203,4 +203,48 @@
     <string name="close">Cerrar</string>
     
     <string name="language_italian">Italiano</string>
+    
+    <!-- Party Mode / Flash-Sync (v1.5.0) - Español -->
+    <string name="party_mode_title">Modo Fiesta</string>
+    <string name="party_mode_subtitle">Sincroniza todos los teléfonos en la misma Wi-Fi para flash juntos</string>
+    <string name="party_mode_host_title">Crear Sala</string>
+    <string name="party_mode_host_desc">Te conviertes en el host, otros dispositivos se conectan a ti y tú activas todos los comandos de flash</string>
+    <string name="party_mode_be_host">Ser Host</string>
+    <string name="party_mode_join_title">Unirse a Sala</string>
+    <string name="party_mode_join_desc">Conectarse a un host en la misma red</string>
+    <string name="party_mode_scan_rooms">Buscar Salas</string>
+    <string name="party_mode_room_name">Nombre de Sala</string>
+    <string name="party_mode_start_room">Iniciar Sala</string>
+    <string name="party_mode_room_active">Sala activa - otros pueden unirse ahora</string>
+    <string name="party_mode_boost_auto_started">Servicio de amplificación iniciado automáticamente</string>
+
+<string name="party_mode_device_name_optional">Nombre del Dispositivo (opcional)</string>
+    <string name="party_mode_scanning">Buscando salas…</string>
+    <string name="party_mode_rooms_found">%1$d sala(s) encontrada(s)</string>
+    <string name="party_mode_join">Unirse</string>
+    <string name="party_mode_hosting">Hospedando</string>
+    <string name="party_mode_connected">Conectado</string>
+    <string name="party_mode_connected_devices">Dispositivos Conectados</string>
+    <string name="party_mode_torch">Flash Físico</string>
+    <string name="party_mode_torch_desc">Usar flash de cámara (opcional)</string>
+    <string name="party_mode_flash_mode">Modo Flash</string>
+    <string name="party_mode_screen_only">Pantalla</string>
+    <string name="party_mode_torch_only">Flash</string>
+    <string name="party_mode_both">Ambos</string>
+    <string name="party_mode_flash_color">Color de Flash</string>
+    <string name="party_mode_duration">Duración</string>
+    <string name="party_mode_repeat">Repetir</string>
+    <string name="party_mode_trigger_flash">ACTIVAR FLASH</string>
+    <string name="party_mode_waiting_for_host">Esperando comando del host…</string>
+    <string name="party_mode_active">Modo Fiesta Activo - %1$s</string>
+    <string name="party_mode_waiting">Esperando dispositivos</string>
+    <string name="party_mode_one_device">1 dispositivo conectado</string>
+    <string name="party_mode_n_devices">%1$d dispositivos conectados</string>
+    <string name="party_mode_channel_name">Modo Fiesta</string>
+    <string name="party_mode_channel_desc">Notificación mostrada cuando el modo fiesta de sincronización de flash está activo</string>
+    <string name="party_mode_disconnected_title">Desconectado de la Sala</string>
+    <string name="party_mode_disconnection_reason">Razón de Desconexión:</string>
+    <string name="party_mode_diagnostic_copied">Información de diagnóstico copiada al portapapeles</string>
+    <string name="party_mode_copy_diagnostic">Copiar información de diagnóstico</string>
+    <string name="party_mode_disconnection_hint">Toca el cuadro de arriba para copiar información de diagnóstico</string>
 </resources>

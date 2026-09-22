@@ -260,6 +260,7 @@
     <string name="party_mode_room_name">Raumname</string>
     <string name="party_mode_start_room">Raum Starten</string>
     <string name="party_mode_room_active">Raum ist aktiv - andere können jetzt beitreten</string>
+    <string name="party_mode_boost_auto_started">Boost-Service automatisch gestartet</string>
     <string name="party_mode_device_name_optional">Gerätename (optional)</string>
     <string name="party_mode_scanning">Suche nach Räumen…</string>
     <string name="party_mode_rooms_found">%1$d Raum/Räume gefunden</string>

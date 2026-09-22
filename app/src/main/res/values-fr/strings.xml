@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Volume+</string>
     <string name="volume_boost">Amplificateur de Volume</string>
@@ -203,4 +203,48 @@
     <string name="close">Fermer</string>
     
     <string name="language_italian">Italien</string>
+    
+    <!-- Party Mode / Flash-Sync (v1.5.0) - Français -->
+    <string name="party_mode_title">Mode Fête</string>
+    <string name="party_mode_subtitle">Synchronisez tous les téléphones sur le même Wi-Fi pour flasher ensemble</string>
+    <string name="party_mode_host_title">Créer une Salle</string>
+    <string name="party_mode_host_desc">Vous devenez l\'hôte, d\'autres appareils se connectent à vous et vous déclenchez toutes les commandes flash</string>
+    <string name="party_mode_be_host">Être Hôte</string>
+    <string name="party_mode_join_title">Rejoindre une Salle</string>
+    <string name="party_mode_join_desc">Se connecter à un hôte sur le même réseau</string>
+    <string name="party_mode_scan_rooms">Rechercher des Salles</string>
+    <string name="party_mode_room_name">Nom de la Salle</string>
+    <string name="party_mode_start_room">Démarrer la Salle</string>
+    <string name="party_mode_room_active">La salle est active - d\'autres peuvent rejoindre maintenant</string>
+    <string name="party_mode_boost_auto_started">Service d\'amplification démarré automatiquement</string>
+    <string name="party_mode_device_name_optional">Nom de l\'Appareil (facultatif)</string>
+    <string name="party_mode_scanning">Recherche de salles…</string>
+    <string name="party_mode_rooms_found">%1$d salle(s) trouvée(s)</string>
+    <string name="party_mode_join">Rejoindre</string>
+    <string name="party_mode_hosting">Hébergement</string>
+    <string name="party_mode_connected">Connecté</string>
+    <string name="party_mode_connected_devices">Appareils Connectés</string>
+
+<string name="party_mode_torch">Flash Physique</string>
+    <string name="party_mode_torch_desc">Utiliser le flash de la caméra (facultatif)</string>
+    <string name="party_mode_flash_mode">Mode Flash</string>
+    <string name="party_mode_screen_only">Écran</string>
+    <string name="party_mode_torch_only">Flash</string>
+    <string name="party_mode_both">Les Deux</string>
+    <string name="party_mode_flash_color">Couleur du Flash</string>
+    <string name="party_mode_duration">Durée</string>
+    <string name="party_mode_repeat">Répéter</string>
+    <string name="party_mode_trigger_flash">DÉCLENCHER LE FLASH</string>
+    <string name="party_mode_waiting_for_host">En attente de la commande de l\'hôte…</string>
+    <string name="party_mode_active">Mode Fête Actif - %1$s</string>
+    <string name="party_mode_waiting">En attente d\'appareils</string>
+    <string name="party_mode_one_device">1 appareil connecté</string>
+    <string name="party_mode_n_devices">%1$d appareils connectés</string>
+    <string name="party_mode_channel_name">Mode Fête</string>
+    <string name="party_mode_channel_desc">Notification affichée lorsque le mode fête de synchronisation de flash est actif</string>
+    <string name="party_mode_disconnected_title">Déconnecté de la Salle</string>
+    <string name="party_mode_disconnection_reason">Raison de la Déconnexion:</string>
+    <string name="party_mode_diagnostic_copied">Informations de diagnostic copiées dans le presse-papiers</string>
+    <string name="party_mode_copy_diagnostic">Copier les informations de diagnostic</string>
+    <string name="party_mode_disconnection_hint">Appuyez sur la boîte ci-dessus pour copier les informations de diagnostic</string>
 </resources>

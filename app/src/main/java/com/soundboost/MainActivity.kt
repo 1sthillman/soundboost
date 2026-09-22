@@ -93,6 +93,45 @@ class MainActivity : ComponentActivity() {
         syncViewModel.setAudioAnalysisFlow(viewModel.audioAnalysis)
         android.util.Log.d("MainActivity", "🔗 Connected audio analysis flow to SyncViewModel")
         
+        // CRITICAL: Set boost enable callback so party mode can trigger boost
+        // When host creates a room, this callback will properly start audio analyzer
+        syncViewModel.setBoostEnableCallback {
+            android.util.Log.d("MainActivity", "🔥🔥🔥 BOOST CALLBACK TRIGGERED by party mode")
+            android.util.Log.d("MainActivity", "Current boost state: ${viewModel.uiState.value.isBoostEnabled}")
+            
+            // CRITICAL FIX: ALWAYS check if boost service is actually running
+            // uiState.isBoostEnabled might be true but service might not be running!
+            // Force toggle to ensure service starts
+            if (!viewModel.uiState.value.isBoostEnabled) {
+                android.util.Log.d("MainActivity", "⚡ Boost is OFF - starting it now")
+                
+                // CRITICAL: Check if permission already granted - if yes, start immediately!
+                if (androidx.core.content.ContextCompat.checkSelfPermission(
+                        this,
+                        Manifest.permission.RECORD_AUDIO
+                    ) == android.content.pm.PackageManager.PERMISSION_GRANTED
+                ) {
+                    android.util.Log.d("MainActivity", "✅ Mikrofon izni zaten var - Boost başlatılıyor")
+                    viewModel.toggleBoost()
+                    android.util.Log.d("MainActivity", "✅ toggleBoost() called, new state should be: true")
+                } else {
+                    android.util.Log.d("MainActivity", "⚠️ Mikrofon izni gerekli - İzin isteniyor")
+                    checkAndRequestMicrophonePermission()
+                }
+            } else {
+                android.util.Log.d("MainActivity", "ℹ️ Boost state is TRUE - verifying audio analyzer is running...")
+                // State says true but we need to ensure audio visualization is actually running
+                // Check if visualization is already running, if not start it
+                if (!viewModel.isAudioVisualizationRunning()) {
+                    android.util.Log.d("MainActivity", "⚠️ Audio visualization NOT running - starting it now")
+                    viewModel.startAudioVisualizationIfNeeded()
+                } else {
+                    android.util.Log.d("MainActivity", "✅ Audio visualization already running")
+                }
+            }
+        }
+        android.util.Log.d("MainActivity", "🔗 Connected boost enable callback to SyncViewModel")
+        
         // CRITICAL: Apply saved language BEFORE setting content
         // This ensures proper system language detection and immediate effect
         com.soundboost.data.LanguageManager.applyLanguage(this)
@@ -660,6 +699,7 @@ fun MainScreen(viewModel: MainViewModel, syncViewModel: SyncViewModel) {
                 val syncViewModel: SyncViewModel by activity?.viewModels() ?: return@composable
                 FlashControlScreen(
                     viewModel = syncViewModel,
+                    state = uiState,
                     onBack = {
                         navController.popBackStack()
                         navController.popBackStack() // Go back to settings, not room screen

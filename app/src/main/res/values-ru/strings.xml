@@ -229,6 +229,7 @@
     <string name="party_mode_room_name">Название Комнаты</string>
     <string name="party_mode_start_room">Запустить Комнату</string>
     <string name="party_mode_room_active">Комната активна - другие могут присоединиться</string>
+    <string name="party_mode_boost_auto_started">Сервис усиления автоматически запущен</string>
     <string name="party_mode_device_name_optional">Имя Устройства (необязательно)</string>
     <string name="party_mode_scanning">Поиск комнат…</string>
     <string name="party_mode_rooms_found">Найдено комнат: %1$d</string>

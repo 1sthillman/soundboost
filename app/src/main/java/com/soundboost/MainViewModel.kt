@@ -66,17 +66,21 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
     
     fun toggleBoost(onRequestPermission: (() -> Unit)? = null) {
+        android.util.Log.d("MainViewModel", "🔥🔥🔥 toggleBoost() CALLED")
         viewModelScope.launch {
             val current = uiState.value.isBoostEnabled
             val newState = !current
             android.util.Log.d("MainViewModel", "toggleBoost: $current -> $newState")
+            android.util.Log.d("MainViewModel", "Saving to prefs: isBoostEnabled=$newState")
             
             prefs.setBoostEnabled(newState)
             
             val intent = Intent(getApplication(), BoostForegroundService::class.java).apply {
                 action = if (newState) "START_BOOST" else "STOP_BOOST"
             }
+            android.util.Log.d("MainViewModel", "Starting BoostForegroundService with action: ${intent.action}")
             getApplication<Application>().startService(intent)
+            android.util.Log.d("MainViewModel", "✅ Service intent sent")
             
             if (newState) {
                 android.util.Log.d("MainViewModel", "Starting audio visualization...")
@@ -85,6 +89,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 android.util.Log.d("MainViewModel", "Stopping audio visualization...")
                 stopAudioVisualization()
             }
+            
+            android.util.Log.d("MainViewModel", "✅ toggleBoost() COMPLETED, new state: $newState")
         }
     }
     
@@ -303,6 +309,27 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         android.util.Log.d("MainViewModel", "Stopping audio visualization")
         analysisJob?.cancel()
         audioAnalyzer.stopAnalysis()
+    }
+    
+    /**
+     * Check if audio visualization is currently running
+     */
+    fun isAudioVisualizationRunning(): Boolean {
+        return analysisJob?.isActive == true
+    }
+    
+    /**
+     * Start audio visualization if not already running
+     * Used by party mode to ensure audio analysis is active
+     */
+    fun startAudioVisualizationIfNeeded() {
+        android.util.Log.d("MainViewModel", "🎵 startAudioVisualizationIfNeeded() called")
+        if (!isAudioVisualizationRunning()) {
+            android.util.Log.d("MainViewModel", "Starting audio visualization...")
+            startAudioVisualization()
+        } else {
+            android.util.Log.d("MainViewModel", "Audio visualization already running, skipping")
+        }
     }
     
     fun onAppRated() {

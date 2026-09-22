@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">معزز الصوت</string>
     <string name="volume_boost">تعزيز الصوت</string>
@@ -300,4 +300,48 @@
     <string name="close">إغلاق</string>
     
     <string name="language_italian">الإيطالية</string>
+    
+    <!-- Party Mode / Flash-Sync (v1.5.0) - العربية -->
+    <string name="party_mode_title">وضع الحفلة</string>
+    <string name="party_mode_subtitle">مزامنة جميع الهواتف على نفس الواي فاي للوميض معًا</string>
+    <string name="party_mode_host_title">إنشاء غرفة</string>
+    <string name="party_mode_host_desc">تصبح المضيف، تتصل الأجهزة الأخرى بك وتقوم بتشغيل جميع أوامر الفلاش</string>
+    <string name="party_mode_be_host">كن مضيفًا</string>
+    <string name="party_mode_join_title">الانضمام إلى الغرفة</string>
+    <string name="party_mode_join_desc">الاتصال بمضيف على نفس الشبكة</string>
+    <string name="party_mode_scan_rooms">البحث عن الغرف</string>
+    <string name="party_mode_room_name">اسم الغرفة</string>
+    <string name="party_mode_start_room">بدء الغرفة</string>
+    <string name="party_mode_room_active">الغرفة نشطة - يمكن للآخرين الانضمام الآن</string>
+    <string name="party_mode_boost_auto_started">تم تشغيل خدمة التعزيز تلقائيًا</string>
+    <string name="party_mode_device_name_optional">اسم الجهاز (اختياري)</string>
+    <string name="party_mode_scanning">البحث عن الغرف…</string>
+    <string name="party_mode_rooms_found">تم العثور على %1$d غرفة</string>
+
+<string name="party_mode_join">انضم</string>
+    <string name="party_mode_hosting">الاستضافة</string>
+    <string name="party_mode_connected">متصل</string>
+    <string name="party_mode_connected_devices">الأجهزة المتصلة</string>
+    <string name="party_mode_torch">فلاش فعلي</string>
+    <string name="party_mode_torch_desc">استخدام فلاش الكاميرا (اختياري)</string>
+    <string name="party_mode_flash_mode">وضع الفلاش</string>
+    <string name="party_mode_screen_only">الشاشة</string>
+    <string name="party_mode_torch_only">فلاش</string>
+    <string name="party_mode_both">كلاهما</string>
+    <string name="party_mode_flash_color">لون الفلاش</string>
+    <string name="party_mode_duration">المدة</string>
+    <string name="party_mode_repeat">تكرار</string>
+    <string name="party_mode_trigger_flash">تشغيل الفلاش</string>
+    <string name="party_mode_waiting_for_host">في انتظار أمر المضيف…</string>
+    <string name="party_mode_active">وضع الحفلة نشط - %1$s</string>
+    <string name="party_mode_waiting">في انتظار الأجهزة</string>
+    <string name="party_mode_one_device">جهاز واحد متصل</string>
+    <string name="party_mode_n_devices">%1$d أجهزة متصلة</string>
+    <string name="party_mode_channel_name">وضع الحفلة</string>
+    <string name="party_mode_channel_desc">الإشعار المعروض عند تنشيط وضع مزامنة الفلاش</string>
+    <string name="party_mode_disconnected_title">انقطع الاتصال من الغرفة</string>
+    <string name="party_mode_disconnection_reason">سبب قطع الاتصال:</string>
+    <string name="party_mode_diagnostic_copied">تم نسخ معلومات التشخيص إلى الحافظة</string>
+    <string name="party_mode_copy_diagnostic">نسخ معلومات التشخيص</string>
+    <string name="party_mode_disconnection_hint">اضغط على المربع أعلاه لنسخ معلومات التشخيص</string>
 </resources>

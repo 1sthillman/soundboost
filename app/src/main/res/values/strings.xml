@@ -460,6 +460,7 @@
     <string name="party_mode_room_name">Room Name</string>
     <string name="party_mode_start_room">Start Room</string>
     <string name="party_mode_room_active">Room is active - others can join now</string>
+    <string name="party_mode_boost_auto_started">Boost service auto-started</string>
     <string name="party_mode_device_name_optional">Device Name (optional)</string>
     <string name="party_mode_scanning">Scanning for rooms…</string>
     <string name="party_mode_rooms_found">%1$d room(s) found</string>
@@ -467,8 +468,16 @@
     <string name="party_mode_hosting">Hosting</string>
     <string name="party_mode_connected">Connected</string>
     <string name="party_mode_connected_devices">Connected Devices</string>
+    <string name="party_mode_devices_synced">devices synced</string>
     <string name="party_mode_torch">Physical Flash</string>
     <string name="party_mode_torch_desc">Use camera flash (optional)</string>
+    <string name="party_mode_bass_flash_sync">Bass-Sync Flash</string>
+    <string name="party_mode_bass_sync_active">ACTIVE - Syncing with bass</string>
+    <string name="party_mode_bass_sync_inactive">Auto flash with bass beats</string>
+    <string name="party_mode_intensity_level">Intensity Level</string>
+    <string name="party_mode_intensity_light">Light</string>
+    <string name="party_mode_intensity_normal">Normal</string>
+    <string name="party_mode_intensity_strong">Strong</string>
     <string name="party_mode_flash_mode">Flash Mode</string>
     <string name="party_mode_screen_only">Screen</string>
     <string name="party_mode_torch_only">Flash</string>

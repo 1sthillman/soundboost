@@ -9,6 +9,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.IBinder
+import android.os.PowerManager
 import androidx.core.app.NotificationCompat
 import com.soundboost.R
 
@@ -21,10 +22,13 @@ import com.soundboost.R
  *  - İkisi bağımsız start/stop edilebilmeli (biri diğerini durdurmamalı)
  *
  * MainViewModel bu servisin state'ini SyncViewModel üzerinden bağımsız tutar.
+ * 
+ * ✅ CRITICAL: WakeLock ile kilitli ekranda çalışır
  */
 class SyncForegroundService : Service() {
 
     private val binder = LocalBinder()
+    private var wakeLock: PowerManager.WakeLock? = null
 
     inner class LocalBinder : android.os.Binder() {
         fun getService(): SyncForegroundService = this@SyncForegroundService
@@ -32,13 +36,34 @@ class SyncForegroundService : Service() {
 
     override fun onBind(intent: Intent?): IBinder = binder
 
+    override fun onCreate() {
+        super.onCreate()
+        acquireWakeLock()
+    }
+
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         val roomName = intent?.getStringExtra(EXTRA_ROOM_NAME) ?: DEFAULT_ROOM_LABEL
         val deviceCount = intent?.getIntExtra(EXTRA_DEVICE_COUNT, 0) ?: 0
 
         ensureNotificationChannel()
         startForeground(NOTIFICATION_ID, buildNotification(roomName, deviceCount))
-        return START_STICKY
+        return START_STICKY  // Sistem öldürürse otomatik yeniden başlasın
+    }
+
+    /**
+     * ✅ CRITICAL: WakeLock ile kilitli ekranda çalışmasını sağlar
+     * CPU uyanık kalır, network bağlantısı kesilmez
+     */
+    private fun acquireWakeLock() {
+        if (wakeLock?.isHeld == true) return
+        
+        val powerManager = getSystemService(Context.POWER_SERVICE) as PowerManager
+        wakeLock = powerManager.newWakeLock(
+            PowerManager.PARTIAL_WAKE_LOCK,
+            "SoundBoost:SyncPartyModeWakeLock"
+        ).apply {
+            acquire(10 * 60 * 1000L) // 10 dakika max (güvenlik için)
+        }
     }
 
     /** Bağlı cihaz sayısı değiştikçe bildirimi günceller — sabit metin bırakmamak için. */
@@ -68,6 +93,8 @@ class SyncForegroundService : Service() {
             .setOngoing(true)
             .setContentIntent(contentIntent)
             .setPriority(NotificationCompat.PRIORITY_LOW)
+            .setCategory(NotificationCompat.CATEGORY_SERVICE)
+            .setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
             .build()
     }
 
@@ -87,8 +114,18 @@ class SyncForegroundService : Service() {
     }
 
     override fun onDestroy() {
+        releaseWakeLock()
         super.onDestroy()
         stopForeground(STOP_FOREGROUND_REMOVE)
+    }
+
+    private fun releaseWakeLock() {
+        wakeLock?.let {
+            if (it.isHeld) {
+                it.release()
+            }
+        }
+        wakeLock = null
     }
 
     companion object {

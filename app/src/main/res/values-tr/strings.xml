@@ -357,6 +357,7 @@
     <string name="party_mode_room_name">Oda Adı</string>
     <string name="party_mode_start_room">Odayı Başlat</string>
     <string name="party_mode_room_active">Oda aktif - diğerleri şimdi katılabilir</string>
+    <string name="party_mode_boost_auto_started">Boost servisi otomatik başlatıldı</string>
     <string name="party_mode_device_name_optional">Cihaz Adı (opsiyonel)</string>
     <string name="party_mode_scanning">Odalar aranıyor…</string>
     <string name="party_mode_rooms_found">%1$d oda bulundu</string>
@@ -364,8 +365,16 @@
     <string name="party_mode_hosting">Host Modunda</string>
     <string name="party_mode_connected">Bağlandı</string>
     <string name="party_mode_connected_devices">Bağlı Cihazlar</string>
+    <string name="party_mode_devices_synced">cihaz senkronize</string>
     <string name="party_mode_torch">Fiziksel Flaş</string>
     <string name="party_mode_torch_desc">Kamera flaşını kullan (opsiyonel)</string>
+    <string name="party_mode_bass_flash_sync">Bass-Senkron Flaş</string>
+    <string name="party_mode_bass_sync_active">AKTİF - Bass ile senkronize</string>
+    <string name="party_mode_bass_sync_inactive">Bass vuruşlarıyla otomatik flaş</string>
+    <string name="party_mode_intensity_level">Yoğunluk Seviyesi</string>
+    <string name="party_mode_intensity_light">Hafif</string>
+    <string name="party_mode_intensity_normal">Normal</string>
+    <string name="party_mode_intensity_strong">Güçlü</string>
     <string name="party_mode_flash_mode">Flaş Modu</string>
     <string name="party_mode_screen_only">Ekran</string>
     <string name="party_mode_torch_only">Flaş</string>

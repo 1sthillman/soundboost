@@ -46,6 +46,15 @@ class SyncViewModel(application: Application) : AndroidViewModel(application) {
 
     private var syncServer: SyncServer? = null
     private val syncClient = SyncClient()
+    
+    // CRITICAL: Callback to trigger boost from MainViewModel when hosting
+    private var onRequestBoostEnable: (() -> Unit)? = null
+    
+    // Auto-reconnect state for clients
+    private val _reconnectAttempts = MutableStateFlow(0)
+    private val _lastHostAddress = MutableStateFlow<String?>(null)
+    private val _lastPort = MutableStateFlow<Int?>(null)
+    private val _lastDeviceName = MutableStateFlow<String?>(null)
 
     private val _syncState = MutableStateFlow<SyncState>(SyncState.Idle)
     val syncState: StateFlow<SyncState> = _syncState.asStateFlow()
@@ -66,10 +75,12 @@ class SyncViewModel(application: Application) : AndroidViewModel(application) {
     val hasAcceptedFlashWarning: StateFlow<Boolean> = preferences.hasAcceptedFlashWarning
         .stateIn(viewModelScope, SharingStarted.Eagerly, false)
 
-    // Bass-sync flash mode (lazy access to shared instance)
-    val bassFlashEnabled: StateFlow<Boolean> get() = bassFlashSync?.isEnabled ?: MutableStateFlow(false)
-    val bassFlashIntensity: StateFlow<BassFlashlightSync.FlashIntensity> get() = 
-        bassFlashSync?.intensity ?: MutableStateFlow(BassFlashlightSync.FlashIntensity.NORMAL)
+    // Bass-sync flash mode - STABLE StateFlow references
+    private val _bassFlashEnabled = MutableStateFlow(false)
+    val bassFlashEnabled: StateFlow<Boolean> = _bassFlashEnabled.asStateFlow()
+    
+    private val _bassFlashIntensity = MutableStateFlow(BassFlashlightSync.FlashIntensity.NORMAL)
+    val bassFlashIntensity: StateFlow<BassFlashlightSync.FlashIntensity> = _bassFlashIntensity.asStateFlow()
 
     val isTorchSupported: Boolean get() = bassFlashSync?.hasFlashSupport() ?: false
 
@@ -88,6 +99,18 @@ class SyncViewModel(application: Application) : AndroidViewModel(application) {
     fun setBassFlashSync(instance: BassFlashlightSync) {
         bassFlashSync = instance
         Log.d(TAG, "🔗 Shared BassFlashlightSync instance connected")
+        
+        // CRITICAL: Sync state from shared instance to our StateFlows
+        viewModelScope.launch {
+            instance.isEnabled.collect { enabled ->
+                _bassFlashEnabled.value = enabled
+            }
+        }
+        viewModelScope.launch {
+            instance.intensity.collect { intensity ->
+                _bassFlashIntensity.value = intensity
+            }
+        }
     }
     
     /**
@@ -98,7 +121,17 @@ class SyncViewModel(application: Application) : AndroidViewModel(application) {
         Log.d(TAG, "🎵 Audio analysis flow connected")
     }
     
-    // Use SHARED BassFlashSync instance
+    /**
+     * CRITICAL: Set callback to request boost enable from MainViewModel
+     * This is needed when host creates a party room - we need to trigger
+     * the actual boost service through MainViewModel (not just preferences)
+     */
+    fun setBoostEnableCallback(callback: () -> Unit) {
+        onRequestBoostEnable = callback
+        Log.d(TAG, "🔗 Boost enable callback connected")
+    }
+    
+    // Use SHARED BassFlashSync instance  
     fun toggleBassFlashSync(enabled: Boolean) {
         val sync = bassFlashSync
         if (sync == null) {
@@ -112,17 +145,40 @@ class SyncViewModel(application: Application) : AndroidViewModel(application) {
             return
         }
         
-        if (enabled) {
-            sync.start(flow)
-            Log.d(TAG, "✅ Bass flash sync STARTED (shared instance)")
-        } else {
+        Log.d(TAG, "🔄 Bass flash toggle called: requested=$enabled, current=${sync.isEnabled.value}")
+        
+        // CRITICAL FIX: Bass-sync AÇILIRKEN boost'u otomatik başlat
+        if (enabled && !sync.isEnabled.value) {
+            Log.d(TAG, "🎚️ REQUESTING BOOST ENABLE via callback...")
+            
+            // ÖNCE boost'u aç (audio analiz başlasın)
+            val callback = onRequestBoostEnable
+            if (callback != null) {
+                callback.invoke()
+                Log.d(TAG, "✅ Boost enable callback invoked successfully")
+            } else {
+                Log.e(TAG, "❌ CRITICAL: Boost callback is NULL! Cannot start boost.")
+            }
+            
+            // Biraz bekle ki audio flow başlasın
+            viewModelScope.launch {
+                delay(500)  // Audio analyzer başlaması için kısa bekleme
+                sync.start(flow)
+                _bassFlashEnabled.value = true  // Update our StateFlow
+                Log.d(TAG, "✅ Bass flash sync STARTED (shared instance)")
+            }
+        } else if (!enabled) {
             sync.stop()
+            _bassFlashEnabled.value = false  // Update our StateFlow
             Log.d(TAG, "⏹️ Bass flash sync STOPPED (shared instance)")
+        } else {
+            Log.d(TAG, "⚠️ Bass flash already in requested state, no action needed")
         }
     }
 
     fun setBassFlashIntensity(intensity: BassFlashlightSync.FlashIntensity) {
         bassFlashSync?.setIntensity(intensity)
+        _bassFlashIntensity.value = intensity
     }
 
     // ---------- Host flow ----------
@@ -156,31 +212,22 @@ class SyncViewModel(application: Application) : AndroidViewModel(application) {
     /**
      * HOST oda kurduğunda ses yükseltici servisi otomatik başlat.
      * Böylece host geri dönüp servisi manuel başlatmak zorunda kalmaz.
+     * 
+     * CRITICAL FIX: BoostForegroundService başlatmak yetmez!
+     * Audio analyzer MainViewModel'de olduğu için boost'u oradan aktif etmeliyiz.
      */
     private fun startBoostServiceIfNotRunning() {
         viewModelScope.launch {
-            val context = getApplication<Application>()
+            Log.d(TAG, "🚀 AUTO-START: Triggering MainViewModel boost...")
             
-            // CRITICAL: Set boost enabled preference first!
-            val prefs = com.soundboost.data.BoostPreferences(context)
-            prefs.setBoostEnabled(true)
-            Log.d(TAG, "✅ Boost preference set to true")
-            
-            // Start the foreground service
-            val intent = android.content.Intent(context, com.soundboost.service.BoostForegroundService::class.java).apply {
-                action = "START_BOOST"
-            }
-            
-            try {
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                    context.startForegroundService(intent)
-                } else {
-                    context.startService(intent)
-                }
-                Log.d(TAG, "✅ Boost service auto-started for host")
-                
-            } catch (e: Exception) {
-                Log.e(TAG, "❌ Failed to auto-start boost service", e)
+            // CRITICAL: Trigger MainViewModel's toggleBoost() via callback
+            // This properly starts the audio analyzer and all audio processing
+            val callback = onRequestBoostEnable
+            if (callback != null) {
+                callback.invoke()
+                Log.d(TAG, "✅ Boost enable request sent to MainViewModel")
+            } else {
+                Log.e(TAG, "❌ Cannot start boost - callback not set! Host must manually enable boost.")
             }
         }
     }
@@ -324,8 +371,20 @@ class SyncViewModel(application: Application) : AndroidViewModel(application) {
 
     fun joinRoom(hostAddress: String, port: Int = SyncServer.DEFAULT_PORT, deviceName: String) {
         Log.d(TAG, "🔌 Joining room at $hostAddress:$port as $deviceName")
+        
+        // Store connection info for auto-reconnect
+        _lastHostAddress.value = hostAddress
+        _lastPort.value = port
+        _lastDeviceName.value = deviceName
+        
         _syncState.value = SyncState.Joining
         syncClient.connect(hostAddress, port, deviceName)
+        
+        // CRITICAL: Start foreground service for CLIENT too!
+        // This keeps the client alive in background and prevents disconnection
+        val context = getApplication<Application>()
+        SyncForegroundService.start(context, "Connecting to room...", 0)
+        Log.d(TAG, "✅ CLIENT: Foreground service started for stable connection")
 
         // Monitor connection state
         viewModelScope.launch {
@@ -335,12 +394,23 @@ class SyncViewModel(application: Application) : AndroidViewModel(application) {
                     is SyncConnectionState.Connected -> {
                         Log.d(TAG, "✅ CONNECTED to room: ${state.roomName}")
                         _disconnectionReason.value = null  // Clear previous reason
+                        _reconnectAttempts.value = 0  // Reset reconnect counter
+                        
+                        // CRITICAL: Update foreground service notification with room name
+                        val context = getApplication<Application>()
+                        SyncForegroundService.start(context, state.roomName, 0)
+                        Log.d(TAG, "✅ CLIENT: Updated notification with room name")
+                        
                         SyncState.Connected(state.roomName)
                     }
                     is SyncConnectionState.Connecting -> SyncState.Joining
                     is SyncConnectionState.Error -> {
                         Log.e(TAG, "❌ Connection error: ${state.message}")
                         _disconnectionReason.value = state.message
+                        
+                        // Stop foreground service on error
+                        SyncForegroundService.stop(getApplication())
+                        
                         SyncState.Error(state.message)
                     }
                     SyncConnectionState.Disconnected -> {
@@ -348,9 +418,44 @@ class SyncViewModel(application: Application) : AndroidViewModel(application) {
                         val reason = syncClient.getDisconnectionDiagnostic()
                         _disconnectionReason.value = reason
                         Log.w(TAG, "⚠️ DISCONNECTED: $reason")
+                        
+                        // AUTO-RECONNECT: Try to reconnect automatically
+                        if (_reconnectAttempts.value < MAX_RECONNECT_ATTEMPTS) {
+                            val attempt = _reconnectAttempts.value + 1
+                            _reconnectAttempts.value = attempt
+                            val delay = RECONNECT_DELAY_MS * attempt  // Exponential backoff
+                            
+                            Log.w(TAG, "🔄 Auto-reconnect attempt $attempt/$MAX_RECONNECT_ATTEMPTS in ${delay}ms...")
+                            
+                            viewModelScope.launch {
+                                delay(delay)
+                                val host = _lastHostAddress.value
+                                val port = _lastPort.value ?: SyncServer.DEFAULT_PORT
+                                val name = _lastDeviceName.value
+                                
+                                if (host != null && name != null) {
+                                    Log.d(TAG, "🔄 Attempting reconnect to $host:$port")
+                                    syncClient.connect(host, port, name)
+                                } else {
+                                    Log.e(TAG, "❌ Cannot reconnect: missing host/name info")
+                                    // Stop foreground service if can't reconnect
+                                    SyncForegroundService.stop(getApplication())
+                                }
+                            }
+                            
+                            SyncState.Joining  // Show "connecting" state during reconnect
+                        } else {
+                            Log.e(TAG, "❌ Max reconnect attempts reached, giving up")
+                            // Stop foreground service after max attempts
+                            SyncForegroundService.stop(getApplication())
+                            SyncState.Idle
+                        }
+                    }
+                    SyncConnectionState.Idle -> {
+                        // Stop foreground service when idle
+                        SyncForegroundService.stop(getApplication())
                         SyncState.Idle
                     }
-                    SyncConnectionState.Idle -> SyncState.Idle
                 }
             }
         }
@@ -390,9 +495,21 @@ class SyncViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun leaveRoom() {
-        Log.d(TAG, "👋 Leaving room")
+        Log.d(TAG, "👋 Leaving room (manual)")
         _disconnectionReason.value = null  // Clear reason on manual leave
+        
+        // Clear reconnect state (manual leave = no auto-reconnect)
+        _reconnectAttempts.value = 0
+        _lastHostAddress.value = null
+        _lastPort.value = null
+        _lastDeviceName.value = null
+        
         syncClient.disconnect()
+        
+        // CRITICAL: Stop foreground service when leaving
+        SyncForegroundService.stop(getApplication())
+        Log.d(TAG, "✅ CLIENT: Foreground service stopped, reconnect disabled")
+        
         _syncState.value = SyncState.Idle
     }
     
@@ -436,6 +553,8 @@ class SyncViewModel(application: Application) : AndroidViewModel(application) {
 
     companion object {
         private const val TAG = "SyncViewModel"
+        private const val MAX_RECONNECT_ATTEMPTS = 5  // Try 5 times before giving up
+        private const val RECONNECT_DELAY_MS = 2000L  // Start with 2s, exponential backoff
     }
 }
 
