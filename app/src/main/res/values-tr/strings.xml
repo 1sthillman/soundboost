@@ -301,4 +301,92 @@
     <string name="gain_warning_cancel">İptal</string>
     <string name="gain_warning_agree_checkbox">Riskleri anlıyorum ve devam etmek istiyorum</string>
     <string name="language_italian">İtalyanca</string>
+    
+    <!-- NEW v1.5.0: Settings Backup & Restore -->
+    <string name="backup_restore_title">Yedekleme ve Geri Yükleme</string>
+    <string name="backup_export_title">Ayarları Dışa Aktar</string>
+    <string name="backup_export_desc">Mevcut ayarları dosyaya kaydet</string>
+    <string name="backup_export_button">Şimdi Dışa Aktar</string>
+    <string name="backup_import_title">Ayarları İçe Aktar</string>
+    <string name="backup_import_desc">Yedek dosyadan geri yükle</string>
+    <string name="backup_import_button">Dosyadan İçe Aktar</string>
+    <string name="backup_success_export">Ayarlar başarıyla dışa aktarıldı!</string>
+    <string name="backup_success_import">Ayarlar başarıyla içe aktarıldı!</string>
+    <string name="backup_error_export">Dışa aktarma başarısız</string>
+    <string name="backup_error_import">İçe aktarma başarısız</string>
+    <string name="backup_warning">⚠️ Uyarı: Bu işlem TÜM mevcut ayarları yedek dosyasıyla değiştirecek.</string>
+    <string name="backup_info_title">İpuçları:</string>
+    <string name="backup_info_desc">• Büyük değişikliklerden önce yedek oluşturun\n• Ayarlarınızı arkadaşlarınızla paylaşın\n• Cihazlar arasında ayarları taşıyın\n• Uygulamayı yeniden yüklemeden önce yedeği saklayın</string>
+    
+    <!-- NEW v1.5.0: Per-App Profiles -->
+    <string name="app_profiles_title">Uygulama Başına Profiller</string>
+    <string name="app_profiles_desc">Her uygulama için farklı ayarlar</string>
+    <string name="app_profiles_empty">Hiç Uygulama Profili Yok</string>
+    <string name="app_profiles_empty_desc">Her uygulama için özel ses ayarları oluşturun</string>
+    <string name="app_profiles_add">İlk Profili Ekle</string>
+    <string name="app_profiles_select">Uygulama Seç</string>
+    <string name="app_profiles_create">Profil Oluştur</string>
+    <string name="app_profiles_edit">Düzenle</string>
+    <string name="app_profiles_delete">Sil</string>
+    <string name="app_profiles_applied">Profil uygulandı: %s</string>
+    
+    <!-- NEW v1.5.0: Bluetooth Profiles -->
+    <string name="bluetooth_profiles_title">Bluetooth Profilleri</string>
+    <string name="bluetooth_profiles_desc">Cihaz başına otomatik geçiş</string>
+    <string name="bluetooth_profiles_empty">Hiç Bluetooth Profili Yok</string>
+    <string name="bluetooth_profiles_empty_desc">Bir Bluetooth cihaz bağlayarak profil oluşturun</string>
+    <string name="bluetooth_profiles_how_title">Nasıl çalışır:</string>
+    <string name="bluetooth_profiles_how_desc">1. Bluetooth kulaklık/hoparlör bağlayın\n2. Ayarları kaydetmek için bildirim göreceksiniz\n3. Yeniden bağlandığında ayarlar otomatik uygulanır</string>
+    <string name="bluetooth_profiles_save_prompt">Bu cihaz için ayarları hatırlayalım mı?</string>
+    <string name="bluetooth_profiles_last_used">Son kullanım: %s</string>
+    
+    <!-- Widget (v1.5.0) -->
+    <string name="widget_rezonans_name">Ses Yükseltici Widget</string>
+    <string name="widget_increase_volume">Sesi Artır</string>
+    <string name="widget_decrease_volume">Sesi Azalt</string>
+    
+    <!-- Parti Modu / Flash-Sync (v1.5.0) -->
+    <string name="party_mode_title">Parti Modu</string>
+    <string name="party_mode_subtitle">Aynı Wi-Fi\'deki tüm telefonları senkronize flaşa bağla</string>
+    <string name="party_mode_host_title">Oda Kur</string>
+    <string name="party_mode_host_desc">Sen host olursun, diğer cihazlar sana bağlanır ve tüm flaş komutlarını sen tetiklersin</string>
+    <string name="party_mode_be_host">Host Ol</string>
+    <string name="party_mode_join_title">Odaya Katıl</string>
+    <string name="party_mode_join_desc">Aynı ağdaki bir host\'a bağlan</string>
+    <string name="party_mode_scan_rooms">Odaları Tara</string>
+    <string name="party_mode_room_name">Oda Adı</string>
+    <string name="party_mode_start_room">Odayı Başlat</string>
+    <string name="party_mode_room_active">Oda aktif - diğerleri şimdi katılabilir</string>
+    <string name="party_mode_device_name_optional">Cihaz Adı (opsiyonel)</string>
+    <string name="party_mode_scanning">Odalar aranıyor…</string>
+    <string name="party_mode_rooms_found">%1$d oda bulundu</string>
+    <string name="party_mode_join">Katıl</string>
+    <string name="party_mode_hosting">Host Modunda</string>
+    <string name="party_mode_connected">Bağlandı</string>
+    <string name="party_mode_connected_devices">Bağlı Cihazlar</string>
+    <string name="party_mode_torch">Fiziksel Flaş</string>
+    <string name="party_mode_torch_desc">Kamera flaşını kullan (opsiyonel)</string>
+    <string name="party_mode_flash_mode">Flaş Modu</string>
+    <string name="party_mode_screen_only">Ekran</string>
+    <string name="party_mode_torch_only">Flaş</string>
+    <string name="party_mode_both">İkisi</string>
+    <string name="party_mode_flash_color">Flaş Rengi</string>
+    <string name="party_mode_duration">Süre</string>
+    <string name="party_mode_repeat">Tekrar</string>
+    <string name="party_mode_trigger_flash">FLAŞI TETİKLE</string>
+    <string name="party_mode_waiting_for_host">Host komutu bekleniyor…</string>
+    <string name="party_mode_active">Parti Modu Aktif - %1$s</string>
+    <string name="party_mode_waiting">Cihazlar bekleniyor</string>
+    <string name="party_mode_one_device">1 cihaz bağlı</string>
+    <string name="party_mode_n_devices">%1$d cihaz bağlı</string>
+    <string name="party_mode_channel_name">Parti Modu</string>
+    <string name="party_mode_channel_desc">Flash-sync parti modu aktifken gösterilen bildirim</string>
+    <string name="party_mode_disconnected_title">Odadan Atıldınız</string>
+    <string name="party_mode_disconnection_reason">Bağlantı Kopma Nedeni:</string>
+    <string name="party_mode_diagnostic_copied">Tanı bilgisi panoya kopyalandı</string>
+    <string name="party_mode_copy_diagnostic">Tanı bilgisini kopyala</string>
+    <string name="party_mode_disconnection_hint">Tanı bilgisini kopyalamak için yukarıdaki kutuya dokunun</string>
+    <string name="common_back">Geri</string>
+    <string name="common_ok">Tamam</string>
 </resources>
+

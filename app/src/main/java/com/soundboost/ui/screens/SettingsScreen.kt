@@ -32,6 +32,10 @@ fun SettingsScreen(
     onRateApp: () -> Unit,
     onShareApp: () -> Unit,
     onDarkModeChanged: (Boolean?) -> Unit,
+    onOpenBackup: () -> Unit,
+    onOpenAppProfiles: () -> Unit,
+    onOpenBluetoothProfiles: () -> Unit,
+    onOpenPartyMode: () -> Unit,
     onBack: () -> Unit
 ) {
     val themeColors = getThemeColors(state.theme, state.colorAccent)
@@ -245,6 +249,74 @@ fun SettingsScreen(
                 modifier = Modifier.fillMaxWidth()
             )
             
+            // NEW v1.5.0: Settings Backup & Restore
+            ModernSettingsCard(
+                title = stringResource(R.string.backup_restore_title),
+                description = stringResource(R.string.backup_export_desc),
+                icon = Icons.Default.Backup,
+                accentColor = themeColors.accent2,
+                surfaceColor = themeColors.surfaceElevated,
+                onClick = onOpenBackup,
+                endContent = {
+                    Icon(
+                        Icons.Default.ChevronRight,
+                        contentDescription = null,
+                        tint = themeColors.onSurfaceVariant
+                    )
+                }
+            )
+            
+            // NEW v1.5.0: Per-App Profiles
+            ModernSettingsCard(
+                title = stringResource(R.string.app_profiles_title),
+                description = stringResource(R.string.app_profiles_desc),
+                icon = Icons.Default.Apps,
+                accentColor = androidx.compose.ui.graphics.Color(0xFF9C27B0),
+                surfaceColor = themeColors.surfaceElevated,
+                onClick = onOpenAppProfiles,
+                endContent = {
+                    Icon(
+                        Icons.Default.ChevronRight,
+                        contentDescription = null,
+                        tint = themeColors.onSurfaceVariant
+                    )
+                }
+            )
+            
+            // NEW v1.5.0: Bluetooth Profiles
+            ModernSettingsCard(
+                title = stringResource(R.string.bluetooth_profiles_title),
+                description = stringResource(R.string.bluetooth_profiles_desc),
+                icon = Icons.Default.Bluetooth,
+                accentColor = androidx.compose.ui.graphics.Color(0xFF2196F3),
+                surfaceColor = themeColors.surfaceElevated,
+                onClick = onOpenBluetoothProfiles,
+                endContent = {
+                    Icon(
+                        Icons.Default.ChevronRight,
+                        contentDescription = null,
+                        tint = themeColors.onSurfaceVariant
+                    )
+                }
+            )
+            
+            // NEW v1.5.0: Parti Modu (Flash-Sync)
+            ModernSettingsCard(
+                title = stringResource(R.string.party_mode_title),
+                description = stringResource(R.string.party_mode_subtitle),
+                icon = Icons.Default.Celebration,  // FIXED: PartyMode icon doesn't exist
+                accentColor = com.soundboost.ui.theme.CyberBlue,
+                surfaceColor = themeColors.surfaceElevated,
+                onClick = onOpenPartyMode,
+                endContent = {
+                    Icon(
+                        Icons.Default.ChevronRight,
+                        contentDescription = null,
+                        tint = themeColors.onSurfaceVariant
+                    )
+                }
+            )
+            
             // Help & FAQ
             ModernSettingsCard(
                 title = stringResource(R.string.help_and_faq),
@@ -295,6 +367,116 @@ fun SettingsScreen(
                     )
                 }
             )
+            
+            // Debug Log Viewer (for troubleshooting without ADB)
+            var showDebugDialog by remember { mutableStateOf(false) }
+            
+            ModernSettingsCard(
+                title = "Debug Log",
+                description = "View app logs for troubleshooting",
+                icon = Icons.Default.BugReport,
+                accentColor = androidx.compose.ui.graphics.Color(0xFFFF6B6B),
+                surfaceColor = themeColors.surfaceElevated,
+                onClick = { showDebugDialog = true },
+                endContent = {
+                    Icon(
+                        Icons.Default.ChevronRight,
+                        contentDescription = null,
+                        tint = themeColors.onSurfaceVariant
+                    )
+                }
+            )
+            
+            if (showDebugDialog) {
+                androidx.compose.ui.window.Dialog(
+                    onDismissRequest = { showDebugDialog = false }
+                ) {
+                    Surface(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .fillMaxHeight(0.8f),
+                        shape = MaterialTheme.shapes.large,
+                        color = themeColors.surface
+                    ) {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(Spacing.md)
+                        ) {
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    "Debug Log",
+                                    style = MaterialTheme.typography.titleLarge,
+                                    color = themeColors.onSurface
+                                )
+                                IconButton(onClick = { showDebugDialog = false }) {
+                                    Icon(
+                                        Icons.Default.Close,
+                                        contentDescription = "Close",
+                                        tint = themeColors.onSurface
+                                    )
+                                }
+                            }
+                            
+                            Text(
+                                "Log file: ${com.soundboost.debug.FileLogger.getLogPath() ?: "Not created"}",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = themeColors.onSurfaceVariant,
+                                modifier = Modifier.padding(bottom = Spacing.sm)
+                            )
+                            
+                            androidx.compose.foundation.layout.Box(
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .fillMaxWidth()
+                            ) {
+                                val scrollState = rememberScrollState()
+                                val logContent = remember { com.soundboost.debug.FileLogger.getLatestLogContent() }
+                                
+                                androidx.compose.foundation.text.selection.SelectionContainer {
+                                    Text(
+                                        text = logContent,
+                                        style = MaterialTheme.typography.bodySmall.copy(
+                                            fontFamily = androidx.compose.ui.text.font.FontFamily.Monospace
+                                        ),
+                                        color = themeColors.onSurface,
+                                        modifier = Modifier
+                                            .fillMaxSize()
+                                            .verticalScroll(scrollState)
+                                            .padding(Spacing.sm)
+                                    )
+                                }
+                            }
+                            
+                            Button(
+                                onClick = {
+                                    val logPath = com.soundboost.debug.FileLogger.getLogPath()
+                                    if (logPath != null) {
+                                        val shareIntent = android.content.Intent(android.content.Intent.ACTION_SEND).apply {
+                                            type = "text/plain"
+                                            putExtra(android.content.Intent.EXTRA_TEXT, com.soundboost.debug.FileLogger.getLatestLogContent())
+                                            putExtra(android.content.Intent.EXTRA_SUBJECT, "SoundBoost Debug Log")
+                                        }
+                                        context.startActivity(android.content.Intent.createChooser(shareIntent, "Share Log"))
+                                    }
+                                },
+                                modifier = Modifier.fillMaxWidth(),
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = themeColors.accent1
+                                )
+                            ) {
+                                Icon(Icons.Default.Share, contentDescription = null)
+                                Spacer(Modifier.width(Spacing.xs))
+                                Text("Share Log")
+                            }
+                        }
+                    }
+                }
+            }
             
             // About Card
             ModernSettingsCard(

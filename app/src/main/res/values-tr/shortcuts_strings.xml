@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- TURKISH TRANSLATIONS FOR GOOGLE ASSISTANT SHORTCUTS -->
+    
+    <!-- Volume Shortcuts -->
+    <string name="shortcut_volume_max">Sesi maksimuma al</string>
+    <string name="shortcut_volume_max_long">Ses seviyesini %100\'e ayarla</string>
+    <string name="shortcut_volume_75">Sesi %75\'e ayarla</string>
+    <string name="shortcut_volume_75_long">Ses seviyesini %75\'e ayarla</string>
+    <string name="shortcut_volume_50">Sesi %50\'ye ayarla</string>
+    <string name="shortcut_volume_50_long">Ses seviyesini %50\'ye ayarla</string>
+    <string name="shortcut_volume_increase">Sesi yükselt</string>
+    <string name="shortcut_volume_increase_long">Ses seviyesini %10 artır</string>
+    <string name="shortcut_volume_decrease">Sesi azalt</string>
+    <string name="shortcut_volume_decrease_long">Ses seviyesini %10 azalt</string>
+    
+    <!-- Bass & Treble Shortcuts -->
+    <string name="shortcut_bass_increase">Bassı yükselt</string>
+    <string name="shortcut_bass_increase_long">Bass seviyesini %10 artır</string>
+    <string name="shortcut_bass_decrease">Bassı azalt</string>
+    <string name="shortcut_bass_decrease_long">Bass seviyesini %10 azalt</string>
+    <string name="shortcut_bass_max">Bassı maksimuma al</string>
+    <string name="shortcut_bass_max_long">Bassı %100\'e ayarla</string>
+    <string name="shortcut_bass_zero">Bassı kapat</string>
+    <string name="shortcut_bass_zero_long">Bassı sıfıra ayarla</string>
+    <string name="shortcut_treble_increase">Tizi yükselt</string>
+    <string name="shortcut_treble_increase_long">Tiz seviyesini %10 artır</string>
+    <string name="shortcut_treble_decrease">Tizi azalt</string>
+    <string name="shortcut_treble_decrease_long">Tiz seviyesini %10 azalt</string>
+    
+    <!-- Service Control Shortcuts -->
+    <string name="shortcut_start_service">Servisi başlat</string>
+    <string name="shortcut_start_service_long">Ses yükseltici servisini başlat</string>
+    <string name="shortcut_stop_service">Servisi durdur</string>
+    <string name="shortcut_stop_service_long">Ses yükseltici servisini durdur</string>
+    
+    <!-- Flash Sync Shortcuts -->
+    <string name="shortcut_flash_toggle">Flaşı aç/kapat</string>
+    <string name="shortcut_flash_toggle_long">Bass flaş senkronizasyonunu aç veya kapat</string>
+    <string name="shortcut_flash_on">Flaşı aç</string>
+    <string name="shortcut_flash_on_long">Bass flaş senkronizasyonunu etkinleştir</string>
+    <string name="shortcut_flash_off">Flaşı kapat</string>
+    <string name="shortcut_flash_off_long">Bass flaş senkronizasyonunu kapat</string>
+    
+    <!-- Call Enhancement Shortcuts -->
+    <string name="shortcut_call_enhancement_on">Arama iyileştirmeyi aç</string>
+    <string name="shortcut_call_enhancement_on_long">Arama kalitesi iyileştirmeyi etkinleştir</string>
+    <string name="shortcut_call_enhancement_off">Arama iyileştirmeyi kapat</string>
+    <string name="shortcut_call_enhancement_off_long">Arama kalitesi iyileştirmeyi kapat</string>
+    <string name="shortcut_call_enhancement_toggle">Arama iyileştirmeyi değiştir</string>
+    <string name="shortcut_call_enhancement_toggle_long">Arama iyileştirmeyi aç veya kapat</string>
+    
+    <!-- Boost Toggle Shortcut -->
+    <string name="shortcut_boost_toggle">Boost\'u aç/kapat</string>
+    <string name="shortcut_boost_toggle_long">Ses yükselticiyi aç veya kapat</string>
+    
+    <!-- Preset Shortcuts -->
+    <string name="shortcut_preset_flat">Düz preset</string>
+    <string name="shortcut_preset_flat_long">Düz ekolayzır preset\'ini uygula</string>
+    <string name="shortcut_preset_bass">Bass preset</string>
+    <string name="shortcut_preset_bass_long">Bass güçlendirme preset\'ini uygula</string>
+    <string name="shortcut_preset_treble">Tiz preset</string>
+    <string name="shortcut_preset_treble_long">Tiz güçlendirme preset\'ini uygula</string>
+</resources>

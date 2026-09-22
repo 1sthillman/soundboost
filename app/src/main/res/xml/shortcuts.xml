@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    
+    <!-- 
+        GOOGLE ASSISTANT SHORTCUTS - v1.5.0 FIXED
+        Using EXPLICIT INTENTS for guaranteed Google Assistant compatibility
+        This is the most reliable method for 2026
+    -->
+    
+    <!-- VOLUME CONTROL SHORTCUTS -->
+    <shortcut
+        android:shortcutId="set_volume_max"
+        android:enabled="true"
+        android:icon="@drawable/ic_notification"
+        android:shortcutShortLabel="@string/shortcut_volume_max"
+        android:shortcutLongLabel="@string/shortcut_volume_max_long">
+        <intent
+            android:action="android.intent.action.MAIN"
+            android:targetPackage="com.soundboost"
+            android:targetClass="com.soundboost.MainActivity">
+            <extra android:name="shortcut_action" android:value="set_volume_max" />
+        </intent>
+    </shortcut>
+    
+    <shortcut
+        android:shortcutId="set_volume_75"
+        android:enabled="true"
+        android:icon="@drawable/ic_notification"
+        android:shortcutShortLabel="@string/shortcut_volume_75"
+        android:shortcutLongLabel="@string/shortcut_volume_75_long">
+        <intent
+            android:action="android.intent.action.MAIN"
+            android:targetPackage="com.soundboost"
+            android:targetClass="com.soundboost.MainActivity">
+            <extra android:name="shortcut_action" android:value="set_volume_75" />
+        </intent>
+    </shortcut>
+    
+    <shortcut
+        android:shortcutId="set_volume_50"
+        android:enabled="true"
+        android:icon="@drawable/ic_notification"
+        android:shortcutShortLabel="@string/shortcut_volume_50"
+        android:shortcutLongLabel="@string/shortcut_volume_50_long">
+        <intent
+            android:action="android.intent.action.MAIN"
+            android:targetPackage="com.soundboost"
+            android:targetClass="com.soundboost.MainActivity">
+            <extra android:name="shortcut_action" android:value="set_volume_50" />
+        </intent>
+    </shortcut>
+    
+    <shortcut
+        android:shortcutId="increase_volume"
+        android:enabled="true"
+        android:icon="@drawable/ic_notification"
+        android:shortcutShortLabel="@string/shortcut_volume_increase"
+        android:shortcutLongLabel="@string/shortcut_volume_increase_long">
+        <intent
+            android:action="android.intent.action.MAIN"
+            android:targetPackage="com.soundboost"
+            android:targetClass="com.soundboost.MainActivity">
+            <extra android:name="shortcut_action" android:value="increase_volume" />
+        </intent>
+    </shortcut>
+    
+    <shortcut
+        android:shortcutId="decrease_volume"
+        android:enabled="true"
+        android:icon="@drawable/ic_notification"
+        android:shortcutShortLabel="@string/shortcut_volume_decrease"
+        android:shortcutLongLabel="@string/shortcut_volume_decrease_long">
+        <intent
+            android:action="android.intent.action.MAIN"
+            android:targetPackage="com.soundboost"
+            android:targetClass="com.soundboost.MainActivity">
+            <extra android:name="shortcut_action" android:value="decrease_volume" />
+        </intent>
+    </shortcut>
+    
+    <!-- BASS CONTROL SHORTCUTS -->
+    <shortcut
+        android:shortcutId="increase_bass"
+        android:enabled="true"
+        android:icon="@drawable/ic_notification"
+        android:shortcutShortLabel="@string/shortcut_bass_increase"
+        android:shortcutLongLabel="@string/shortcut_bass_increase_long">
+        <intent
+            android:action="android.intent.action.MAIN"
+            android:targetPackage="com.soundboost"
+            android:targetClass="com.soundboost.MainActivity">
+            <extra android:name="shortcut_action" android:value="increase_bass" />
+        </intent>
+    </shortcut>
+    
+    <shortcut
+        android:shortcutId="decrease_bass"
+        android:enabled="true"
+        android:icon="@drawable/ic_notification"
+        android:shortcutShortLabel="@string/shortcut_bass_decrease"
+        android:shortcutLongLabel="@string/shortcut_bass_decrease_long">
+        <intent
+            android:action="android.intent.action.MAIN"
+            android:targetPackage="com.soundboost"
+            android:targetClass="com.soundboost.MainActivity">
+            <extra android:name="shortcut_action" android:value="decrease_bass" />
+        </intent>
+    </shortcut>
+    
+    <shortcut
+        android:shortcutId="set_bass_max"
+        android:enabled="true"
+        android:icon="@drawable/ic_notification"
+        android:shortcutShortLabel="@string/shortcut_bass_max"
+        android:shortcutLongLabel="@string/shortcut_bass_max_long">
+        <intent
+            android:action="android.intent.action.MAIN"
+            android:targetPackage="com.soundboost"
+            android:targetClass="com.soundboost.MainActivity">
+            <extra android:name="shortcut_action" android:value="set_bass_max" />
+        </intent>
+    </shortcut>
+    
+    <shortcut
+        android:shortcutId="set_bass_zero"
+        android:enabled="true"
+        android:icon="@drawable/ic_notification"
+        android:shortcutShortLabel="@string/shortcut_bass_zero"
+        android:shortcutLongLabel="@string/shortcut_bass_zero_long">
+        <intent
+            android:action="android.intent.action.MAIN"
+            android:targetPackage="com.soundboost"
+            android:targetClass="com.soundboost.MainActivity">
+            <extra android:name="shortcut_action" android:value="set_bass_zero" />
+        </intent>
+    </shortcut>
+    
+    <!-- TREBLE CONTROL SHORTCUTS -->
+    <shortcut
+        android:shortcutId="increase_treble"
+        android:enabled="true"
+        android:icon="@drawable/ic_notification"
+        android:shortcutShortLabel="@string/shortcut_treble_increase"
+        android:shortcutLongLabel="@string/shortcut_treble_increase_long">
+        <intent
+            android:action="android.intent.action.MAIN"
+            android:targetPackage="com.soundboost"
+            android:targetClass="com.soundboost.MainActivity">
+            <extra android:name="shortcut_action" android:value="increase_treble" />
+        </intent>
+    </shortcut>
+    
+    <shortcut
+        android:shortcutId="decrease_treble"
+        android:enabled="true"
+        android:icon="@drawable/ic_notification"
+        android:shortcutShortLabel="@string/shortcut_treble_decrease"
+        android:shortcutLongLabel="@string/shortcut_treble_decrease_long">
+        <intent
+            android:action="android.intent.action.MAIN"
+            android:targetPackage="com.soundboost"
+            android:targetClass="com.soundboost.MainActivity">
+            <extra android:name="shortcut_action" android:value="decrease_treble" />
+        </intent>
+    </shortcut>
+    
+    <!-- FLASH SYNC SHORTCUTS -->
+    <shortcut
+        android:shortcutId="toggle_flash"
+        android:enabled="true"
+        android:icon="@drawable/ic_notification"
+        android:shortcutShortLabel="@string/shortcut_flash_toggle"
+        android:shortcutLongLabel="@string/shortcut_flash_toggle_long">
+        <intent
+            android:action="android.intent.action.MAIN"
+            android:targetPackage="com.soundboost"
+            android:targetClass="com.soundboost.MainActivity">
+            <extra android:name="shortcut_action" android:value="toggle_flash" />
+        </intent>
+    </shortcut>
+    
+    <shortcut
+        android:shortcutId="flash_on"
+        android:enabled="true"
+        android:icon="@drawable/ic_notification"
+        android:shortcutShortLabel="@string/shortcut_flash_on"
+        android:shortcutLongLabel="@string/shortcut_flash_on_long">
+        <intent
+            android:action="android.intent.action.MAIN"
+            android:targetPackage="com.soundboost"
+            android:targetClass="com.soundboost.MainActivity">
+            <extra android:name="shortcut_action" android:value="flash_on" />
+        </intent>
+    </shortcut>
+    
+    <shortcut
+        android:shortcutId="flash_off"
+        android:enabled="true"
+        android:icon="@drawable/ic_notification"
+        android:shortcutShortLabel="@string/shortcut_flash_off"
+        android:shortcutLongLabel="@string/shortcut_flash_off_long">
+        <intent
+            android:action="android.intent.action.MAIN"
+            android:targetPackage="com.soundboost"
+            android:targetClass="com.soundboost.MainActivity">
+            <extra android:name="shortcut_action" android:value="flash_off" />
+        </intent>
+    </shortcut>
+    
+    <!-- SERVICE CONTROL SHORTCUTS -->
+    <shortcut
+        android:shortcutId="start_service"
+        android:enabled="true"
+        android:icon="@drawable/ic_notification"
+        android:shortcutShortLabel="@string/shortcut_start_service"
+        android:shortcutLongLabel="@string/shortcut_start_service_long">
+        <intent
+            android:action="android.intent.action.MAIN"
+            android:targetPackage="com.soundboost"
+            android:targetClass="com.soundboost.MainActivity">
+            <extra android:name="shortcut_action" android:value="start_service" />
+        </intent>
+    </shortcut>
+    
+    <shortcut
+        android:shortcutId="stop_service"
+        android:enabled="true"
+        android:icon="@drawable/ic_notification"
+        android:shortcutShortLabel="@string/shortcut_stop_service"
+        android:shortcutLongLabel="@string/shortcut_stop_service_long">
+        <intent
+            android:action="android.intent.action.MAIN"
+            android:targetPackage="com.soundboost"
+            android:targetClass="com.soundboost.MainActivity">
+            <extra android:name="shortcut_action" android:value="stop_service" />
+        </intent>
+    </shortcut>
+    
+    <shortcut
+        android:shortcutId="toggle_boost"
+        android:enabled="true"
+        android:icon="@drawable/ic_notification"
+        android:shortcutShortLabel="@string/shortcut_boost_toggle"
+        android:shortcutLongLabel="@string/shortcut_boost_toggle_long">
+        <intent
+            android:action="android.intent.action.MAIN"
+            android:targetPackage="com.soundboost"
+            android:targetClass="com.soundboost.MainActivity">
+            <extra android:name="shortcut_action" android:value="toggle_boost" />
+        </intent>
+    </shortcut>
+    
+    <!-- CALL ENHANCEMENT SHORTCUTS -->
+    <shortcut
+        android:shortcutId="call_enhancement_on"
+        android:enabled="true"
+        android:icon="@drawable/ic_notification"
+        android:shortcutShortLabel="@string/shortcut_call_enhancement_on"
+        android:shortcutLongLabel="@string/shortcut_call_enhancement_on_long">
+        <intent
+            android:action="android.intent.action.MAIN"
+            android:targetPackage="com.soundboost"
+            android:targetClass="com.soundboost.MainActivity">
+            <extra android:name="shortcut_action" android:value="call_enhancement_on" />
+        </intent>
+    </shortcut>
+    
+    <shortcut
+        android:shortcutId="call_enhancement_off"
+        android:enabled="true"
+        android:icon="@drawable/ic_notification"
+        android:shortcutShortLabel="@string/shortcut_call_enhancement_off"
+        android:shortcutLongLabel="@string/shortcut_call_enhancement_off_long">
+        <intent
+            android:action="android.intent.action.MAIN"
+            android:targetPackage="com.soundboost"
+            android:targetClass="com.soundboost.MainActivity">
+            <extra android:name="shortcut_action" android:value="call_enhancement_off" />
+        </intent>
+    </shortcut>
+    
+    <shortcut
+        android:shortcutId="toggle_call_enhancement"
+        android:enabled="true"
+        android:icon="@drawable/ic_notification"
+        android:shortcutShortLabel="@string/shortcut_call_enhancement_toggle"
+        android:shortcutLongLabel="@string/shortcut_call_enhancement_toggle_long">
+        <intent
+            android:action="android.intent.action.MAIN"
+            android:targetPackage="com.soundboost"
+            android:targetClass="com.soundboost.MainActivity">
+            <extra android:name="shortcut_action" android:value="toggle_call_enhancement" />
+        </intent>
+    </shortcut>
+    
+    <!-- EQUALIZER PRESET SHORTCUTS -->
+    <shortcut
+        android:shortcutId="preset_flat"
+        android:enabled="true"
+        android:icon="@drawable/ic_notification"
+        android:shortcutShortLabel="@string/shortcut_preset_flat"
+        android:shortcutLongLabel="@string/shortcut_preset_flat_long">
+        <intent
+            android:action="android.intent.action.MAIN"
+            android:targetPackage="com.soundboost"
+            android:targetClass="com.soundboost.MainActivity">
+            <extra android:name="shortcut_action" android:value="preset_flat" />
+        </intent>
+    </shortcut>
+    
+    <shortcut
+        android:shortcutId="preset_bass"
+        android:enabled="true"
+        android:icon="@drawable/ic_notification"
+        android:shortcutShortLabel="@string/shortcut_preset_bass"
+        android:shortcutLongLabel="@string/shortcut_preset_bass_long">
+        <intent
+            android:action="android.intent.action.MAIN"
+            android:targetPackage="com.soundboost"
+            android:targetClass="com.soundboost.MainActivity">
+            <extra android:name="shortcut_action" android:value="preset_bass" />
+        </intent>
+    </shortcut>
+    
+    <shortcut
+        android:shortcutId="preset_treble"
+        android:enabled="true"
+        android:icon="@drawable/ic_notification"
+        android:shortcutShortLabel="@string/shortcut_preset_treble"
+        android:shortcutLongLabel="@string/shortcut_preset_treble_long">
+        <intent
+            android:action="android.intent.action.MAIN"
+            android:targetPackage="com.soundboost"
+            android:targetClass="com.soundboost.MainActivity">
+            <extra android:name="shortcut_action" android:value="preset_treble" />
+        </intent>
+    </shortcut>
+
+</shortcuts>

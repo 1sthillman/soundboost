@@ -55,6 +55,7 @@ import kotlinx.coroutines.launch
 class MainActivity : ComponentActivity() {
 
     private val viewModel: MainViewModel by viewModels()
+    private val syncViewModel: SyncViewModel by viewModels()
     
     // CRITICAL: Track if we should show prominent disclosure
     internal var shouldShowAudioDisclosure = false
@@ -78,6 +79,20 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         
+        // Initialize File Logger for debugging without ADB
+        com.soundboost.debug.FileLogger.init(this)
+        com.soundboost.debug.FileLogger.log("MainActivity", "🚀 App Started - onCreate called")
+        
+        // CRITICAL: Share BassFlashlightSync instance between ViewModels
+        // This prevents camera resource conflicts (TWO instances trying to control same camera)
+        syncViewModel.setBassFlashSync(viewModel.getBassFlashSyncInstance())
+        android.util.Log.d("MainActivity", "🔗 Shared BassFlashlightSync instance with SyncViewModel")
+        
+        // CRITICAL: Connect audio analysis flow from MainViewModel to SyncViewModel
+        // This enables bass-sync flash in party mode
+        syncViewModel.setAudioAnalysisFlow(viewModel.audioAnalysis)
+        android.util.Log.d("MainActivity", "🔗 Connected audio analysis flow to SyncViewModel")
+        
         // CRITICAL: Apply saved language BEFORE setting content
         // This ensures proper system language detection and immediate effect
         com.soundboost.data.LanguageManager.applyLanguage(this)
@@ -92,8 +107,19 @@ class MainActivity : ComponentActivity() {
         val sp = getSharedPreferences("app_prefs", MODE_PRIVATE)
         shouldShowAudioDisclosure = !sp.getBoolean("audio_disclosure_shown", false)
         
-        // Handle flash toggle from notification
+        // Handle flash toggle from notification AND shortcuts
         handleIntent(intent)
+        
+        // Handle deep links (soundboost://action/...)
+        intent?.data?.let { uri ->
+            if (uri.scheme == "soundboost" && uri.host == "action") {
+                val action = uri.pathSegments.firstOrNull()
+                action?.let {
+                    android.util.Log.d("MainActivity", "🔗 Deep Link: $it")
+                    handleShortcutAction(it)
+                }
+            }
+        }
 
         setContent {
             val uiState by viewModel.uiState.collectAsState()
@@ -138,7 +164,7 @@ class MainActivity : ComponentActivity() {
                     }
                 }
                 
-                MainScreen(viewModel = viewModel)
+                MainScreen(viewModel = viewModel, syncViewModel = syncViewModel)
             }
         }
     }
@@ -182,24 +208,265 @@ class MainActivity : ComponentActivity() {
     }
     
     private fun handleIntent(intent: Intent?) {
+        com.soundboost.debug.FileLogger.log("MainActivity", "🔍 handleIntent called - Intent: $intent")
+        android.util.Log.d("MainActivity", "🔍 handleIntent called - Intent: $intent")
+        
         intent?.let {
+            // Log all intent data for debugging
+            com.soundboost.debug.FileLogger.log("MainActivity", "📦 Intent Action: ${it.action}")
+            com.soundboost.debug.FileLogger.log("MainActivity", "📦 Intent Data: ${it.data}")
+            com.soundboost.debug.FileLogger.log("MainActivity", "📦 Intent Extras: ${it.extras?.keySet()?.joinToString()}")
+            
+            android.util.Log.d("MainActivity", "📦 Intent Action: ${it.action}")
+            android.util.Log.d("MainActivity", "📦 Intent Data: ${it.data}")
+            android.util.Log.d("MainActivity", "📦 Intent Extras: ${it.extras?.keySet()?.joinToString()}")
+            
+            it.extras?.keySet()?.forEach { key ->
+                val value = it.extras?.get(key)
+                com.soundboost.debug.FileLogger.log("MainActivity", "  📌 $key = $value")
+                android.util.Log.d("MainActivity", "  📌 $key = $value")
+            }
+            
+            // Handle notification actions
             if (it.getBooleanExtra("TOGGLE_FLASH", false)) {
+                com.soundboost.debug.FileLogger.log("MainActivity", "⚡ Toggling flash from notification")
                 android.util.Log.d("MainActivity", "⚡ Toggling flash from notification")
                 val currentState = viewModel.isFlashEnabled.value
                 viewModel.onFlashToggled(!currentState)
+                return
+            }
+            
+            // GOOGLE ASSISTANT SHORTCUTS - Handle all voice commands
+            val shortcutAction = it.getStringExtra("shortcut_action")
+            com.soundboost.debug.FileLogger.log("MainActivity", "🎤 Shortcut Action String: '$shortcutAction'")
+            android.util.Log.d("MainActivity", "🎤 Shortcut Action String: '$shortcutAction'")
+            
+            if (shortcutAction != null) {
+                com.soundboost.debug.FileLogger.log("MainActivity", "✅ Google Assistant Shortcut Detected: $shortcutAction")
+                android.util.Log.d("MainActivity", "✅ Google Assistant Shortcut Detected: $shortcutAction")
+                try {
+                    handleShortcutAction(shortcutAction)
+                    com.soundboost.debug.FileLogger.log("MainActivity", "✅ Shortcut handled successfully")
+                    android.util.Log.d("MainActivity", "✅ Shortcut handled successfully")
+                } catch (e: Exception) {
+                    com.soundboost.debug.FileLogger.log("MainActivity", "❌ Error handling shortcut: ${e.message}")
+                    android.util.Log.e("MainActivity", "❌ Error handling shortcut: ${e.message}", e)
+                    showShortcutToast("❌ Error: ${e.message}")
+                }
+            } else {
+                com.soundboost.debug.FileLogger.log("MainActivity", "⚠️ No shortcut_action found in intent")
+                android.util.Log.w("MainActivity", "⚠️ No shortcut_action found in intent")
+            }
+        } ?: run {
+            com.soundboost.debug.FileLogger.log("MainActivity", "⚠️ Intent is null")
+            android.util.Log.d("MainActivity", "⚠️ Intent is null")
+        }
+    }
+    
+    /**
+     * GOOGLE ASSISTANT SHORTCUTS HANDLER
+     * Handles all voice commands from Google Assistant
+     */
+    private fun handleShortcutAction(action: String) {
+        when (action) {
+            // VOLUME SHORTCUTS
+            "set_volume_max" -> {
+                viewModel.onMasterGainChanged(100)
+                showShortcutToast("🔊 Volume set to 100%")
+            }
+            "set_volume_75" -> {
+                viewModel.onMasterGainChanged(75)
+                showShortcutToast("🔊 Volume set to 75%")
+            }
+            "set_volume_50" -> {
+                viewModel.onMasterGainChanged(50)
+                showShortcutToast("🔊 Volume set to 50%")
+            }
+            "increase_volume" -> {
+                val currentVolume = viewModel.uiState.value.masterGainPercent
+                val newVolume = (currentVolume + 10).coerceIn(0, 200)
+                viewModel.onMasterGainChanged(newVolume)
+                showShortcutToast("🔊 Volume increased to $newVolume%")
+            }
+            "decrease_volume" -> {
+                val currentVolume = viewModel.uiState.value.masterGainPercent
+                val newVolume = (currentVolume - 10).coerceIn(0, 200)
+                viewModel.onMasterGainChanged(newVolume)
+                showShortcutToast("🔉 Volume decreased to $newVolume%")
+            }
+            
+            // BASS SHORTCUTS
+            "increase_bass" -> {
+                val currentBass = viewModel.uiState.value.bassBoostPercent
+                val newBass = (currentBass + 10).coerceIn(0, 100)
+                viewModel.onBassBoostChanged(newBass)
+                showShortcutToast("🎵 Bass increased to $newBass%")
+            }
+            "decrease_bass" -> {
+                val currentBass = viewModel.uiState.value.bassBoostPercent
+                val newBass = (currentBass - 10).coerceIn(0, 100)
+                viewModel.onBassBoostChanged(newBass)
+                showShortcutToast("🎵 Bass decreased to $newBass%")
+            }
+            "set_bass_max" -> {
+                viewModel.onBassBoostChanged(100)
+                showShortcutToast("🎵 Bass set to MAXIMUM (100%)")
+            }
+            "set_bass_zero" -> {
+                viewModel.onBassBoostChanged(0)
+                showShortcutToast("🎵 Bass turned OFF (0%)")
+            }
+            
+            // TREBLE SHORTCUTS (via 10-band EQ)
+            "increase_treble" -> {
+                adjustTreble(10)
+                showShortcutToast("🎼 Treble increased")
+            }
+            "decrease_treble" -> {
+                adjustTreble(-10)
+                showShortcutToast("🎼 Treble decreased")
+            }
+            
+            // FLASH SYNC SHORTCUT
+            "toggle_flash" -> {
+                val currentState = viewModel.isFlashEnabled.value
+                viewModel.onFlashToggled(!currentState)
+                val status = if (!currentState) "ON" else "OFF"
+                showShortcutToast("⚡ Flash sync $status")
+            }
+            "flash_on" -> {
+                viewModel.onFlashToggled(true)
+                showShortcutToast("⚡ Flash sync turned ON")
+            }
+            "flash_off" -> {
+                viewModel.onFlashToggled(false)
+                showShortcutToast("⚡ Flash sync turned OFF")
+            }
+            
+            // SERVICE CONTROL
+            "start_service", "boost_on" -> {
+                if (!viewModel.uiState.value.isBoostEnabled) {
+                    checkAndRequestMicrophonePermission()
+                    showShortcutToast("🎧 Boost service starting...")
+                } else {
+                    showShortcutToast("🎧 Boost service already running")
+                }
+            }
+            "stop_service", "boost_off" -> {
+                if (viewModel.uiState.value.isBoostEnabled) {
+                    viewModel.toggleBoost()
+                    showShortcutToast("🎧 Boost service stopped")
+                } else {
+                    showShortcutToast("🎧 Boost service already stopped")
+                }
+            }
+            
+            // CALL ENHANCEMENT CONTROL
+            "call_enhancement_on" -> {
+                viewModel.onCallEnhancementToggled(true)
+                showShortcutToast("📞 Call enhancement turned ON")
+            }
+            "call_enhancement_off" -> {
+                viewModel.onCallEnhancementToggled(false)
+                showShortcutToast("📞 Call enhancement turned OFF")
+            }
+            "toggle_call_enhancement" -> {
+                val currentState = viewModel.uiState.value.isCallEnhancementEnabled
+                viewModel.onCallEnhancementToggled(!currentState)
+                val status = if (!currentState) "ON" else "OFF"
+                showShortcutToast("📞 Call enhancement $status")
+            }
+            
+            // BOOST TOGGLE SHORTCUT
+            "toggle_boost" -> {
+                val currentState = viewModel.uiState.value.isBoostEnabled
+                if (!currentState) {
+                    // Turning ON - check microphone permission first
+                    checkAndRequestMicrophonePermission()
+                    showShortcutToast("🎧 Boost activating...")
+                } else {
+                    // Turning OFF
+                    viewModel.toggleBoost()
+                    showShortcutToast("🎧 Boost OFF")
+                }
+            }
+            
+            // PRESET SHORTCUTS
+            "preset_flat" -> {
+                viewModel.onPresetSelected(com.soundboost.audio.EqualizerPreset.FLAT)
+                showShortcutToast("🎚️ Flat preset applied")
+            }
+            "preset_bass" -> {
+                viewModel.onPresetSelected(com.soundboost.audio.EqualizerPreset.BASS_BOOST)
+                showShortcutToast("🎚️ Bass boost preset applied")
+            }
+            "preset_treble" -> {
+                viewModel.onPresetSelected(com.soundboost.audio.EqualizerPreset.TREBLE_BOOST)
+                showShortcutToast("🎚️ Treble boost preset applied")
+            }
+            
+            else -> {
+                android.util.Log.w("MainActivity", "❓ Unknown shortcut action: $action")
             }
         }
+    }
+    
+    /**
+     * Adjust treble by modifying high-frequency bands (8kHz, 16kHz)
+     */
+    private fun adjustTreble(delta: Int) {
+        val currentState = viewModel.uiState.value
+        // Adjust high-frequency bands: 8kHz and 16kHz
+        val new8kHz = (currentState.eq8kHz + delta).coerceIn(-15f, 15f)
+        val new16kHz = (currentState.eq16kHz + delta).coerceIn(-15f, 15f)
+        
+        // Build updated bands array
+        val updatedBands = floatArrayOf(
+            currentState.eq31Hz,
+            currentState.eq62Hz,
+            currentState.eq125Hz,
+            currentState.eq250Hz,
+            currentState.eq500Hz,
+            currentState.eq1kHz,
+            currentState.eq2kHz,
+            currentState.eq4kHz,
+            new8kHz,
+            new16kHz
+        )
+        viewModel.on10BandEqChanged(updatedBands)
+    }
+    
+    /**
+     * Show feedback toast for shortcut actions
+     */
+    private fun showShortcutToast(message: String) {
+        android.widget.Toast.makeText(
+            this,
+            message,
+            android.widget.Toast.LENGTH_SHORT
+        ).show()
     }
     
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         setIntent(intent)
         handleIntent(intent)
+        
+        // Handle deep links
+        intent.data?.let { uri ->
+            if (uri.scheme == "soundboost" && uri.host == "action") {
+                val action = uri.pathSegments.firstOrNull()
+                action?.let {
+                    android.util.Log.d("MainActivity", "🔗 Deep Link (onNewIntent): $it")
+                    handleShortcutAction(it)
+                }
+            }
+        }
     }
 }
 
 @Composable
-fun MainScreen(viewModel: MainViewModel) {
+fun MainScreen(viewModel: MainViewModel, syncViewModel: SyncViewModel) {
     val navController = rememberNavController()
     val uiState by viewModel.uiState.collectAsState()
     val audioLevels by viewModel.audioLevels.collectAsState()
@@ -308,9 +575,6 @@ fun MainScreen(viewModel: MainViewModel) {
                     hasFlashSupport = viewModel.hasFlashSupport(),
                     onBack = { 
                         navController.popBackStack()
-                    },
-                    onNavigateToDJGesture = {
-                        navController.navigate("dj_gesture")
                     }
                 )
             }
@@ -334,8 +598,71 @@ fun MainScreen(viewModel: MainViewModel) {
                     onRateApp = { showRateDialog = true },
                     onShareApp = { showShareDialog = true },
                     onDarkModeChanged = viewModel::onDarkModeChanged,
+                    onOpenBackup = { navController.navigate("settings_backup") },
+                    onOpenAppProfiles = { navController.navigate("app_profiles") },
+                    onOpenBluetoothProfiles = { navController.navigate("bluetooth_profiles") },
+                    onOpenPartyMode = { navController.navigate("party_mode_room") },
                     onBack = { 
                         navController.popBackStack()
+                    }
+                )
+            }
+            
+            composable("settings_backup") {
+                com.soundboost.ui.screens.SettingsBackupScreen(
+                    state = uiState,
+                    prefs = com.soundboost.data.BoostPreferences(context),
+                    onBack = {
+                        navController.popBackStack()
+                    }
+                )
+            }
+            
+            composable("app_profiles") {
+                com.soundboost.ui.screens.AppProfilesScreen(
+                    state = uiState,
+                    profileManager = viewModel.appProfileManager,
+                    onBack = {
+                        navController.popBackStack()
+                    },
+                    onConfigureProfile = { packageName ->
+                        // TODO: Navigate to profile config screen
+                        android.util.Log.d("MainActivity", "Configure profile for: $packageName")
+                    }
+                )
+            }
+            
+            composable("bluetooth_profiles") {
+                com.soundboost.ui.screens.BluetoothProfilesScreen(
+                    state = uiState,
+                    profileManager = viewModel.bluetoothProfileManager,
+                    onBack = {
+                        navController.popBackStack()
+                    },
+                    onConfigureProfile = { deviceAddress ->
+                        // TODO: Navigate to profile config screen
+                        android.util.Log.d("MainActivity", "Configure Bluetooth profile for: $deviceAddress")
+                    }
+                )
+            }
+            
+            composable("party_mode_room") {
+                val syncViewModel: SyncViewModel by activity?.viewModels() ?: return@composable
+                SyncRoomScreen(
+                    viewModel = syncViewModel,
+                    onRoomReady = {
+                        navController.navigate("party_mode_control")
+                    }
+                )
+            }
+            
+            composable("party_mode_control") {
+                val syncViewModel: SyncViewModel by activity?.viewModels() ?: return@composable
+                FlashControlScreen(
+                    viewModel = syncViewModel,
+                    onBack = {
+                        navController.popBackStack()
+                        navController.popBackStack() // Go back to settings, not room screen
                     }
                 )
             }
@@ -371,20 +698,6 @@ fun MainScreen(viewModel: MainViewModel) {
                     state = uiState,
                     onBack = { 
                         navController.popBackStack()
-                    }
-                )
-            }
-            
-            composable("dj_gesture") {
-                DJGestureScreen(
-                    onBack = { 
-                        navController.popBackStack()
-                    },
-                    onVolumeChange = { percent ->
-                        viewModel.onMasterGainChanged(percent)
-                    },
-                    onBassChange = { percent ->
-                        viewModel.onBassBoostChanged(percent)
                     }
                 )
             }

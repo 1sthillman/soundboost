@@ -59,8 +59,7 @@ fun ModernEqualizerScreen(
     isFlashEnabled: Boolean,
     flashIntensity: com.soundboost.audio.BassFlashlightSync.FlashIntensity,
     hasFlashSupport: Boolean,
-    onBack: () -> Unit,
-    onNavigateToDJGesture: () -> Unit
+    onBack: () -> Unit
 ) {
     val themeColors = getThemeColors(state.theme, state.colorAccent)
     val scope = rememberCoroutineScope()
@@ -207,13 +206,6 @@ fun ModernEqualizerScreen(
                     themeColors = themeColors
                 )
             }
-            
-            // DJ Gesture Control Card
-            Spacer(Modifier.height(16.dp))
-            DJGestureControlCard(
-                themeColors = themeColors,
-                onNavigate = onNavigateToDJGesture
-            )
             
             Spacer(Modifier.height(16.dp))
         }
@@ -1463,75 +1455,3 @@ private fun MaxGainDialog(
 }
 
 
-/**
- * DJ Gesture Control Card - Modern card to access gesture-based audio control
- */
-@Composable
-private fun DJGestureControlCard(
-    themeColors: ThemeColors,
-    onNavigate: () -> Unit
-) {
-    val context = LocalContext.current
-    
-    Surface(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(20.dp))
-            .clickable {
-                // Navigate to DJ Gesture screen
-                onNavigate()
-            },
-        color = themeColors.surface,
-        tonalElevation = 2.dp
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(20.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Column(
-                modifier = Modifier.weight(1f)
-            ) {
-                Text(
-                    text = stringResource(R.string.dj_gesture_title),
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold,
-                    color = themeColors.onSurface
-                )
-                
-                Spacer(modifier = Modifier.height(4.dp))
-                
-                Text(
-                    text = stringResource(R.string.dj_gesture_subtitle),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = themeColors.onSurface.copy(alpha = 0.7f)
-                )
-            }
-            
-            // Modern icon with gradient
-            Box(
-                modifier = Modifier
-                    .size(56.dp)
-                    .background(
-                        brush = Brush.linearGradient(
-                            colors = listOf(
-                                Color(0xFFFFB74D),
-                                Color(0xFF00E5FF)
-                            )
-                        ),
-                        shape = CircleShape
-                    ),
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Videocam,
-                    contentDescription = "DJ Gesture Control",
-                    tint = Color.Black,
-                    modifier = Modifier.size(28.dp)
-                )
-            }
-        }
-    }
-}

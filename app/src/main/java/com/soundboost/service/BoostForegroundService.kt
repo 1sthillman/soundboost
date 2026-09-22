@@ -111,11 +111,13 @@ class BoostForegroundService : Service() {
             "BASS_DOWN" -> adjustBass(-10)
             "BASS_UP" -> adjustBass(10)
             "TOGGLE_FLASH" -> toggleFlash()
-            // NEW: Widget support (v1.4.0)
+            // Widget support (v1.4.0+)
             "SET_VOLUME" -> {
                 val percent = intent.getStringExtra("percent")?.toIntOrNull() ?: 150
                 setVolumeFromWidget(percent)
             }
+            "INCREASE_VOLUME" -> adjustVolume(+20)
+            "DECREASE_VOLUME" -> adjustVolume(-20)
         }
         return START_STICKY
     }
@@ -136,6 +138,33 @@ class BoostForegroundService : Service() {
             val notification = createNotification(settings.masterGainPercent, newBass)
             val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.notify(NOTIFICATION_ID, notification)
+        }
+    }
+    
+    /**
+     * Adjust master volume (for widgets)
+     */
+    private fun adjustVolume(delta: Int) {
+        serviceScope.launch {
+            val settings = prefs.settings.firstOrNull() ?: return@launch
+            val newVolume = (settings.masterGainPercent + delta).coerceIn(60, 500)
+            
+            prefs.setMasterGain(newVolume)
+            
+            if (useMultiStream) {
+                multiStreamManager?.setMasterGainForAllStreams(newVolume, settings.maxGainDb)
+            } else {
+                audioEffects.setMasterGain(newVolume, settings.maxGainDb)
+            }
+            
+            val notification = createNotification(newVolume, settings.bassBoostPercent)
+            val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.notify(NOTIFICATION_ID, notification)
+            
+            // Update widgets
+            updateWidgets()
+            
+            android.util.Log.d(TAG, "📊 Volume adjusted: $newVolume% (delta: $delta)")
         }
     }
 

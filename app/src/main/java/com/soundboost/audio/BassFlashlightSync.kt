@@ -359,6 +359,35 @@ class BassFlashlightSync(private val context: Context) {
         }
     }
     
+    /**
+     * Manual single pulse for party mode (doesn't require audio analysis)
+     * Used when host manually triggers flash
+     */
+    suspend fun manualPulse(durationMs: Int, repeatCount: Int = 1, intervalMs: Int = 100) {
+        if (!hasFlash || !isCameraAvailable) {
+            Log.w(TAG, "⚠️ Cannot pulse: hasFlash=$hasFlash, available=$isCameraAvailable")
+            return
+        }
+        
+        Log.d(TAG, "🔦 Manual pulse: ${durationMs}ms x$repeatCount")
+        
+        for (index in 0 until repeatCount) {
+            try {
+                safelyTurnOnFlash()
+                delay(durationMs.toLong())
+                safelyTurnOffFlash()
+                
+                if (index < repeatCount - 1 && intervalMs > 0) {
+                    delay(intervalMs.toLong())
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "❌ Manual pulse failed", e)
+                safelyTurnOffFlash()
+                return  // Exit on error
+            }
+        }
+    }
+    
     fun hasFlashSupport(): Boolean = hasFlash && isCameraAvailable
     
     fun release() {

@@ -203,4 +203,92 @@
     <string name="close">Schließen</string>
     
     <string name="language_italian">Italienisch</string>
+    
+    <!-- NEU v1.5.0: Einstellungen Sichern & Wiederherstellen -->
+    <string name="backup_restore_title">Sichern &amp; Wiederherstellen</string>
+    <string name="backup_export_title">Einstellungen Exportieren</string>
+    <string name="backup_export_desc">Aktuelle Einstellungen in Datei speichern</string>
+    <string name="backup_export_button">Jetzt Exportieren</string>
+    <string name="backup_import_title">Einstellungen Importieren</string>
+    <string name="backup_import_desc">Aus Sicherungsdatei wiederherstellen</string>
+    <string name="backup_import_button">Aus Datei Importieren</string>
+    <string name="backup_success_export">Einstellungen erfolgreich exportiert!</string>
+    <string name="backup_success_import">Einstellungen erfolgreich importiert!</string>
+    <string name="backup_error_export">Export fehlgeschlagen</string>
+    <string name="backup_error_import">Import fehlgeschlagen</string>
+    <string name="backup_warning">⚠️ Warnung: Dies ersetzt ALLE aktuellen Einstellungen durch die Sicherungsdatei.</string>
+    <string name="backup_info_title">Tipps:</string>
+    <string name="backup_info_desc">• Erstellen Sie Sicherungen vor großen Änderungen\n• Teilen Sie Einstellungen mit Freunden\n• Übertragen Sie Einstellungen zwischen Geräten\n• Bewahren Sie Sicherung vor App-Neuinstallation auf</string>
+    
+    <!-- NEU v1.5.0: App-spezifische Profile -->
+    <string name="app_profiles_title">App-spezifische Profile</string>
+    <string name="app_profiles_desc">Unterschiedliche Einstellungen für jede App</string>
+    <string name="app_profiles_empty">Keine App-Profile</string>
+    <string name="app_profiles_empty_desc">Erstellen Sie benutzerdefinierte Audioeinstellungen für jede App</string>
+    <string name="app_profiles_add">Erstes Profil Hinzufügen</string>
+    <string name="app_profiles_select">App Auswählen</string>
+    <string name="app_profiles_create">Profil Erstellen</string>
+    <string name="app_profiles_edit">Bearbeiten</string>
+    <string name="app_profiles_delete">Löschen</string>
+    <string name="app_profiles_applied">Profil angewendet: %s</string>
+    
+    <!-- NEU v1.5.0: Bluetooth-Profile -->
+    <string name="bluetooth_profiles_title">Bluetooth-Profile</string>
+    <string name="bluetooth_profiles_desc">Auto-Wechsel pro Gerät</string>
+    <string name="bluetooth_profiles_empty">Keine Bluetooth-Profile</string>
+    <string name="bluetooth_profiles_empty_desc">Verbinden Sie ein Bluetooth-Gerät, um ein Profil zu erstellen</string>
+    <string name="bluetooth_profiles_how_title">So funktioniert es:</string>
+    <string name="bluetooth_profiles_how_desc">1. Bluetooth-Headset/Lautsprecher verbinden\n2. Sie sehen eine Aufforderung zum Speichern der Einstellungen\n3. Einstellungen werden beim Wiederverbinden automatisch angewendet</string>
+    <string name="bluetooth_profiles_save_prompt">Einstellungen für dieses Gerät speichern?</string>
+    <string name="bluetooth_profiles_last_used">Zuletzt verwendet: %s</string>
+    
+    <!-- Widget (v1.5.0) -->
+    <string name="widget_rezonans_name">Sound Boost Widget</string>
+    <string name="widget_increase_volume">Lautstärke Erhöhen</string>
+    <string name="widget_decrease_volume">Lautstärke Verringern</string>
+
+    
+    <!-- Parti Modus / Flash-Sync (v1.5.0) -->
+    <string name="party_mode_title">Party-Modus</string>
+    <string name="party_mode_subtitle">Synchronisiere alle Telefone im selben WLAN zum gemeinsamen Blinken</string>
+    <string name="party_mode_host_title">Raum Erstellen</string>
+    <string name="party_mode_host_desc">Du wirst Host, andere Geräte verbinden sich mit dir und du steuerst alle Blitz-Befehle</string>
+    <string name="party_mode_be_host">Host Werden</string>
+    <string name="party_mode_join_title">Raum Beitreten</string>
+    <string name="party_mode_join_desc">Verbinde dich mit einem Host im selben Netzwerk</string>
+    <string name="party_mode_scan_rooms">Nach Räumen Suchen</string>
+    <string name="party_mode_room_name">Raumname</string>
+    <string name="party_mode_start_room">Raum Starten</string>
+    <string name="party_mode_room_active">Raum ist aktiv - andere können jetzt beitreten</string>
+    <string name="party_mode_device_name_optional">Gerätename (optional)</string>
+    <string name="party_mode_scanning">Suche nach Räumen…</string>
+    <string name="party_mode_rooms_found">%1$d Raum/Räume gefunden</string>
+    <string name="party_mode_join">Beitreten</string>
+    <string name="party_mode_hosting">Hosting</string>
+    <string name="party_mode_connected">Verbunden</string>
+    <string name="party_mode_connected_devices">Verbundene Geräte</string>
+    <string name="party_mode_torch">Physischer Blitz</string>
+    <string name="party_mode_torch_desc">Kamerablitz verwenden (optional)</string>
+    <string name="party_mode_flash_mode">Blitzmodus</string>
+    <string name="party_mode_screen_only">Bildschirm</string>
+    <string name="party_mode_torch_only">Blitz</string>
+    <string name="party_mode_both">Beide</string>
+    <string name="party_mode_flash_color">Blitzfarbe</string>
+    <string name="party_mode_duration">Dauer</string>
+    <string name="party_mode_repeat">Wiederholen</string>
+    <string name="party_mode_trigger_flash">BLITZ AUSLÖSEN</string>
+    <string name="party_mode_waiting_for_host">Warte auf Host-Befehl…</string>
+    <string name="party_mode_active">Party-Modus Aktiv - %1$s</string>
+    <string name="party_mode_waiting">Warte auf Geräte</string>
+    <string name="party_mode_one_device">1 Gerät verbunden</string>
+    <string name="party_mode_n_devices">%1$d Geräte verbunden</string>
+    <string name="party_mode_channel_name">Party-Modus</string>
+    <string name="party_mode_channel_desc">Benachrichtigung, wenn Flash-Sync Party-Modus aktiv ist</string>
+    <string name="party_mode_disconnected_title">Vom Raum getrennt</string>
+    <string name="party_mode_disconnection_reason">Grund für Trennung:</string>
+    <string name="party_mode_diagnostic_copied">Diagnoseinformationen in Zwischenablage kopiert</string>
+    <string name="party_mode_copy_diagnostic">Diagnoseinformationen kopieren</string>
+    <string name="party_mode_disconnection_hint">Tippen Sie auf das Feld oben, um Diagnoseinformationen zu kopieren</string>
+    <string name="common_back">Zurück</string>
+    <string name="common_ok">OK</string>
 </resources>

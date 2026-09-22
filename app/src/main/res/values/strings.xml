@@ -343,4 +343,152 @@
     
     <!-- Italian Language -->
     <string name="language_italian">Italiano</string>
+    
+    <!-- GOOGLE ASSISTANT SHORTCUTS (v1.5.0) -->
+    <!-- Volume Shortcuts -->
+    <string name="shortcut_volume_max">Set volume 100%</string>
+    <string name="shortcut_volume_max_long">Set Sound Boost volume to maximum (100%)</string>
+    <string name="shortcut_volume_75">Set volume 75%</string>
+    <string name="shortcut_volume_75_long">Set Sound Boost volume to 75%</string>
+    <string name="shortcut_volume_50">Set volume 50%</string>
+    <string name="shortcut_volume_50_long">Set Sound Boost volume to 50%</string>
+    <string name="shortcut_volume_increase">Increase volume</string>
+    <string name="shortcut_volume_increase_long">Increase Sound Boost volume by 10%</string>
+    <string name="shortcut_volume_decrease">Decrease volume</string>
+    <string name="shortcut_volume_decrease_long">Decrease Sound Boost volume by 10%</string>
+    
+    <!-- Bass & Treble Shortcuts -->
+    <string name="shortcut_bass_increase">Increase bass</string>
+    <string name="shortcut_bass_increase_long">Increase bass level by 10%</string>
+    <string name="shortcut_bass_decrease">Decrease bass</string>
+    <string name="shortcut_bass_decrease_long">Decrease bass level by 10%</string>
+    <string name="shortcut_bass_max">Maximum bass</string>
+    <string name="shortcut_bass_max_long">Set bass to maximum (100%)</string>
+    <string name="shortcut_bass_zero">Turn off bass</string>
+    <string name="shortcut_bass_zero_long">Set bass to zero</string>
+    <string name="shortcut_treble_increase">Increase treble</string>
+    <string name="shortcut_treble_increase_long">Increase treble level by 10%</string>
+    <string name="shortcut_treble_decrease">Decrease treble</string>
+    <string name="shortcut_treble_decrease_long">Decrease treble level by 10%</string>
+    
+    <!-- Service Control Shortcuts -->
+    <string name="shortcut_start_service">Start boost service</string>
+    <string name="shortcut_start_service_long">Start Sound Boost background service</string>
+    <string name="shortcut_stop_service">Stop boost service</string>
+    <string name="shortcut_stop_service_long">Stop Sound Boost background service</string>
+    
+    <!-- Flash Sync Shortcut -->
+    <string name="shortcut_flash_toggle">Toggle flash sync</string>
+    <string name="shortcut_flash_toggle_long">Turn bass flash sync on or off</string>
+    <string name="shortcut_flash_on">Turn on flash sync</string>
+    <string name="shortcut_flash_on_long">Enable bass flash synchronization</string>
+    <string name="shortcut_flash_off">Turn off flash sync</string>
+    <string name="shortcut_flash_off_long">Disable bass flash synchronization</string>
+    
+    <!-- Call Enhancement Shortcuts -->
+    <string name="shortcut_call_enhancement_on">Turn on call enhancement</string>
+    <string name="shortcut_call_enhancement_on_long">Enable call quality enhancement</string>
+    <string name="shortcut_call_enhancement_off">Turn off call enhancement</string>
+    <string name="shortcut_call_enhancement_off_long">Disable call quality enhancement</string>
+    <string name="shortcut_call_enhancement_toggle">Toggle call enhancement</string>
+    <string name="shortcut_call_enhancement_toggle_long">Turn call enhancement on or off</string>
+    
+    <!-- Boost Toggle Shortcut -->
+    <string name="shortcut_boost_toggle">Toggle boost</string>
+    <string name="shortcut_boost_toggle_long">Turn sound boost on or off</string>
+    
+    <!-- Preset Shortcuts -->
+    <string name="shortcut_preset_flat">Flat preset</string>
+    <string name="shortcut_preset_flat_long">Apply flat equalizer preset</string>
+    <string name="shortcut_preset_bass">Bass preset</string>
+    <string name="shortcut_preset_bass_long">Apply bass boost equalizer preset</string>
+    <string name="shortcut_preset_treble">Treble preset</string>
+    <string name="shortcut_preset_treble_long">Apply treble boost equalizer preset</string>
+    
+    <!-- NEW v1.5.0: Settings Backup & Restore -->
+    <string name="backup_restore_title">Backup &amp; Restore</string>
+    <string name="backup_export_title">Export Settings</string>
+    <string name="backup_export_desc">Save current settings to file</string>
+    <string name="backup_export_button">Export Now</string>
+    <string name="backup_import_title">Import Settings</string>
+    <string name="backup_import_desc">Restore from backup file</string>
+    <string name="backup_import_button">Import from File</string>
+    <string name="backup_success_export">Settings exported successfully!</string>
+    <string name="backup_success_import">Settings imported successfully!</string>
+    <string name="backup_error_export">Export failed</string>
+    <string name="backup_error_import">Import failed</string>
+    <string name="backup_warning">⚠️ Warning: This will replace ALL current settings with the backup file.</string>
+    <string name="backup_info_title">Tips:</string>
+    <string name="backup_info_desc">• Create backups before major changes\n• Share settings with friends\n• Transfer settings between devices\n• Keep backup before reinstalling app</string>
+    
+    <!-- NEW v1.5.0: Per-App Profiles -->
+    <string name="app_profiles_title">Per-App Profiles</string>
+    <string name="app_profiles_desc">Different settings for each app</string>
+    <string name="app_profiles_empty">No App Profiles</string>
+    <string name="app_profiles_empty_desc">Create custom audio settings for each app</string>
+    <string name="app_profiles_add">Add First Profile</string>
+    <string name="app_profiles_select">Select App</string>
+    <string name="app_profiles_create">Create Profile</string>
+    <string name="app_profiles_edit">Edit</string>
+    <string name="app_profiles_delete">Delete</string>
+    <string name="app_profiles_applied">Profile applied: %s</string>
+    
+    <!-- NEW v1.5.0: Bluetooth Profiles -->
+    <string name="bluetooth_profiles_title">Bluetooth Profiles</string>
+    <string name="bluetooth_profiles_desc">Auto-switch per device</string>
+    <string name="bluetooth_profiles_empty">No Bluetooth Profiles</string>
+    <string name="bluetooth_profiles_empty_desc">Connect a Bluetooth device to create a profile</string>
+    <string name="bluetooth_profiles_how_title">How it works:</string>
+    <string name="bluetooth_profiles_how_desc">1. Connect Bluetooth headset/speaker\n2. You\'ll see a prompt to save settings\n3. Settings auto-apply when reconnected</string>
+    <string name="bluetooth_profiles_save_prompt">Remember settings for this device?</string>
+    <string name="bluetooth_profiles_last_used">Last used: %s</string>
+    
+    <!-- Widget (v1.5.0) -->
+    <string name="widget_rezonans_name">Sound Boost Widget</string>
+    <string name="widget_increase_volume">Increase Volume</string>
+    <string name="widget_decrease_volume">Decrease Volume</string>
+    
+    <!-- Parti Modu / Flash-Sync (v1.5.0) -->
+    <string name="party_mode_title">Party Mode</string>
+    <string name="party_mode_subtitle">Sync all phones on same Wi-Fi to flash together</string>
+    <string name="party_mode_host_title">Create Room</string>
+    <string name="party_mode_host_desc">You become the host, other devices connect to you and you trigger all flash commands</string>
+    <string name="party_mode_be_host">Host Room</string>
+    <string name="party_mode_join_title">Join Room</string>
+    <string name="party_mode_join_desc">Connect to a host on the same network</string>
+    <string name="party_mode_scan_rooms">Scan for Rooms</string>
+    <string name="party_mode_room_name">Room Name</string>
+    <string name="party_mode_start_room">Start Room</string>
+    <string name="party_mode_room_active">Room is active - others can join now</string>
+    <string name="party_mode_device_name_optional">Device Name (optional)</string>
+    <string name="party_mode_scanning">Scanning for rooms…</string>
+    <string name="party_mode_rooms_found">%1$d room(s) found</string>
+    <string name="party_mode_join">Join</string>
+    <string name="party_mode_hosting">Hosting</string>
+    <string name="party_mode_connected">Connected</string>
+    <string name="party_mode_connected_devices">Connected Devices</string>
+    <string name="party_mode_torch">Physical Flash</string>
+    <string name="party_mode_torch_desc">Use camera flash (optional)</string>
+    <string name="party_mode_flash_mode">Flash Mode</string>
+    <string name="party_mode_screen_only">Screen</string>
+    <string name="party_mode_torch_only">Flash</string>
+    <string name="party_mode_both">Both</string>
+    <string name="party_mode_flash_color">Flash Color</string>
+    <string name="party_mode_duration">Duration</string>
+    <string name="party_mode_repeat">Repeat</string>
+    <string name="party_mode_trigger_flash">TRIGGER FLASH</string>
+    <string name="party_mode_waiting_for_host">Waiting for host command…</string>
+    <string name="party_mode_active">Party Mode Active - %1$s</string>
+    <string name="party_mode_waiting">Waiting for devices</string>
+    <string name="party_mode_one_device">1 device connected</string>
+    <string name="party_mode_n_devices">%1$d devices connected</string>
+    <string name="party_mode_channel_name">Party Mode</string>
+    <string name="party_mode_channel_desc">Notification shown when flash-sync party mode is active</string>
+    <string name="party_mode_disconnected_title">Disconnected from Room</string>
+    <string name="party_mode_disconnection_reason">Disconnection Reason:</string>
+    <string name="party_mode_diagnostic_copied">Diagnostic info copied to clipboard</string>
+    <string name="party_mode_copy_diagnostic">Copy diagnostic info</string>
+    <string name="party_mode_disconnection_hint">Tap the box above to copy diagnostic info for troubleshooting</string>
+    <string name="common_back">Back</string>
+    <string name="common_ok">OK</string>
 </resources>

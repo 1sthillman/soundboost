@@ -99,11 +99,17 @@ fun ModernSettingsCard(
                 Column(
                     verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
+                    // Use explicit white/black colors based on surface brightness to ensure readability
+                    // Simple brightness check: if average RGB > 0.5, use dark text, else use light text
+                    val brightness = (surfaceColor.red + surfaceColor.green + surfaceColor.blue) / 3f
+                    val titleColor = if (brightness > 0.5f) Color.Black else Color.White
+                    val descColor = if (brightness > 0.5f) Color.Black.copy(alpha = 0.6f) else Color.White.copy(alpha = 0.7f)
+                    
                     Text(
                         text = title,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.SemiBold,
-                        color = MaterialTheme.colorScheme.onSurface
+                        color = titleColor
                     )
                     
                     if (description != null) {
@@ -111,7 +117,7 @@ fun ModernSettingsCard(
                             text = description,
                             fontSize = 13.sp,
                             fontWeight = FontWeight.Normal,
-                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
+                            color = descColor,
                             lineHeight = 18.sp
                         )
                     }

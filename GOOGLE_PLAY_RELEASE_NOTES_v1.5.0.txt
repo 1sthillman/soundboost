@@ -1,0 +1,40 @@
+🎉 Sound'ST Boost v1.5.0 - Major Update!
+
+✨ NEW FEATURES:
+
+⚡ Quick Settings Tile - Toggle boost from notification shade
+📱 Premium Widget - Control audio from home screen
+💾 Settings Backup - Export/import your perfect setup
+🎮 Per-App Profiles - Different sound for Spotify, YouTube, Games
+🎧 Bluetooth Profiles - Auto-switch when headphones connect
+🎵 28 EQ Presets - Rock, Pop, Jazz, Classical, Electronic & more
+
+🔧 IMPROVEMENTS:
+
+• Modern Material 3 design
+• Faster performance
+• Better stability
+• No new permissions needed!
+
+🐛 BUG FIXES:
+
+• Widget sync issues
+• Bluetooth detection
+• Theme consistency
+
+📱 GETTING STARTED:
+
+Quick Settings: Swipe down → Edit → Add "Sound Boost" tile
+Widget: Long press home → Widgets → Add "Sound'ST Boost"
+Backup: Settings → Backup & Restore → Export
+Per-App: Settings → Per-App Profiles → Add profile
+Bluetooth: Connect device → Save settings → Auto-apply!
+
+🙏 Thank you for 500K+ users! Rate us 5⭐ if you love it!
+
+---
+
+LANGUAGES:
+English, Türkçe, Deutsch, Español, Français, Italiano, Русский, 中文, 日本語, 한국어, العربية, Polski
+
+NO ADS • NO TRACKING • 100% FREE

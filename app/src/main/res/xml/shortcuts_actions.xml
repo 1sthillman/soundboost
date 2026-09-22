@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<actions>
+    <!--
+        GOOGLE ASSISTANT APP ACTIONS - v1.5.0
+        BII (Built-in Intent) definitions for voice command fulfillment
+        Standard 2026: Using actions.intent.* for better Google Assistant integration
+    -->
+    
+    <!-- Volume Adjustment Action -->
+    <action intentName="actions.intent.ADJUST_SETTING">
+        <fulfillment urlTemplate="soundboost://action/{actionType}">
+            <parameter-mapping 
+                intentParameter="setting.name"
+                urlParameter="actionType" />
+        </fulfillment>
+    </action>
+    
+    <!-- Service Start/Stop Actions -->
+    <action intentName="actions.intent.START_EXERCISE">
+        <fulfillment urlTemplate="soundboost://action/start_service" />
+    </action>
+    
+    <action intentName="actions.intent.STOP_EXERCISE">
+        <fulfillment urlTemplate="soundboost://action/stop_service" />
+    </action>
+    
+    <!-- Toggle Settings Action -->
+    <action intentName="actions.intent.TOGGLE_SETTING">
+        <fulfillment urlTemplate="soundboost://action/{actionType}">
+            <parameter-mapping 
+                intentParameter="setting.name"
+                urlParameter="actionType" />
+        </fulfillment>
+    </action>
+    
+    <!-- Open App Feature Action -->
+    <action intentName="actions.intent.OPEN_APP_FEATURE">
+        <fulfillment urlTemplate="soundboost://action/{feature}">
+            <parameter-mapping 
+                intentParameter="feature.name"
+                urlParameter="feature" />
+        </fulfillment>
+    </action>
+
+</actions>

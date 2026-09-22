@@ -216,4 +216,48 @@
     <string name="close">Закрыть</string>
     
     <string name="language_italian">Итальянский</string>
+    
+    <!-- Parti Modu / Flash-Sync (v1.5.0) - Rusça -->
+    <string name="party_mode_title">Режим Вечеринки</string>
+    <string name="party_mode_subtitle">Синхронизируйте все телефоны в одной Wi-Fi сети для одновременной вспышки</string>
+    <string name="party_mode_host_title">Создать Комнату</string>
+    <string name="party_mode_host_desc">Вы становитесь хостом, другие устройства подключаются к вам и вы запускаете все команды вспышки</string>
+    <string name="party_mode_be_host">Создать Комнату</string>
+    <string name="party_mode_join_title">Присоединиться к Комнате</string>
+    <string name="party_mode_join_desc">Подключиться к хосту в той же сети</string>
+    <string name="party_mode_scan_rooms">Поиск Комнат</string>
+    <string name="party_mode_room_name">Название Комнаты</string>
+    <string name="party_mode_start_room">Запустить Комнату</string>
+    <string name="party_mode_room_active">Комната активна - другие могут присоединиться</string>
+    <string name="party_mode_device_name_optional">Имя Устройства (необязательно)</string>
+    <string name="party_mode_scanning">Поиск комнат…</string>
+    <string name="party_mode_rooms_found">Найдено комнат: %1$d</string>
+    <string name="party_mode_join">Присоединиться</string>
+    <string name="party_mode_hosting">Хостинг</string>
+    <string name="party_mode_connected">Подключено</string>
+    <string name="party_mode_connected_devices">Подключенные Устройства</string>
+    <string name="party_mode_torch">Физическая Вспышка</string>
+    <string name="party_mode_torch_desc">Использовать вспышку камеры (опционально)</string>
+    <string name="party_mode_flash_mode">Режим Вспышки</string>
+    <string name="party_mode_screen_only">Экран</string>
+    <string name="party_mode_torch_only">Вспышка</string>
+    <string name="party_mode_both">Оба</string>
+    <string name="party_mode_flash_color">Цвет Вспышки</string>
+    <string name="party_mode_duration">Длительность</string>
+    <string name="party_mode_repeat">Повтор</string>
+    <string name="party_mode_trigger_flash">ЗАПУСТИТЬ ВСПЫШКУ</string>
+    <string name="party_mode_waiting_for_host">Ожидание команды хоста…</string>
+    <string name="party_mode_active">Режим Вечеринки Активен - %1$s</string>
+    <string name="party_mode_waiting">Ожидание устройств</string>
+    <string name="party_mode_one_device">1 устройство подключено</string>
+    <string name="party_mode_n_devices">%1$d устройств подключено</string>
+    <string name="party_mode_channel_name">Режим Вечеринки</string>
+    <string name="party_mode_channel_desc">Уведомление отображается когда активен режим синхронизации вспышек</string>
+    <string name="party_mode_disconnected_title">Отключено от Комнаты</string>
+    <string name="party_mode_disconnection_reason">Причина отключения:</string>
+    <string name="party_mode_diagnostic_copied">Диагностическая информация скопирована в буфер обмена</string>
+    <string name="party_mode_copy_diagnostic">Скопировать диагностическую информацию</string>
+    <string name="party_mode_disconnection_hint">Нажмите на поле выше, чтобы скопировать диагностическую информацию</string>
+    
+    <string name="common_ok">ОК</string>
 </resources>

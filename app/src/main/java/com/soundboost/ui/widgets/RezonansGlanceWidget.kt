@@ -269,6 +269,4 @@ private fun getThemeDescription(theme: AppTheme): String {
     }
 }
 
-class RezonansGlanceWidgetReceiver : GlanceAppWidgetReceiver() {
-    override val glanceAppWidget: GlanceAppWidget = RezonansGlanceWidget()
-}
+// NOTE: Receiver class moved to RezonansGlanceWidgetReceiver.kt (v1.5.0)

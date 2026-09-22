@@ -34,6 +34,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         scope = viewModelScope
     )
     
+    // NEW v1.5.0: Profile Managers
+    val appProfileManager = com.soundboost.data.AppProfileManager(application)
+    val bluetoothProfileManager = com.soundboost.data.BluetoothProfileManager(application)
+    
     val uiState: StateFlow<BoostSettings> = prefs.settings
         .distinctUntilChanged()  // CRITICAL: Only emit when value actually changes
         .stateIn(viewModelScope, SharingStarted.Eagerly, BoostSettings())
@@ -232,6 +236,12 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
     
     fun hasFlashSupport(): Boolean = bassFlashSync.hasFlashSupport()
+    
+    /**
+     * Get BassFlashlightSync instance for sharing with SyncViewModel
+     * This prevents camera resource conflicts by using single instance
+     */
+    fun getBassFlashSyncInstance(): BassFlashlightSync = bassFlashSync
     
     fun onAutoStartToggled(enabled: Boolean) {
         viewModelScope.launch {
