@@ -661,7 +661,9 @@ private fun DJMixerControls(
     musicState: MusicShareState,
     themeColors: com.soundboost.ui.theme.ThemeColors
 ) {
-    if (musicState !is MusicShareState.Playing && musicState !is MusicShareState.Paused) return
+    if (musicState !is MusicShareState.Playing && 
+        musicState !is MusicShareState.Paused && 
+        musicState !is MusicShareState.Ready) return
     
     val haptic = LocalHapticFeedback.current
     
