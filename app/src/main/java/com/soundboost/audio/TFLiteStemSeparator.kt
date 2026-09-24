@@ -63,15 +63,20 @@ class TFLiteStemSeparator(private val context: Context) {
         try {
             Log.d(TAG, "🤖 Initializing TensorFlow Lite model...")
             
-            // GPU Delegate for hardware acceleration  
-            gpuDelegate = org.tensorflow.lite.gpu.CompatibilityList().let { compatList ->
+            // GPU Delegate for hardware acceleration (updated for TFLite 2.14+)
+            gpuDelegate = try {
+                val compatList = org.tensorflow.lite.gpu.CompatibilityList()
                 if (compatList.isDelegateSupportedOnThisDevice) {
                     Log.d(TAG, "✅ GPU delegate supported on this device")
-                    GpuDelegate()
+                    val delegateOptions = compatList.bestOptionsForThisDevice
+                    GpuDelegate(delegateOptions)
                 } else {
                     Log.w(TAG, "⚠️ GPU not supported, using CPU")
                     null
                 }
+            } catch (e: Exception) {
+                Log.w(TAG, "⚠️ GPU delegate initialization failed: ${e.message}")
+                null
             }
             
             val options = Interpreter.Options().apply {
@@ -79,7 +84,7 @@ class TFLiteStemSeparator(private val context: Context) {
                     addDelegate(gpuDelegate)
                 }
                 setNumThreads(4) // Multi-core support
-                setUseNNAPI(true) // Neural Networks API if available
+                setUseNNAPI(false) // Disable NNAPI when using GPU delegate (conflicts)
             }
             
             // Load model from assets
@@ -303,11 +308,20 @@ class TFLiteStemSeparator(private val context: Context) {
     
     /**
      * Frequency-based fallback (when AI model not available)
+     * UPDATED: Now shows progress feedback so UI doesn't freeze
      */
-    private suspend fun processFrequencyBased(uri: Uri, sessionId: String): StemSeparationResult {
+    private suspend fun processFrequencyBased(uri: Uri, sessionId: String): StemSeparationResult = withContext(Dispatchers.IO) {
+        Log.w(TAG, "⚠️ Using frequency-based fallback (AI model not available)")
+        
+        _separationState.value = StemSeparationState.Processing(0.1f, "Fallback mode...")
+        yield()
+        
         // Simple fallback: copy original as music, empty vocals
         val originalFile = File(cacheDir, "${sessionId}_music.wav")
         val vocalsFile = File(cacheDir, "${sessionId}_vocals.wav")
+        
+        _separationState.value = StemSeparationState.Processing(0.5f, "Copying audio...")
+        yield()
         
         context.contentResolver.openInputStream(uri)?.use { input ->
             originalFile.outputStream().use { output ->
@@ -315,9 +329,12 @@ class TFLiteStemSeparator(private val context: Context) {
             }
         }
         
+        _separationState.value = StemSeparationState.Processing(0.9f, "Finalizing...")
+        yield()
+        
         vocalsFile.createNewFile()
         
-        return StemSeparationResult(
+        val result = StemSeparationResult(
             sessionId = sessionId,
             vocalsPath = vocalsFile.absolutePath,
             musicPath = originalFile.absolutePath,
@@ -326,6 +343,11 @@ class TFLiteStemSeparator(private val context: Context) {
             duration = 0L,
             ready = true
         )
+        
+        _separationState.value = StemSeparationState.Complete(result)
+        Log.d(TAG, "✅ Fallback separation complete")
+        
+        result
     }
     
     /**
