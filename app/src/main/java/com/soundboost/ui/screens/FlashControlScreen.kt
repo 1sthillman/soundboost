@@ -216,11 +216,18 @@ private fun DJDeckSection(
             modifier = Modifier.padding(20.dp),
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
-            // AI STEM SEPARATION PROGRESS (if processing)
-            if (stemSeparationState is com.soundboost.audio.StemSeparationState.Processing) {
-                val state = stemSeparationState as com.soundboost.audio.StemSeparationState.Processing
-                StemSeparationProgress(state, themeColors)
-                Spacer(modifier = Modifier.height(8.dp))
+            // AI STEM SEPARATION PROGRESS (if processing or just completed)
+            when (val state = stemSeparationState) {
+                is com.soundboost.audio.StemSeparationState.Processing -> {
+                    StemSeparationProgress(state, themeColors)
+                    Spacer(modifier = Modifier.height(8.dp))
+                }
+                is com.soundboost.audio.StemSeparationState.Complete -> {
+                    // Show completion for 3 seconds
+                    StemSeparationComplete(themeColors)
+                    Spacer(modifier = Modifier.height(8.dp))
+                }
+                else -> Unit
             }
             
             // Track info
@@ -1157,6 +1164,62 @@ private fun StemSeparationProgress(
                     color = themeColors.onSurfaceVariant,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
+                )
+            }
+        }
+    }
+}
+
+
+/**
+ * Stem Separation Complete Indicator
+ */
+@Composable
+private fun StemSeparationComplete(
+    themeColors: com.soundboost.ui.theme.ThemeColors
+) {
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+            .shadow(4.dp, RoundedCornerShape(16.dp)),
+        shape = RoundedCornerShape(16.dp),
+        color = Color(0xFF00E676).copy(alpha = 0.1f)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            // Check icon
+            Box(
+                modifier = Modifier
+                    .size(56.dp)
+                    .background(Color(0xFF00E676).copy(alpha = 0.2f), CircleShape),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    Icons.Default.CheckCircle,
+                    contentDescription = null,
+                    tint = Color(0xFF00E676),
+                    modifier = Modifier.size(32.dp)
+                )
+            }
+            
+            // Status text
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    "✅ Ready to Play",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 14.sp,
+                    color = themeColors.onSurface
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    "Vocal/Music separation complete",
+                    fontSize = 12.sp,
+                    color = themeColors.onSurfaceVariant
                 )
             }
         }
