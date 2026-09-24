@@ -58,18 +58,11 @@ class TFLiteStemSeparator(private val context: Context) {
     
     /**
      * Initialize TensorFlow Lite model with GPU acceleration
-     * TEMPORARILY DISABLED: Model too large, causing crashes
      */
     private fun initializeModel() {
         try {
             Log.d(TAG, "🤖 Initializing TensorFlow Lite model...")
             
-            // TEMPORARY: Skip model loading to test if size causes crash
-            Log.w(TAG, "⚠️ Model loading temporarily disabled (testing)")
-            Log.w(TAG, "⚠️ Using frequency-based fallback")
-            return
-            
-            /* MODEL LOADING CODE - ENABLE AFTER TESTING
             // GPU Delegate for hardware acceleration  
             gpuDelegate = org.tensorflow.lite.gpu.CompatibilityList().let { compatList ->
                 if (compatList.isDelegateSupportedOnThisDevice) {
@@ -95,7 +88,6 @@ class TFLiteStemSeparator(private val context: Context) {
             interpreter = Interpreter(modelFile, options)
             
             Log.d(TAG, "✅ Model loaded with ${if (gpuDelegate != null) "GPU" else "CPU"} acceleration")
-            */
         } catch (e: Exception) {
             Log.e(TAG, "❌ Model initialization failed", e)
             Log.w(TAG, "⚠️ Fallback to frequency-based separation")
