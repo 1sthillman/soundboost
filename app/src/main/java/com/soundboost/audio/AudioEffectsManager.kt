@@ -249,22 +249,22 @@ class AudioEffectsManager {
             for (band in 0 until bandCount) {
                 val centerFreq = eq.getCenterFreq(band.toShort()) / 1000  // Hz to kHz
                 
-                // Frequency-specific gain calculation
+                // AGGRESSIVE frequency-specific gain for CLEAR separation
                 val targetDb = when {
-                    // Bass range (50-250 Hz) - Music
-                    centerFreq < 250 -> musicGain * 5f
+                    // Bass range (50-250 Hz) - Music BOOST
+                    centerFreq < 250 -> musicGain * 12f  // INCREASED from 5f
                     
-                    // Low-mid vocal fundamentals (250-800 Hz) - Vocal
-                    centerFreq in 250..800 -> vocalGain * 6f
+                    // Low-mid vocal fundamentals (250-800 Hz) - Vocal BOOST
+                    centerFreq in 250..800 -> vocalGain * 15f  // INCREASED from 6f
                     
-                    // Mid vocal presence (800-3000 Hz) - Strong Vocal
-                    centerFreq in 800..3000 -> vocalGain * 7f
+                    // Mid vocal presence (800-3000 Hz) - STRONG Vocal BOOST
+                    centerFreq in 800..3000 -> vocalGain * 18f  // INCREASED from 7f
                     
                     // High-mid clarity (3-5 kHz) - Slight Vocal
-                    centerFreq in 3000..5000 -> vocalGain * 4f
+                    centerFreq in 3000..5000 -> vocalGain * 10f  // INCREASED from 4f
                     
                     // Treble/Air (>5 kHz) - Music
-                    else -> musicGain * 3f
+                    else -> musicGain * 8f  // INCREASED from 3f
                 }.coerceIn(-MAX_EQ_BAND_GAIN_DB, MAX_EQ_BAND_GAIN_DB)
                 
                 val gainMb = (targetDb * 100).toInt().coerceIn(range[0].toInt(), range[1].toInt())

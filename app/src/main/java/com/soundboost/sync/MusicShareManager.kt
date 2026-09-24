@@ -484,7 +484,14 @@ class MusicShareManager(
      * INCLUDES VOCAL/MUSIC SEPARATION!
      */
     fun applyDJControls(bass: Float, mid: Float, treble: Float, masterVolume: Float, vocalBalance: Float = 0.5f) {
-        syncPlayer?.applyDJControls(bass, mid, treble, masterVolume, vocalBalance)
+        Log.d(TAG, "🔊 MusicShareManager.applyDJControls called: vocalBalance=$vocalBalance")
+        val player = syncPlayer
+        if (player == null) {
+            Log.w(TAG, "⚠️ Cannot apply DJ controls - player is NULL!")
+            return
+        }
+        Log.d(TAG, "✅ Player exists, calling player.applyDJControls...")
+        player.applyDJControls(bass, mid, treble, masterVolume, vocalBalance)
     }
     
     /**
