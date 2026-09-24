@@ -395,6 +395,15 @@
     <string name="party_mode_diagnostic_copied">Tanı bilgisi panoya kopyalandı</string>
     <string name="party_mode_copy_diagnostic">Tanı bilgisini kopyala</string>
     <string name="party_mode_disconnection_hint">Tanı bilgisini kopyalamak için yukarıdaki kutuya dokunun</string>
+    
+    <!-- Audio Sync & Music Share -->
+    <string name="party_mode_audio_sync">Canlı Ses Akışı</string>
+    <string name="party_mode_audio_sync_inactive">Host\'un sesini canlı dinle</string>
+    <string name="party_mode_audio_sync_starting">Başlatılıyor…</string>
+    <string name="party_mode_audio_sync_active">Akış aktif</string>
+    <string name="party_mode_audio_streaming_active">Canlı ses yayını devam ediyor</string>
+    <string name="party_mode_devices_streaming">cihaza yayın yapılıyor</string>
+    
     <string name="common_back">Geri</string>
     <string name="common_ok">Tamam</string>
 </resources>

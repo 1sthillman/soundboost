@@ -52,6 +52,21 @@ class SyncClient {
     )
     val flashEvents: SharedFlow<SyncMessage.Flash> = _flashEvents
 
+    private val _audioChunkEvents = MutableSharedFlow<SyncMessage.AudioChunk>(
+        replay = 0,
+        extraBufferCapacity = 256,  // ULTRA-LARGE buffer for audio streaming!
+        onBufferOverflow = kotlinx.coroutines.channels.BufferOverflow.DROP_OLDEST
+    )
+    val audioChunkEvents: SharedFlow<SyncMessage.AudioChunk> = _audioChunkEvents
+    
+    // ALL incoming messages from server (for music messages etc.)
+    private val _incomingMessages = MutableSharedFlow<Pair<String, SyncMessage>>(
+        replay = 0,
+        extraBufferCapacity = 256,
+        onBufferOverflow = kotlinx.coroutines.channels.BufferOverflow.DROP_OLDEST
+    )
+    val incomingMessages: SharedFlow<Pair<String, SyncMessage>> = _incomingMessages
+
     private val offsetSamples = mutableListOf<ClockSync.SampleResult>()
     
     // Disconnection diagnostic tracking
@@ -171,6 +186,8 @@ class SyncClient {
      * CRASH-PROOF message handler - processes messages INLINE (no separate coroutine!)
      * CRITICAL FIX: Removed scope.launch() - was causing crashes because scope gets
      * cancelled when client disconnects, but messages might still be processing!
+     * 
+     * ENHANCED: Added detailed logging for ALL message types
      */
     private suspend fun handleMessage(text: String, ws: io.ktor.websocket.WebSocketSession, deviceName: String) {
         val message = try {
@@ -184,10 +201,19 @@ class SyncClient {
             return
         }
 
-        android.util.Log.d("SyncClient", "📦 Parsed message type: ${message::class.simpleName}")
+        android.util.Log.d("SyncClient", "📦 ========== MESSAGE RECEIVED ==========")
+        android.util.Log.d("SyncClient", "📦 Type: ${message::class.simpleName}")
+        
         when (message) {
             is SyncMessage.Welcome -> {
                 android.util.Log.d("SyncClient", "👋 WELCOME received: room=${message.roomName}, deviceId=${message.deviceId}")
+                
+                // LATE JOIN: Check if RoomState provided
+                if (message.roomStateJson != null) {
+                    android.util.Log.d("SyncClient", "🎵 Late join - RoomState received")
+                    _incomingMessages.tryEmit("server" to message)
+                }
+                
                 _connectionState.value = SyncConnectionState.Connected(
                     deviceId = message.deviceId,
                     roomName = message.roomName
@@ -200,10 +226,37 @@ class SyncClient {
             is SyncMessage.Pong -> {
                 val t3 = System.currentTimeMillis()
                 val sample = ClockSync.computeSample(t0 = message.t0, t1 = message.t1, t2 = message.t2, t3 = t3)
+                
+                val previousOffset = _clockOffsetMillis.value
                 offsetSamples.add(sample)
                 if (offsetSamples.size > MAX_SAMPLES) offsetSamples.removeAt(0)
-                _clockOffsetMillis.value = ClockSync.medianOffset(offsetSamples)
-                android.util.Log.d("SyncClient", "🕐 Clock sync: offset=${_clockOffsetMillis.value}ms")
+                
+                val newOffset = ClockSync.medianOffset(offsetSamples)
+                _clockOffsetMillis.value = newOffset
+                
+                // Log clock sync quality periodically
+                if (offsetSamples.size % 5 == 0) {
+                    val isStable = ClockSync.isStable(previousOffset, newOffset, 15L)
+                    val quality = when {
+                        sample.rttMillis < 20 -> "EXCELLENT"
+                        sample.rttMillis < 50 -> "GOOD"
+                        sample.rttMillis < 100 -> "FAIR"
+                        else -> "POOR"
+                    }
+                    
+                    android.util.Log.d("SyncClient", "🕐 ========== CLOCK SYNC STATUS ==========")
+                    android.util.Log.d("SyncClient", "🕐 Offset: ${newOffset}ms (stable: $isStable)")
+                    android.util.Log.d("SyncClient", "🕐 RTT: ${sample.rttMillis}ms (quality: $quality)")
+                    android.util.Log.d("SyncClient", "🕐 Samples: ${offsetSamples.size}/$MAX_SAMPLES")
+                    
+                    if (!isStable) {
+                        android.util.Log.w("SyncClient", "⚠️ Clock drift detected: ${previousOffset}ms -> ${newOffset}ms")
+                    }
+                    
+                    if (sample.rttMillis > 100) {
+                        android.util.Log.w("SyncClient", "⚠️ High network latency! Sync precision may be reduced")
+                    }
+                }
             }
             is SyncMessage.Flash -> {
                 android.util.Log.d("SyncClient", "⚡⚡⚡ FLASH EVENT received: startAt=${message.startAt}, mode=${message.mode}, color=${message.color}")
@@ -231,23 +284,81 @@ class SyncClient {
                     android.util.Log.d("SyncClient", "✅ Bass-sync flash emitted (guaranteed)")
                 }
             }
+            is SyncMessage.AudioChunk -> {
+                // Reduced log spam for audio chunks
+                if (message.sequence % 100 == 0L) {
+                    android.util.Log.d("SyncClient", "🎵 AUDIO CHUNK received: seq=${message.sequence}, size=${message.data.length}")
+                }
+                // Decode base64 to ByteArray
+                val opusData = android.util.Base64.decode(message.data, android.util.Base64.NO_WRAP)
+                // Emit to audio chunk flow for processing
+                scope.launch(SupervisorJob()) {
+                    _audioChunkEvents.emit(message)
+                }
+            }
+            is SyncMessage.MusicMetadata -> {
+                android.util.Log.d("SyncClient", "🎵 ========== MUSIC METADATA RECEIVED IN CLIENT ==========")
+                android.util.Log.d("SyncClient", "🎵 sessionId: ${message.sessionId}")
+                android.util.Log.d("SyncClient", "🎵 fileName: ${message.fileName}")
+                android.util.Log.d("SyncClient", "🎵 fileSizeBytes: ${message.fileSizeBytes}")
+                android.util.Log.d("SyncClient", "🎵 totalChunks: ${message.totalChunks}")
+                android.util.Log.d("SyncClient", "🎵 Will emit to incomingMessages flow...")
+                // Will be emitted to incomingMessages below
+            }
+            is SyncMessage.MusicChunk -> {
+                android.util.Log.d("SyncClient", "📦 MUSIC CHUNK received: chunk ${message.chunkIndex}")
+                // Will be emitted to incomingMessages below
+            }
+            is SyncMessage.MusicStart -> {
+                android.util.Log.d("SyncClient", "▶️ MUSIC START received: startAt=${message.startAt}")
+                // Will be emitted to incomingMessages below
+            }
+            is SyncMessage.MusicControl -> {
+                android.util.Log.d("SyncClient", "🎛️ MUSIC CONTROL received: action=${message.action}")
+                // Will be emitted to incomingMessages below
+            }
             is SyncMessage.Error -> {
                 android.util.Log.e("SyncClient", "❌ Error message from server: ${message.reason}")
                 _connectionState.value = SyncConnectionState.Error(message.reason)
             }
             else -> {
-                android.util.Log.d("SyncClient", "📭 Unhandled message type: ${message::class.simpleName}")
+                android.util.Log.d("SyncClient", "📭 Other message type: ${message::class.simpleName}")
             }
+        }
+        
+        // CRITICAL: Emit ALL messages to incomingMessages flow for ViewModel processing
+        // This includes music messages (MusicMetadata, MusicChunk, MusicStart, MusicControl)
+        android.util.Log.d("SyncClient", "📤 Emitting message to incomingMessages flow: ${message::class.simpleName}")
+        scope.launch(SupervisorJob()) {
+            _incomingMessages.emit("server" to message)
+            android.util.Log.d("SyncClient", "✅ Message emitted to incomingMessages flow")
         }
     }
 
     private suspend fun pingLoop(ws: io.ktor.websocket.WebSocketSession) {
+        android.util.Log.d("SyncClient", "🔄 ========== CLOCK SYNC PING LOOP STARTED ==========")
+        android.util.Log.d("SyncClient", "🔄 Ping interval: ${PING_INTERVAL_MS}ms")
+        android.util.Log.d("SyncClient", "🔄 This maintains continuous clock synchronization")
+        
+        var pingCount = 0
+        
         while (scope.isActive && ws.isActive) {
             runCatching {
-                ws.send(Frame.Text(json.encodeToString(SyncMessage.serializer(), SyncMessage.Ping(System.currentTimeMillis()))))
+                pingCount++
+                val pingTime = System.currentTimeMillis()
+                val pingMsg = SyncMessage.Ping(pingTime)
+                val payload = json.encodeToString(SyncMessage.serializer(), pingMsg)
+                ws.send(Frame.Text(payload))
+                
+                // Log every 5th ping to avoid spam
+                if (pingCount % 5 == 0) {
+                    android.util.Log.d("SyncClient", "📡 Clock sync ping #$pingCount sent (offset: ${_clockOffsetMillis.value}ms)")
+                }
             }
             delay(PING_INTERVAL_MS)
         }
+        
+        android.util.Log.d("SyncClient", "⏹️ Clock sync ping loop stopped (sent $pingCount pings)")
     }
 
     /** Host'un yayınladığı mutlak zamanı, bu cihazın yerel gecikmesine çevirir. */
@@ -257,6 +368,25 @@ class SyncClient {
             localOffsetMillis = _clockOffsetMillis.value,
             nowLocalEpochMillis = System.currentTimeMillis()
         )
+    
+    /**
+     * Send a message to the server (e.g., MusicChunkRequest)
+     */
+    suspend fun sendMessage(message: SyncMessage) {
+        val ws = session
+        if (ws == null) {
+            android.util.Log.w("SyncClient", "⚠️ Cannot send message - not connected")
+            return
+        }
+        
+        try {
+            val payload = json.encodeToString(SyncMessage.serializer(), message)
+            ws.send(Frame.Text(payload))
+            android.util.Log.d("SyncClient", "📤 Sent message: ${message::class.simpleName}")
+        } catch (e: Exception) {
+            android.util.Log.e("SyncClient", "❌ Failed to send message", e)
+        }
+    }
 
     fun disconnect() {
         scope.launch { 

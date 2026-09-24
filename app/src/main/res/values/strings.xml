@@ -474,6 +474,24 @@
     <string name="party_mode_bass_flash_sync">Bass-Sync Flash</string>
     <string name="party_mode_bass_sync_active">ACTIVE - Syncing with bass</string>
     <string name="party_mode_bass_sync_inactive">Auto flash with bass beats</string>
+    
+    <!-- Audio Sync Strings -->
+    <string name="party_mode_audio_sync">Synchronized Audio</string>
+    <string name="party_mode_audio_sync_active">STREAMING - %1$d devices</string>
+    <string name="party_mode_audio_sync_inactive">Stream music to all devices</string>
+    <string name="party_mode_audio_quality">Audio Quality</string>
+    <string name="party_mode_audio_quality_high">High (128kbps)</string>
+    <string name="party_mode_audio_quality_standard">Standard (96kbps)</string>
+    <string name="party_mode_audio_quality_low">Low (64kbps)</string>
+    <string name="party_mode_audio_latency">Buffer Size</string>
+    <string name="party_mode_audio_latency_min">Minimum (50ms)</string>
+    <string name="party_mode_audio_latency_normal">Normal (100ms)</string>
+    <string name="party_mode_audio_latency_max">Maximum (150ms)</string>
+    <string name="party_mode_audio_permission_required">Microphone permission required</string>
+    <string name="party_mode_audio_sync_starting">Starting…</string>
+    <string name="party_mode_audio_streaming_active">Live audio stream is active</string>
+    <string name="party_mode_devices_streaming">devices streaming</string>
+    
     <string name="party_mode_intensity_level">Intensity Level</string>
     <string name="party_mode_intensity_light">Light</string>
     <string name="party_mode_intensity_normal">Normal</string>

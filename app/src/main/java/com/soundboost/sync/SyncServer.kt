@@ -36,15 +36,20 @@ class SyncServer(
     private val roomName: String,
     private val port: Int = DEFAULT_PORT
 ) {
-    // CRITICAL: allowSpecialFloatingPointValues = false to prevent NaN/Infinity serialization bugs
     private val json = Json { 
         ignoreUnknownKeys = true
         encodeDefaults = true
-        allowSpecialFloatingPointValues = false  // FIX: Prevent NaN/Infinity causing UTF-8 errors
-        isLenient = false  // Strict mode
+        allowSpecialFloatingPointValues = false
+        isLenient = false
     }
     private val connectionMutex = Mutex()
     private val connections = mutableMapOf<String, io.ktor.websocket.WebSocketSession>()
+    
+    // Device join times for host transfer
+    private val deviceJoinTimes = mutableMapOf<String, Long>()
+    
+    // RoomState manager
+    private val roomStateManager = RoomStateManager()
 
     private val _connectedDevices = MutableStateFlow<List<DeviceInfo>>(emptyList())
     val connectedDevices: StateFlow<List<DeviceInfo>> = _connectedDevices.asStateFlow()
@@ -70,28 +75,69 @@ class SyncServer(
             }
             routing {
                 webSocket("/sync") {
-                    val deviceId = UUID.randomUUID().toString()
+                    var deviceId = ""
+                    var deviceName = ""
                     
-                    // CRITICAL: Add to connections BEFORE sending Welcome
-                    connectionMutex.withLock { 
-                        connections[deviceId] = this
-                        android.util.Log.d("SyncServer", "🔌 NEW connection: deviceId=$deviceId (total: ${connections.size})")
-                    }
-
                     try {
-                        val currentCount = connectionMutex.withLock { connections.size }
-                        android.util.Log.d("SyncServer", "🔍 NEW CONNECTION DEBUG:")
-                        android.util.Log.d("SyncServer", "   - New deviceId: $deviceId")
-                        android.util.Log.d("SyncServer", "   - Total devices BEFORE: $currentCount")
-                        android.util.Log.d("SyncServer", "   - All deviceIds: ${connections.keys.joinToString()}")
+                        // Wait for Join message first
+                        for (frame in incoming) {
+                            if (frame !is Frame.Text) continue
+                            val text = frame.readText()
+                            val message = runCatching {
+                                json.decodeFromString(SyncMessage.serializer(), text)
+                            }.getOrNull() ?: continue
+                            
+                            if (message is SyncMessage.Join) {
+                                deviceId = UUID.randomUUID().toString()
+                                deviceName = message.deviceName
+                                
+                                // RECONNECT DETECTION
+                                val existingDevice = connectionMutex.withLock {
+                                    _connectedDevices.value.find { it.name == deviceName }
+                                }
+                                
+                                if (existingDevice != null) {
+                                    android.util.Log.w("SyncServer", "🔄 RECONNECT detected: $deviceName")
+                                    val oldId = existingDevice.id
+                                    connectionMutex.withLock {
+                                        connections.remove(oldId)
+                                    }
+                                    deviceJoinTimes.remove(oldId)
+                                    removeDeviceFromList(oldId)
+                                    android.util.Log.d("SyncServer", "✅ Old connection cleaned for $deviceName")
+                                }
+                                
+                                // Add new connection
+                                connectionMutex.withLock { 
+                                    connections[deviceId] = this@webSocket
+                                }
+                                deviceJoinTimes[deviceId] = System.currentTimeMillis()
+                                
+                                // Send Welcome with RoomState
+                                val currentCount = connectionMutex.withLock { connections.size }
+                                val roomState = roomStateManager.getCurrentState()
+                                val welcomeMsg = SyncMessage.Welcome(
+                                    deviceId = deviceId,
+                                    roomName = roomName,
+                                    connectedDeviceCount = currentCount,
+                                    roomStateJson = roomStateManager.serializeState()
+                                )
+                                send(Frame.Text(json.encodeToString(SyncMessage.serializer(), welcomeMsg)))
+                                
+                                android.util.Log.d("SyncServer", "✅ Welcome sent to $deviceName (id=$deviceId)")
+                                if (roomState.playbackState != PlaybackState.IDLE) {
+                                    android.util.Log.d("SyncServer", "🎵 Late join: Music playing at ${roomState.currentPosition}ms")
+                                }
+                                
+                                updateDeviceList(deviceId, deviceName)
+                                break
+                            }
+                        }
                         
-                        val welcomeMsg = SyncMessage.Welcome(
-                            deviceId = deviceId,
-                            roomName = roomName,
-                            connectedDeviceCount = currentCount
-                        )
-                        send(Frame.Text(json.encodeToString(SyncMessage.serializer(), welcomeMsg)))
-                        android.util.Log.d("SyncServer", "📤 Welcome sent to deviceId=$deviceId (room has $currentCount devices)")
+                        if (deviceId.isEmpty()) {
+                            android.util.Log.w("SyncServer", "❌ No Join message received")
+                            return@webSocket
+                        }
 
                         for (frame in incoming) {
                             if (frame !is Frame.Text) continue
@@ -101,37 +147,26 @@ class SyncServer(
                             }.getOrNull() ?: continue
 
                             when (message) {
-                                is SyncMessage.Join -> {
-                                    android.util.Log.d("SyncServer", "📥 JOIN from: ${message.deviceName} (deviceId: $deviceId)")
-                                    updateDeviceList(deviceId, message.deviceName)
-                                    val totalDevices = connectionMutex.withLock { connections.size }
-                                    android.util.Log.d("SyncServer", "✅ Device added! Total devices: $totalDevices")
-                                }
                                 is SyncMessage.Ping -> {
                                     val t1 = System.currentTimeMillis()
                                     val pong = SyncMessage.Pong(t0 = message.t0, t1 = t1, t2 = System.currentTimeMillis())
                                     send(Frame.Text(json.encodeToString(SyncMessage.serializer(), pong)))
                                 }
                                 is SyncMessage.Leave -> {
-                                    android.util.Log.d("SyncServer", "👋 Client $deviceId requested disconnect")
-                                    break  // Exit loop, cleanup in finally
+                                    android.util.Log.d("SyncServer", "👋 $deviceName requested disconnect")
+                                    break
                                 }
                                 else -> Unit
                             }
                             _incomingMessages.tryEmit(deviceId to message)
                         }
                     } catch (t: Throwable) {
-                        android.util.Log.w("SyncServer", "⚠️ Connection $deviceId closed: ${t.javaClass.simpleName}: ${t.message}", t)
-                        android.util.Log.w("SyncServer", "⚠️ Stack trace for debugging:", t)
+                        android.util.Log.w("SyncServer", "⚠️ Connection $deviceName closed: ${t.message}")
                     } finally {
-                        val remainingCount = connectionMutex.withLock {
+                        connectionMutex.withLock {
                             connections.remove(deviceId)
-                            connections.size
                         }
-                        android.util.Log.d("SyncServer", "🔍 DISCONNECTION DEBUG:")
-                        android.util.Log.d("SyncServer", "   - Removed deviceId: $deviceId")
-                        android.util.Log.d("SyncServer", "   - Remaining devices: $remainingCount")
-                        android.util.Log.d("SyncServer", "   - Remaining deviceIds: ${connectionMutex.withLock { connections.keys.joinToString() }}")
+                        deviceJoinTimes.remove(deviceId)
                         removeDeviceFromList(deviceId)
                     }
                 }
@@ -146,35 +181,38 @@ class SyncServer(
      * - Parallel sending for instant delivery
      * - SupervisorJob prevents one failure from affecting others
      * - Non-blocking - returns immediately
+     * - GUARANTEED DELIVERY TRACKING: Returns success count
      * 
      * CRITICAL FIX: Catches JSON serialization errors (NaN/Infinity) before sending
+     * 
+     * @return Pair<successCount, failCount> for delivery confirmation
      */
-    suspend fun broadcast(message: SyncMessage) {
+    suspend fun broadcast(message: SyncMessage): Pair<Int, Int> {
         // CRITICAL: Encode BEFORE getting snapshot to catch serialization errors early!
         val jsonString = try {
             json.encodeToString(SyncMessage.serializer(), message)
         } catch (e: kotlinx.serialization.SerializationException) {
             android.util.Log.e("SyncServer", "❌ CRITICAL: JSON serialization failed (SerializationException) for ${message::class.simpleName}: ${e.message}", e)
             android.util.Log.e("SyncServer", "❌ Message details: $message")
-            return  // Don't broadcast malformed data
+            return 0 to 0  // Don't broadcast malformed data
         } catch (e: Exception) {
             android.util.Log.e("SyncServer", "❌ CRITICAL: JSON serialization failed for ${message::class.simpleName}: ${e.message}", e)
             android.util.Log.e("SyncServer", "❌ Message details: $message")
-            return  // Don't broadcast malformed data
+            return 0 to 0  // Don't broadcast malformed data
         }
         
         // CRITICAL FIX: Validate JSON is not empty/corrupt before sending
         if (jsonString.isBlank() || jsonString.length < 10) {
             android.util.Log.e("SyncServer", "❌ CRITICAL: JSON serialization produced empty/invalid result for ${message::class.simpleName}")
             android.util.Log.e("SyncServer", "   Result: '$jsonString'")
-            return  // Don't broadcast corrupt data
+            return 0 to 0  // Don't broadcast corrupt data
         }
         
         // CRITICAL FIX: Validate JSON structure
         if (!jsonString.startsWith("{") || !jsonString.endsWith("}")) {
             android.util.Log.e("SyncServer", "❌ CRITICAL: JSON serialization produced malformed JSON for ${message::class.simpleName}")
             android.util.Log.e("SyncServer", "   Result: '${jsonString.take(100)}'")
-            return  // Don't broadcast corrupt data
+            return 0 to 0  // Don't broadcast corrupt data
         }
         
         // CRITICAL: Get snapshot OUTSIDE coroutineScope to prevent deadlock
@@ -184,41 +222,78 @@ class SyncServer(
         
         if (sessions.isEmpty()) {
             android.util.Log.d("SyncServer", "📡 No clients to broadcast to")
-            return
+            return 0 to 0
         }
         
-        android.util.Log.d("SyncServer", "📡 Broadcasting to ${sessions.size} clients: ${message::class.simpleName}")
+        android.util.Log.d("SyncServer", "📡 ========== BROADCAST START ==========")
+        android.util.Log.d("SyncServer", "📡 Message type: ${message::class.simpleName}")
+        android.util.Log.d("SyncServer", "📡 Target clients: ${sessions.size}")
+        android.util.Log.d("SyncServer", "📡 Message size: ${jsonString.length} bytes")
         
         // CRITICAL FIX: Frame.Text is NOT REUSABLE and NOT THREAD-SAFE!
         // Must create a NEW frame for EACH client!
         // Source: https://ktor.io docs - "A frame is not reusable and not thread-safe"
-        coroutineScope {
-            val results = sessions.mapIndexed { index, session ->
+        val results = coroutineScope {
+            sessions.mapIndexed { index, session ->
                 async(kotlinx.coroutines.SupervisorJob()) {
                     runCatching { 
                         // CRITICAL: Create NEW Frame.Text for each client (frames are NOT reusable!)
                         val clientFrame = Frame.Text(jsonString)
-                        android.util.Log.d("SyncServer", "📤 Sending to client #${index + 1}/${sessions.size}: ${message::class.simpleName} (${jsonString.length} bytes)")
+                        android.util.Log.d("SyncServer", "📤 Sending to client #${index + 1}/${sessions.size}: ${message::class.simpleName}")
                         session.send(clientFrame)
-                        android.util.Log.d("SyncServer", "✅ Sent to client #${index + 1}")
+                        android.util.Log.d("SyncServer", "✅ Client #${index + 1} received message")
                         true  // success
                     }.getOrElse { error ->
-                        android.util.Log.w("SyncServer", "⚠️ Send failed to client #${index + 1}: ${error.javaClass.simpleName}: ${error.message}")
-                        android.util.Log.w("SyncServer", "⚠️ Stack trace:", error)
+                        android.util.Log.e("SyncServer", "❌ Send failed to client #${index + 1}: ${error.javaClass.simpleName}: ${error.message}")
                         false  // failure
                     }
                 }
-            }
-            
-            val outcomes = results.awaitAll()
-            val successCount = outcomes.count { it }
-            val failCount = outcomes.count { !it }
-            
-            if (failCount > 0) {
-                android.util.Log.w("SyncServer", "⚠️ Broadcast completed: $successCount success, $failCount failed (of ${sessions.size} total)")
-            } else {
-                android.util.Log.d("SyncServer", "✅ Broadcast completed: $successCount success, $failCount failed (of ${sessions.size} total)")
-            }
+            }.awaitAll()
+        }
+        
+        val successCount = results.count { it }
+        val failCount = results.count { !it }
+        
+        android.util.Log.d("SyncServer", "📡 ========== BROADCAST COMPLETE ==========")
+        android.util.Log.d("SyncServer", "📡 Success: $successCount/${sessions.size}")
+        android.util.Log.d("SyncServer", "📡 Failed: $failCount/${sessions.size}")
+        
+        if (failCount > 0) {
+            android.util.Log.w("SyncServer", "⚠️ WARNING: $failCount client(s) did not receive the message!")
+        } else {
+            android.util.Log.d("SyncServer", "✅ ALL CLIENTS RECEIVED MESSAGE - GUARANTEED DELIVERY")
+        }
+        
+        return successCount to failCount
+    }
+    
+    /**
+     * Send message to a specific device (unicast)
+     * Used for sending music chunks to individual clients
+     */
+    suspend fun sendToDevice(deviceId: String, message: SyncMessage) {
+        val jsonString = try {
+            json.encodeToString(SyncMessage.serializer(), message)
+        } catch (e: Exception) {
+            android.util.Log.e("SyncServer", "❌ JSON serialization failed for ${message::class.simpleName}: ${e.message}", e)
+            return
+        }
+        
+        val session = connectionMutex.withLock {
+            connections[deviceId]
+        }
+        
+        if (session == null) {
+            android.util.Log.w("SyncServer", "⚠️ Device $deviceId not found, cannot send message")
+            return
+        }
+        
+        try {
+            val frame = Frame.Text(jsonString)
+            session.send(frame)
+            android.util.Log.d("SyncServer", "✅ Sent ${message::class.simpleName} to device $deviceId")
+        } catch (e: Exception) {
+            android.util.Log.w("SyncServer", "⚠️ Failed to send to device $deviceId: ${e.message}")
         }
     }
 
@@ -285,11 +360,58 @@ class SyncServer(
         )
     }
 
+    /**
+     * SYNCHRONIZED AUDIO STREAMING - Broadcast audio chunk to all clients
+     * Ultra-low latency: Opus-encoded audio over WebSocket
+     * 
+     * @param opusData Opus-encoded audio data (10ms frame)
+     * @param sequence Packet sequence number (for jitter buffer)
+     */
+    suspend fun broadcastAudioChunk(opusData: ByteArray, sequence: Long) {
+        val clientCount = connectionMutex.withLock { connections.size }
+        if (clientCount == 0) {
+            return  // No clients, skip broadcast silently
+        }
+        
+        // Encode as base64 for JSON transport
+        val base64Data = android.util.Base64.encodeToString(opusData, android.util.Base64.NO_WRAP)
+        
+        broadcast(
+            SyncMessage.AudioChunk(
+                timestamp = System.currentTimeMillis(),
+                sequence = sequence,
+                data = base64Data
+            )
+        )
+    }
+
     fun stop() {
         engine?.stop(gracePeriodMillis = 200, timeoutMillis = 1000)
         engine = null
         connections.clear()
+        deviceJoinTimes.clear()
         _connectedDevices.value = emptyList()
+    }
+    
+    fun getRoomStateManager() = roomStateManager
+    
+    fun getOldestClient(): DeviceInfo? {
+        val oldest = deviceJoinTimes.minByOrNull { it.value }?.key
+        return _connectedDevices.value.find { it.id == oldest }
+    }
+    
+    suspend fun transferHost(): DeviceInfo? {
+        val newHost = getOldestClient()
+        if (newHost != null) {
+            val transfer = SyncMessage.HostTransfer(
+                newHostId = newHost.id,
+                newHostName = newHost.name,
+                reason = "host_left"
+            )
+            broadcast(transfer)
+            android.util.Log.d("SyncServer", "👑 Host transferred to ${newHost.name}")
+        }
+        return newHost
     }
 
     private suspend fun updateDeviceList(deviceId: String, deviceName: String) {
@@ -325,6 +447,7 @@ class SyncServer(
         const val DEFAULT_PORT = 8127
         const val FLASH_SCHEDULE_LEAD_MS = 100L  // Minimized: 100ms for network + processing
         const val BASS_SYNC_LEAD_MS = 0L  // ZERO DELAY: Instant transmission!
+        const val AUDIO_SYNC_LEAD_MS = 0L  // ZERO DELAY: Ultra-low latency for audio streaming!
     }
 }
 

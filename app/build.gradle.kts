@@ -150,5 +150,10 @@ dependencies {
     implementation("io.ktor:ktor-client-cio:2.3.12")
     implementation("io.ktor:ktor-client-websockets:2.3.12")
     
+    // TensorFlow Lite for AI Stem Separation (GPU Accelerated)
+    implementation("org.tensorflow:tensorflow-lite:2.14.0")
+    implementation("org.tensorflow:tensorflow-lite-gpu:2.14.0")
+    implementation("org.tensorflow:tensorflow-lite-support:0.4.4")
+    
     debugImplementation("androidx.compose.ui:ui-tooling")
 }
