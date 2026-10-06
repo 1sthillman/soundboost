@@ -795,20 +795,22 @@ const modeThumb = document.getElementById('modeThumb');
 const MOON_ICON = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 12.4A9 9 0 1111.6 3a7 7 0 009.4 9.4z"/></svg>';
 const SUN_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4" fill="currentColor" stroke="none"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg>';
 
-function setMode(mode){
+function setMode(mode, notifyAndroid = true){
   currentMode = mode; // Update global mode variable for themes like orman
   phone.dataset.mode = mode;
   cssCache = {};  // Clear CSS cache to reload colors for canvas
   modeThumb.innerHTML = mode==='dark' ? MOON_ICON : SUN_ICON;
   modeToggle.setAttribute('aria-label', mode==='dark' ? 'Karanlık mod' : 'Aydınlık mod');
   
-  // Notify Android
-  try{
-    if(typeof AndroidBridge !== 'undefined') {
-      AndroidBridge.onModeChanged(mode);
+  // Notify Android only when user clicks button (prevent feedback loop)
+  if(notifyAndroid) {
+    try{
+      if(typeof AndroidBridge !== 'undefined') {
+        AndroidBridge.onModeChanged(mode);
+      }
+    }catch(e){
+      console.log('AndroidBridge not available for mode change');
     }
-  }catch(e){
-    console.log('AndroidBridge not available for mode change');
   }
 }
 
@@ -816,16 +818,16 @@ function setMode(mode){
 window.setMode = setMode;
 
 modeToggle.addEventListener('click', ()=>{
-  setMode(phone.dataset.mode === 'dark' ? 'light' : 'dark');
+  setMode(phone.dataset.mode === 'dark' ? 'light' : 'dark', true);
 });
 
-// Android can set mode externally
+// Android can set mode externally (don't notify back)
 window.setModeFromAndroid = function(mode){
-  if(mode==='dark' || mode==='light') setMode(mode);
+  if(mode==='dark' || mode==='light') setMode(mode, false);
 };
 
-// Initialize with dark mode
-setMode('dark');
+// Initialize with dark mode (don't notify Android - wait for Kotlin to sync)
+setMode('dark', false);
 
 /* ============ THEME SWITCHING ============ */
 function setTheme(name){
