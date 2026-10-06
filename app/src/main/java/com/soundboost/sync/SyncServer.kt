@@ -79,72 +79,107 @@ class SyncServer(
                     var deviceName = ""
                     
                     try {
-                        // Wait for Join message first
-                        for (frame in incoming) {
-                            if (frame !is Frame.Text) continue
-                            val text = frame.readText()
-                            val message = runCatching {
-                                json.decodeFromString(SyncMessage.serializer(), text)
-                            }.getOrNull() ?: continue
-                            
-                            if (message is SyncMessage.Join) {
-                                deviceId = UUID.randomUUID().toString()
-                                deviceName = message.deviceName
+                        android.util.Log.d("SyncServer", "📡 ========== NEW CONNECTION ==========")
+                        android.util.Log.d("SyncServer", "📡 Waiting for JOIN message...")
+                        
+                        // CRITICAL: Set a timeout for JOIN message (prevent zombie connections)
+                        var joinReceived = false
+                        val joinTimeout = kotlinx.coroutines.withTimeoutOrNull(10000) {
+                            // Wait for Join message first
+                            for (frame in incoming) {
+                                if (frame !is Frame.Text) continue
+                                val text = frame.readText()
+                                val message = runCatching {
+                                    json.decodeFromString(SyncMessage.serializer(), text)
+                                }.getOrNull() ?: continue
                                 
-                                // RECONNECT DETECTION
-                                val existingDevice = connectionMutex.withLock {
-                                    _connectedDevices.value.find { it.name == deviceName }
-                                }
-                                
-                                if (existingDevice != null) {
-                                    android.util.Log.w("SyncServer", "🔄 RECONNECT detected: $deviceName")
-                                    val oldId = existingDevice.id
-                                    connectionMutex.withLock {
-                                        connections.remove(oldId)
+                                if (message is SyncMessage.Join) {
+                                    deviceId = UUID.randomUUID().toString()
+                                    deviceName = message.deviceName
+                                    joinReceived = true
+                                    
+                                    android.util.Log.d("SyncServer", "👋 JOIN received from: $deviceName")
+                                    
+                                    // RECONNECT DETECTION
+                                    val existingDevice = connectionMutex.withLock {
+                                        _connectedDevices.value.find { it.name == deviceName }
                                     }
-                                    deviceJoinTimes.remove(oldId)
-                                    removeDeviceFromList(oldId)
-                                    android.util.Log.d("SyncServer", "✅ Old connection cleaned for $deviceName")
+                                    
+                                    if (existingDevice != null) {
+                                        android.util.Log.w("SyncServer", "🔄 RECONNECT detected: $deviceName")
+                                        val oldId = existingDevice.id
+                                        connectionMutex.withLock {
+                                            connections.remove(oldId)
+                                        }
+                                        deviceJoinTimes.remove(oldId)
+                                        removeDeviceFromList(oldId)
+                                        android.util.Log.d("SyncServer", "✅ Old connection cleaned for $deviceName")
+                                    }
+                                    
+                                    // Add new connection
+                                    connectionMutex.withLock { 
+                                        connections[deviceId] = this@webSocket
+                                    }
+                                    deviceJoinTimes[deviceId] = System.currentTimeMillis()
+                                    
+                                    // Send Welcome with RoomState IMMEDIATELY
+                                    val currentCount = connectionMutex.withLock { connections.size }
+                                    val roomState = roomStateManager.getCurrentState()
+                                    val welcomeMsg = SyncMessage.Welcome(
+                                        deviceId = deviceId,
+                                        roomName = roomName,
+                                        connectedDeviceCount = currentCount,
+                                        roomStateJson = roomStateManager.serializeState()
+                                    )
+                                    
+                                    android.util.Log.d("SyncServer", "📤 Sending WELCOME to $deviceName...")
+                                    send(Frame.Text(json.encodeToString(SyncMessage.serializer(), welcomeMsg)))
+                                    android.util.Log.d("SyncServer", "✅ WELCOME sent successfully!")
+                                    
+                                    if (roomState.playbackState != PlaybackState.IDLE) {
+                                        android.util.Log.d("SyncServer", "🎵 Late join: Music playing at ${roomState.currentPosition}ms")
+                                    }
+                                    
+                                    updateDeviceList(deviceId, deviceName)
+                                    android.util.Log.d("SyncServer", "✅ ========== CONNECTION COMPLETE ==========")
+                                    break
                                 }
-                                
-                                // Add new connection
-                                connectionMutex.withLock { 
-                                    connections[deviceId] = this@webSocket
-                                }
-                                deviceJoinTimes[deviceId] = System.currentTimeMillis()
-                                
-                                // Send Welcome with RoomState
-                                val currentCount = connectionMutex.withLock { connections.size }
-                                val roomState = roomStateManager.getCurrentState()
-                                val welcomeMsg = SyncMessage.Welcome(
-                                    deviceId = deviceId,
-                                    roomName = roomName,
-                                    connectedDeviceCount = currentCount,
-                                    roomStateJson = roomStateManager.serializeState()
-                                )
-                                send(Frame.Text(json.encodeToString(SyncMessage.serializer(), welcomeMsg)))
-                                
-                                android.util.Log.d("SyncServer", "✅ Welcome sent to $deviceName (id=$deviceId)")
-                                if (roomState.playbackState != PlaybackState.IDLE) {
-                                    android.util.Log.d("SyncServer", "🎵 Late join: Music playing at ${roomState.currentPosition}ms")
-                                }
-                                
-                                updateDeviceList(deviceId, deviceName)
-                                break
                             }
+                            true
+                        }
+                        
+                        if (joinTimeout == null || !joinReceived) {
+                            android.util.Log.w("SyncServer", "❌ JOIN timeout - closing connection")
+                            return@webSocket
                         }
                         
                         if (deviceId.isEmpty()) {
-                            android.util.Log.w("SyncServer", "❌ No Join message received")
+                            android.util.Log.w("SyncServer", "❌ No valid JOIN message received")
                             return@webSocket
                         }
 
+                        // CRITICAL: Message processing loop with error recovery
+                        android.util.Log.d("SyncServer", "👂 Starting message loop for $deviceName...")
                         for (frame in incoming) {
                             if (frame !is Frame.Text) continue
-                            val text = frame.readText()
-                            val message = runCatching {
+                            
+                            val text = try {
+                                frame.readText()
+                            } catch (e: Exception) {
+                                android.util.Log.e("SyncServer", "❌ Failed to read frame: ${e.message}")
+                                continue
+                            }
+                            
+                            val messageResult = runCatching {
                                 json.decodeFromString(SyncMessage.serializer(), text)
-                            }.getOrNull() ?: continue
+                            }
+                            
+                            if (messageResult.isFailure) {
+                                android.util.Log.e("SyncServer", "❌ Failed to parse message: ${messageResult.exceptionOrNull()?.message}")
+                                continue
+                            }
+                            
+                            val message = messageResult.getOrThrow()
 
                             when (message) {
                                 is SyncMessage.Ping -> {
@@ -156,18 +191,22 @@ class SyncServer(
                                     android.util.Log.d("SyncServer", "👋 $deviceName requested disconnect")
                                     break
                                 }
-                                else -> Unit
+                                else -> {
+                                    // Forward to ViewModel for processing
+                                    _incomingMessages.tryEmit(deviceId to message)
+                                }
                             }
-                            _incomingMessages.tryEmit(deviceId to message)
                         }
                     } catch (t: Throwable) {
-                        android.util.Log.w("SyncServer", "⚠️ Connection $deviceName closed: ${t.message}")
+                        android.util.Log.w("SyncServer", "⚠️ Connection $deviceName error: ${t.javaClass.simpleName}: ${t.message}")
                     } finally {
+                        android.util.Log.d("SyncServer", "🔌 Connection $deviceName closing...")
                         connectionMutex.withLock {
                             connections.remove(deviceId)
                         }
                         deviceJoinTimes.remove(deviceId)
                         removeDeviceFromList(deviceId)
+                        android.util.Log.d("SyncServer", "✅ Connection $deviceName cleaned up")
                     }
                 }
             }

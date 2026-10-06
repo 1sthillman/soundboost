@@ -116,13 +116,6 @@ class SyncViewModel(application: Application) : AndroidViewModel(application) {
     val musicState: StateFlow<MusicShareState> = musicShareManager.musicState
     val downloadProgress: StateFlow<Float> = musicShareManager.downloadProgress
     
-    // AI STEM SEPARATION STATE
-    val stemSeparationState: StateFlow<com.soundboost.audio.StemSeparationState> = musicShareManager.stemSeparationState
-    
-    // STEM SEPARATION PROGRESS TRACKING (per device for HOST)
-    private val _deviceStemProgress = MutableStateFlow<Map<String, Float>>(emptyMap())
-    val deviceStemProgress: StateFlow<Map<String, Float>> = _deviceStemProgress.asStateFlow()
-    
     // ROOM STATE MANAGER (for playlist and sync)
     private var roomStateManager: RoomStateManager? = null
     
@@ -465,15 +458,14 @@ class SyncViewModel(application: Application) : AndroidViewModel(application) {
                 musicShareManager.applyDJControls(bass, mid, treble, djState.value.masterVolume)
             }
             
-            // Volume callback - apply master volume + vocal/music balance
-            onVolumeChange = { master, vocalBalance, bassVol, vocalVol, instrumentalVol ->
-                Log.d(TAG, "🔊 HOST Volume change: master=$master, vocalBalance=$vocalBalance")
+            // Volume callback - apply master volume
+            onVolumeChange = { master ->
+                Log.d(TAG, "🔊 HOST Volume change: master=$master")
                 musicShareManager.applyDJControls(
                     djState.value.bass,
                     djState.value.mid,
                     djState.value.treble,
-                    master,
-                    vocalBalance
+                    master
                 )
             }
             
@@ -550,21 +542,6 @@ class SyncViewModel(application: Application) : AndroidViewModel(application) {
                     }
                 }
                 
-                // Handle StemSeparationStatus from clients
-                if (message is SyncMessage.StemSeparationStatus) {
-                    val currentProgress = _deviceStemProgress.value.toMutableMap()
-                    currentProgress[deviceId] = message.progress
-                    _deviceStemProgress.value = currentProgress
-                    
-                    Log.d(TAG, "🤖 Client $deviceId stem separation: ${message.status} ${(message.progress * 100).toInt()}%")
-                    Log.d(TAG, "🤖 Message: ${message.message}")
-                    
-                    if (message.status == "completed") {
-                        Log.d(TAG, "✅ Client $deviceId stems ready!")
-                    } else if (message.status == "error") {
-                        Log.e(TAG, "❌ Client $deviceId stem separation failed: ${message.message}")
-                    }
-                }
             }
         }
         
@@ -807,14 +784,13 @@ class SyncViewModel(application: Application) : AndroidViewModel(application) {
                     musicShareManager.applyDJControls(bass, mid, treble, djState.value.masterVolume)
                 }
                 
-                onVolumeChange = { master, vocalBalance, bassVol, vocalVol, instrumentalVol ->
-                    Log.d(TAG, "🔊 CLIENT Volume change: master=$master, vocalBalance=$vocalBalance")
+                onVolumeChange = { master ->
+                    Log.d(TAG, "🔊 CLIENT Volume change: master=$master")
                     musicShareManager.applyDJControls(
                         djState.value.bass,
                         djState.value.mid,
                         djState.value.treble,
-                        master,
-                        vocalBalance
+                        master
                     )
                 }
                 
@@ -987,7 +963,6 @@ class SyncViewModel(application: Application) : AndroidViewModel(application) {
                                             Log.d(TAG, "   - Current track: ${roomState.playlist.currentTrackIndex}")
                                             Log.d(TAG, "   - Position: ${roomState.currentPosition}ms")
                                             Log.d(TAG, "   - Total tracks: ${roomState.playlist.tracks.size}")
-                                            Log.d(TAG, "   - Vocal balance: ${roomState.djState.vocalBalance}")
                                             
                                             // CRITICAL: Apply DJ state immediately for late join
                                             djStateManager?.applyDJState(roomState.djState)
@@ -1066,22 +1041,6 @@ class SyncViewModel(application: Application) : AndroidViewModel(application) {
                                             )
                                             syncClient.sendMessage(statusMsg)
                                             Log.d(TAG, "📤 Sent download status: ${(progress * 100).toInt()}% (complete=$isComplete)")
-                                        }
-                                    }
-                                    
-                                    // Setup stem separation callback to report to host
-                                    musicShareManager.onStemSeparationUpdate = { sessionId, status, progress, msg ->
-                                        viewModelScope.launch {
-                                            val myDeviceId = (syncClient.connectionState.value as? SyncConnectionState.Connected)?.deviceId ?: "unknown"
-                                            val statusMsg = SyncMessage.StemSeparationStatus(
-                                                sessionId = sessionId,
-                                                status = status,
-                                                progress = progress,
-                                                message = msg,
-                                                deviceId = myDeviceId
-                                            )
-                                            syncClient.sendMessage(statusMsg)
-                                            Log.d(TAG, "🤖 CLIENT sent stem status: $status ${(progress * 100).toInt()}%")
                                         }
                                     }
                                     
@@ -1231,8 +1190,7 @@ class SyncViewModel(application: Application) : AndroidViewModel(application) {
                                             djState.bass,
                                             djState.mid,
                                             djState.treble,
-                                            djState.masterVolume,
-                                            djState.vocalBalance
+                                            djState.masterVolume
                                         )
                                         
                                         // Apply playback speed if changed
@@ -1307,21 +1265,6 @@ class SyncViewModel(application: Application) : AndroidViewModel(application) {
                                     }
                                     
                                     Log.d(TAG, "✅ Ready for new track, waiting for start command")
-                                }
-                                is SyncMessage.StemSeparationStatus -> {
-                                    Log.d(TAG, "🤖 ========== STEM SEPARATION STATUS FROM ${message.deviceId} ==========")
-                                    Log.d(TAG, "🤖 Status: ${message.status}")
-                                    Log.d(TAG, "🤖 Progress: ${(message.progress * 100).toInt()}%")
-                                    Log.d(TAG, "🤖 Message: ${message.message}")
-                                    
-                                    // Track other devices' stem progress (informational)
-                                    val currentProgress = _deviceStemProgress.value.toMutableMap()
-                                    currentProgress[message.deviceId] = message.progress
-                                    _deviceStemProgress.value = currentProgress
-                                    
-                                    if (message.status == "completed") {
-                                        Log.d(TAG, "✅ Device ${message.deviceId} stems ready!")
-                                    }
                                 }
                                 else -> Unit
                             }
@@ -1468,30 +1411,6 @@ class SyncViewModel(application: Application) : AndroidViewModel(application) {
                 Log.d(TAG, "   - File size: ${session?.fileSizeBytes} bytes (${(session?.fileSizeBytes ?: 0) / 1024}KB)")
                 Log.d(TAG, "   - Total chunks: ${session?.totalChunks}")
                 
-                // CRITICAL: Setup stem separation callback to broadcast progress
-                musicShareManager.onStemSeparationUpdate = { sessionId, status, progress, message ->
-                    viewModelScope.launch {
-                        Log.d(TAG, "🤖 HOST stem separation: $status ${(progress * 100).toInt()}%")
-                        
-                        val myDeviceId = "host"  // Host's device ID
-                        val statusMsg = SyncMessage.StemSeparationStatus(
-                            sessionId = sessionId,
-                            status = status,
-                            progress = progress,
-                            message = message,
-                            deviceId = myDeviceId
-                        )
-                        
-                        // Broadcast to all clients so they know host's progress
-                        syncServer?.broadcast(statusMsg)
-                        
-                        // Track host's own progress
-                        val currentProgress = _deviceStemProgress.value.toMutableMap()
-                        currentProgress[myDeviceId] = progress
-                        _deviceStemProgress.value = currentProgress
-                    }
-                }
-                
                 val metadata = musicShareManager.getMusicMetadata()
                 if (metadata != null) {
                     Log.d(TAG, "📡 ========== BROADCASTING METADATA ==========")
@@ -1508,7 +1427,6 @@ class SyncViewModel(application: Application) : AndroidViewModel(application) {
                         syncServer?.broadcast(metadata)
                         Log.d(TAG, "✅ ========== BROADCAST COMPLETED ==========")
                         Log.d(TAG, "✅ Metadata sent to ${_connectedDevices.value.size} devices")
-                        Log.d(TAG, "🤖 AI stem separation started in background...")
                     } catch (e: Exception) {
                         Log.e(TAG, "❌ ========== BROADCAST FAILED ==========", e)
                         Log.e(TAG, "❌ Exception: ${e.javaClass.simpleName}: ${e.message}")
@@ -2033,13 +1951,13 @@ class SyncViewModel(application: Application) : AndroidViewModel(application) {
     /**
      * HOST: Update Volume - Synchronized
      */
-    fun updateDJVolume(master: Float? = null, vocalBalance: Float? = null, bass: Float? = null, vocal: Float? = null, instrumental: Float? = null) {
+    fun updateDJVolume(master: Float? = null) {
         val server = syncServer
         val djManager = djStateManager
         if (server == null || djManager == null) return
         
         viewModelScope.launch {
-            djManager.updateVolume(master, vocalBalance, bass, vocal, instrumental)
+            djManager.updateVolume(master, null, null, null, null)
             
             // CRITICAL: Update RoomState
             roomStateManager?.updateState(djState = djManager.getCurrentState())
@@ -2049,7 +1967,7 @@ class SyncViewModel(application: Application) : AndroidViewModel(application) {
             val syncMsg = SyncMessage.DJStateSync(djStateJson, applyAt)
             
             server.broadcast(syncMsg)
-            Log.d(TAG, "🔊 Volume synced: master=$master, vocalBalance=$vocalBalance")
+            Log.d(TAG, "🔊 Volume synced: master=$master")
         }
     }
     

@@ -217,7 +217,7 @@ class BoostForegroundService : Service() {
                     manager.setBassBoostForAllStreams(settings.bassBoostPercent)
                     manager.setVirtualizerForAllStreams(settings.virtualizerPercent)
                     
-                    // EQ Priority: 10-band > Vocal/Music Balance > 3-band
+                    // EQ Priority: 10-band > 3-band
                     val bands10 = settings.get10BandEQ()
                     val is10BandActive = bands10.any { it != 0f }
                     
@@ -225,10 +225,6 @@ class BoostForegroundService : Service() {
                         is10BandActive -> {
                             manager.set10BandEqualizerForAllStreams(bands10)
                             android.util.Log.d(TAG, "✅ Applied 10-Band EQ to all streams")
-                        }
-                        kotlin.math.abs(settings.vocalMusicBalance - 0.5f) > 0.05f -> {
-                            manager.setVocalMusicBalanceForAllStreams(settings.vocalMusicBalance)
-                            android.util.Log.d(TAG, "✅ Applied Vocal/Music Balance to all streams")
                         }
                         else -> {
                             manager.setSimpleEqualizerForAllStreams(
@@ -256,10 +252,6 @@ class BoostForegroundService : Service() {
                     is10BandActive -> {
                         audioEffects.set10BandEqualizer(bands10)
                         android.util.Log.d(TAG, "✅ Applied 10-Band EQ")
-                    }
-                    kotlin.math.abs(settings.vocalMusicBalance - 0.5f) > 0.05f -> {
-                        audioEffects.setVocalMusicBalance(settings.vocalMusicBalance)
-                        android.util.Log.d(TAG, "✅ Applied Vocal/Music Balance")
                     }
                     else -> {
                         audioEffects.setEqualizer(settings.eqLowGain, settings.eqMidGain, settings.eqHighGain)
@@ -328,10 +320,6 @@ class BoostForegroundService : Service() {
                             manager.set10BandEqualizerForAllStreams(bands10)
                             android.util.Log.d(TAG, "✅ Updated 10-Band EQ to all streams")
                         }
-                        kotlin.math.abs(settings.vocalMusicBalance - 0.5f) > 0.05f -> {
-                            manager.setVocalMusicBalanceForAllStreams(settings.vocalMusicBalance)
-                            android.util.Log.d(TAG, "✅ Updated Vocal/Music Balance to all streams")
-                        }
                         else -> {
                             manager.setSimpleEqualizerForAllStreams(
                                 settings.eqLowGain,
@@ -354,10 +342,6 @@ class BoostForegroundService : Service() {
                     is10BandActive -> {
                         audioEffects.set10BandEqualizer(bands10)
                         android.util.Log.d(TAG, "✅ Applied 10-Band EQ: ${bands10.contentToString()}")
-                    }
-                    kotlin.math.abs(settings.vocalMusicBalance - 0.5f) > 0.05f -> {
-                        audioEffects.setVocalMusicBalance(settings.vocalMusicBalance)
-                        android.util.Log.d(TAG, "✅ Applied Vocal/Music Balance: ${settings.vocalMusicBalance}")
                     }
                     else -> {
                         audioEffects.setEqualizer(settings.eqLowGain, settings.eqMidGain, settings.eqHighGain)

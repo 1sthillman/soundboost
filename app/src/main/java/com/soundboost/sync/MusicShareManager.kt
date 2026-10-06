@@ -5,8 +5,6 @@ import android.media.MediaPlayer
 import android.net.Uri
 import android.util.Base64
 import android.util.Log
-import com.soundboost.audio.TFLiteStemSeparator
-import com.soundboost.audio.StemSeparationState as AudioStemSeparationState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -42,15 +40,8 @@ class MusicShareManager(
     private val _downloadProgress = MutableStateFlow(0f)
     val downloadProgress: StateFlow<Float> = _downloadProgress.asStateFlow()
     
-    // AI STEM SEPARATION
-    private val stemSeparator = TFLiteStemSeparator(context)
-    val stemSeparationState: StateFlow<AudioStemSeparationState> = stemSeparator.separationState
-    
     // Callback for client to report progress to host
     var onProgressUpdate: ((Float, Boolean) -> Unit)? = null
-    
-    // Callback for stem separation status broadcasts
-    var onStemSeparationUpdate: ((String, String, Float, String) -> Unit)? = null
     
     // HOST: Source file storage
     private var hostMusicFile: File? = null
@@ -109,83 +100,11 @@ class MusicShareManager(
             
             Log.d(TAG, "✅ Music prepared: $fileName (${fileSize / 1024}KB, $totalChunks chunks)")
             
-            // CRITICAL: Start AI stem separation in background
-            // This processes the music file for perfect vocal/music split
-            startStemSeparation(musicUri, session.sessionId)
-            
             Result.success(session)
             
         } catch (e: Exception) {
             Log.e(TAG, "❌ Failed to prepare music", e)
             Result.failure(e)
-        }
-    }
-    
-    /**
-     * Start AI stem separation (background processing)
-     * MÜKEMMEL: GPU-accelerated, chunked, cached, non-blocking!
-     */
-    private fun startStemSeparation(musicUri: Uri, sessionId: String) {
-        scope.launch(Dispatchers.Default) {
-            try {
-                Log.d(TAG, "🤖 ========== STARTING AI STEM SEPARATION ==========")
-                Log.d(TAG, "🤖 Session: $sessionId")
-                Log.d(TAG, "🤖 URI: $musicUri")
-                
-                // Notify start
-                onStemSeparationUpdate?.invoke(sessionId, "started", 0f, "Starting AI separation...")
-                
-                // Monitor progress
-                launch {
-                    stemSeparator.separationState.collect { state ->
-                        when (state) {
-                            is AudioStemSeparationState.Processing -> {
-                                Log.d(TAG, "🤖 Separation progress: ${(state.progress * 100).toInt()}% - ${state.status}")
-                                onStemSeparationUpdate?.invoke(
-                                    sessionId,
-                                    "processing",
-                                    state.progress,
-                                    state.status
-                                )
-                            }
-                            is AudioStemSeparationState.Complete -> {
-                                Log.d(TAG, "✅ ========== SEPARATION COMPLETE ==========")
-                                Log.d(TAG, "✅ Vocals: ${state.result.vocalsPath}")
-                                Log.d(TAG, "✅ Music: ${state.result.musicPath}")
-                                onStemSeparationUpdate?.invoke(
-                                    sessionId,
-                                    "completed",
-                                    1.0f,
-                                    "Separation complete!"
-                                )
-                            }
-                            is AudioStemSeparationState.Error -> {
-                                Log.e(TAG, "❌ Separation error: ${state.message}")
-                                onStemSeparationUpdate?.invoke(
-                                    sessionId,
-                                    "error",
-                                    0f,
-                                    state.message
-                                )
-                            }
-                            else -> Unit
-                        }
-                    }
-                }
-                
-                // Start separation
-                val result = stemSeparator.separateAudio(musicUri, sessionId, forceReprocess = false)
-                
-                if (result != null) {
-                    Log.d(TAG, "✅ Separation result ready - stems cached for instant reuse")
-                } else {
-                    Log.w(TAG, "⚠️ Separation returned null - using fallback")
-                }
-                
-            } catch (e: Exception) {
-                Log.e(TAG, "❌ Stem separation failed", e)
-                onStemSeparationUpdate?.invoke(sessionId, "error", 0f, e.message ?: "Unknown error")
-            }
         }
     }
     
@@ -361,11 +280,6 @@ class MusicShareManager(
             Log.d(TAG, "✅ File size: ${outputFile.length() / 1024}KB")
             Log.d(TAG, "✅ Ready to play!")
             
-            // CRITICAL: CLIENT also processes stems (deterministic, same result as host!)
-            Log.d(TAG, "🤖 CLIENT: Starting stem separation for DJ controls...")
-            val outputUri = Uri.fromFile(outputFile)
-            startStemSeparation(outputUri, session.sessionId)
-            
         } catch (e: Exception) {
             Log.e(TAG, "❌ ========== FINALIZATION FAILED ==========", e)
             Log.e(TAG, "❌ Error: ${e.message}")
@@ -481,17 +395,14 @@ class MusicShareManager(
     
     /**
      * Apply DJ controls to synchronized player
-     * INCLUDES VOCAL/MUSIC SEPARATION!
      */
-    fun applyDJControls(bass: Float, mid: Float, treble: Float, masterVolume: Float, vocalBalance: Float = 0.5f) {
-        Log.d(TAG, "🔊 MusicShareManager.applyDJControls called: vocalBalance=$vocalBalance")
+    fun applyDJControls(bass: Float, mid: Float, treble: Float, masterVolume: Float) {
         val player = syncPlayer
         if (player == null) {
             Log.w(TAG, "⚠️ Cannot apply DJ controls - player is NULL!")
             return
         }
-        Log.d(TAG, "✅ Player exists, calling player.applyDJControls...")
-        player.applyDJControls(bass, mid, treble, masterVolume, vocalBalance)
+        player.applyDJControls(bass, mid, treble, masterVolume)
     }
     
     /**
@@ -502,31 +413,11 @@ class MusicShareManager(
     }
     
     /**
-     * Get stem separation result (for loading stems into player)
-     */
-    fun getStemSeparationResult() = (stemSeparator.separationState.value as? AudioStemSeparationState.Complete)?.result
-    
-    /**
-     * Check if stems are ready
-     */
-    fun areStemsReady(): Boolean {
-        return stemSeparator.separationState.value is AudioStemSeparationState.Complete
-    }
-    
-    /**
-     * Clear stem cache (for testing/debugging)
-     */
-    fun clearStemCache(sessionId: String? = null) {
-        stemSeparator.clearCache(sessionId)
-    }
-    
-    /**
      * Release all resources
      */
     fun release() {
         syncPlayer?.release()
         syncPlayer = null
-        stemSeparator.release()
         clearSession()
         downloadedChunks.clear()
         Log.d(TAG, "🧹 MusicShareManager released")

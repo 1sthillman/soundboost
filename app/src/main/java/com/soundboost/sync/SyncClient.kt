@@ -81,41 +81,90 @@ class SyncClient {
             return
         }
 
-        android.util.Log.d("SyncClient", "🔌 Connecting to $hostAddress:$port as '$deviceName'")
+        android.util.Log.d("SyncClient", "🔌 ========== CONNECTING TO ROOM ==========")
+        android.util.Log.d("SyncClient", "🔌 Host: $hostAddress:$port")
+        android.util.Log.d("SyncClient", "🔌 Device name: $deviceName")
+        android.util.Log.d("SyncClient", "🔌 Timestamp: ${System.currentTimeMillis()}")
+        
         _connectionState.value = SyncConnectionState.Connecting
         
         // CRITICAL: Create INDEPENDENT supervisor job that won't be cancelled during normal operation
         supervisorJob = SupervisorJob()
         scope = CoroutineScope(Dispatchers.IO + supervisorJob)
         
-        // Create new HttpClient instance for this connection
-        httpClient = HttpClient(CIO) { 
-            install(WebSockets) {
-                pingInterval = 15000  // Keepalive every 15s
-                maxFrameSize = Long.MAX_VALUE
-            }
-        }
-        android.util.Log.d("SyncClient", "🌐 HttpClient created with keepalive")
-        
+        // CRITICAL FIX: Add connection timeout with auto-retry
         scope.launch {
-            try {
-                android.util.Log.d("SyncClient", "📡 Opening WebSocket session...")
-                val ws = httpClient!!.webSocketSession(
-                    method = io.ktor.http.HttpMethod.Get,
-                    host = hostAddress,
-                    port = port,
-                    path = "/sync"
-                )
-                session = ws
-                android.util.Log.d("SyncClient", "✅ WebSocket session established")
+            var attempt = 0
+            val maxAttempts = 3
+            var lastError: Throwable? = null
+            
+            while (attempt < maxAttempts && _connectionState.value is SyncConnectionState.Connecting) {
+                attempt++
+                android.util.Log.d("SyncClient", "🔄 Connection attempt $attempt/$maxAttempts...")
                 
-                // Launch in SEPARATE supervised coroutines - no mutual cancellation!
-                launch(SupervisorJob()) { listenLoop(ws, deviceName) }
-                launch(SupervisorJob()) { pingLoop(ws) }
-            } catch (t: Throwable) {
-                android.util.Log.e("SyncClient", "❌ Connection failed: ${t.javaClass.simpleName}: ${t.message}", t)
-                android.util.Log.e("SyncClient", "❌ CONNECTION FAILURE DIAGNOSTIC - Stack trace:", t)
-                _connectionState.value = SyncConnectionState.Error(t.message ?: "Baglanti hatasi")
+                try {
+                    // Create new HttpClient for each attempt (clean state)
+                    httpClient?.close()
+                    httpClient = HttpClient(CIO) { 
+                        install(WebSockets) {
+                            pingInterval = 15000  // Keepalive every 15s
+                            maxFrameSize = Long.MAX_VALUE
+                        }
+                        // CRITICAL: Add timeouts
+                        engine {
+                            requestTimeout = 15000  // 15 second connection timeout
+                        }
+                    }
+                    android.util.Log.d("SyncClient", "🌐 HttpClient created with timeouts")
+                    
+                    android.util.Log.d("SyncClient", "📡 Opening WebSocket session...")
+                    val ws = httpClient!!.webSocketSession(
+                        method = io.ktor.http.HttpMethod.Get,
+                        host = hostAddress,
+                        port = port,
+                        path = "/sync"
+                    )
+                    session = ws
+                    android.util.Log.d("SyncClient", "✅ ========== CONNECTION ESTABLISHED ==========")
+                    
+                    // Launch in SEPARATE supervised coroutines - no mutual cancellation!
+                    launch(SupervisorJob()) { listenLoop(ws, deviceName) }
+                    launch(SupervisorJob()) { pingLoop(ws) }
+                    
+                    // Connection successful - exit retry loop
+                    break
+                    
+                } catch (t: Throwable) {
+                    lastError = t
+                    android.util.Log.e("SyncClient", "❌ Connection attempt $attempt failed: ${t.javaClass.simpleName}: ${t.message}")
+                    
+                    if (attempt < maxAttempts) {
+                        android.util.Log.w("SyncClient", "⏳ Retrying in 2 seconds...")
+                        kotlinx.coroutines.delay(2000)
+                    }
+                }
+            }
+            
+            // All attempts failed
+            if (_connectionState.value is SyncConnectionState.Connecting) {
+                val errorMsg = when {
+                    lastError == null -> "Bağlantı kurulamadı"
+                    lastError!!.message?.contains("timeout", ignoreCase = true) == true -> 
+                        "Zaman aşımı - Host cihaz yanıt vermiyor"
+                    lastError!!.message?.contains("refused", ignoreCase = true) == true -> 
+                        "Bağlantı reddedildi - Port kapalı veya yanlış"
+                    lastError!!.message?.contains("unreachable", ignoreCase = true) == true -> 
+                        "Host cihaza erişilemiyor - Aynı ağda mısınız?"
+                    else -> "Bağlantı hatası: ${lastError!!.message}"
+                }
+                
+                android.util.Log.e("SyncClient", "❌ ========== CONNECTION FAILED ==========")
+                android.util.Log.e("SyncClient", "❌ Error: $errorMsg")
+                android.util.Log.e("SyncClient", "❌ All $maxAttempts attempts failed")
+                
+                _connectionState.value = SyncConnectionState.Error(errorMsg)
+                lastDisconnectionException = lastError
+                lastDisconnectionTime = System.currentTimeMillis()
             }
         }
     }
@@ -437,8 +486,8 @@ class SyncClient {
     }
 
     companion object {
-        private const val PING_INTERVAL_MS = 2000L
-        private const val MAX_SAMPLES = 12
+        private const val PING_INTERVAL_MS = 1000L  // REDUCED: 1 second for faster sync!
+        private const val MAX_SAMPLES = 15  // INCREASED: More samples for better accuracy
     }
 }
 

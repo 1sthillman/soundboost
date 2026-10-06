@@ -15,3 +15,10 @@
 # Keep UUID-related classes
 -dontwarn kotlin.uuid.**
 -keep class kotlin.uuid.** { *; }
+
+# Ktor - Fix R8 missing classes
+-dontwarn java.lang.management.ManagementFactory
+-dontwarn java.lang.management.RuntimeMXBean
+-dontwarn org.slf4j.**
+-keep class org.slf4j.** { *; }
+-keep interface org.slf4j.** { *; }

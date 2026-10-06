@@ -58,13 +58,30 @@ object ClockSync {
     }
 
     /** İki offset ölçümü arasındaki fark kabul edilebilir mi? (ağ stabilitesi kontrolü) */
-    fun isStable(previousOffset: Long, newOffset: Long, toleranceMillis: Long = 15L): Boolean =
+    fun isStable(previousOffset: Long, newOffset: Long, toleranceMillis: Long = 10L): Boolean =
         abs(previousOffset - newOffset) <= toleranceMillis
 
     /** Host'un yayınladığı mutlak tetikleme zamanına göre, bu cihazda ne zaman
-     * (local monotonic delay olarak) tetiklenmesi gerektiğini hesaplar. */
+     * (local monotonic delay olarak) tetiklenmesi gerektiğini hesaplar. 
+     * CRITICAL: Minimum 0ms delay - anında tetikleme destekli! */
     fun localDelayUntil(hostStartAtEpochMillis: Long, localOffsetMillis: Long, nowLocalEpochMillis: Long): Long {
         val hostNowEquivalent = nowLocalEpochMillis + localOffsetMillis
-        return (hostStartAtEpochMillis - hostNowEquivalent).coerceAtLeast(0L)
+        val delayMs = hostStartAtEpochMillis - hostNowEquivalent
+        
+        // CRITICAL: Allow NEGATIVE delays (missed timing - trigger immediately!)
+        // This prevents "stuck" flash events when timing is slightly off
+        return when {
+            delayMs < -100 -> {
+                // WAY too late - skip this event entirely
+                android.util.Log.w("ClockSync", "⚠️ Event too late by ${-delayMs}ms - SKIPPING")
+                -1  // Special value: skip event
+            }
+            delayMs < 0 -> {
+                // Slightly late - trigger immediately
+                android.util.Log.d("ClockSync", "⚡ Event ${-delayMs}ms late - TRIGGERING NOW")
+                0  // Trigger immediately
+            }
+            else -> delayMs  // Normal: wait for the exact time
+        }
     }
 }

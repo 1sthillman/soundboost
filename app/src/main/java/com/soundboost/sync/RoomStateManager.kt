@@ -61,7 +61,6 @@ class RoomStateManager {
         Log.d(TAG, "   - Current track: ${_roomState.value.playlist.currentTrackIndex}")
         Log.d(TAG, "   - State: ${_roomState.value.playbackState}")
         Log.d(TAG, "   - Position: ${_roomState.value.currentPosition}ms")
-        Log.d(TAG, "   - Vocal balance: ${_roomState.value.djState.vocalBalance}")
     }
     
     /**

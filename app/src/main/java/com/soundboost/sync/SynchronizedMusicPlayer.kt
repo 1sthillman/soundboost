@@ -89,14 +89,12 @@ class SynchronizedMusicPlayer(private val file: File) {
     
     /**
      * Apply DJ controls - real-time audio manipulation
-     * INCLUDES VOCAL/MUSIC SEPARATION!
      */
     fun applyDJControls(
         bassDb: Float = 0f,
         midDb: Float = 0f,
         trebleDb: Float = 0f,
-        masterVolume: Float = 1.0f,
-        vocalBalance: Float = 0.5f
+        masterVolume: Float = 1.0f
     ) {
         val effects = audioEffects
         if (effects == null) {
@@ -105,11 +103,7 @@ class SynchronizedMusicPlayer(private val file: File) {
         }
         
         try {
-            // CRITICAL: Apply vocal/music balance FIRST
-            // This does frequency-based separation (300Hz-3kHz for vocals)
-            effects.setVocalMusicBalance(vocalBalance)
-            
-            // Then apply EQ on top (convert 0-1 to dB range)
+            // Apply EQ (convert 0-1 to dB range)
             val bassGainDb = (bassDb - 0.5f) * 30f  // -15dB to +15dB
             val midGainDb = (midDb - 0.5f) * 30f
             val trebleGainDb = (trebleDb - 0.5f) * 30f
@@ -120,7 +114,6 @@ class SynchronizedMusicPlayer(private val file: File) {
             mediaPlayer?.setVolume(masterVolume, masterVolume)
             
             Log.d(TAG, "🎛️ DJ controls applied:")
-            Log.d(TAG, "   - Vocal/Music: ${"%.2f".format(vocalBalance)} (0=music, 1=vocal)")
             Log.d(TAG, "   - EQ: bass=${"%.1f".format(bassGainDb)}dB, mid=${"%.1f".format(midGainDb)}dB, treble=${"%.1f".format(trebleGainDb)}dB")
             Log.d(TAG, "   - Volume: ${"%.2f".format(masterVolume)}")
         } catch (e: Exception) {
@@ -129,7 +122,11 @@ class SynchronizedMusicPlayer(private val file: File) {
     }
     
     /**
-     * Set playback speed (for scratching/DJ effects)
+     * Set playback speed with REVERSE support for real vinyl scratching
+     * PROFESSIONAL DJ SCRATCH: 
+     * - Positive speed (0.1 - 2.0): Forward playback
+     * - Negative speed (-2.0 to -0.1): REVERSE playback (real scratch!)
+     * - 0.0: Paused (scratch stop)
      */
     fun setPlaybackSpeed(speed: Float) {
         try {
@@ -137,16 +134,33 @@ class SynchronizedMusicPlayer(private val file: File) {
                 val player = mediaPlayer ?: return
                 val params = player.playbackParams
                 if (params != null) {
-                    player.playbackParams = params.setSpeed(speed.coerceIn(0.5f, 2.0f))
-                    Log.d(TAG, "⚡ Playback speed set to ${speed}x")
+                    // CRITICAL: Android supports negative speed for REVERSE playback!
+                    // This creates REAL vinyl scratch effect
+                    val clampedSpeed = speed.coerceIn(-2.0f, 2.0f)
+                    
+                    // PREVENT ZERO SPEED (causes crash on some devices)
+                    val safeSpeed = when {
+                        kotlin.math.abs(clampedSpeed) < 0.01f -> 0.01f  // Minimum speed
+                        else -> clampedSpeed
+                    }
+                    
+                    player.playbackParams = params.setSpeed(safeSpeed)
+                    
+                    val direction = when {
+                        safeSpeed < 0 -> "◀ REVERSE"
+                        safeSpeed > 1.0f -> "▶ FAST"
+                        safeSpeed < 1.0f -> "▶ SLOW"
+                        else -> "▶ NORMAL"
+                    }
+                    Log.d(TAG, "⚡ Scratch: ${safeSpeed}x ($direction)")
                 } else {
                     Log.w(TAG, "⚠️ PlaybackParams is null")
                 }
             } else {
-                Log.w(TAG, "⚠️ Playback speed control requires Android M+")
+                Log.w(TAG, "⚠️ Scratch control requires Android M+ (API 23+)")
             }
         } catch (e: Exception) {
-            Log.e(TAG, "❌ Failed to set playback speed", e)
+            Log.e(TAG, "❌ Failed to set playback speed: ${e.message}", e)
         }
     }
     

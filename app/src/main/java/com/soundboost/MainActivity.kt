@@ -618,15 +618,6 @@ fun MainScreen(viewModel: MainViewModel, syncViewModel: SyncViewModel) {
                 )
             }
             
-            composable("ai_vocal_separation") {
-                AIVocalSeparationScreen(
-                    state = uiState,
-                    onBack = { 
-                        navController.popBackStack()
-                    }
-                )
-            }
-            
             composable("settings") {
                 SettingsScreen(
                     state = uiState,

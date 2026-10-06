@@ -203,8 +203,6 @@ private fun DJDeckSection(
     djState: com.soundboost.sync.DJState,
     themeColors: com.soundboost.ui.theme.ThemeColors
 ) {
-    val stemSeparationState by viewModel.stemSeparationState.collectAsState()
-    
     Surface(
         modifier = Modifier
             .fillMaxWidth()
@@ -216,20 +214,6 @@ private fun DJDeckSection(
             modifier = Modifier.padding(20.dp),
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
-            // AI STEM SEPARATION PROGRESS (if processing or just completed)
-            when (val state = stemSeparationState) {
-                is com.soundboost.audio.StemSeparationState.Processing -> {
-                    StemSeparationProgress(state, themeColors)
-                    Spacer(modifier = Modifier.height(8.dp))
-                }
-                is com.soundboost.audio.StemSeparationState.Complete -> {
-                    // Show completion for 3 seconds
-                    StemSeparationComplete(themeColors)
-                    Spacer(modifier = Modifier.height(8.dp))
-                }
-                else -> Unit
-            }
-            
             // Track info
             val currentTrack = currentPlaylist?.currentTrack
             Row(
@@ -290,8 +274,10 @@ private fun VinylDeck(
         if (musicState is MusicShareState.Playing && !isDragging) {
             while (true) {
                 kotlinx.coroutines.delay(16)
+                // CRITICAL: Rotate forward or BACKWARD based on speed
                 rotation += djState.playbackSpeed * 2f
                 if (rotation > 360f) rotation -= 360f
+                else if (rotation < -360f) rotation += 360f  // Handle reverse rotation
             }
         }
     }
@@ -319,36 +305,41 @@ private fun VinylDeck(
                     onDrag = { change, dragAmount ->
                         change.consume()
                         
-                        // Rotate vinyl
+                        // Rotate vinyl - BOTH directions
                         rotation += dragAmount.x * 0.5f
                         
-                        // CRITICAL: THROTTLE speed updates - sadece 100ms'de bir güncelle
+                        // CRITICAL: THROTTLE speed updates - sadece 50ms'de bir güncelle (daha responsive)
                         val now = System.currentTimeMillis()
-                        if (now - lastSpeedUpdate < 100) {
+                        if (now - lastSpeedUpdate < 50) {
                             return@detectDragGestures
                         }
                         lastSpeedUpdate = now
                         
-                        // DJ SCRATCH EFFECT - SMOOTH, OPTIMIZED
-                        // Daha yumuşak geçişler, daha az update
+                        // PROFESSIONAL DJ SCRATCH - REAL VINYL with REVERSE!
+                        // Kullanıcı hızlı geriye çekerse -> REVERSE PLAYBACK (negative speed)
                         val dragVelocity = dragAmount.x
                         val speed = when {
-                            // GERİYE - YAVAŞ scratch
-                            dragVelocity < -8f -> 0.4f   // Orta yavaş
-                            dragVelocity < -3f -> 0.7f   // Hafif yavaş
-                            // İLERİYE - hızlandır
-                            dragVelocity > 8f -> 1.4f    // Orta hızlı
-                            dragVelocity > 3f -> 1.15f   // Hafif hızlı
-                            else -> 1.0f                 // Normal
+                            // STRONG REVERSE - Fast backward scratch
+                            dragVelocity < -15f -> -1.5f    // ◀◀ FAST REVERSE
+                            dragVelocity < -10f -> -1.0f    // ◀ REVERSE
+                            dragVelocity < -5f -> -0.5f     // ◀ SLOW REVERSE
+                            dragVelocity < -2f -> 0.3f      // Very slow forward
+                            
+                            // FORWARD - Normal/fast playback
+                            dragVelocity > 15f -> 1.8f      // ▶▶ FAST FORWARD
+                            dragVelocity > 10f -> 1.5f      // ▶ FAST
+                            dragVelocity > 5f -> 1.2f       // ▶ Slight fast
+                            dragVelocity > 2f -> 1.0f       // Normal
+                            
+                            // STOP/VERY SLOW
+                            else -> 0.1f                    // Almost stopped
                         }
                         
-                        // Sadece belirgin değişimde gönder
-                        if (abs(speed - djState.playbackSpeed) > 0.15f) {
-                            viewModel.djScratchSeek(0, speed)
-                        }
+                        // Always send - user is actively scratching
+                        viewModel.djScratchSeek(0, speed)
                         
-                        // Haptic feedback - daha az sık
-                        if (abs(dragAmount.x - lastDragX) > 30f) {
+                        // Haptic feedback - more responsive for scratching
+                        if (abs(dragAmount.x - lastDragX) > 20f) {
                             haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
                             lastDragX = dragAmount.x
                         }
@@ -414,23 +405,24 @@ private fun VinylDeck(
         )
     }
     
-    // Scratch feedback - sadece gerçekten scratch yapıldığında göster
+    // Scratch feedback - REVERSE ve FORWARD göster
     if (isDragging && djState.playbackSpeed != 1.0f) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.padding(top = 8.dp)
         ) {
+            val isReverse = djState.playbackSpeed < 0
             Text(
-                if (djState.playbackSpeed < 1.0f) "◀ SCRATCH" else "SPEED ▶",
+                if (isReverse) "◀◀ REVERSE SCRATCH" else if (djState.playbackSpeed > 1.0f) "SPEED ▶▶" else "▶ SLOW",
                 fontSize = 11.sp,
                 fontWeight = FontWeight.Black,
-                color = Color(0xFFFF5252),
+                color = if (isReverse) Color(0xFFFF5252) else Color(0xFF00E676),
                 letterSpacing = 1.sp
             )
             Text(
-                "${(djState.playbackSpeed * 100).toInt()}%",
+                "${if (isReverse) "" else "+"}${(djState.playbackSpeed * 100).toInt()}%",
                 fontSize = 10.sp,
-                color = Color(0xFFFF5252)
+                color = if (isReverse) Color(0xFFFF5252) else Color(0xFF00E676)
             )
         }
     }
@@ -691,119 +683,6 @@ private fun DJMixerControls(
                 fontSize = 13.sp,
                 letterSpacing = 1.2.sp
             )
-            
-            // VOKAL/MÜZİK CROSSFADER - KRİTİK! GERÇEKTEN ÇALIŞMALI!
-            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Text(
-                        "MUSIC",
-                        fontSize = 10.sp,
-                        fontWeight = FontWeight.Black,
-                        color = if (djState.vocalBalance < 0.3f) Color(0xFF00E676) else themeColors.onSurfaceVariant
-                    )
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier.pointerInput(Unit) {
-                            detectTapGestures(
-                                onDoubleTap = {
-                                    // DOUBLE TAP = RESET TO 0.5 (BALANCED)
-                                    viewModel.updateDJVolume(vocalBalance = 0.5f)
-                                }
-                            )
-                        }
-                    ) {
-                        Text(
-                            "VOCAL/MUSIC CROSSFADER",
-                            fontSize = 9.sp,
-                            fontWeight = FontWeight.Bold,
-                            letterSpacing = 0.5.sp
-                        )
-                        Text(
-                            when {
-                                djState.vocalBalance < 0.3f -> "MUSIC ONLY"
-                                djState.vocalBalance > 0.7f -> "VOCAL ONLY"
-                                abs(djState.vocalBalance - 0.5f) < 0.05f -> "✓ BALANCED"
-                                else -> "BALANCED"
-                            },
-                            fontSize = 8.sp,
-                            color = if (abs(djState.vocalBalance - 0.5f) < 0.05f) Color(0xFF00E676) else themeColors.accent2,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
-                    Text(
-                        "VOCAL",
-                        fontSize = 10.sp,
-                        fontWeight = FontWeight.Black,
-                        color = if (djState.vocalBalance > 0.7f) Color(0xFF00E676) else themeColors.onSurfaceVariant
-                    )
-                }
-                
-                Text(
-                    "Double tap label to reset",
-                    fontSize = 8.sp,
-                    color = themeColors.onSurfaceVariant.copy(alpha = 0.6f),
-                    modifier = Modifier.fillMaxWidth(),
-                    textAlign = TextAlign.Center
-                )
-                
-                // CRITICAL: vocalBalance DOĞRU GÖNDERİLMELİ!
-                Slider(
-                    value = djState.vocalBalance,
-                    onValueChange = { newBalance ->
-                        // Haptic feedback her %10'da bir
-                        if (abs(newBalance - djState.vocalBalance) > 0.1f) {
-                            haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
-                        }
-                        // CRITICAL: vocalBalance parametresi GÖNDERİLMELİ!
-                        viewModel.updateDJVolume(vocalBalance = newBalance)
-                    },
-                    valueRange = 0f..1f,
-                    colors = SliderDefaults.colors(
-                        thumbColor = themeColors.accent2,
-                        activeTrackColor = Brush.horizontalGradient(
-                            colors = listOf(
-                                Color(0xFF00E676),  // Music (yeşil)
-                                themeColors.accent2,
-                                Color(0xFFFF5252)   // Vocal (kırmızı)
-                            )
-                        ).let { themeColors.accent2 },
-                        inactiveTrackColor = themeColors.onSurface.copy(alpha = 0.2f)
-                    ),
-                    modifier = Modifier.height(48.dp)
-                )
-                
-                // Progress göstergesi
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .height(4.dp)
-                            .fillMaxWidth()
-                            .background(themeColors.onSurface.copy(alpha = 0.1f), RoundedCornerShape(2.dp))
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxHeight()
-                                .fillMaxWidth(djState.vocalBalance)
-                                .background(
-                                    when {
-                                        djState.vocalBalance < 0.3f -> Color(0xFF00E676)
-                                        djState.vocalBalance > 0.7f -> Color(0xFFFF5252)
-                                        else -> themeColors.accent2
-                                    },
-                                    RoundedCornerShape(2.dp)
-                                )
-                        )
-                    }
-                }
-            }
-            
-            HorizontalDivider(color = themeColors.onSurface.copy(alpha = 0.1f))
             
             // EQ KNOBS
             Text("EQUALIZER", fontSize = 11.sp, fontWeight = FontWeight.Bold)
@@ -1086,139 +965,6 @@ private fun ClientWaitingScreen(
                 Text(
                     "Waiting for DJ...",
                     fontSize = 15.sp,
-                    color = themeColors.onSurfaceVariant
-                )
-            }
-        }
-    }
-}
-
-
-/**
- * AI STEM SEPARATION PROGRESS INDICATOR
- * Shows real-time progress of vocal/music separation
- * MÜKEMMEL: GPU-accelerated, no freezing, optimized!
- */
-@Composable
-private fun StemSeparationProgress(
-    state: com.soundboost.audio.StemSeparationState.Processing,
-    themeColors: com.soundboost.ui.theme.ThemeColors
-) {
-    Surface(
-        modifier = Modifier
-            .fillMaxWidth()
-            .shadow(4.dp, RoundedCornerShape(16.dp)),
-        shape = RoundedCornerShape(16.dp),
-        color = themeColors.accent1.copy(alpha = 0.1f)
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            // Circular progress with percentage
-            Box(
-                modifier = Modifier.size(56.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator(
-                    progress = { state.progress },
-                    modifier = Modifier.fillMaxSize(),
-                    color = themeColors.accent1,
-                    strokeWidth = 4.dp,
-                    trackColor = themeColors.onSurface.copy(alpha = 0.1f)
-                )
-                Text(
-                    "${(state.progress * 100).toInt()}%",
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = themeColors.accent1
-                )
-            }
-            
-            // Status text
-            Column(modifier = Modifier.weight(1f)) {
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(
-                        Icons.Default.Psychology,
-                        contentDescription = null,
-                        tint = themeColors.accent1,
-                        modifier = Modifier.size(18.dp)
-                    )
-                    Text(
-                        "AI Stem Separation",
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 14.sp,
-                        color = themeColors.onSurface
-                    )
-                }
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    state.status,
-                    fontSize = 12.sp,
-                    color = themeColors.onSurfaceVariant,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-            }
-        }
-    }
-}
-
-
-/**
- * Stem Separation Complete Indicator
- */
-@Composable
-private fun StemSeparationComplete(
-    themeColors: com.soundboost.ui.theme.ThemeColors
-) {
-    Surface(
-        modifier = Modifier
-            .fillMaxWidth()
-            .shadow(4.dp, RoundedCornerShape(16.dp)),
-        shape = RoundedCornerShape(16.dp),
-        color = Color(0xFF00E676).copy(alpha = 0.1f)
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            // Check icon
-            Box(
-                modifier = Modifier
-                    .size(56.dp)
-                    .background(Color(0xFF00E676).copy(alpha = 0.2f), CircleShape),
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(
-                    Icons.Default.CheckCircle,
-                    contentDescription = null,
-                    tint = Color(0xFF00E676),
-                    modifier = Modifier.size(32.dp)
-                )
-            }
-            
-            // Status text
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    "✅ Ready to Play",
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 14.sp,
-                    color = themeColors.onSurface
-                )
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    "Vocal/Music separation complete",
-                    fontSize = 12.sp,
                     color = themeColors.onSurfaceVariant
                 )
             }

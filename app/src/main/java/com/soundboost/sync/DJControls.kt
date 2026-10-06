@@ -19,25 +19,11 @@ data class DJState(
     // Volume Controls
     val masterVolume: Float = 1.0f,  // 0.0 - 1.0
     
-    // VOCAL/MUSIC BALANCE - CRITICAL!
-    // 0.0 = music only, 0.5 = balanced, 1.0 = vocal only
-    // Uses frequency-based separation (300Hz-3kHz for vocals)
-    val vocalBalance: Float = 0.5f,  // 0.0 - 1.0
-    
-    // Stem Volumes (for future multi-track stems)
-    val bassVolume: Float = 1.0f,    // Stem volume
-    val vocalVolume: Float = 1.0f,   // Stem volume
-    val instrumentalVolume: Float = 1.0f, // Stem volume
-    
     // Effects
     val reverbEnabled: Boolean = false,
     val reverbLevel: Float = 0.0f,
     val echoEnabled: Boolean = false,
     val echoLevel: Float = 0.0f,
-    
-    // Stem Separation State
-    val stemSeparationEnabled: Boolean = false,
-    val stemsAvailable: Boolean = false,
     
     // Playback Speed (for scratching/tempo)
     val playbackSpeed: Float = 1.0f, // 0.5 - 2.0

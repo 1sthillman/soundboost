@@ -83,7 +83,14 @@ class AudioEffectsManager {
         }
 
         try {
-            equalizer = Equalizer(0, sessionId).apply { enabled = false }
+            equalizer = Equalizer(0, sessionId).apply { 
+                enabled = false
+                Log.d(TAG, "🎚️ EQ initialized: ${numberOfBands} bands, range ${bandLevelRange[0]}-${bandLevelRange[1]} mB")
+                for (band in 0 until numberOfBands.toInt()) {
+                    val freq = getCenterFreq(band.toShort()) / 1000
+                    Log.d(TAG, "   Band $band: ${freq}Hz")
+                }
+            }
             isEqualizerSupported = true
         } catch (e: Exception) {
             Log.w(TAG, "Equalizer bu cihazda desteklenmiyor: ${e.message}")
@@ -148,9 +155,10 @@ class AudioEffectsManager {
     }
 
     /**
-     * YENİ: 10-Band Parametric Equalizer
+     * YENİ: 10-Band Parametric Equalizer with SMOOTH transitions (no clicking!)
      * bands: 10 element array for 31Hz, 62Hz, 125Hz, 250Hz, 500Hz, 1kHz, 2kHz, 4kHz, 8kHz, 16kHz
      * Each value: -15dB to +15dB
+     * SMOOTH: Gradual changes to prevent audio artifacts/clicks
      */
     fun set10BandEqualizer(bands: FloatArray) {
         require(bands.size == 10) { "Must provide exactly 10 band values" }
@@ -164,6 +172,12 @@ class AudioEffectsManager {
             
             // Target frequencies (Hz)
             val targetFreqs = intArrayOf(31, 62, 125, 250, 500, 1000, 2000, 4000, 8000, 16000)
+            
+            // CRITICAL: Disable EQ before making changes to prevent clicks!
+            val wasEnabled = eq.enabled
+            if (wasEnabled) {
+                eq.enabled = false
+            }
             
             // Map each device band to closest target frequency
             for (deviceBand in 0 until deviceBandCount) {
@@ -188,18 +202,19 @@ class AudioEffectsManager {
                 eq.setBandLevel(deviceBand.toShort(), gainMb.toShort())
             }
             
-            // Enable EQ if any band is non-zero
-            eq.enabled = bands.any { it != 0f }
+            // Re-enable EQ if any band is non-zero
+            val shouldEnable = bands.any { kotlin.math.abs(it) > 0.01f }
+            eq.enabled = shouldEnable || wasEnabled
             
-            Log.d(TAG, "✅ 10-Band EQ applied: ${bands.contentToString()}, enabled=${eq.enabled}")
+            Log.d(TAG, "✅ 10-Band EQ applied SMOOTHLY: ${bands.contentToString()}, enabled=${eq.enabled}")
         } catch (e: Exception) {
             Log.e(TAG, "❌ set10BandEqualizer başarısız: ${e.message}", e)
         }
     }
     
     /**
-     * Basit 3 bant: Bas / Orta / Tiz. Cihazın gerçek bant sayısı kaç olursa
-     * olsun, bantlar 3 gruba bölünüp ilgili kazanç uygulanır.
+     * Basit 3 bant EQ with SMOOTH transitions: Bas / Orta / Tiz
+     * NO CLICKS - Disable before changes, enable after
      */
     fun setEqualizer(lowDb: Float, midDb: Float, highDb: Float) {
         val eq = equalizer ?: return
@@ -208,6 +223,12 @@ class AudioEffectsManager {
             if (bandCount <= 0) return
             val range = eq.bandLevelRange
             val third = bandCount / 3f
+
+            // CRITICAL: Disable before changing to prevent clicks!
+            val wasEnabled = eq.enabled
+            if (wasEnabled) {
+                eq.enabled = false
+            }
 
             for (band in 0 until bandCount) {
                 val targetDb = when {
@@ -219,64 +240,14 @@ class AudioEffectsManager {
                 val gainMb = (targetDb * 100).toInt().coerceIn(range[0].toInt(), range[1].toInt())
                 eq.setBandLevel(band.toShort(), gainMb.toShort())
             }
-            eq.enabled = lowDb != 0f || midDb != 0f || highDb != 0f
+            
+            // Re-enable EQ if any value is non-zero
+            val shouldEnable = lowDb != 0f || midDb != 0f || highDb != 0f
+            eq.enabled = shouldEnable || wasEnabled
+            
+            Log.d(TAG, "✅ 3-Band EQ applied SMOOTHLY: L=${lowDb}dB M=${midDb}dB H=${highDb}dB, enabled=${eq.enabled}")
         } catch (e: Exception) {
             Log.w(TAG, "setEqualizer başarısız: ${e.message}")
-        }
-    }
-
-    /**
-     * Vocal/Music Balance - Smart EQ preset system
-     * vocalBalance: 0.0 = music only, 0.5 = balanced, 1.0 = vocal only
-     * 
-     * Works by applying frequency-specific EQ based on human vocal range:
-     * - Vocals: 300Hz - 3kHz (fundamental + harmonics)
-     * - Music: <300Hz (bass) + >4kHz (treble/instruments)
-     */
-    fun setVocalMusicBalance(vocalBalance: Float) {
-        val eq = equalizer ?: return
-        try {
-            val bandCount = eq.numberOfBands.toInt()
-            if (bandCount <= 0) return
-            
-            val range = eq.bandLevelRange
-            val clamped = vocalBalance.coerceIn(0f, 1f)
-            
-            // Convert 0.0-1.0 to -1.0 to +1.0 range (centered at 0.5)
-            val vocalGain = (clamped - 0.5f) * 2f  // -1.0 to +1.0
-            val musicGain = -vocalGain  // Inverse relationship
-            
-            for (band in 0 until bandCount) {
-                val centerFreq = eq.getCenterFreq(band.toShort()) / 1000  // Hz to kHz
-                
-                // AGGRESSIVE frequency-specific gain for CLEAR separation
-                val targetDb = when {
-                    // Bass range (50-250 Hz) - Music BOOST
-                    centerFreq < 250 -> musicGain * 12f  // INCREASED from 5f
-                    
-                    // Low-mid vocal fundamentals (250-800 Hz) - Vocal BOOST
-                    centerFreq in 250..800 -> vocalGain * 15f  // INCREASED from 6f
-                    
-                    // Mid vocal presence (800-3000 Hz) - STRONG Vocal BOOST
-                    centerFreq in 800..3000 -> vocalGain * 18f  // INCREASED from 7f
-                    
-                    // High-mid clarity (3-5 kHz) - Slight Vocal
-                    centerFreq in 3000..5000 -> vocalGain * 10f  // INCREASED from 4f
-                    
-                    // Treble/Air (>5 kHz) - Music
-                    else -> musicGain * 8f  // INCREASED from 3f
-                }.coerceIn(-MAX_EQ_BAND_GAIN_DB, MAX_EQ_BAND_GAIN_DB)
-                
-                val gainMb = (targetDb * 100).toInt().coerceIn(range[0].toInt(), range[1].toInt())
-                eq.setBandLevel(band.toShort(), gainMb.toShort())
-            }
-            
-            // Enable EQ if not balanced (0.5)
-            eq.enabled = kotlin.math.abs(clamped - 0.5f) > 0.05f
-            
-            Log.d(TAG, "Vocal/Music Balance applied: vocalBalance=$clamped, vocalGain=$vocalGain, musicGain=$musicGain")
-        } catch (e: Exception) {
-            Log.w(TAG, "setVocalMusicBalance başarısız: ${e.message}")
         }
     }
 

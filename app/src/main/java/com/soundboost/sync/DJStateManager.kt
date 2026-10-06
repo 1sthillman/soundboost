@@ -20,7 +20,7 @@ class DJStateManager {
     
     // Callbacks for audio engine
     var onEQChange: ((bass: Float, mid: Float, treble: Float) -> Unit)? = null
-    var onVolumeChange: ((master: Float, vocalBalance: Float, bass: Float, vocal: Float, instrumental: Float) -> Unit)? = null
+    var onVolumeChange: ((master: Float) -> Unit)? = null
     var onEffectChange: ((type: EffectType, enabled: Boolean, level: Float) -> Unit)? = null
     var onSeekChange: ((positionMs: Int, speed: Float) -> Unit)? = null
     
@@ -41,7 +41,7 @@ class DJStateManager {
     }
     
     /**
-     * HOST: Update volume (master or vocal/music balance)
+     * HOST: Update volume (master only)
      */
     fun updateVolume(
         master: Float? = null,
@@ -53,21 +53,11 @@ class DJStateManager {
         val current = _djState.value
         _djState.value = current.copy(
             masterVolume = master?.coerceIn(0f, 1f) ?: current.masterVolume,
-            vocalBalance = vocalBalance?.coerceIn(0f, 1f) ?: current.vocalBalance,
-            bassVolume = bass?.coerceIn(0f, 1f) ?: current.bassVolume,
-            vocalVolume = vocal?.coerceIn(0f, 1f) ?: current.vocalVolume,
-            instrumentalVolume = instrumental?.coerceIn(0f, 1f) ?: current.instrumentalVolume,
             timestamp = System.currentTimeMillis()
         )
         
-        Log.d(TAG, "🔊 Volume updated: master=$master, vocalBalance=$vocalBalance")
-        onVolumeChange?.invoke(
-            _djState.value.masterVolume,
-            _djState.value.vocalBalance,
-            _djState.value.bassVolume,
-            _djState.value.vocalVolume,
-            _djState.value.instrumentalVolume
-        )
+        Log.d(TAG, "🔊 Volume updated: master=$master")
+        onVolumeChange?.invoke(_djState.value.masterVolume)
     }
     
     /**
@@ -108,32 +98,6 @@ class DJStateManager {
     }
     
     /**
-     * HOST: Enable stem separation
-     */
-    fun enableStems(enabled: Boolean) {
-        val current = _djState.value
-        _djState.value = current.copy(
-            stemSeparationEnabled = enabled,
-            timestamp = System.currentTimeMillis()
-        )
-        
-        Log.d(TAG, "🎼 Stems ${if (enabled) "enabled" else "disabled"}")
-    }
-    
-    /**
-     * Set stems available (after separation completes)
-     */
-    fun setStemsAvailable(available: Boolean) {
-        val current = _djState.value
-        _djState.value = current.copy(
-            stemsAvailable = available,
-            timestamp = System.currentTimeMillis()
-        )
-        
-        Log.d(TAG, "✅ Stems available: $available")
-    }
-    
-    /**
      * CLIENT: Apply DJ state from broadcast
      */
     fun applyDJState(djState: DJState) {
@@ -141,13 +105,7 @@ class DJStateManager {
         
         // Trigger callbacks to audio engine
         onEQChange?.invoke(djState.bass, djState.mid, djState.treble)
-        onVolumeChange?.invoke(
-            djState.masterVolume,
-            djState.vocalBalance,
-            djState.bassVolume,
-            djState.vocalVolume,
-            djState.instrumentalVolume
-        )
+        onVolumeChange?.invoke(djState.masterVolume)
         
         if (djState.reverbEnabled) {
             onEffectChange?.invoke(EffectType.REVERB, true, djState.reverbLevel)
@@ -156,7 +114,7 @@ class DJStateManager {
             onEffectChange?.invoke(EffectType.ECHO, true, djState.echoLevel)
         }
         
-        Log.d(TAG, "✅ DJ state applied: bass=${djState.bass}, vocalBalance=${djState.vocalBalance}")
+        Log.d(TAG, "✅ DJ state applied: bass=${djState.bass}, mid=${djState.mid}, treble=${djState.treble}")
     }
     
     /**
