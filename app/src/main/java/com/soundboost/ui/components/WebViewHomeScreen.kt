@@ -612,7 +612,7 @@ class WebViewBridge(
     @android.webkit.JavascriptInterface
     fun onModeChanged(mode: String) {
         android.util.Log.d("WebViewBridge", "Mode changed from HTML: $mode")
-        handler.post { onModeChanged(mode) }
+        handler.post { this.onModeChanged.invoke(mode) }
     }
     
     @android.webkit.JavascriptInterface
