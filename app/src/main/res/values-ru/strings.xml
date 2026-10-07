@@ -262,3 +262,10 @@
     
     <string name="common_ok">ОК</string>
 </resources>
+
+    <!-- Flash Warning (Epilepsy / Photosensitivity) -->
+    <string name="flash_warning_title">Предупреждение о светочувствительности</string>
+    <string name="flash_warning_message">Эта функция использует быстро мигающий свет, который может вызвать приступы у людей с светочувствительной эпилепсией.\n\nНе используйте, если вы чувствительны к мигающему свету.</string>
+    <string name="flash_warning_accept">Понятно</string>
+    <string name="flash_warning_cancel">Отмена</string>
+</resources>

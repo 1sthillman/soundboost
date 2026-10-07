@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">音量ブースター</string>
+    <string name="app_name">???ï¿½??ï¿½</string>
     <string name="volume_boost">éŸ³é‡ãƒ–ãƒ¼ã‚¹ãƒˆ</string>
     <string name="equalizer">ã‚¤ã‚³ãƒ©ã‚¤ã‚¶ãƒ¼</string>
     <string name="settings">è¨­å®š</string>
@@ -25,18 +25,18 @@
     <string name="microphone_permission">ãƒã‚¤ã‚¯ã®è¨±å¯</string>
     <string name="microphone_permission_desc">ãƒªã‚¢ãƒ«ã‚¿ã‚¤ãƒ ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªãƒ“ã‚¸ãƒ¥ã‚¢ãƒ©ã‚¤ã‚¼ãƒ¼ã‚·ãƒ§ãƒ³ã«å¿…è¦</string>
 
-    <!-- オーディオ許可の重要な開示（Google Play必須） -->
-    <string name="audio_permission_title">ビジュアルテーマには許可が必要です</string>
-    <string name="audio_permission_description">私たちのビジュアルテーマは、バックグラウンドで再生される音楽（Spotify、YouTubeなど）と同期します。テーマがリズムに合わせて動くには、オーディオ分析の許可が必要です。</string>
-    <string name="audio_permission_why_title">なぜ必要なのか</string>
-    <string name="audio_permission_why_desc">テーマは外部アプリ（Spotify、YouTube）の音楽に反応します。Androidは周波数分析のためにオーディオ許可を要求します。</string>
-    <string name="audio_permission_privacy_title">あなたのプライバシー</string>
-    <string name="audio_permission_privacy_desc">オーディオデータはテーマアニメーションのためにリアルタイムでのみ分析されます。私たちはオーディオデータを録音、保存、または共有しません。</string>
-    <string name="audio_permission_technical_title">技術的な詳細</string>
-    <string name="audio_permission_technical_desc">Androidの公式Visualizer APIを使用しています。オーディオはデバイス上でローカルに処理され、すぐに破棄されます。</string>
-    <string name="audio_permission_accept">同意します</string>
-    <string name="audio_permission_deny">結構です</string>
-    <string name="audio_permission_footer">設定でいつでもこの許可を変更できます</string>
+    <!-- ?ï¿½???????????(Google Play??) -->
+    <string name="audio_permission_title">??????ï¿½??????????</string>
+    <string name="audio_permission_description">??????????ï¿½???????????????????(Spotify?YouTube??)????????ï¿½????????????????ï¿½??????????????</string>
+    <string name="audio_permission_why_title">???????</string>
+    <string name="audio_permission_why_desc">?ï¿½???????(Spotify?YouTube)??????????Android???????????ï¿½????????????</string>
+    <string name="audio_permission_privacy_title">?????????ï¿½</string>
+    <string name="audio_permission_privacy_desc">?ï¿½????ï¿½???ï¿½????ï¿½????????????????????????????ï¿½????ï¿½??????????????????</string>
+    <string name="audio_permission_technical_title">??????</string>
+    <string name="audio_permission_technical_desc">Android???Visualizer API??????????ï¿½???????????ï¿½??????????????????</string>
+    <string name="audio_permission_accept">?????</string>
+    <string name="audio_permission_deny">????</string>
+    <string name="audio_permission_footer">??????????????????</string>
     <string name="theme_neon_dark">ãƒã‚ªãƒ³ãƒ€ãƒ¼ã‚¯</string>
     <string name="theme_ocean_blue">ã‚ªãƒ¼ã‚·ãƒ£ãƒ³ãƒ–ãƒ«ãƒ¼</string>
     <string name="theme_sunset_orange">ã‚µãƒ³ã‚»ãƒƒãƒˆã‚ªãƒ¬ãƒ³ã‚¸</string>
@@ -164,56 +164,68 @@
     <string name="high_contrast">ãƒã‚¤ã‚³ãƒ³ãƒˆãƒ©ã‚¹ãƒˆãƒ¢ãƒ¼ãƒ‰</string>
     <string name="high_contrast_desc">ã‚ˆã‚Šè‰¯ã„å¯èª­æ€§ã®ãŸã‚ã®æ”¹å–„ã•ã‚ŒãŸè¦–èªæ€§</string>
 
-    <!-- 通話強化 -->
-    <string name="call_enhancement_title">通話強化</string>
-    <string name="call_enhancement_desc">着信音声のクリアさを向上 + 通話中のあなたの背景ノイズを削減</string>
-    <string name="call_enhancement_noise_suppression">ノイズ抑制</string>
-    <string name="call_enhancement_auto_gain">自動ゲイン</string>
+    <!-- ???? -->
+    <string name="call_enhancement_title">????</string>
+    <string name="call_enhancement_desc">???????????? + ????????????????</string>
+    <string name="call_enhancement_noise_suppression">?????</string>
+    <string name="call_enhancement_auto_gain">?????</string>
     
-    <!-- ベースフラッシュシンク -->
-    <string name="flash_sync_title">ベースフラッシュシンク</string>
-    <string name="flash_sync_desc">フラッシュがベースキックとリアルタイムで同期します</string>
-    <string name="flash_sync_instant_kick">瞬時検出</string>
-    <string name="flash_sync_zero_delay">遅延ゼロ</string>
-    <string name="flash_intensity_dialog_title">フラッシュ強度</string>
-    <string name="flash_intensity_light">ライト</string>
-    <string name="flash_intensity_light_desc">ソフト • 低感度 • 超高速 (25ms)</string>
-    <string name="flash_intensity_normal">ノーマル</string>
-    <string name="flash_intensity_normal_desc">バランス • 即応 (30ms)</string>
-    <string name="flash_intensity_strong">ストロング</string>
-    <string name="flash_intensity_strong_desc">アグレッシブ • 高感度 • 最小クールダウン (40ms)</string>
-    <string name="flash_dialog_close">閉じる</string>
+    <!-- ?ï¿½????????? -->
+    <string name="flash_sync_title">?ï¿½?????????</string>
+    <string name="flash_sync_desc">???????ï¿½?????????????????</string>
+    <string name="flash_sync_instant_kick">????</string>
+    <string name="flash_sync_zero_delay">????</string>
+    <string name="flash_intensity_dialog_title">???????</string>
+    <string name="flash_intensity_light">???</string>
+    <string name="flash_intensity_light_desc">??? ï¿½ ??? ï¿½ ??? (25ms)</string>
+    <string name="flash_intensity_normal">?ï¿½??</string>
+    <string name="flash_intensity_normal_desc">???? ï¿½ ?? (30ms)</string>
+    <string name="flash_intensity_strong">?????</string>
+    <string name="flash_intensity_strong_desc">?????? ï¿½ ??? ï¿½ ???ï¿½???? (40ms)</string>
+    <string name="flash_dialog_close">???</string>
 
-    <!-- バッテリー最適化（Google Play安全） -->
-    <string name="battery_optimization">バッテリー最適化</string>
-    <string name="battery_optimization_desc">Xiaomi、Samsung、OnePlusデバイスでバックグラウンドサービスの中断を防ぐために推奨</string>
+    <!-- ????ï¿½???(Google Play??) -->
+    <string name="battery_optimization">????ï¿½???</string>
+    <string name="battery_optimization_desc">Xiaomi?Samsung?OnePlus??????????????ï¿½?????????????</string>
     
-    <!-- バッテリー最適化ダイアログ -->
-    <string name="battery_dialog_title">⚡ バッテリー最適化設定</string>
-    <string name="battery_dialog_subtitle">Sound Boostをバックグラウンドで動作させ続ける</string>
-    <string name="battery_dialog_desc">一部のデバイス（Xiaomi、Samsung、OnePlus、Huawei）は、バッテリーを節約するためにバックグラウンドアプリを積極的に終了します。画面がオフの時にオーディオブーストをアクティブに保つには、バッテリー最適化を無効にする必要があります。</string>
-    <string name="battery_dialog_step1_title">ステップ 1：設定を開く</string>
-    <string name="battery_dialog_step1_desc">下のボタンをタップしてバッテリー最適化設定を開く</string>
-    <string name="battery_dialog_step2_title">ステップ 2：Sound\'ST Boostを見つける</string>
-    <string name="battery_dialog_step2_desc">アプリリストをスクロールして「Sound\'ST Boost」を見つけるか検索してください</string>
-    <string name="battery_dialog_step3_title">ステップ 3：最適化を無効にする</string>
-    <string name="battery_dialog_step3_desc">アプリをタップして「最適化しない」または「許可」を選択</string>
-    <string name="battery_dialog_open_settings">設定を開く</string>
-    <string name="battery_dialog_cancel">後で</string>
-    <string name="battery_dialog_device_specific">デバイス固有のヒント：</string>
-    <string name="battery_dialog_tip_xiaomi">Xiaomi：設定 → アプリ → アプリ管理 → Sound\'ST Boost で「自動起動」も有効にしてください</string>
-    <string name="battery_dialog_tip_samsung">Samsung：設定 → バッテリー → バックグラウンド使用制限 → 「スリープ中のアプリ」から削除</string>
-    <string name="battery_dialog_tip_oneplus">OnePlus：アプリ情報 → バッテリー で「バックグラウンド活動を許可」を有効にする</string>
-    <string name="battery_dialog_tip_huawei">Huawei：電話マネージャー → アプリ起動 で「手動管理」を有効にする</string>
+    <!-- ????ï¿½???????? -->
+    <string name="battery_dialog_title">? ????ï¿½?????</string>
+    <string name="battery_dialog_subtitle">Sound Boost?????????????????</string>
+    <string name="battery_dialog_desc">???????(Xiaomi?Samsung?OnePlus?Huawei)??????ï¿½???????????????????????????????????????ï¿½????ï¿½??????????????????ï¿½?????????????????</string>
+    <string name="battery_dialog_step1_title">???? 1:?????</string>
+    <string name="battery_dialog_step1_desc">???????????????ï¿½????????</string>
+    <string name="battery_dialog_step2_title">???? 2:Sound\'ST Boost?????</string>
+    <string name="battery_dialog_step2_desc">??????????ï¿½????Sound\'ST Boost???????????????</string>
+    <string name="battery_dialog_step3_title">???? 3:?????????</string>
+    <string name="battery_dialog_step3_desc">???????????????????????????</string>
+    <string name="battery_dialog_open_settings">?????</string>
+    <string name="battery_dialog_cancel">??</string>
+    <string name="battery_dialog_device_specific">??????????:</string>
+    <string name="battery_dialog_tip_xiaomi">Xiaomi:?? ï¿½ ??? ï¿½ ????? ï¿½ Sound\'ST Boost ?????????????????</string>
+    <string name="battery_dialog_tip_samsung">Samsung:?? ï¿½ ????ï¿½ ï¿½ ???????????? ï¿½ ???ï¿½???????????</string>
+    <string name="battery_dialog_tip_oneplus">OnePlus:????? ï¿½ ????ï¿½ ??????????????????????</string>
+    <string name="battery_dialog_tip_huawei">Huawei:????ï¿½??ï¿½ ï¿½ ????? ?????????????</string>
     
     <!-- Battery Optimization Onboarding -->
-    <string name="battery_onboarding_title">⚡ 途切れないサウンド</string>
-    <string name="battery_onboarding_subtitle">バックグラウンド推奨</string>
-    <string name="battery_onboarding_chip1">🌙 画面オフでも動作</string>
-    <string name="battery_onboarding_chip2">⚡ より安定したパフォーマンス</string>
-    <string name="battery_onboarding_dismiss">わかりました</string>
-    <string name="battery_onboarding_setup">設定</string>
-    <string name="close">閉じる</string>
+    <string name="battery_onboarding_title">? ?????????</string>
+    <string name="battery_onboarding_subtitle">??????????</string>
+    <string name="battery_onboarding_chip1">?? ????????</string>
+    <string name="battery_onboarding_chip2">? ?????????ï¿½???</string>
+    <string name="battery_onboarding_dismiss">??????</string>
+    <string name="battery_onboarding_setup">??</string>
+    <string name="close">???</string>
     
-    <string name="language_italian">イタリア語</string>
+    <string name="language_italian">?????</string>
+
+    <!-- Flash Warning (Epilepsy / Photosensitivity) -->
+    <string name="flash_warning_title">??????</string>
+    <string name="flash_warning_message">??????????????????????????????????????????????\n\n?????????????????????</string>
+    <string name="flash_warning_accept">??????</string>
+    <string name="flash_warning_cancel">?????</string>
+    
+    <!-- Flash Warning (Epilepsy / Photosensitivity) -->
+    <string name="flash_warning_title">光過敏性警告</string>
+    <string name="flash_warning_message">この機能は、光過敏性てんかんのある方に発作を引き起こす可能性のある急速な点滅光を使用します。\n\n点滅光に敏感な場合は使用しないでください。</string>
+    <string name="flash_warning_accept">理解しました</string>
+    <string name="flash_warning_cancel">キャンセル</string>
 </resources>

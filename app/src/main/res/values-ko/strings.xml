@@ -216,4 +216,10 @@
     <string name="close">닫기</string>
     
     <string name="language_italian">이탈리아어</string>
+
+    <!-- Flash Warning (Epilepsy / Photosensitivity) -->
+    <string name="flash_warning_title">광과민성 경고</string>
+    <string name="flash_warning_message">이 기능은 광과민성 간질이 있는 사람에게 발작을 유발할 수 있는 빠르게 깜박이는 빛을 사용합니다.\n\n깜박이는 빛에 민감한 경우 사용하지 마십시오.</string>
+    <string name="flash_warning_accept">이해했습니다</string>
+    <string name="flash_warning_cancel">취소</string>
 </resources>

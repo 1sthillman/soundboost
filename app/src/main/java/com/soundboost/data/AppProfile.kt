@@ -120,14 +120,20 @@ class AppProfileManager(private val context: Context) {
     
     /**
      * Get installed apps (for profile creation)
-     * Returns ALL installed apps including system apps
+     * Returns ONLY user-launchable apps (excludes system apps)
      */
     fun getInstalledApps(): List<AppInfo> {
         val pm = context.packageManager
-        val apps = pm.getInstalledApplications(PackageManager.GET_META_DATA)
         
-        return apps
-            .mapNotNull { app ->
+        // Get only apps with launcher intent (user-visible apps)
+        val launchIntent = android.content.Intent(android.content.Intent.ACTION_MAIN, null)
+        launchIntent.addCategory(android.content.Intent.CATEGORY_LAUNCHER)
+        val launchableApps = pm.queryIntentActivities(launchIntent, 0)
+        
+        return launchableApps
+            .mapNotNull { resolveInfo ->
+                val app = resolveInfo.activityInfo.applicationInfo
+                try {
                 try {
                     AppInfo(
                         packageName = app.packageName,

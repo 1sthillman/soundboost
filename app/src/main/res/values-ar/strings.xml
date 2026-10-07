@@ -48,6 +48,12 @@
     <string name="color_orange">برتقالي</string>
     <string name="color_green">أخضر</string>
     <string name="color_purple">بنفسجي</string>
+
+    <!-- Flash Warning (Epilepsy / Photosensitivity) -->
+    <string name="flash_warning_title">تحذير من الحساسية الضوئية</string>
+    <string name="flash_warning_message">تستخدم هذه الميزة أضواء وامضة سريعة قد تسبب نوبات صرع لدى الأشخاص المصابين بالصرع الحساس للضوء.\n\nلا تستخدمها إذا كنت حساسًا للأضواء الوامضة.</string>
+    <string name="flash_warning_accept">فهمت</string>
+    <string name="flash_warning_cancel">إلغاء</string>
     <string name="notification_title">تعزيز الصوت نشط</string>
     <string name="notification_text">الصوت: %1$d%% • الجهير: %2$d%%</string>
     <string name="language">اللغة</string>
@@ -344,4 +350,10 @@
     <string name="party_mode_diagnostic_copied">تم نسخ معلومات التشخيص إلى الحافظة</string>
     <string name="party_mode_copy_diagnostic">نسخ معلومات التشخيص</string>
     <string name="party_mode_disconnection_hint">اضغط على المربع أعلاه لنسخ معلومات التشخيص</string>
+    
+    <!-- Flash Warning (Epilepsy / Photosensitivity) -->
+    <string name="flash_warning_title">تحذير من حساسية الضوء</string>
+    <string name="flash_warning_message">تستخدم هذه الميزة أضواء وامضة سريعة قد تسبب نوبات للأشخاص المصابين بالصرع الحساس للضوء.\n\nلا تستخدمها إذا كنت حساسًا للأضواء الوامضة.</string>
+    <string name="flash_warning_accept">فهمت</string>
+    <string name="flash_warning_cancel">إلغاء</string>
 </resources>

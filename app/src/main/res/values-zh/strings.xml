@@ -217,3 +217,10 @@
     
     <string name="language_italian">意大利语</string>
 </resources>
+
+    <!-- Flash Warning (Epilepsy / Photosensitivity) -->
+    <string name="flash_warning_title">光敏性警告</string>
+    <string name="flash_warning_message">此功能使用快速闪烁的灯光，可能会引发光敏性癫痫患者的癫痫发作。\n\n如果您对闪烁的灯光敏感，请勿使用。</string>
+    <string name="flash_warning_accept">我明白</string>
+    <string name="flash_warning_cancel">取消</string>
+</resources>

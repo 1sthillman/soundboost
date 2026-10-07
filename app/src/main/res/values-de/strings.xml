@@ -292,4 +292,10 @@
     <string name="party_mode_disconnection_hint">Tippen Sie auf das Feld oben, um Diagnoseinformationen zu kopieren</string>
     <string name="common_back">ZurÃ¼ck</string>
     <string name="common_ok">OK</string>
+
+    <!-- Flash Warning (Epilepsy / Photosensitivity) -->
+    <string name="flash_warning_title">Lichtempfindlichkeitswarnung</string>
+    <string name="flash_warning_message">Diese Funktion verwendet schnell blinkende Lichter, die bei Menschen mit lichtempfindlicher Epilepsie Anfälle auslösen können.\n\nVerwenden Sie sie nicht, wenn Sie empfindlich auf blinkende Lichter reagieren.</string>
+    <string name="flash_warning_accept">Verstanden</string>
+    <string name="flash_warning_cancel">Abbrechen</string>
 </resources>
