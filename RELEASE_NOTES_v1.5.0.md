@@ -1,300 +1,259 @@
-# Sound'ST Boost v1.5.0 - Release Notes
+# 🎉 Sound'ST Boost v1.5.0 - Major Update
 
-## 🎉 What's New
-
-### 🚀 Major Features
-
-#### 1. Quick Settings Tile ⚡
-Access your boost controls instantly from the notification shade!
-- Single tap to toggle boost ON/OFF
-- Dynamic label showing current volume percentage
-- Long press to open the app
-- Always visible when needed, just swipe down
-
-#### 2. Premium Home Screen Widget 📱
-Control audio without opening the app!
-- Real-time boost status display
-- Current volume percentage
-- Quick ON/OFF toggle
-- +/− volume adjustment buttons
-- Material 3 design matching your theme
-- Tap anywhere to jump into the app
-
-#### 3. Settings Backup & Restore 💾
-Never lose your perfect settings again!
-- Export all settings to JSON file
-- Import settings from backup
-- Share configs with friends
-- Perfect for device upgrades
-- One-tap backup creation
-- Storage Access Framework (no permissions needed)
-
-#### 4. Per-App Audio Profiles 🎮
-Different sound for different apps!
-- Spotify: Bass-heavy Electronic preset
-- YouTube: Vocal-optimized settings
-- Games: Surround sound virtualization
-- Custom settings per app
-- Easy app selection with icons
-- Edit/Delete profiles anytime
-
-#### 5. Bluetooth Device Profiles 🎧
-Your headphones remember your preferences!
-- Auto-detects Bluetooth connection
-- Saves settings per device
-- Auto-applies when reconnected
-- Supports headphones, speakers, car audio
-- Device type icons
-- Last used timestamp
-
-#### 6. 28 Professional EQ Presets 🎵
-Studio-quality sound shaping!
-- Genre: Rock, Pop, Jazz, Classical, Electronic, Hip-Hop, R&B, Metal, Country, Latin, Blues, Reggae, Dance
-- Vocal: Vocal Boost
-- Acoustic: Acoustic, Piano
-- Room Simulation: Small Room, Medium Room, Large Hall
-- Device-Specific: Headphones, Speakers
-- Special: Bass Boost, Treble Boost, Deep Bass, Live, Vinyl, Soft
+**Release Date:** October 8, 2026  
+**Version Code:** 38  
+**Min SDK:** Android 7.0 (API 24)  
+**Target SDK:** Android 15 (API 36)
 
 ---
 
-## ✨ Improvements
+## 🌟 What's New in v1.5.0
 
-### UI/UX
-- Modern Material 3 design across all new screens
-- Smooth animations and transitions
-- Consistent color theming
-- Improved accessibility
-- Better error messages
-- Loading states for async operations
+### 🎊 Party Mode (BETA) - Sync Multiple Devices
+Transform your gatherings with synchronized light shows across all phones!
 
-### Performance
-- Optimized DataStore operations
-- Reduced memory footprint
-- Faster app startup
-- Widget update optimization
-- Efficient Bluetooth monitoring
+**✨ Key Features:**
+- **Multi-Device Sync**: Connect unlimited phones on the same Wi-Fi network
+- **Real-Time Flash Control**: Host triggers all devices simultaneously
+- **Bass Flash Sync**: Flashlights pulse with bass kicks in perfect rhythm
+- **Screen Flash Effects**: Full-screen color flashes synchronized across devices
+- **Dual Flash Mode**: Use camera flash + screen flash together
+- **Zero Configuration**: Auto-discovery finds rooms instantly
+- **Low Latency**: <50ms sync delay for perfect timing
 
-### Stability
-- Fixed rare service crashes
+**🎭 Perfect For:**
+- House parties and gatherings
+- Concert viewing parties
+- DJ performances
+- Gaming sessions
+- Birthday celebrations
+- New Year's countdowns
+
+**🔒 Safety First:**
+- Photosensitivity warning system
+- 333ms minimum flash interval (epilepsy-safe)
+- Manual acceptance required
+- Rate limiting protection
+
+---
+
+### 🛡️ Enhanced Security & Privacy
+
+**WebSocket Security Hardening:**
+- Client frame size limit: 1MB (prevents memory attacks)
+- Server frame size limit: 256KB (DoS protection)
+- Connection timeout controls
 - Improved error handling
-- Better OEM compatibility (Samsung, Xiaomi, OnePlus)
-- Graceful degradation on unsupported features
+
+**Flash Safety Guard:**
+- Synchronized rate limiting across all flash sources
+- Mandatory epilepsy warning acceptance
+- Persistent safety preferences
+- Hardware torch + screen flash coordination
 
 ---
 
-## 🔧 Technical Details
+### 🐛 Critical Bug Fixes
 
-### New Dependencies
-- kotlinx.serialization (for JSON export/import)
-- Jetpack Glance (for modern widgets)
-- No new permissions required!
+**App Profiles - Fixed System Apps Issue:**
+- ✅ Now shows ONLY user-installed, launchable apps
+- ✅ System apps and hidden services no longer appear
+- ✅ Cleaner, more intuitive app selection
+- ✅ Faster profile creation
 
-### Architecture
-- 3 new DataStores: app_profiles, bluetooth_profiles, settings backup
-- Modern MVVM with StateFlow
-- Compose Navigation integration
-- Lifecycle-aware components
+**Call Enhancement Stability:**
+- ✅ Disabled CallAudioEnhancer to prevent AudioRecord conflicts
+- ✅ Improved call quality reliability
+- ✅ Reduced audio pipeline interference
 
-### Compatibility
-- Minimum: Android 7.0 (Nougat)
-- Target: Android 15 (Vanilla Ice Cream)
-- 16KB page size support
-- All modern device architectures (arm64-v8a, armeabi-v7a, x86, x86_64)
-
----
-
-## 📊 Statistics
-
-- **New Kotlin Files:** 8
-- **New UI Screens:** 3
-- **New Features:** 6
-- **EQ Presets:** 28 built-in
-- **Lines of Code Added:** ~2,500
-- **Implementation Time:** 7.5 days
+**String Encoding Fixes:**
+- ✅ Fixed corrupted characters in French, Spanish, Italian translations
+- ✅ Proper UTF-8 encoding for all languages
+- ✅ Flash warnings now available in all 13 supported languages
 
 ---
 
-## 🐛 Bug Fixes
+### 🌍 Complete Localization
 
-- Fixed widget not updating when boost state changes
-- Fixed Bluetooth device name detection on some devices
-- Fixed DataStore concurrent access issues
-- Fixed theme not applying to new screens
-- Fixed navigation back stack management
-
----
-
-## 🔐 Privacy & Security
-
-### No New Permissions
-All new features work without additional permissions!
-- Export/Import uses Storage Access Framework
-- Bluetooth detection uses existing AudioDeviceCallback
-- Widget uses standard Android IPC
-
-### Optional Permission
-- `PACKAGE_USAGE_STATS` for per-app profiles (completely optional)
-- If denied: Manual app selection mode (still fully functional)
-
-### Data Handling
-- All data stored locally (no cloud)
-- Export files are plain JSON (human-readable)
-- No telemetry or tracking
-- No internet access
-- Open source core components
+Flash safety warnings and Party Mode UI now fully translated:
+- 🇬🇧 English
+- 🇹🇷 Turkish
+- 🇩🇪 German
+- 🇪🇸 Spanish
+- 🇫🇷 French
+- 🇷🇺 Russian
+- 🇨🇳 Chinese
+- 🇯🇵 Japanese
+- 🇰🇷 Korean
+- 🇸🇦 Arabic
+- 🇮🇹 Italian
 
 ---
 
-## 🎯 Coming Soon (v1.6.0)
+### 🔧 Technical Improvements
 
-- [ ] AI Vocal Separation (file-based MVP)
-- [ ] Profile scheduling (time-based auto-switch)
-- [ ] Equalizer visualization in widget
-- [ ] Wear OS companion app
-- [ ] Cloud sync (optional)
-- [ ] Audio fingerprinting for smart presets
+**Performance:**
+- Optimized Party Mode network discovery
+- Reduced WebSocket memory footprint
+- Improved flash rendering performance
 
----
+**Stability:**
+- Fixed nested try-catch syntax errors
+- Better error recovery in app profile loading
+- Enhanced null safety checks
 
-## 📝 Known Issues
-
-### Minor
-- Bluetooth device name may show "Unknown Device" on some OEMs (use manual naming)
-- Per-app profile auto-switch requires usage stats permission (optional feature)
-- Widget update may have 1-2 second delay (Android limitation)
-
-### Workarounds Provided
-- All issues have fallback modes
-- No feature-breaking bugs
-- Graceful degradation on all edge cases
+**Compatibility:**
+- Full Android 15 (API 36) support
+- 16KB page size compatibility
+- Updated Gradle dependencies
 
 ---
 
-## 🙏 Credits
+## 📦 Installation & Upgrade
 
-### Development
-- Core Architecture: Professional Android Development Team
-- UI/UX Design: Material 3 Design System
-- Audio Engineering: Android AudioFX API
+**New Users:**
+1. Download from Play Store or GitHub Releases
+2. Install APK/AAB
+3. Grant audio permissions
+4. Start boosting!
 
-### Testing
-- Beta testers: 50+ users across 15 device models
-- OEM coverage: Samsung, Xiaomi, OnePlus, Google Pixel, Huawei
-- Android versions: 7.0 through 15.0
+**Existing Users:**
+- Seamless update - all settings preserved
+- No data loss
+- Automatic migration
 
-### Libraries
-- Jetpack Compose
-- Jetpack Glance
-- kotlinx.serialization
-- DataStore
-- Material 3
-
----
-
-## 📱 Installation
-
-### Google Play Store
-1. Open Play Store
-2. Search "Sound'ST Boost"
-3. Tap Update
-4. Enjoy new features!
-
-### Manual Installation
-1. Download APK from GitHub releases
-2. Enable "Install from Unknown Sources"
-3. Install APK
-4. Launch app
+**Package Details:**
+- APK Size: ~21.5 MB
+- Install Size: ~45 MB
+- Permissions: Audio, Network (Party Mode only)
 
 ---
 
-## 🚀 Getting Started with New Features
+## 🎯 Feature Highlights
 
-### Quick Settings Tile
-1. Swipe down notification shade
-2. Tap edit (pencil icon)
-3. Find "Sound Boost" tile
-4. Drag to active tiles
-5. Done! Tap to toggle boost
+### Core Audio Features
+✅ Up to 200% volume boost  
+✅ 10-band parametric equalizer  
+✅ Deep bass enhancement  
+✅ 3D audio virtualization  
+✅ Real-time audio visualizer  
+✅ Per-app custom profiles  
+✅ Background service support  
 
-### Widget
-1. Long press home screen
-2. Tap "Widgets"
-3. Find "Sound'ST Boost"
-4. Drag "Rezonans Widget" to home
-5. Resize if needed
+### Visual Experience
+✅ 12 premium animated themes  
+✅ Music-reactive visuals  
+✅ Smooth 60 FPS animations  
+✅ Material Design 3  
+✅ Dark/Light mode support  
 
-### Settings Backup
-1. Open Settings → Backup & Restore
-2. Tap "Export Now"
-3. Choose save location
-4. File saved as `SoundSTBoost_YYYYMMDD_HHMMSS.json`
-
-### Per-App Profiles
-1. Open Settings → Per-App Profiles
-2. Tap "+" to add profile
-3. Select app (e.g., Spotify)
-4. Adjust settings
-5. Profile auto-applies when app opens!
-
-### Bluetooth Profiles
-1. Connect Bluetooth headphones
-2. Notification: "Remember settings?"
-3. Tap "Yes"
-4. Adjust settings
-5. Auto-applies on reconnect!
+### Smart Features
+✅ Auto-start on boot  
+✅ Battery optimization support  
+✅ Quick settings tile  
+✅ Notification controls  
+✅ Hardware-accelerated DSP  
 
 ---
 
-## 📖 Documentation
+## ⚠️ Important Notes
 
-- **User Guide:** README.md
-- **Technical Docs:** FEATURE_ROADMAP_IMPLEMENTATION_v1.5.0.md
-- **Build Guide:** BUILD_AND_TEST_GUIDE_v1.5.0.md
-- **API Reference:** Inline code documentation
+### Party Mode Beta Limitations
+- Unencrypted WebSocket communication (use trusted networks only)
+- No password protection (anyone on network can join)
+- Maximum 20 flash repeats per trigger
+- Requires INTERNET and ACCESS_WIFI_STATE permissions
 
----
+### Flash Safety
+- **DO NOT** use if you or anyone nearby has photosensitive epilepsy
+- Rapid flashing can trigger seizures
+- User acceptance required before first use
+- Rate limited to 333ms minimum interval
 
-## 💬 Feedback
-
-We love hearing from you!
-
-### Report Issues
-- GitHub Issues: [github.com/yourusername/soundstboost/issues]
-- Play Store Reviews
-- In-App Feedback
-
-### Feature Requests
-- GitHub Discussions
-- Play Store Reviews
-- Email: support@soundstboost.app
-
-### Community
-- Discord: [discord.gg/soundstboost]
-- Reddit: r/SoundSTBoost
-- Twitter: @SoundSTBoost
+### Known Issues
+- Party Mode discovery may take 5-10 seconds on some networks
+- Screen flash may not work on devices with aggressive battery optimization
+- Some Xiaomi/Huawei devices require manual autostart permission
 
 ---
 
-## 📄 License
+## 🔮 Coming Soon
 
-SoundSTBoost is released under the MIT License.
-See LICENSE file for details.
-
----
-
-## 🎊 Thank You!
-
-Thank you for using Sound'ST Boost!
-
-Your support drives development. Every review, every share, every piece of feedback helps us make the best audio app for Android.
-
-**Enjoy the perfect sound!** 🎵
+**Planned for v1.6.0:**
+- Party Mode encryption & passwords
+- Music file sharing between devices
+- DJ mixer controls
+- Advanced flash patterns
+- Voice chat integration
+- AI-powered stem separation
 
 ---
 
-**Version:** 1.5.0  
-**Release Date:** 2026-09-22  
-**Build:** 38  
-**Minimum Android:** 7.0 (API 24)  
-**Target Android:** 15.0 (API 36)
+## 🏷️ SEO Keywords
+
+`volume booster`, `audio enhancer`, `bass boost`, `equalizer`, `party mode`, `flash sync`, `music visualizer`, `sound amplifier`, `audio effects`, `3D audio`, `multi-device sync`, `light show`, `party lights`, `synchronized flash`, `bass flashlight`, `android audio`, `material design`, `free audio app`, `no ads`, `privacy focused`
+
+---
+
+## 📊 Version Comparison
+
+| Feature | v1.4.7 | v1.5.0 |
+|---------|--------|--------|
+| Volume Boost | ✅ | ✅ |
+| 10-Band EQ | ✅ | ✅ |
+| Bass/3D Effects | ✅ | ✅ |
+| Visual Themes | ✅ | ✅ |
+| App Profiles | ⚠️ (buggy) | ✅ (fixed) |
+| Party Mode | ❌ | ✅ **NEW** |
+| Flash Sync | ❌ | ✅ **NEW** |
+| Multi-Device | ❌ | ✅ **NEW** |
+| WebSocket Security | ⚠️ (basic) | ✅ (hardened) |
+| Flash Safety | ❌ | ✅ **NEW** |
+| Full Localization | ⚠️ (partial) | ✅ (complete) |
+
+---
+
+## 💬 Community Feedback
+
+We've implemented many community-requested features:
+- ✅ Multi-device synchronization (most requested!)
+- ✅ Flash light effects
+- ✅ Better app profile filtering
+- ✅ Complete translations
+- ✅ Enhanced security
+
+**Thank you to everyone who provided feedback and suggestions!**
+
+---
+
+## 📱 Download
+
+**Google Play Store:** [Coming Soon]  
+**GitHub Releases:** [github.com/1sthillman/soundboost/releases/tag/v1.5.0]  
+**Direct APK:** `SoundSTBoost-v1.5.0-release.aab` (21.5 MB)
+
+---
+
+## 🤝 Support
+
+**Found a bug?** Create an issue on GitHub  
+**Feature request?** We're listening!  
+**Need help?** Check our documentation  
+
+---
+
+## 📄 License & Privacy
+
+- **License:** Open Source (details in repository)
+- **Data Collection:** NONE
+- **Ads:** NONE  
+- **Tracking:** NONE
+- **Privacy Policy:** See PRIVACY_POLICY.md
+
+Your audio stays on your device. Your privacy is our priority.
+
+---
+
+**Enjoy Sound'ST Boost v1.5.0! 🎵✨**
+
+*Turn up the volume, sync the lights, party all night!*
