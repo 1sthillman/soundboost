@@ -2,46 +2,46 @@
 <resources>
     <string name="app_name">Volume+</string>
     <string name="volume_boost">Amplificateur de Volume</string>
-    <string name="equalizer">Égaliseur</string>
-    <string name="settings">Paramètres</string>
-    <string name="themes">Thèmes</string>
+    <string name="equalizer">ï¿½galiseur</string>
+    <string name="settings">Paramï¿½tres</string>
+    <string name="themes">Thï¿½mes</string>
     <string name="master_volume">VOLUME PRINCIPAL</string>
-    <string name="boost_off">DÉSACTIVÉ</string>
-    <string name="boost_on">ACTIVÉ</string>
+    <string name="boost_off">Dï¿½SACTIVï¿½</string>
+    <string name="boost_on">ACTIVï¿½</string>
     <string name="max_volume">VOLUME MAX</string>
     <string name="preset_60">60%</string>
     <string name="preset_100">100%</string>
     <string name="preset_160">160%</string>
     <string name="preset_max">MAX</string>
     <string name="bass">Graves</string>
-    <string name="mid">Médiums</string>
+    <string name="mid">Mï¿½diums</string>
     <string name="treble">Aigus</string>
     <string name="bass_boost">Amplification des Graves</string>
     <string name="virtualizer">Virtualiseur 3D</string>
-    <string name="auto_start">Démarrage automatique</string>
-    <string name="auto_start_desc">Le boost reprendra automatiquement au redémarrage de l\'appareil. Remarque: Certains fabricants (Xiaomi, Huawei, Samsung) peuvent nécessiter la désactivation de l\'optimisation de la batterie.</string>
-    <string name="about">À propos</string>
-    <string name="about_desc">Sound\'ST Boost utilise les API officielles d\'effets audio d\'Android. L\'intensité des effets peut varier selon le matériel de l\'appareil.</string>
+    <string name="auto_start">Dï¿½marrage automatique</string>
+    <string name="auto_start_desc">Le boost reprendra automatiquement au redï¿½marrage de l\'appareil. Remarque: Certains fabricants (Xiaomi, Huawei, Samsung) peuvent nï¿½cessiter la dï¿½sactivation de l\'optimisation de la batterie.</string>
+    <string name="about">ï¿½ propos</string>
+    <string name="about_desc">Sound\'ST Boost utilise les API officielles d\'effets audio d\'Android. L\'intensitï¿½ des effets peut varier selon le matï¿½riel de l\'appareil.</string>
     <string name="microphone_permission">Autorisation Microphone</string>
-    <string name="microphone_permission_desc">Requis pour la visualisation audio en temps réel</string>
+    <string name="microphone_permission_desc">Requis pour la visualisation audio en temps rï¿½el</string>
     
-    <!-- Divulgation Proéminente de l\'Autorisation Audio (Google Play Requis) -->
-    <string name="audio_permission_title">Les Thèmes Visuels Nécessitent une Autorisation</string>
-    <string name="audio_permission_description">Nos thèmes visuels se synchronisent avec la musique jouant en arrière-plan (Spotify, YouTube, etc.). Pour que les thèmes bougent au rythme, nous avons besoin d\'une autorisation d\'analyse audio.</string>
+    <!-- Divulgation Proï¿½minente de l\'Autorisation Audio (Google Play Requis) -->
+    <string name="audio_permission_title">Les Thï¿½mes Visuels Nï¿½cessitent une Autorisation</string>
+    <string name="audio_permission_description">Nos thï¿½mes visuels se synchronisent avec la musique jouant en arriï¿½re-plan (Spotify, YouTube, etc.). Pour que les thï¿½mes bougent au rythme, nous avons besoin d\'une autorisation d\'analyse audio.</string>
     <string name="audio_permission_why_title">Pourquoi Nous en Avons Besoin</string>
-    <string name="audio_permission_why_desc">Les thèmes répondent à la musique des applications externes (Spotify, YouTube). Android nécessite une autorisation audio pour l\'analyse de fréquence.</string>
-    <string name="audio_permission_privacy_title">Votre Confidentialité</string>
-    <string name="audio_permission_privacy_desc">Les données audio sont analysées en temps réel UNIQUEMENT pour l\'animation des thèmes. Nous n\'enregistrons, ne stockons ni ne partageons AUCUNE donnée audio.</string>
-    <string name="audio_permission_technical_title">Détails Techniques</string>
-    <string name="audio_permission_technical_desc">Nous utilisons l\'API Visualizer officielle d\'Android. L\'audio est traité localement sur votre appareil et immédiatement écarté.</string>
+    <string name="audio_permission_why_desc">Les thï¿½mes rï¿½pondent ï¿½ la musique des applications externes (Spotify, YouTube). Android nï¿½cessite une autorisation audio pour l\'analyse de frï¿½quence.</string>
+    <string name="audio_permission_privacy_title">Votre Confidentialitï¿½</string>
+    <string name="audio_permission_privacy_desc">Les donnï¿½es audio sont analysï¿½es en temps rï¿½el UNIQUEMENT pour l\'animation des thï¿½mes. Nous n\'enregistrons, ne stockons ni ne partageons AUCUNE donnï¿½e audio.</string>
+    <string name="audio_permission_technical_title">Dï¿½tails Techniques</string>
+    <string name="audio_permission_technical_desc">Nous utilisons l\'API Visualizer officielle d\'Android. L\'audio est traitï¿½ localement sur votre appareil et immï¿½diatement ï¿½cartï¿½.</string>
     <string name="audio_permission_accept">J\'Accepte</string>
     <string name="audio_permission_deny">Non Merci</string>
-    <string name="audio_permission_footer">Vous pouvez modifier cette autorisation à tout moment dans les Paramètres</string>
+    <string name="audio_permission_footer">Vous pouvez modifier cette autorisation ï¿½ tout moment dans les Paramï¿½tres</string>
     
-    <string name="theme_neon_dark">Néon Sombre</string>
-    <string name="theme_ocean_blue">Bleu Océan</string>
+    <string name="theme_neon_dark">Nï¿½on Sombre</string>
+    <string name="theme_ocean_blue">Bleu Ocï¿½an</string>
     <string name="theme_sunset_orange">Orange Coucher de Soleil</string>
-    <string name="theme_forest_green">Vert Forêt</string>
+    <string name="theme_forest_green">Vert Forï¿½t</string>
     <string name="theme_royal_purple">Violet Royal</string>
     <string name="color_cyan">Cyan</string>
     <string name="color_pink">Rose</string>
@@ -49,99 +49,99 @@
     <string name="color_green">Vert</string>
     <string name="color_purple">Violet</string>
     <string name="notification_title">Amplification Sonore Active</string>
-    <string name="notification_text">Volume : %1$d%% • Basses : %2$d%%</string>
+    <string name="notification_text">Volume : %1$d%% ï¿½ Basses : %2$d%%</string>
     <string name="language">Langue</string>
-    <string name="language_system">Automatique (Système)</string>
+    <string name="language_system">Automatique (Systï¿½me)</string>
     <string name="language_english">English</string>
-    <string name="language_turkish">Türkçe</string>
+    <string name="language_turkish">Tï¿½rkï¿½e</string>
     <string name="language_german">Deutsch</string>
-    <string name="language_spanish">Español</string>
-    <string name="language_french">Français</string>
+    <string name="language_spanish">Espaï¿½ol</string>
+    <string name="language_french">Franï¿½ais</string>
     <string name="language_russian">???????</string>
     <string name="language_chinese">??</string>
     <string name="language_japanese">???</string>
     <string name="language_korean">???</string>
     <string name="language_arabic">???????</string>
-    <string name="tap_to_start">Double-tapez au centre pour démarrer</string>
+    <string name="tap_to_start">Double-tapez au centre pour dï¿½marrer</string>
     <string name="drag_to_adjust">Glissez pour ajuster le volume</string>
-    <string name="theme_customization">Personnalisation du Thème</string>
+    <string name="theme_customization">Personnalisation du Thï¿½me</string>
     <string name="language_info_title">?? Changement de Langue</string>
-    <string name="language_info_desc">L\'application se mettra automatiquement à jour pour afficher le contenu dans la langue sélectionnée.</string>
-    <string name="language_system_desc">Détecte automatiquement la langue de votre appareil</string>
+    <string name="language_info_desc">L\'application se mettra automatiquement ï¿½ jour pour afficher le contenu dans la langue sï¿½lectionnï¿½e.</string>
+    <string name="language_system_desc">Dï¿½tecte automatiquement la langue de votre appareil</string>
     <string name="status_active">ACTIF</string>
     <string name="status_double_tap">DOUBLE TAP</string>
     <string name="instruction_drag">Glissez vers le haut/bas pour ajuster</string>
-    <string name="instruction_double_tap">Double-tapez pour démarrer</string>
+    <string name="instruction_double_tap">Double-tapez pour dï¿½marrer</string>
     <string name="welcome_title">Bienvenue !</string>
     <string name="instruction_1_title">Double Tap</string>
-    <string name="instruction_1_desc">Double-tapez sur le contrôle central pour démarrer l\'amplificateur de volume</string>
+    <string name="instruction_1_desc">Double-tapez sur le contrï¿½le central pour dï¿½marrer l\'amplificateur de volume</string>
     <string name="instruction_2_title">Glisser &amp; Ajuster</string>
-    <string name="instruction_2_desc">Déplacez votre doigt en mouvement circulaire ou glissez vers le haut/bas pour ajuster le niveau de volume</string>
-    <string name="instruction_3_title">Choisir un Thème</string>
-    <string name="instruction_3_desc">Sélectionnez différents thèmes parmi les boutons ronds ci-dessus pour changer l\'apparence</string>
+    <string name="instruction_2_desc">Dï¿½placez votre doigt en mouvement circulaire ou glissez vers le haut/bas pour ajuster le niveau de volume</string>
+    <string name="instruction_3_title">Choisir un Thï¿½me</string>
+    <string name="instruction_3_desc">Sï¿½lectionnez diffï¿½rents thï¿½mes parmi les boutons ronds ci-dessus pour changer l\'apparence</string>
     <string name="got_it">Compris !</string>
     <string name="training_welcome_title">Bienvenue !</string>
     <string name="training_welcome_desc">Laissez-nous vous montrer comment utiliser Sound\'ST Boost</string>
-    <string name="training_start">Commençons</string>
-    <string name="training_double_tap_title">Étape 1 : Double Tap</string>
-    <string name="training_double_tap_desc">DOUBLE-TAPEZ sur le grand contrôle central pour activer l\'amplificateur de volume</string>
+    <string name="training_start">Commenï¿½ons</string>
+    <string name="training_double_tap_title">ï¿½tape 1 : Double Tap</string>
+    <string name="training_double_tap_desc">DOUBLE-TAPEZ sur le grand contrï¿½le central pour activer l\'amplificateur de volume</string>
     <string name="training_understood">Compris</string>
     <string name="training_waiting_double_tap">Maintenant double-tapez...</string>
-    <string name="training_drag_title">Étape 2 : Glisser</string>
-    <string name="training_drag_desc">Déplacez votre doigt en mouvement circulaire ou vers le haut/bas pour ajuster le niveau de volume</string>
+    <string name="training_drag_title">ï¿½tape 2 : Glisser</string>
+    <string name="training_drag_desc">Dï¿½placez votre doigt en mouvement circulaire ou vers le haut/bas pour ajuster le niveau de volume</string>
     <string name="training_try_it">Essayez-le</string>
     <string name="training_drag_to_continue">Maintenant glissez pour ajuster...</string>
-    <string name="training_theme_title">Étape 3 : Thèmes</string>
-    <string name="training_theme_desc">Vous pouvez sélectionner différents thèmes parmi les boutons ronds ci-dessus</string>
-    <string name="training_finish">Terminé !</string>
+    <string name="training_theme_title">ï¿½tape 3 : Thï¿½mes</string>
+    <string name="training_theme_desc">Vous pouvez sï¿½lectionner diffï¿½rents thï¿½mes parmi les boutons ronds ci-dessus</string>
+    <string name="training_finish">Terminï¿½ !</string>
     
     <!-- Help & FAQ -->
     <string name="help_and_faq">Aide &amp; FAQ</string>
     <string name="faq_how_to_use">Comment utiliser l\'application ?</string>
     <string name="faq_how_to_use_answer">Double-tapez sur le cadran central pour activer l\'amplificateur de volume. Glissez vers le haut/bas ou en mouvement circulaire pour ajuster le niveau de volume. Utilisez les curseurs pour l\'amplification des graves et les effets 3D.</string>
     <string name="faq_not_working">Pourquoi le boost ne fonctionne-t-il pas ?</string>
-    <string name="faq_not_working_answer">Le support des effets audio varie selon l\'appareil. Certains fabricants limitent les capacités des effets audio. Essayez différents niveaux de boost et assurez-vous que le volume de votre appareil n\'est pas à zéro.</string>
-    <string name="faq_background_work">Fonctionne-t-il en arrière-plan ?</string>
-    <string name="faq_background_work_answer">Oui ! Une fois activé, le boost continue de fonctionner même lorsque vous passez à d\'autres applications ou verrouillez votre écran. Vous verrez une notification pendant qu\'il est actif.</string>
+    <string name="faq_not_working_answer">Le support des effets audio varie selon l\'appareil. Certains fabricants limitent les capacitï¿½s des effets audio. Essayez diffï¿½rents niveaux de boost et assurez-vous que le volume de votre appareil n\'est pas ï¿½ zï¿½ro.</string>
+    <string name="faq_background_work">Fonctionne-t-il en arriï¿½re-plan ?</string>
+    <string name="faq_background_work_answer">Oui ! Une fois activï¿½, le boost continue de fonctionner mï¿½me lorsque vous passez ï¿½ d\'autres applications ou verrouillez votre ï¿½cran. Vous verrez une notification pendant qu\'il est actif.</string>
     <string name="faq_battery">Est-ce qu\'il vide la batterie ?</string>
     <string name="faq_battery_answer">L\'application utilise une puissance de batterie minimale. Elle fonctionne comme un service de premier plan efficace et ne traite l\'audio que lorsque le boost est actif.</string>
     <string name="faq_audio_quality">Va-t-il endommager mes haut-parleurs ?</string>
-    <string name="faq_audio_quality_answer">L\'application est conçue avec des limites de sécurité. Cependant, une utilisation prolongée à des niveaux maximaux peut stresser les haut-parleurs. Nous recommandons d\'utiliser des niveaux de boost modérés pour une écoute prolongée.</string>
+    <string name="faq_audio_quality_answer">L\'application est conï¿½ue avec des limites de sï¿½curitï¿½. Cependant, une utilisation prolongï¿½e ï¿½ des niveaux maximaux peut stresser les haut-parleurs. Nous recommandons d\'utiliser des niveaux de boost modï¿½rï¿½s pour une ï¿½coute prolongï¿½e.</string>
     <string name="faq_device_support">Quels appareils sont pris en charge ?</string>
-    <string name="faq_device_support_answer">Tous les appareils Android 7.0+ sont pris en charge. L\'intensité des effets peut varier en fonction du matériel de l\'appareil et des implémentations audio du fabricant.</string>
+    <string name="faq_device_support_answer">Tous les appareils Android 7.0+ sont pris en charge. L\'intensitï¿½ des effets peut varier en fonction du matï¿½riel de l\'appareil et des implï¿½mentations audio du fabricant.</string>
     
     <!-- Rate App -->
-    <string name="rate_your_app">Évaluez Votre Application</string>
-    <string name="rate_app_title">Vous appréciez Sound\'ST Boost ?</string>
+    <string name="rate_your_app">ï¿½valuez Votre Application</string>
+    <string name="rate_app_title">Vous apprï¿½ciez Sound\'ST Boost ?</string>
     <string name="rate_app_description">Votre soutien signifie tout pour nous</string>
-    <string name="rate_app_message">Votre évaluation nous aide à atteindre plus d\'utilisateurs et nous motive à ajouter de nouvelles fonctionnalités ! ?</string>
-    <string name="rate">Évaluer</string>
+    <string name="rate_app_message">Votre ï¿½valuation nous aide ï¿½ atteindre plus d\'utilisateurs et nous motive ï¿½ ajouter de nouvelles fonctionnalitï¿½s ! ?</string>
+    <string name="rate">ï¿½valuer</string>
     <string name="later">Plus tard</string>
-    <string name="rate_now">Évaluer maintenant</string>
-    <string name="maybe_later">Peut-être plus tard</string>
+    <string name="rate_now">ï¿½valuer maintenant</string>
+    <string name="maybe_later">Peut-ï¿½tre plus tard</string>
     
     <!-- Share App -->
     <string name="share_app">Partager l\'Application</string>
     <string name="share_app_title">Partagez avec vos Amis !</string>
-    <string name="share_app_message">Aidez vos amis à améliorer leur expérience audio aussi !</string>
+    <string name="share_app_message">Aidez vos amis ï¿½ amï¿½liorer leur expï¿½rience audio aussi !</string>
     <string name="share_now">Partager maintenant</string>
-    <string name="share_text">Découvrez Sound\'ST Boost - la meilleure application d\'amplificateur de volume ! ????\n\n%1$s</string>
+    <string name="share_text">Dï¿½couvrez Sound\'ST Boost - la meilleure application d\'amplificateur de volume ! ????\n\n%1$s</string>
     <string name="share_via">Partager via</string>
     <string name="cancel">Annuler</string>
-    <string name="rate_app_desc">Soutenez-nous avec 5 étoiles ?</string>
-    <string name="share_app_desc">Parlez-nous à vos amis</string>
+    <string name="rate_app_desc">Soutenez-nous avec 5 ï¿½toiles ?</string>
+    <string name="share_app_desc">Parlez-nous ï¿½ vos amis</string>
     
     <!-- Theme Names -->
-    <string name="theme_system">Système (Auto)</string>
-    <string name="theme_neon_light">Néon Clair</string>
-    <string name="themes_label">THÈMES</string>
+    <string name="theme_system">Systï¿½me (Auto)</string>
+    <string name="theme_neon_light">Nï¿½on Clair</string>
+    <string name="themes_label">THï¿½MES</string>
     
     <!-- Theme Display Names -->
     <string name="theme_water">Eau</string>
-    <string name="theme_forest">Forêt</string>
+    <string name="theme_forest">Forï¿½t</string>
     <string name="theme_sun">Soleil</string>
     <string name="theme_royal">Royal</string>
-    <string name="theme_neon">Néon</string>
+    <string name="theme_neon">Nï¿½on</string>
     <string name="theme_midnight">Minuit</string>
     <string name="theme_coral">Corail</string>
     <string name="theme_ice">Glace</string>
@@ -157,13 +157,13 @@
     <string name="preset_200_max">200% MAX</string>
     
     <!-- Accessibility -->
-    <string name="accessibility_features">Fonctionnalités d\'Accessibilité</string>
+    <string name="accessibility_features">Fonctionnalitï¿½s d\'Accessibilitï¿½</string>
     <string name="visual_feedback">Retour Visuel</string>
-    <string name="visual_feedback_desc">Indicateurs visuels améliorés pour les changements audio</string>
+    <string name="visual_feedback_desc">Indicateurs visuels amï¿½liorï¿½s pour les changements audio</string>
     <string name="haptic_feedback">Retour Haptique</string>
-    <string name="haptic_feedback_desc">Vibration lors de l\'ajustement des contrôles</string>
-    <string name="high_contrast">Mode Contraste Élevé</string>
-    <string name="high_contrast_desc">Visibilité améliorée pour une meilleure lisibilité</string>
+    <string name="haptic_feedback_desc">Vibration lors de l\'ajustement des contrï¿½les</string>
+    <string name="high_contrast">Mode Contraste ï¿½levï¿½</string>
+    <string name="high_contrast_desc">Visibilitï¿½ amï¿½liorï¿½e pour une meilleure lisibilitï¿½</string>
 
     <!-- Am?lioration des appels -->
     <string name="call_enhancement_title">AM?LIORATION DES APPELS</string>
@@ -171,32 +171,32 @@
     <string name="call_enhancement_noise_suppression">Suppression du bruit</string>
     <string name="call_enhancement_auto_gain">Gain automatique</string>
 
-    <!-- Optimisation de la Batterie (Google Play sécurisé) -->
+    <!-- Optimisation de la Batterie (Google Play sï¿½curisï¿½) -->
     <string name="battery_optimization">Optimisation de la Batterie</string>
-    <string name="battery_optimization_desc">Recommandé pour les appareils Xiaomi, Samsung, OnePlus pour éviter l\'interruption du service en arrière-plan</string>
+    <string name="battery_optimization_desc">Recommandï¿½ pour les appareils Xiaomi, Samsung, OnePlus pour ï¿½viter l\'interruption du service en arriï¿½re-plan</string>
     
     <!-- Dialogue d\'Optimisation de la Batterie -->
     <string name="battery_dialog_title">? Configuration de l\'Optimisation de la Batterie</string>
-    <string name="battery_dialog_subtitle">Garder Sound Boost actif en arrière-plan</string>
-    <string name="battery_dialog_desc">Certains appareils (Xiaomi, Samsung, OnePlus, Huawei) ferment agressivement les applications en arrière-plan pour économiser la batterie. Pour garder le boost audio actif lorsque votre écran est éteint, vous devez désactiver l\'optimisation de la batterie.</string>
-    <string name="battery_dialog_step1_title">Étape 1: Ouvrir les Paramètres</string>
-    <string name="battery_dialog_step1_desc">Appuyez sur le bouton ci-dessous pour ouvrir les paramètres d\'optimisation de la batterie</string>
-    <string name="battery_dialog_step2_title">Étape 2: Trouver Sound\'ST Boost</string>
+    <string name="battery_dialog_subtitle">Garder Sound Boost actif en arriï¿½re-plan</string>
+    <string name="battery_dialog_desc">Certains appareils (Xiaomi, Samsung, OnePlus, Huawei) ferment agressivement les applications en arriï¿½re-plan pour ï¿½conomiser la batterie. Pour garder le boost audio actif lorsque votre ï¿½cran est ï¿½teint, vous devez dï¿½sactiver l\'optimisation de la batterie.</string>
+    <string name="battery_dialog_step1_title">ï¿½tape 1: Ouvrir les Paramï¿½tres</string>
+    <string name="battery_dialog_step1_desc">Appuyez sur le bouton ci-dessous pour ouvrir les paramï¿½tres d\'optimisation de la batterie</string>
+    <string name="battery_dialog_step2_title">ï¿½tape 2: Trouver Sound\'ST Boost</string>
     <string name="battery_dialog_step2_desc">Parcourez la liste des applications et trouvez "Sound\'ST Boost" ou recherchez-la</string>
-    <string name="battery_dialog_step3_title">Étape 3: Désactiver l\'Optimisation</string>
-    <string name="battery_dialog_step3_desc">Appuyez sur l\'application et sélectionnez "Ne pas optimiser" ou "Autoriser"</string>
-    <string name="battery_dialog_open_settings">Ouvrir les Paramètres</string>
-    <string name="battery_dialog_cancel">Peut-être Plus Tard</string>
-    <string name="battery_dialog_device_specific">Conseils spécifiques à l\'appareil:</string>
-    <string name="battery_dialog_tip_xiaomi">Xiaomi: Activez également "Démarrage automatique" dans Paramètres › Applications › Gérer les applications › Sound\'ST Boost</string>
-    <string name="battery_dialog_tip_samsung">Samsung: Supprimez de "Applications en veille" dans Paramètres › Batterie › Limites d\'utilisation en arrière-plan</string>
-    <string name="battery_dialog_tip_oneplus">OnePlus: Activez "Autoriser l\'activité en arrière-plan" dans Informations sur l\'application › Batterie</string>
-    <string name="battery_dialog_tip_huawei">Huawei: Activez "Lancement manuel" dans Gestionnaire de téléphone › Lancement d\'application</string>
+    <string name="battery_dialog_step3_title">ï¿½tape 3: Dï¿½sactiver l\'Optimisation</string>
+    <string name="battery_dialog_step3_desc">Appuyez sur l\'application et sï¿½lectionnez "Ne pas optimiser" ou "Autoriser"</string>
+    <string name="battery_dialog_open_settings">Ouvrir les Paramï¿½tres</string>
+    <string name="battery_dialog_cancel">Peut-ï¿½tre Plus Tard</string>
+    <string name="battery_dialog_device_specific">Conseils spï¿½cifiques ï¿½ l\'appareil:</string>
+    <string name="battery_dialog_tip_xiaomi">Xiaomi: Activez ï¿½galement "Dï¿½marrage automatique" dans Paramï¿½tres ï¿½ Applications ï¿½ Gï¿½rer les applications ï¿½ Sound\'ST Boost</string>
+    <string name="battery_dialog_tip_samsung">Samsung: Supprimez de "Applications en veille" dans Paramï¿½tres ï¿½ Batterie ï¿½ Limites d\'utilisation en arriï¿½re-plan</string>
+    <string name="battery_dialog_tip_oneplus">OnePlus: Activez "Autoriser l\'activitï¿½ en arriï¿½re-plan" dans Informations sur l\'application ï¿½ Batterie</string>
+    <string name="battery_dialog_tip_huawei">Huawei: Activez "Lancement manuel" dans Gestionnaire de tï¿½lï¿½phone ï¿½ Lancement d\'application</string>
     
     <!-- Battery Optimization Onboarding -->
     <string name="battery_onboarding_title">? Son Ininterrompu</string>
-    <string name="battery_onboarding_subtitle">Recommandé pour l\'arrière-plan</string>
-    <string name="battery_onboarding_chip1">?? Fonctionne écran éteint</string>
+    <string name="battery_onboarding_subtitle">Recommandï¿½ pour l\'arriï¿½re-plan</string>
+    <string name="battery_onboarding_chip1">?? Fonctionne ï¿½cran ï¿½teint</string>
     <string name="battery_onboarding_chip2">? Performance plus stable</string>
     <string name="battery_onboarding_dismiss">Compris</string>
     <string name="battery_onboarding_setup">Configurer</string>
@@ -204,53 +204,53 @@
     
     <string name="language_italian">Italien</string>
     
-    <!-- Party Mode / Flash-Sync (v1.5.0) - Français -->
-    <string name="party_mode_title">Mode Fête</string>
-    <string name="party_mode_subtitle">Synchronisez tous les téléphones sur le même Wi-Fi pour flasher ensemble</string>
-    <string name="party_mode_host_title">Créer une Salle</string>
-    <string name="party_mode_host_desc">Vous devenez l\'hôte, d\'autres appareils se connectent à vous et vous déclenchez toutes les commandes flash</string>
-    <string name="party_mode_be_host">Être Hôte</string>
+    <!-- Party Mode / Flash-Sync (v1.5.0) - Franï¿½ais -->
+    <string name="party_mode_title">Mode Fï¿½te</string>
+    <string name="party_mode_subtitle">Synchronisez tous les tï¿½lï¿½phones sur le mï¿½me Wi-Fi pour flasher ensemble</string>
+    <string name="party_mode_host_title">Crï¿½er une Salle</string>
+    <string name="party_mode_host_desc">Vous devenez l\'hï¿½te, d\'autres appareils se connectent ï¿½ vous et vous dï¿½clenchez toutes les commandes flash</string>
+    <string name="party_mode_be_host">ï¿½tre Hï¿½te</string>
     <string name="party_mode_join_title">Rejoindre une Salle</string>
-    <string name="party_mode_join_desc">Se connecter à un hôte sur le même réseau</string>
+    <string name="party_mode_join_desc">Se connecter ï¿½ un hï¿½te sur le mï¿½me rï¿½seau</string>
     <string name="party_mode_scan_rooms">Rechercher des Salles</string>
     <string name="party_mode_room_name">Nom de la Salle</string>
-    <string name="party_mode_start_room">Démarrer la Salle</string>
+    <string name="party_mode_start_room">Dï¿½marrer la Salle</string>
     <string name="party_mode_room_active">La salle est active - d\'autres peuvent rejoindre maintenant</string>
-    <string name="party_mode_boost_auto_started">Service d\'amplification démarré automatiquement</string>
+    <string name="party_mode_boost_auto_started">Service d\'amplification dï¿½marrï¿½ automatiquement</string>
     <string name="party_mode_device_name_optional">Nom de l\'Appareil (facultatif)</string>
-    <string name="party_mode_scanning">Recherche de salles…</string>
-    <string name="party_mode_rooms_found">%1$d salle(s) trouvée(s)</string>
+    <string name="party_mode_scanning">Recherche de sallesï¿½</string>
+    <string name="party_mode_rooms_found">%1$d salle(s) trouvï¿½e(s)</string>
     <string name="party_mode_join">Rejoindre</string>
-    <string name="party_mode_hosting">Hébergement</string>
-    <string name="party_mode_connected">Connecté</string>
-    <string name="party_mode_connected_devices">Appareils Connectés</string>
+    <string name="party_mode_hosting">Hï¿½bergement</string>
+    <string name="party_mode_connected">Connectï¿½</string>
+    <string name="party_mode_connected_devices">Appareils Connectï¿½s</string>
 
 <string name="party_mode_torch">Flash Physique</string>
-    <string name="party_mode_torch_desc">Utiliser le flash de la caméra (facultatif)</string>
+    <string name="party_mode_torch_desc">Utiliser le flash de la camï¿½ra (facultatif)</string>
     <string name="party_mode_flash_mode">Mode Flash</string>
-    <string name="party_mode_screen_only">Écran</string>
+    <string name="party_mode_screen_only">ï¿½cran</string>
     <string name="party_mode_torch_only">Flash</string>
     <string name="party_mode_both">Les Deux</string>
     <string name="party_mode_flash_color">Couleur du Flash</string>
-    <string name="party_mode_duration">Durée</string>
-    <string name="party_mode_repeat">Répéter</string>
-    <string name="party_mode_trigger_flash">DÉCLENCHER LE FLASH</string>
-    <string name="party_mode_waiting_for_host">En attente de la commande de l\'hôte…</string>
-    <string name="party_mode_active">Mode Fête Actif - %1$s</string>
+    <string name="party_mode_duration">Durï¿½e</string>
+    <string name="party_mode_repeat">Rï¿½pï¿½ter</string>
+    <string name="party_mode_trigger_flash">Dï¿½CLENCHER LE FLASH</string>
+    <string name="party_mode_waiting_for_host">En attente de la commande de l\'hï¿½teï¿½</string>
+    <string name="party_mode_active">Mode Fï¿½te Actif - %1$s</string>
     <string name="party_mode_waiting">En attente d\'appareils</string>
-    <string name="party_mode_one_device">1 appareil connecté</string>
-    <string name="party_mode_n_devices">%1$d appareils connectés</string>
-    <string name="party_mode_channel_name">Mode Fête</string>
-    <string name="party_mode_channel_desc">Notification affichée lorsque le mode fête de synchronisation de flash est actif</string>
-    <string name="party_mode_disconnected_title">Déconnecté de la Salle</string>
-    <string name="party_mode_disconnection_reason">Raison de la Déconnexion:</string>
-    <string name="party_mode_diagnostic_copied">Informations de diagnostic copiées dans le presse-papiers</string>
+    <string name="party_mode_one_device">1 appareil connectï¿½</string>
+    <string name="party_mode_n_devices">%1$d appareils connectï¿½s</string>
+    <string name="party_mode_channel_name">Mode Fï¿½te</string>
+    <string name="party_mode_channel_desc">Notification affichï¿½e lorsque le mode fï¿½te de synchronisation de flash est actif</string>
+    <string name="party_mode_disconnected_title">Dï¿½connectï¿½ de la Salle</string>
+    <string name="party_mode_disconnection_reason">Raison de la Dï¿½connexion:</string>
+    <string name="party_mode_diagnostic_copied">Informations de diagnostic copiï¿½es dans le presse-papiers</string>
     <string name="party_mode_copy_diagnostic">Copier les informations de diagnostic</string>
-    <string name="party_mode_disconnection_hint">Appuyez sur la boîte ci-dessus pour copier les informations de diagnostic</string>
+    <string name="party_mode_disconnection_hint">Appuyez sur la boï¿½te ci-dessus pour copier les informations de diagnostic</string>
 
     <!-- Flash Warning (Epilepsy / Photosensitivity) -->
-    <string name="flash_warning_title">Avertissement de photosensibilité</string>
-    <string name="flash_warning_message">Cette fonction utilise des lumières clignotantes rapides qui peuvent déclencher des crises chez les personnes atteintes d'épilepsie photosensible.\n\nNe l'utilisez pas si vous êtes sensible aux lumières clignotantes.</string>
+    <string name="flash_warning_title">Avertissement de photosensibilitÃ©</string>
+    <string name="flash_warning_message">Cette fonction utilise des lumiÃ¨res clignotantes rapides qui peuvent dÃ©clencher des crises chez les personnes atteintes d\'Ã©pilepsie photosensible.\n\nNe l\'utilisez pas si vous Ãªtes sensible aux lumiÃ¨res clignotantes.</string>
     <string name="flash_warning_accept">Je comprends</string>
     <string name="flash_warning_cancel">Annuler</string>
 </resources>
