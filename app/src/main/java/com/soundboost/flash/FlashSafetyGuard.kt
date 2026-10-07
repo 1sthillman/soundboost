@@ -27,6 +27,7 @@ object FlashSafetyGuard {
      * Check if torch ON operation is allowed.
      * NEVER call this for torch OFF operations.
      */
+    @Synchronized
     fun canTurnOnTorch(preferences: SyncPreferences): Boolean {
         // Check 1: User must accept warning
         val accepted = hasAcceptedWarningCache ?: runBlocking {
