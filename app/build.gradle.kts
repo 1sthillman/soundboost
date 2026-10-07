@@ -33,7 +33,7 @@ android {
         applicationId = "com.soundboost"
         minSdk = 24
         targetSdk = 36
-        versionCode = 38
+        versionCode = 39
         versionName = "1.5.0"
         
         setProperty("archivesBaseName", "SoundSTBoost-v$versionName")
