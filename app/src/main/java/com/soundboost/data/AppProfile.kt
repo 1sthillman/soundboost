@@ -134,7 +134,6 @@ class AppProfileManager(private val context: Context) {
             .mapNotNull { resolveInfo ->
                 val app = resolveInfo.activityInfo.applicationInfo
                 try {
-                try {
                     AppInfo(
                         packageName = app.packageName,
                         appName = app.loadLabel(pm).toString(),
