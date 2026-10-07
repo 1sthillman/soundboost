@@ -9,6 +9,7 @@ import com.soundboost.audio.BassFlashlightSync
 import com.soundboost.audio.RealTimeAudioAnalyzer
 import com.soundboost.data.BoostPreferences
 import com.soundboost.data.BoostSettings
+import com.soundboost.data.SyncPreferences
 import com.soundboost.service.BoostForegroundService
 import com.soundboost.ui.theme.AppTheme
 import com.soundboost.ui.theme.ColorAccent
@@ -19,11 +20,12 @@ import kotlinx.coroutines.launch
 class MainViewModel(application: Application) : AndroidViewModel(application) {
     
     private val prefs = BoostPreferences(application)
+    private val syncPrefs = SyncPreferences(application)
     private val audioAnalyzer = RealTimeAudioAnalyzer()
     private var analysisJob: Job? = null
     
     // Flash özelliği
-    private val bassFlashSync = BassFlashlightSync(application, boostPreferences)
+    private val bassFlashSync = BassFlashlightSync(application, syncPrefs)
     val isFlashEnabled = bassFlashSync.isEnabled
     val flashIntensity = bassFlashSync.intensity
     val flashBassLevel = bassFlashSync.bassLevel
