@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalView
@@ -47,7 +48,7 @@ fun ScreenFlashOverlay(
     }
     
     // EPILEPSY SAFETY: Track last screen flash time
-    val lastScreenFlashTime = remember { mutableStateOf(0L) }
+    val lastScreenFlashTime = remember { mutableLongStateOf(0L) }
     
     val view = LocalView.current
     val window = (view.context as? android.app.Activity)?.window
