@@ -45,6 +45,10 @@ class CallAudioEnhancer {
      * Call this when app starts to check support
      */
     fun initialize(): Boolean {
+        // PRIVACY: Feature disabled in release builds
+        Log.w(TAG, "⚠️ Call enhancement initialization disabled - feature not available")
+        return false
+        
         try {
             // Check if we can create AudioRecord for VOICE_COMMUNICATION
             val minBufferSize = AudioRecord.getMinBufferSize(
