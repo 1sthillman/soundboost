@@ -30,6 +30,7 @@ import kotlinx.coroutines.launch
  * - Instant full brightness (no fade-in)
  * - Color visibility optimized
  * - Guaranteed top-level rendering with Dialog
+ * - EPILEPSY SAFETY: 333ms minimum interval between screen flashes
  */
 @Composable
 fun ScreenFlashOverlay(
@@ -45,6 +46,9 @@ fun ScreenFlashOverlay(
         }.getOrDefault(Color.White)
     }
     
+    // EPILEPSY SAFETY: Track last screen flash time
+    val lastScreenFlashTime = remember { mutableStateOf(0L) }
+    
     val view = LocalView.current
     val window = (view.context as? android.app.Activity)?.window
 
@@ -54,6 +58,15 @@ fun ScreenFlashOverlay(
         // CRITICAL: Block flash if warning not accepted (epilepsy safety)
         if (!hasAcceptedWarning) {
             android.util.Log.w("ScreenFlashOverlay", "⚠️ Flash blocked - warning not accepted")
+            onFlashConsumed()
+            return@LaunchedEffect
+        }
+        
+        // CRITICAL: Block screen flash if too soon after last one (epilepsy safety)
+        val now = System.currentTimeMillis()
+        val timeSinceLastFlash = now - lastScreenFlashTime.value
+        if (timeSinceLastFlash < MIN_SCREEN_FLASH_INTERVAL_MS && lastScreenFlashTime.value > 0) {
+            android.util.Log.w("ScreenFlashOverlay", "⚠️ Screen flash blocked - too fast (${timeSinceLastFlash}ms < ${MIN_SCREEN_FLASH_INTERVAL_MS}ms)")
             onFlashConsumed()
             return@LaunchedEffect
         }
@@ -75,6 +88,9 @@ fun ScreenFlashOverlay(
 
             // CRITICAL: Only show screen flash if mode includes SCREEN
             if (flash.mode == FlashMode.SCREEN_ONLY || flash.mode == FlashMode.SCREEN_AND_TORCH) {
+                // Update last flash timestamp BEFORE starting animation
+                lastScreenFlashTime.value = System.currentTimeMillis()
+                
                 repeat(flash.repeatCount) { index ->
                     // INSTANT full brightness - no fade-in!
                     alpha.snapTo(1f)
@@ -130,4 +146,5 @@ fun ScreenFlashOverlay(
 }
 
 private const val FLASH_FADE_MS = 50
+private const val MIN_SCREEN_FLASH_INTERVAL_MS = 333L  // EPILEPSY SAFETY: minimum 333ms between screen flashes
 
