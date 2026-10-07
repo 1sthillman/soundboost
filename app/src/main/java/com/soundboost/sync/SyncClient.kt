@@ -108,7 +108,7 @@ class SyncClient {
                     httpClient = HttpClient(CIO) { 
                         install(WebSockets) {
                             pingInterval = 15000  // Keepalive every 15s
-                            maxFrameSize = Long.MAX_VALUE
+                            maxFrameSize = 1024 * 1024  // 1MB (DoS protection)
                         }
                         // CRITICAL: Add timeouts
                         engine {
