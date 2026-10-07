@@ -308,11 +308,29 @@ class SyncClient {
                 }
             }
             is SyncMessage.Flash -> {
-                android.util.Log.d("SyncClient", "⚡⚡⚡ FLASH EVENT received: startAt=${message.startAt}, mode=${message.mode}, color=${message.color}")
+                // SECURITY: Validate flash parameters (epilepsy safety)
+                val safeDuration = message.durationMs.coerceIn(10, 1000)
+                val safeRepeat = message.repeatCount.coerceIn(1, 20)
+                val safeInterval = message.intervalMs.coerceAtLeast(333)
+                
+                if (safeDuration != message.durationMs || safeRepeat != message.repeatCount || safeInterval != message.intervalMs) {
+                    android.util.Log.w("SyncClient", "⚠️ Flash parameters clamped for safety:")
+                    android.util.Log.w("SyncClient", "   duration: ${message.durationMs} → $safeDuration")
+                    android.util.Log.w("SyncClient", "   repeat: ${message.repeatCount} → $safeRepeat")
+                    android.util.Log.w("SyncClient", "   interval: ${message.intervalMs} → $safeInterval")
+                }
+                
+                val safeMessage = message.copy(
+                    durationMs = safeDuration,
+                    repeatCount = safeRepeat,
+                    intervalMs = safeInterval
+                )
+                
+                android.util.Log.d("SyncClient", "⚡⚡⚡ FLASH EVENT received: startAt=${safeMessage.startAt}, mode=${safeMessage.mode}, color=${safeMessage.color}")
                 // CRITICAL: NEVER use tryEmit - it can drop events!
                 // Use emit() in a coroutine to GUARANTEE delivery
                 scope.launch(SupervisorJob()) {
-                    _flashEvents.emit(message)  // GUARANTEED delivery, will suspend if buffer full
+                    _flashEvents.emit(safeMessage)  // GUARANTEED delivery, will suspend if buffer full
                     android.util.Log.d("SyncClient", "✅ Flash event emitted (guaranteed)")
                 }
             }

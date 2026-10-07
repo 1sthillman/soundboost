@@ -250,49 +250,6 @@
         </intent>
     </shortcut>
     
-    <!-- CALL ENHANCEMENT SHORTCUTS -->
-    <shortcut
-        android:shortcutId="call_enhancement_on"
-        android:enabled="true"
-        android:icon="@drawable/ic_notification"
-        android:shortcutShortLabel="@string/shortcut_call_enhancement_on"
-        android:shortcutLongLabel="@string/shortcut_call_enhancement_on_long">
-        <intent
-            android:action="android.intent.action.MAIN"
-            android:targetPackage="com.soundboost"
-            android:targetClass="com.soundboost.MainActivity">
-            <extra android:name="shortcut_action" android:value="call_enhancement_on" />
-        </intent>
-    </shortcut>
-    
-    <shortcut
-        android:shortcutId="call_enhancement_off"
-        android:enabled="true"
-        android:icon="@drawable/ic_notification"
-        android:shortcutShortLabel="@string/shortcut_call_enhancement_off"
-        android:shortcutLongLabel="@string/shortcut_call_enhancement_off_long">
-        <intent
-            android:action="android.intent.action.MAIN"
-            android:targetPackage="com.soundboost"
-            android:targetClass="com.soundboost.MainActivity">
-            <extra android:name="shortcut_action" android:value="call_enhancement_off" />
-        </intent>
-    </shortcut>
-    
-    <shortcut
-        android:shortcutId="toggle_call_enhancement"
-        android:enabled="true"
-        android:icon="@drawable/ic_notification"
-        android:shortcutShortLabel="@string/shortcut_call_enhancement_toggle"
-        android:shortcutLongLabel="@string/shortcut_call_enhancement_toggle_long">
-        <intent
-            android:action="android.intent.action.MAIN"
-            android:targetPackage="com.soundboost"
-            android:targetClass="com.soundboost.MainActivity">
-            <extra android:name="shortcut_action" android:value="toggle_call_enhancement" />
-        </intent>
-    </shortcut>
-    
     <!-- EQUALIZER PRESET SHORTCUTS -->
     <shortcut
         android:shortcutId="preset_flat"

@@ -44,6 +44,7 @@ data class BoostSettings(
     
     val vocalMusicBalance: Float = 0.5f,  // 0.0 = music only, 0.5 = balanced, 1.0 = vocal only
     val isCallEnhancementEnabled: Boolean = false,  // Voice call noise suppression + clarity boost
+    val isCallVolumeBoostEnabled: Boolean = false,  // Auto-boost STREAM_VOICE_CALL during Bluetooth calls
     val autoStartOnBoot: Boolean = false,
     val theme: AppTheme = AppTheme.MEHTAP,
     val colorAccent: ColorAccent = ColorAccent.MEHTAP_GOLD,
@@ -90,6 +91,7 @@ class BoostPreferences(private val context: Context) {
         
         val VOCAL_MUSIC_BALANCE = floatPreferencesKey("vocal_music_balance")
         val IS_CALL_ENHANCEMENT_ENABLED = booleanPreferencesKey("is_call_enhancement_enabled")
+        val IS_CALL_VOLUME_BOOST_ENABLED = booleanPreferencesKey("is_call_volume_boost_enabled")
         val AUTO_START = booleanPreferencesKey("auto_start_on_boot")
         val THEME = stringPreferencesKey("app_theme")
         val COLOR_ACCENT = stringPreferencesKey("color_accent")
@@ -138,6 +140,7 @@ class BoostPreferences(private val context: Context) {
             
             vocalMusicBalance = prefs[Keys.VOCAL_MUSIC_BALANCE] ?: 0.5f,
             isCallEnhancementEnabled = prefs[Keys.IS_CALL_ENHANCEMENT_ENABLED] ?: false,
+            isCallVolumeBoostEnabled = prefs[Keys.IS_CALL_VOLUME_BOOST_ENABLED] ?: false,
             autoStartOnBoot = prefs[Keys.AUTO_START] ?: false,
             theme = try {
                 AppTheme.valueOf(prefs[Keys.THEME] ?: AppTheme.MEHTAP.name)
@@ -215,6 +218,10 @@ class BoostPreferences(private val context: Context) {
     
     suspend fun setCallEnhancement(enabled: Boolean) {
         context.dataStore.edit { it[Keys.IS_CALL_ENHANCEMENT_ENABLED] = enabled }
+    }
+    
+    suspend fun setCallVolumeBoost(enabled: Boolean) {
+        context.dataStore.edit { it[Keys.IS_CALL_VOLUME_BOOST_ENABLED] = enabled }
     }
     
     suspend fun setAutoStart(enabled: Boolean) {

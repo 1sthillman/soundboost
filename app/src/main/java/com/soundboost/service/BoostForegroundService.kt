@@ -36,6 +36,9 @@ class BoostForegroundService : Service() {
     // YENİ: Akıllı gain danışmanı
     private val smartGainAdvisor = SmartGainAdvisor()
     
+    // YENİ: Bluetooth çağrı ses yükseltme
+    private var callVolumeBooster: com.soundboost.audio.CallVolumeBooster? = null
+    
     // ESKİ: Tek akış (yedek uyumluluk)
     private val audioEffects = AudioEffectsManager()
     
@@ -96,6 +99,13 @@ class BoostForegroundService : Service() {
             useMultiStream = false
             audioEffects.attach(0)
         }
+        
+        // Bluetooth çağrı ses yükseltme başlat
+        callVolumeBooster = com.soundboost.audio.CallVolumeBooster(this)
+        serviceScope.launch {
+            val settings = prefs.settings.firstOrNull()
+            callVolumeBooster?.startMonitoring(settings?.isCallVolumeBoostEnabled ?: false)
+        }
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -107,6 +117,7 @@ class BoostForegroundService : Service() {
                 return START_NOT_STICKY  // Don't restart service after stop
             }
             "UPDATE_EFFECTS" -> updateEffects()
+            "UPDATE_CALL_VOLUME_BOOST" -> updateCallVolumeBoost()
             "MAXIMIZE_VOLUME" -> maximizeVolume()
             "BASS_DOWN" -> adjustBass(-10)
             "BASS_UP" -> adjustBass(10)
@@ -363,6 +374,14 @@ class BoostForegroundService : Service() {
             notificationManager.notify(NOTIFICATION_ID, notification)
         }
     }
+    
+    private fun updateCallVolumeBoost() {
+        serviceScope.launch {
+            val settings = prefs.settings.firstOrNull() ?: return@launch
+            android.util.Log.d(TAG, "📞 Call Volume Boost: ${settings.isCallVolumeBoostEnabled}")
+            callVolumeBooster?.startMonitoring(settings.isCallVolumeBoostEnabled)
+        }
+    }
 
     private fun maximizeVolume() {
         volumeController.maximizeAllStreams()
@@ -574,6 +593,10 @@ class BoostForegroundService : Service() {
         // Ses cihazı izlemeyi durdur
         audioOutputMonitor?.stopMonitoring()
         audioOutputMonitor = null
+        
+        // Bluetooth çağrı ses yükseltme durdur
+        callVolumeBooster?.stopMonitoring()
+        callVolumeBooster = null
         
         if (useMultiStream) {
             multiStreamManager?.release()

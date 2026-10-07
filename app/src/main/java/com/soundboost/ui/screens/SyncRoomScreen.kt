@@ -48,10 +48,13 @@ fun SyncRoomScreen(
 ) {
     val syncState by viewModel.syncState.collectAsState()
     val discoveredRooms by viewModel.discoveredRooms.collectAsState()
+    val hasAcceptedFlashWarning by viewModel.hasAcceptedFlashWarning.collectAsState()
 
     var deviceName by remember { mutableStateOf("") }
     var roomName by remember { mutableStateOf("") }
     var mode by remember { mutableStateOf(RoomMode.CHOOSE) }
+    var showFlashWarning by remember { mutableStateOf(false) }
+    var pendingAction by remember { mutableStateOf<(() -> Unit)?>(null) }
     
     // Smooth pulsing glow animation
     val infiniteTransition = rememberInfiniteTransition(label = "glow")
@@ -186,10 +189,25 @@ fun SyncRoomScreen(
                 ) { targetMode ->
                     when (targetMode) {
                         RoomMode.CHOOSE -> ChooseModeSection(
-                            onHostSelected = { mode = RoomMode.HOST },
+                            onHostSelected = { 
+                                if (hasAcceptedFlashWarning) {
+                                    mode = RoomMode.HOST
+                                } else {
+                                    pendingAction = { mode = RoomMode.HOST }
+                                    showFlashWarning = true
+                                }
+                            },
                             onJoinSelected = {
-                                mode = RoomMode.JOIN
-                                viewModel.scanForRooms()
+                                if (hasAcceptedFlashWarning) {
+                                    mode = RoomMode.JOIN
+                                    viewModel.scanForRooms()
+                                } else {
+                                    pendingAction = { 
+                                        mode = RoomMode.JOIN
+                                        viewModel.scanForRooms()
+                                    }
+                                    showFlashWarning = true
+                                }
                             },
                             glowAlpha = glowAlpha
                         )
@@ -217,6 +235,51 @@ fun SyncRoomScreen(
                         )
                     }
                 }
+            }
+            
+            // CRITICAL: Flash warning dialog (epilepsy safety)
+            if (showFlashWarning) {
+                AlertDialog(
+                    onDismissRequest = { 
+                        showFlashWarning = false
+                        pendingAction = null
+                    },
+                    icon = { Icon(Icons.Default.Warning, null, tint = Color(0xFFFF9800)) },
+                    title = { 
+                        Text(
+                            stringResource(R.string.flash_warning_title),
+                            fontWeight = FontWeight.Bold
+                        ) 
+                    },
+                    text = { 
+                        Text(stringResource(R.string.flash_warning_message)) 
+                    },
+                    confirmButton = {
+                        Button(
+                            onClick = { 
+                                viewModel.acceptFlashWarning()
+                                showFlashWarning = false
+                                pendingAction?.invoke()
+                                pendingAction = null
+                            },
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color(0xFFFF9800)
+                            )
+                        ) {
+                            Text(stringResource(R.string.flash_warning_accept))
+                        }
+                    },
+                    dismissButton = {
+                        TextButton(
+                            onClick = { 
+                                showFlashWarning = false
+                                pendingAction = null
+                            }
+                        ) {
+                            Text(stringResource(R.string.flash_warning_cancel))
+                        }
+                    }
+                )
             }
 
             // Error message (if any)

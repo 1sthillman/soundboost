@@ -70,7 +70,13 @@ class SyncServer(
             install(WebSockets) {
                 pingPeriod = Duration.ofSeconds(15)
                 timeout = Duration.ofSeconds(30)
-                maxFrameSize = Long.MAX_VALUE
+                // SECURITY: Limit max frame size (DoS protection)
+                // Analysis:
+                // - Largest message: MusicChunk with 64KB data → ~85KB after base64 encoding
+                // - Client messages: Max ~3KB (PlaylistUpdate/RoomStateSync)
+                // - Safety margin: 3x buffer for future-proofing
+                // - 256KB allows 2-3 music chunks per frame if needed
+                maxFrameSize = 256 * 1024  // 256KB (was Long.MAX_VALUE = 9EB!)
                 masking = false
             }
             routing {

@@ -59,6 +59,16 @@ fun FlashControlScreen(
     val connectedDevices by viewModel.connectedDevices.collectAsState()
     val pendingFlash by viewModel.pendingFlash.collectAsState()
     val disconnectionReason by viewModel.disconnectionReason.collectAsState()
+    val hasAcceptedFlashWarning by viewModel.hasAcceptedFlashWarning.collectAsState()
+    
+    var showFlashWarning by remember { mutableStateOf(false) }
+    
+    // CRITICAL: Show warning on first entry if not accepted
+    LaunchedEffect(hasAcceptedFlashWarning) {
+        if (!hasAcceptedFlashWarning) {
+            showFlashWarning = true
+        }
+    }
     
     val themeColors = getThemeColors(state.theme, state.colorAccent)
     
@@ -133,8 +143,56 @@ fun FlashControlScreen(
                 onFlashConsumed = { viewModel.onFlashConsumed() },
                 onRequestTorchPulse = { d, r, i ->
                     viewModel.requestTorchPulse(d, r, i)
-                }
+                },
+                hasAcceptedWarning = hasAcceptedFlashWarning
             )
+            
+            // CRITICAL: Flash warning dialog (epilepsy safety)
+            if (showFlashWarning) {
+                AlertDialog(
+                    onDismissRequest = { 
+                        if (hasAcceptedFlashWarning) {
+                            showFlashWarning = false
+                        }
+                    },
+                    icon = { Icon(Icons.Default.Warning, null, tint = Color(0xFFFF9800)) },
+                    title = { 
+                        Text(
+                            stringResource(R.string.flash_warning_title),
+                            color = themeColors.onSurface,
+                            fontWeight = FontWeight.Bold
+                        ) 
+                    },
+                    text = { 
+                        Text(
+                            stringResource(R.string.flash_warning_message),
+                            color = themeColors.onSurfaceVariant
+                        ) 
+                    },
+                    confirmButton = {
+                        Button(
+                            onClick = { 
+                                viewModel.acceptFlashWarning()
+                                showFlashWarning = false
+                            },
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color(0xFFFF9800)
+                            )
+                        ) {
+                            Text(stringResource(R.string.flash_warning_accept))
+                        }
+                    },
+                    dismissButton = {
+                        TextButton(
+                            onClick = { 
+                                onBack()
+                            }
+                        ) {
+                            Text(stringResource(R.string.flash_warning_cancel))
+                        }
+                    }
+                )
+            }
             
             if (disconnectionReason != null && syncState is SyncState.Idle) {
                 AlertDialog(

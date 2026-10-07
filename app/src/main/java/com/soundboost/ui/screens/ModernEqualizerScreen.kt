@@ -54,6 +54,7 @@ fun ModernEqualizerScreen(
     onSaveCustomPreset: (String, FloatArray) -> Unit,
     onMaxGainChanged: (Int) -> Unit,
     onCallEnhancementToggled: (Boolean) -> Unit,
+    onCallVolumeBoostToggled: (Boolean) -> Unit,
     onFlashToggled: (Boolean) -> Unit,
     onFlashIntensityChanged: (com.soundboost.audio.BassFlashlightSync.FlashIntensity) -> Unit,
     isFlashEnabled: Boolean,
@@ -189,10 +190,10 @@ fun ModernEqualizerScreen(
                 themeColors = themeColors
             )
             
-            // Call Enhancement Toggle
-            CallEnhancementCard(
-                isEnabled = state.isCallEnhancementEnabled,
-                onToggle = onCallEnhancementToggled,
+            // Call Volume Boost Toggle (Bluetooth calls)
+            CallVolumeBoostCard(
+                isEnabled = state.isCallVolumeBoostEnabled,
+                onToggle = onCallVolumeBoostToggled,
                 themeColors = themeColors
             )
             

@@ -283,23 +283,6 @@ fun SettingsScreen(
                 }
             )
             
-            // NEW v1.5.0: Bluetooth Profiles
-            ModernSettingsCard(
-                title = stringResource(R.string.bluetooth_profiles_title),
-                description = stringResource(R.string.bluetooth_profiles_desc),
-                icon = Icons.Default.Bluetooth,
-                accentColor = androidx.compose.ui.graphics.Color(0xFF2196F3),
-                surfaceColor = themeColors.surfaceElevated,
-                onClick = onOpenBluetoothProfiles,
-                endContent = {
-                    Icon(
-                        Icons.Default.ChevronRight,
-                        contentDescription = null,
-                        tint = themeColors.onSurfaceVariant
-                    )
-                }
-            )
-            
             // NEW v1.5.0: Parti Modu (Flash-Sync)
             ModernSettingsCard(
                 title = stringResource(R.string.party_mode_title),

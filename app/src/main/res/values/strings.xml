@@ -166,6 +166,12 @@
     <string name="flash_intensity_strong_desc">Aggressive • Very sensitive • Minimum cooldown (40ms)</string>
     <string name="flash_dialog_close">CLOSE</string>
     
+    <!-- Flash Warning (Epilepsy / Photosensitivity) -->
+    <string name="flash_warning_title">Photosensitivity Warning</string>
+    <string name="flash_warning_message">This feature uses rapid flashing lights that may trigger seizures in people with photosensitive epilepsy.\n\nDo not use if you are sensitive to flashing lights.</string>
+    <string name="flash_warning_accept">I Understand</string>
+    <string name="flash_warning_cancel">Cancel</string>
+    
     <!-- DJ Gesture Control (v1.5.0) -->
     <string name="dj_gesture_title">DJ GESTURE CONTROL</string>
     <string name="dj_gesture_subtitle">Control audio with hand gestures</string>
@@ -518,4 +524,8 @@
     <string name="party_mode_disconnection_hint">Tap the box above to copy diagnostic info for troubleshooting</string>
     <string name="common_back">Back</string>
     <string name="common_ok">OK</string>
+    
+    <!-- Call Volume Boost (v1.6.0) -->
+    <string name="call_volume_boost_title">CALL VOLUME BOOST</string>
+    <string name="call_volume_boost_desc">During calls with Bluetooth headset/intercom, automatically maximizes call volume. Cannot exceed phone or device volume limits. Works while the main boost is on.</string>
 </resources>

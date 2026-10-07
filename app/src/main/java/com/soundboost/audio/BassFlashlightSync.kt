@@ -5,6 +5,8 @@ import android.hardware.camera2.CameraAccessException
 import android.hardware.camera2.CameraManager
 import android.os.Build
 import android.util.Log
+import com.soundboost.data.SyncPreferences
+import com.soundboost.flash.FlashSafetyGuard
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import kotlin.math.abs
@@ -17,8 +19,12 @@ import kotlin.math.abs
  * ✅ Thread-safe - synchronized camera access
  * ✅ Memory-efficient - uses existing audio analyzer data
  * ✅ Google Play compliant - NO camera permission needed
+ * ✅ SAFETY: FlashSafetyGuard integration for epilepsy prevention
  */
-class BassFlashlightSync(private val context: Context) {
+class BassFlashlightSync(
+    private val context: Context,
+    private val preferences: SyncPreferences
+) {
     
     enum class FlashIntensity(val sensitivity: Float, val duration: Long, val cooldown: Long) {
         LIGHT(1.3f, 25L, 80L),       // Hafif - az hassas, ultra kısa
@@ -290,11 +296,17 @@ class BassFlashlightSync(private val context: Context) {
     
     /**
      * CRASH-PROOF flash control with comprehensive exception handling
+     * SAFETY: Protected by FlashSafetyGuard
      */
     private fun safelyTurnOnFlash() {
         synchronized(cameraLock) {
             try {
                 if (cameraManager == null || cameraId == null || !isCameraAvailable) return
+                
+                // CRITICAL: Safety guard check (warning + rate limit)
+                if (!FlashSafetyGuard.canTurnOnTorch(preferences)) {
+                    return
+                }
                 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     cameraManager.setTorchMode(cameraId!!, true)
@@ -362,10 +374,17 @@ class BassFlashlightSync(private val context: Context) {
     /**
      * Manual single pulse for party mode (doesn't require audio analysis)
      * Used when host manually triggers flash
+     * SAFETY: Protected by FlashSafetyGuard
      */
     suspend fun manualPulse(durationMs: Int, repeatCount: Int = 1, intervalMs: Int = 100) {
         if (!hasFlash || !isCameraAvailable) {
             Log.w(TAG, "⚠️ Cannot pulse: hasFlash=$hasFlash, available=$isCameraAvailable")
+            return
+        }
+        
+        // CRITICAL: Safety guard check BEFORE any flash
+        if (!FlashSafetyGuard.canTurnOnTorch(preferences)) {
+            Log.w(TAG, "⚠️ Manual pulse blocked by FlashSafetyGuard")
             return
         }
         

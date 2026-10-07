@@ -23,7 +23,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private var analysisJob: Job? = null
     
     // Flash özelliği
-    private val bassFlashSync = BassFlashlightSync(application)
+    private val bassFlashSync = BassFlashlightSync(application, boostPreferences)
     val isFlashEnabled = bassFlashSync.isEnabled
     val flashIntensity = bassFlashSync.intensity
     val flashBassLevel = bassFlashSync.bassLevel
@@ -216,6 +216,19 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             if (uiState.value.isBoostEnabled) {
                 val intent = Intent(getApplication(), BoostForegroundService::class.java).apply {
                     action = "UPDATE_EFFECTS"
+                }
+                getApplication<Application>().startService(intent)
+            }
+        }
+    }
+    
+    fun onCallVolumeBoostToggled(enabled: Boolean) {
+        viewModelScope.launch {
+            android.util.Log.d("MainViewModel", "📞 Call Volume Boost: $enabled")
+            prefs.setCallVolumeBoost(enabled)
+            if (uiState.value.isBoostEnabled) {
+                val intent = Intent(getApplication(), BoostForegroundService::class.java).apply {
+                    action = "UPDATE_CALL_VOLUME_BOOST"
                 }
                 getApplication<Application>().startService(intent)
             }

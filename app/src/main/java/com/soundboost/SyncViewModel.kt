@@ -164,7 +164,11 @@ class SyncViewModel(application: Application) : AndroidViewModel(application) {
     val isTorchSupported: Boolean get() = bassFlashSync?.hasFlashSupport() ?: false
 
     fun acceptFlashWarning() {
-        viewModelScope.launch { preferences.setHasAcceptedFlashWarning(true) }
+        viewModelScope.launch { 
+            preferences.setHasAcceptedFlashWarning(true)
+            com.soundboost.flash.FlashSafetyGuard.onWarningAccepted()
+            Log.d(TAG, "✅ Flash warning accepted")
+        }
     }
 
     // Store audio analysis flow reference (still needed for logging)

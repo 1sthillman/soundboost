@@ -35,7 +35,8 @@ import kotlinx.coroutines.launch
 fun ScreenFlashOverlay(
     pendingFlash: SyncMessage.Flash?,
     onFlashConsumed: () -> Unit,
-    onRequestTorchPulse: suspend (durationMs: Int, repeatCount: Int, intervalMs: Int) -> Unit = { _, _, _ -> }
+    onRequestTorchPulse: suspend (durationMs: Int, repeatCount: Int, intervalMs: Int) -> Unit = { _, _, _ -> },
+    hasAcceptedWarning: Boolean
 ) {
     val alpha = remember { Animatable(0f) }
     val flashColor = remember(pendingFlash?.color) {
@@ -49,6 +50,13 @@ fun ScreenFlashOverlay(
 
     LaunchedEffect(pendingFlash) {
         val flash = pendingFlash ?: return@LaunchedEffect
+        
+        // CRITICAL: Block flash if warning not accepted (epilepsy safety)
+        if (!hasAcceptedWarning) {
+            android.util.Log.w("ScreenFlashOverlay", "⚠️ Flash blocked - warning not accepted")
+            onFlashConsumed()
+            return@LaunchedEffect
+        }
         
         // CRITICAL: Set MAXIMUM screen brightness for flash visibility
         val originalBrightness = window?.attributes?.screenBrightness ?: -1f

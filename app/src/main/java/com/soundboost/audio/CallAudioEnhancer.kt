@@ -106,8 +106,14 @@ class CallAudioEnhancer {
     /**
      * Enable call enhancement
      * This turns on microphone noise suppression and auto gain
+     * 
+     * DISABLED: Privacy policy compliance - microphone usage not properly disclosed
      */
     fun enable() {
+        Log.w(TAG, "❌ Call enhancement DISABLED - privacy policy compliance")
+        return
+        
+        /* DISABLED CODE:
         if (!isSupported) {
             Log.w(TAG, "Cannot enable: not supported on this device")
             return
@@ -146,6 +152,7 @@ class CallAudioEnhancer {
             Log.e(TAG, "Failed to enable call enhancer: ${e.message}", e)
             isActive = false
         }
+        */
     }
     
     /**

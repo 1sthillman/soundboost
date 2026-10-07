@@ -607,6 +607,7 @@ fun MainScreen(viewModel: MainViewModel, syncViewModel: SyncViewModel) {
                     onSaveCustomPreset = viewModel::onSaveCustomPreset,
                     onMaxGainChanged = viewModel::onMaxGainChanged,
                     onCallEnhancementToggled = viewModel::onCallEnhancementToggled,
+                    onCallVolumeBoostToggled = viewModel::onCallVolumeBoostToggled,
                     onFlashToggled = viewModel::onFlashToggled,
                     onFlashIntensityChanged = viewModel::onFlashIntensityChanged,
                     isFlashEnabled = isFlashEnabled,
