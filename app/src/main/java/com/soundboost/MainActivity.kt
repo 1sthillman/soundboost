@@ -170,7 +170,7 @@ class MainActivity : ComponentActivity() {
             SoundSTBoostTheme(darkTheme = effectiveDarkMode) {
                 val view = LocalView.current
                 if (!view.isInEditMode) {
-                    val themeColors = getThemeColors(uiState.theme, uiState.colorAccent)
+                    val themeColors = getThemeColors(uiState.theme, uiState.colorAccent, effectiveDarkMode)
                     
                     // Set system bars colors to match theme
                     LaunchedEffect(themeColors, effectiveDarkMode) {
@@ -504,14 +504,101 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+/**
+ * Safe navigation helper - prevents IllegalStateException crashes
+ * Only navigates if currentBackStackEntry lifecycle is RESUMED and not already at target
+ */
+private fun safeNavigate(
+    navController: androidx.navigation.NavHostController,
+    route: String
+) {
+    try {
+        val currentEntry = navController.currentBackStackEntry
+        val isResumed = currentEntry?.lifecycle?.currentState == androidx.lifecycle.Lifecycle.State.RESUMED
+        val currentRoute = currentEntry?.destination?.route
+        
+        if (isResumed && currentRoute != route) {
+            navController.navigate(route) {
+                launchSingleTop = true
+            }
+        } else {
+            android.util.Log.w("MainActivity", "Navigation to $route blocked: isResumed=$isResumed, current=$currentRoute")
+        }
+    } catch (e: IllegalStateException) {
+        android.util.Log.w("MainActivity", "Navigation to $route failed: IllegalStateException", e)
+    } catch (e: IllegalArgumentException) {
+        android.util.Log.w("MainActivity", "Navigation to $route failed: IllegalArgumentException", e)
+    }
+}
+
+/**
+ * Safe pop back stack helper - prevents crashes on invalid lifecycle states
+ * Only pops if currentBackStackEntry lifecycle is at least STARTED
+ * Returns false if pop was skipped
+ */
+private fun safePopBack(navController: androidx.navigation.NavHostController): Boolean {
+    val currentEntry = navController.currentBackStackEntry
+    val isStarted = currentEntry?.lifecycle?.currentState?.isAtLeast(androidx.lifecycle.Lifecycle.State.STARTED) == true
+    
+    if (isStarted) {
+        return navController.popBackStack()
+    } else {
+        android.util.Log.w("MainActivity", "PopBackStack blocked: lifecycle not STARTED (current: ${currentEntry?.lifecycle?.currentState})")
+        return false
+    }
+}
+
 @Composable
 fun MainScreen(viewModel: MainViewModel, syncViewModel: SyncViewModel) {
     val navController = rememberNavController()
     val uiState by viewModel.uiState.collectAsState()
     val audioLevels by viewModel.audioLevels.collectAsState()
-    val themeColors = getThemeColors(uiState.theme, uiState.colorAccent)
+    
+    // Determine effective dark mode for theme colors
+    val systemInDarkTheme = isSystemInDarkTheme()
+    val effectiveDarkMode = uiState.isDarkMode ?: systemInDarkTheme
+    val themeColors = getThemeColors(uiState.theme, uiState.colorAccent, effectiveDarkMode)
+    
     val context = androidx.compose.ui.platform.LocalContext.current
     val activity = context as? MainActivity
+    
+    /**
+     * Safe navigation helper - prevents IllegalStateException crashes
+     */
+    fun safeNavigate(route: String) {
+        try {
+            val currentEntry = navController.currentBackStackEntry
+            val isResumed = currentEntry?.lifecycle?.currentState == androidx.lifecycle.Lifecycle.State.RESUMED
+            val currentRoute = currentEntry?.destination?.route
+            
+            if (isResumed && currentRoute != route) {
+                navController.navigate(route) {
+                    launchSingleTop = true
+                }
+            } else {
+                android.util.Log.w("MainActivity", "Navigation to $route blocked: isResumed=$isResumed, current=$currentRoute")
+            }
+        } catch (e: IllegalStateException) {
+            android.util.Log.w("MainActivity", "Navigation to $route failed: IllegalStateException", e)
+        } catch (e: IllegalArgumentException) {
+            android.util.Log.w("MainActivity", "Navigation to $route failed: IllegalArgumentException", e)
+        }
+    }
+    
+    /**
+     * Safe pop back stack helper
+     */
+    fun safePopBack(): Boolean {
+        val currentEntry = navController.currentBackStackEntry
+        val isStarted = currentEntry?.lifecycle?.currentState?.isAtLeast(androidx.lifecycle.Lifecycle.State.STARTED) == true
+        
+        if (isStarted) {
+            return navController.popBackStack()
+        } else {
+            android.util.Log.w("MainActivity", "PopBackStack blocked: lifecycle not STARTED")
+            return false
+        }
+    }
     
     // CRITICAL: Track language as state to trigger immediate WebView updates
     var currentLanguage by remember { mutableStateOf(viewModel.getCurrentLanguage(context)) }
@@ -581,14 +668,14 @@ fun MainScreen(viewModel: MainViewModel, syncViewModel: SyncViewModel) {
                         },
                         onThemeChanged = viewModel::onThemeChanged,
                         onModeChanged = viewModel::onDarkModeChanged,
-                        onNavigateToSettings = { 
-                            navController.navigate("settings")
+                        onNavigateToSettings = {
+                            safeNavigate("settings")
                         },
-                        onNavigateToEqualizer = { 
-                            navController.navigate("equalizer")
+                        onNavigateToEqualizer = {
+                            safeNavigate("equalizer")
                         },
-                        onNavigateToLanguage = { 
-                            navController.navigate("language")
+                        onNavigateToLanguage = {
+                            safeNavigate("language")
                         },
                         currentLanguage = currentLanguage
                     )
@@ -614,7 +701,7 @@ fun MainScreen(viewModel: MainViewModel, syncViewModel: SyncViewModel) {
                     flashIntensity = flashIntensity,
                     hasFlashSupport = viewModel.hasFlashSupport(),
                     onBack = { 
-                        navController.popBackStack()
+                        safePopBack()
                     }
                 )
             }
@@ -624,17 +711,16 @@ fun MainScreen(viewModel: MainViewModel, syncViewModel: SyncViewModel) {
                     state = uiState,
                     onAutoStartToggled = viewModel::onAutoStartToggled,
                     onMaximizeVolume = viewModel::maximizeSystemVolume,
-                    onOpenThemes = { navController.navigate("themes") },
-                    onOpenHelp = { navController.navigate("help") },
+                    onOpenThemes = { safeNavigate("themes") },
+                    onOpenHelp = { safeNavigate("help") },
                     onRateApp = { showRateDialog = true },
                     onShareApp = { showShareDialog = true },
                     onDarkModeChanged = viewModel::onDarkModeChanged,
-                    onOpenBackup = { navController.navigate("settings_backup") },
-                    onOpenAppProfiles = { navController.navigate("app_profiles") },
-                    onOpenBluetoothProfiles = { navController.navigate("bluetooth_profiles") },
-                    onOpenPartyMode = { navController.navigate("party_mode_room") },
+                    onOpenBackup = { safeNavigate("settings_backup") },
+                    onOpenBluetoothProfiles = { safeNavigate("bluetooth_profiles") },
+                    onOpenPartyMode = { safeNavigate("party_mode_room") },
                     onBack = { 
-                        navController.popBackStack()
+                        safePopBack()
                     }
                 )
             }
@@ -644,21 +730,7 @@ fun MainScreen(viewModel: MainViewModel, syncViewModel: SyncViewModel) {
                     state = uiState,
                     prefs = com.soundboost.data.BoostPreferences(context),
                     onBack = {
-                        navController.popBackStack()
-                    }
-                )
-            }
-            
-            composable("app_profiles") {
-                com.soundboost.ui.screens.AppProfilesScreen(
-                    state = uiState,
-                    profileManager = viewModel.appProfileManager,
-                    onBack = {
-                        navController.popBackStack()
-                    },
-                    onConfigureProfile = { packageName ->
-                        // TODO: Navigate to profile config screen
-                        android.util.Log.d("MainActivity", "Configure profile for: $packageName")
+                        safePopBack()
                     }
                 )
             }
@@ -668,7 +740,7 @@ fun MainScreen(viewModel: MainViewModel, syncViewModel: SyncViewModel) {
                     state = uiState,
                     profileManager = viewModel.bluetoothProfileManager,
                     onBack = {
-                        navController.popBackStack()
+                        safePopBack()
                     },
                     onConfigureProfile = { deviceAddress ->
                         // TODO: Navigate to profile config screen
@@ -682,7 +754,7 @@ fun MainScreen(viewModel: MainViewModel, syncViewModel: SyncViewModel) {
                 SyncRoomScreen(
                     viewModel = syncViewModel,
                     onRoomReady = {
-                        navController.navigate("party_mode_control")
+                        safeNavigate("party_mode_control")
                     }
                 )
             }
@@ -693,8 +765,12 @@ fun MainScreen(viewModel: MainViewModel, syncViewModel: SyncViewModel) {
                     viewModel = syncViewModel,
                     state = uiState,
                     onBack = {
-                        navController.popBackStack()
-                        navController.popBackStack() // Go back to settings, not room screen
+                        // Pop twice to go back to settings, skipping party_mode_room
+                        // Only do second pop if first one succeeded
+                        val firstPopSucceeded = safePopBack()
+                        if (firstPopSucceeded) {
+                            safePopBack()
+                        }
                     }
                 )
             }
@@ -705,7 +781,7 @@ fun MainScreen(viewModel: MainViewModel, syncViewModel: SyncViewModel) {
                     onThemeChanged = viewModel::onThemeChanged,
                     onColorAccentChanged = viewModel::onColorAccentChanged,
                     onBack = { 
-                        navController.popBackStack()
+                        safePopBack()
                     }
                 )
             }
@@ -720,7 +796,7 @@ fun MainScreen(viewModel: MainViewModel, syncViewModel: SyncViewModel) {
                         viewModel.onLanguageChanged(language, context)
                     },
                     onBack = { 
-                        navController.popBackStack()
+                        safePopBack()
                     }
                 )
             }
@@ -729,7 +805,7 @@ fun MainScreen(viewModel: MainViewModel, syncViewModel: SyncViewModel) {
                 HelpScreen(
                     state = uiState,
                     onBack = { 
-                        navController.popBackStack()
+                        safePopBack()
                     }
                 )
             }

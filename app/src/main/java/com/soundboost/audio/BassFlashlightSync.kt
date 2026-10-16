@@ -297,31 +297,38 @@ class BassFlashlightSync(
     /**
      * CRASH-PROOF flash control with comprehensive exception handling
      * SAFETY: Protected by FlashSafetyGuard
+     * ENHANCED: Detailed logging for debugging Party Mode issues
      */
     private fun safelyTurnOnFlash() {
         synchronized(cameraLock) {
             try {
-                if (cameraManager == null || cameraId == null || !isCameraAvailable) return
+                if (cameraManager == null || cameraId == null || !isCameraAvailable) {
+                    Log.e(TAG, "❌ Cannot turn ON flash: cameraManager=${cameraManager != null}, cameraId=$cameraId, available=$isCameraAvailable")
+                    return
+                }
                 
                 // CRITICAL: Safety guard check (warning + rate limit)
                 if (!FlashSafetyGuard.canTurnOnTorch(preferences)) {
+                    Log.w(TAG, "⚠️ Flash blocked by FlashSafetyGuard in turnOn")
                     return
                 }
                 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    Log.d(TAG, "🔦 setTorchMode($cameraId, TRUE) - Turning torch ON...")
                     cameraManager.setTorchMode(cameraId!!, true)
+                    Log.d(TAG, "✅ Torch turned ON successfully")
                 }
             } catch (e: CameraAccessException) {
                 when (e.reason) {
                     CameraAccessException.CAMERA_IN_USE -> {
-                        Log.w(TAG, "⚠️ Camera in use, skipping flash")
+                        Log.w(TAG, "⚠️ Camera in use by another app, skipping flash")
                     }
                     CameraAccessException.CAMERA_DISABLED -> {
-                        Log.e(TAG, "❌ Camera disabled by policy")
+                        Log.e(TAG, "❌ Camera disabled by device policy")
                         isCameraAvailable = false
                     }
                     CameraAccessException.CAMERA_DISCONNECTED -> {
-                        Log.e(TAG, "❌ Camera disconnected")
+                        Log.e(TAG, "❌ Camera hardware disconnected")
                         isCameraAvailable = false
                     }
                     else -> {
@@ -329,13 +336,13 @@ class BassFlashlightSync(
                     }
                 }
             } catch (e: IllegalArgumentException) {
-                Log.e(TAG, "❌ Invalid camera argument", e)
+                Log.e(TAG, "❌ Invalid camera argument (cameraId=$cameraId)", e)
                 isCameraAvailable = false
             } catch (e: SecurityException) {
-                Log.e(TAG, "❌ Flash security error (should not happen)", e)
+                Log.e(TAG, "❌ Flash security error - permission issue!", e)
                 isCameraAvailable = false
             } catch (e: Exception) {
-                Log.e(TAG, "❌ Unexpected flash ON error", e)
+                Log.e(TAG, "❌ Unexpected flash ON error: ${e.javaClass.simpleName}: ${e.message}", e)
             }
         }
     }
@@ -343,15 +350,20 @@ class BassFlashlightSync(
     private fun safelyTurnOffFlash() {
         synchronized(cameraLock) {
             try {
-                if (cameraManager == null || cameraId == null) return
+                if (cameraManager == null || cameraId == null) {
+                    Log.w(TAG, "⚠️ Cannot turn OFF flash: cameraManager=${cameraManager != null}, cameraId=$cameraId")
+                    return
+                }
                 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    Log.d(TAG, "🔦 setTorchMode($cameraId, FALSE) - Turning torch OFF...")
                     cameraManager.setTorchMode(cameraId!!, false)
+                    Log.d(TAG, "✅ Torch turned OFF successfully")
                 }
             } catch (e: CameraAccessException) {
                 Log.w(TAG, "⚠️ Failed to turn off flash: ${e.reason}")
             } catch (e: Exception) {
-                Log.w(TAG, "⚠️ Unexpected flash OFF error", e)
+                Log.w(TAG, "⚠️ Unexpected flash OFF error: ${e.javaClass.simpleName}: ${e.message}")
             }
         }
     }
@@ -373,38 +385,54 @@ class BassFlashlightSync(
     
     /**
      * Manual single pulse for party mode (doesn't require audio analysis)
-     * Used when host manually triggers flash
+     * Used when host manually triggers flash OR client receives bass-sync
      * SAFETY: Protected by FlashSafetyGuard
+     * CRITICAL: Enhanced logging for Party Mode debugging
      */
     suspend fun manualPulse(durationMs: Int, repeatCount: Int = 1, intervalMs: Int = 100) {
+        Log.d(TAG, "🔦 ========== MANUAL PULSE REQUEST ==========")
+        Log.d(TAG, "🔦 Duration: ${durationMs}ms, repeat: $repeatCount, interval: ${intervalMs}ms")
+        Log.d(TAG, "🔦 hasFlash: $hasFlash, isCameraAvailable: $isCameraAvailable")
+        Log.d(TAG, "🔦 cameraId: $cameraId, cameraManager: ${cameraManager != null}")
+        
         if (!hasFlash || !isCameraAvailable) {
-            Log.w(TAG, "⚠️ Cannot pulse: hasFlash=$hasFlash, available=$isCameraAvailable")
+            Log.e(TAG, "❌ Cannot pulse: hasFlash=$hasFlash, available=$isCameraAvailable")
+            Log.e(TAG, "❌ Camera not initialized or unavailable!")
             return
         }
         
         // CRITICAL: Safety guard check BEFORE any flash
-        if (!FlashSafetyGuard.canTurnOnTorch(preferences)) {
-            Log.w(TAG, "⚠️ Manual pulse blocked by FlashSafetyGuard")
+        val canFlash = FlashSafetyGuard.canTurnOnTorch(preferences)
+        Log.d(TAG, "🔦 FlashSafetyGuard.canTurnOnTorch = $canFlash")
+        
+        if (!canFlash) {
+            Log.w(TAG, "⚠️ Manual pulse blocked by FlashSafetyGuard (rate limit or warning not accepted)")
             return
         }
         
-        Log.d(TAG, "🔦 Manual pulse: ${durationMs}ms x$repeatCount")
+        Log.d(TAG, "✅ All checks passed - starting flash pulse...")
         
         for (index in 0 until repeatCount) {
             try {
+                Log.d(TAG, "🔦 Pulse ${index + 1}/$repeatCount: Turning ON...")
                 safelyTurnOnFlash()
                 delay(durationMs.toLong())
+                Log.d(TAG, "🔦 Pulse ${index + 1}/$repeatCount: Turning OFF...")
                 safelyTurnOffFlash()
                 
                 if (index < repeatCount - 1 && intervalMs > 0) {
+                    Log.d(TAG, "⏳ Waiting ${intervalMs}ms before next pulse...")
                     delay(intervalMs.toLong())
                 }
             } catch (e: Exception) {
-                Log.e(TAG, "❌ Manual pulse failed", e)
+                Log.e(TAG, "❌ Manual pulse failed at pulse ${index + 1}/$repeatCount", e)
+                Log.e(TAG, "❌ Exception: ${e.javaClass.simpleName}: ${e.message}")
                 safelyTurnOffFlash()
                 return  // Exit on error
             }
         }
+        
+        Log.d(TAG, "✅ Manual pulse completed successfully - $repeatCount pulse(s)")
     }
     
     fun hasFlashSupport(): Boolean = hasFlash && isCameraAvailable

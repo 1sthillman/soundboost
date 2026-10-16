@@ -85,6 +85,15 @@ class SyncClient {
         android.util.Log.d("SyncClient", "🔌 Host: $hostAddress:$port")
         android.util.Log.d("SyncClient", "🔌 Device name: $deviceName")
         android.util.Log.d("SyncClient", "🔌 Timestamp: ${System.currentTimeMillis()}")
+        android.util.Log.d("SyncClient", "🔌 ===========================================")
+        
+        // Log network diagnostics
+        try {
+            val reachable = java.net.InetAddress.getByName(hostAddress).isReachable(2000)
+            android.util.Log.d("SyncClient", "🌐 Network check: host ${if (reachable) "REACHABLE" else "NOT REACHABLE"}")
+        } catch (e: Exception) {
+            android.util.Log.e("SyncClient", "🌐 Network check failed: ${e.message}")
+        }
         
         _connectionState.value = SyncConnectionState.Connecting
         
@@ -95,8 +104,9 @@ class SyncClient {
         // CRITICAL FIX: Add connection timeout with auto-retry
         scope.launch {
             var attempt = 0
-            val maxAttempts = 3
+            val maxAttempts = 5  // Increased from 3 to 5
             var lastError: Throwable? = null
+            var connectionSuccessful = false  // Track if connection succeeded
             
             while (attempt < maxAttempts && _connectionState.value is SyncConnectionState.Connecting) {
                 attempt++
@@ -108,11 +118,11 @@ class SyncClient {
                     httpClient = HttpClient(CIO) { 
                         install(WebSockets) {
                             pingInterval = 15000  // Keepalive every 15s
-                            maxFrameSize = 1024 * 1024  // 1MB (DoS protection)
+                            maxFrameSize = 256 * 1024  // 256KB - MUST MATCH SERVER!
                         }
-                        // CRITICAL: Add timeouts
+                        // CRITICAL: Increase timeout for slower networks
                         engine {
-                            requestTimeout = 15000  // 15 second connection timeout
+                            requestTimeout = 30000  // 30 second connection timeout (was 15s)
                         }
                     }
                     android.util.Log.d("SyncClient", "🌐 HttpClient created with timeouts")
@@ -126,27 +136,45 @@ class SyncClient {
                     )
                     session = ws
                     android.util.Log.d("SyncClient", "✅ ========== CONNECTION ESTABLISHED ==========")
+                    android.util.Log.d("SyncClient", "✅ WebSocket session opened successfully")
+                    
+                    // Mark connection as successful BEFORE launching loops
+                    connectionSuccessful = true
+                    android.util.Log.d("SyncClient", "✅ connectionSuccessful flag set to TRUE")
+                    
+                    // CRITICAL: Send JOIN message IMMEDIATELY after connection
+                    android.util.Log.d("SyncClient", "📤 Sending JOIN message to server...")
+                    val joinMsg = SyncMessage.Join(deviceName)
+                    val joinPayload = json.encodeToString(SyncMessage.serializer(), joinMsg)
+                    ws.send(Frame.Text(joinPayload))
+                    android.util.Log.d("SyncClient", "✅ JOIN message sent successfully!")
                     
                     // Launch in SEPARATE supervised coroutines - no mutual cancellation!
+                    android.util.Log.d("SyncClient", "🚀 Launching listenLoop and pingLoop...")
                     launch(SupervisorJob()) { listenLoop(ws, deviceName) }
                     launch(SupervisorJob()) { pingLoop(ws) }
+                    android.util.Log.d("SyncClient", "✅ Both loops launched successfully")
                     
                     // Connection successful - exit retry loop
+                    android.util.Log.d("SyncClient", "✅ Breaking retry loop - connection established")
                     break
                     
                 } catch (t: Throwable) {
                     lastError = t
                     android.util.Log.e("SyncClient", "❌ Connection attempt $attempt failed: ${t.javaClass.simpleName}: ${t.message}")
+                    android.util.Log.e("SyncClient", "❌ Stack trace: ${t.stackTraceToString()}")
                     
                     if (attempt < maxAttempts) {
-                        android.util.Log.w("SyncClient", "⏳ Retrying in 2 seconds...")
-                        kotlinx.coroutines.delay(2000)
+                        android.util.Log.w("SyncClient", "⏳ Retrying in 3 seconds...")
+                        kotlinx.coroutines.delay(3000)  // Increased from 2s to 3s
                     }
                 }
             }
             
-            // All attempts failed
-            if (_connectionState.value is SyncConnectionState.Connecting) {
+            // All attempts failed - ONLY if connection never succeeded
+            android.util.Log.d("SyncClient", "🔍 POST-RETRY CHECK: connectionSuccessful=$connectionSuccessful, state=${_connectionState.value}")
+            if (!connectionSuccessful && _connectionState.value is SyncConnectionState.Connecting) {
+                android.util.Log.e("SyncClient", "❌ ENTERING FAILURE BLOCK: Connection was not successful")
                 val errorMsg = when {
                     lastError == null -> "Bağlantı kurulamadı"
                     lastError!!.message?.contains("timeout", ignoreCase = true) == true -> 
@@ -165,12 +193,20 @@ class SyncClient {
                 _connectionState.value = SyncConnectionState.Error(errorMsg)
                 lastDisconnectionException = lastError
                 lastDisconnectionTime = System.currentTimeMillis()
+            } else {
+                android.util.Log.d("SyncClient", "✅ SKIPPING FAILURE BLOCK: Connection was successful!")
             }
         }
     }
 
     private suspend fun listenLoop(ws: io.ktor.websocket.WebSocketSession, deviceName: String) {
-        android.util.Log.d("SyncClient", "👂 Listen loop started, waiting for messages...")
+        android.util.Log.d("SyncClient", "👂 ========== LISTEN LOOP STARTED ==========")
+        android.util.Log.d("SyncClient", "👂 WebSocket session active: ${ws.isActive}")
+        android.util.Log.d("SyncClient", "👂 Device name: $deviceName")
+        android.util.Log.d("SyncClient", "👂 Ready to receive messages from HOST...")
+        
+        var messageCount = 0
+        
         try {
             for (frame in ws.incoming) {
                 if (!scope.isActive) {
@@ -178,11 +214,16 @@ class SyncClient {
                     break
                 }
                 
+                messageCount++
+                android.util.Log.d("SyncClient", "📩 Frame #$messageCount received: type=${frame.frameType}")
+                
                 // CRITICAL: Only process Text frames, ignore Close/Ping/Pong frames
                 if (frame !is Frame.Text) {
                     android.util.Log.d("SyncClient", "⏩ Skipping non-text frame: ${frame.frameType}")
                     continue
                 }
+                
+                android.util.Log.d("SyncClient", "📝 Text frame received, reading content...")
                 
                 // CRITICAL FIX 1: Wrap readText() in try-catch to handle MalformedInputException
                 // This prevents crashes when receiving corrupted UTF-8 data (NaN/Infinity in JSON)
@@ -197,6 +238,8 @@ class SyncClient {
                     continue  // Skip this frame, keep listening
                 }
                 
+                android.util.Log.d("SyncClient", "✅ Frame content read successfully (${text.length} chars)")
+                
                 // CRITICAL FIX 2: Skip empty/whitespace-only messages (server bug workaround)
                 if (text.isBlank()) {
                     android.util.Log.w("SyncClient", "⚠️ Received empty message, skipping...")
@@ -209,24 +252,31 @@ class SyncClient {
                     continue
                 }
                 
-                android.util.Log.d("SyncClient", "📥 Received message: ${text.take(100)}...")
+                android.util.Log.d("SyncClient", "📥 Message content preview: ${text.take(200)}...")
                 
                 // CRITICAL: Process message INLINE to prevent scope cancellation issues
                 // Using try-catch to handle errors without breaking the loop
                 try {
                     handleMessage(text, ws, deviceName)
                 } catch (e: Exception) {
-                    android.util.Log.e("SyncClient", "❌ Error handling message: ${e.message}", e)
+                    android.util.Log.e("SyncClient", "❌ Error handling message (continuing...): ${e.javaClass.simpleName}: ${e.message}", e)
+                    e.printStackTrace()
                     // Continue processing other messages even if one fails
                 }
             }
+            
+            android.util.Log.w("SyncClient", "🔌 ========== LISTEN LOOP ENDED (normal) ==========")
+            android.util.Log.w("SyncClient", "🔌 Total messages received: $messageCount")
         } catch (e: Exception) {
-            android.util.Log.e("SyncClient", "❌ Listen loop error: ${e.javaClass.simpleName}: ${e.message}", e)
-            android.util.Log.e("SyncClient", "❌ CLIENT CRASH DIAGNOSTIC - Stack trace:", e)
+            android.util.Log.e("SyncClient", "❌ ========== LISTEN LOOP CRASHED ==========")
+            android.util.Log.e("SyncClient", "❌ Exception: ${e.javaClass.simpleName}: ${e.message}", e)
+            android.util.Log.e("SyncClient", "❌ Messages received before crash: $messageCount")
+            android.util.Log.e("SyncClient", "❌ Stack trace:")
+            e.printStackTrace()
             lastDisconnectionException = e
             lastDisconnectionTime = System.currentTimeMillis()
         } finally {
-            android.util.Log.w("SyncClient", "🔌 Listen loop ended (connection closed)")
+            android.util.Log.w("SyncClient", "🔌 Listen loop cleanup - connection will be marked as Disconnected")
             _connectionState.value = SyncConnectionState.Disconnected
         }
     }
@@ -256,6 +306,7 @@ class SyncClient {
         when (message) {
             is SyncMessage.Welcome -> {
                 android.util.Log.d("SyncClient", "👋 WELCOME received: room=${message.roomName}, deviceId=${message.deviceId}")
+                android.util.Log.d("SyncClient", "✅ Server confirmed JOIN - connection fully established!")
                 
                 // LATE JOIN: Check if RoomState provided
                 if (message.roomStateJson != null) {
@@ -267,10 +318,7 @@ class SyncClient {
                     deviceId = message.deviceId,
                     roomName = message.roomName
                 )
-                val joinMsg = SyncMessage.Join(deviceName)
-                val joinPayload = json.encodeToString(SyncMessage.serializer(), joinMsg)
-                ws.send(Frame.Text(joinPayload))
-                android.util.Log.d("SyncClient", "📤 Sent JOIN message with name: $deviceName")
+                android.util.Log.d("SyncClient", "✅ Connection state set to CONNECTED")
             }
             is SyncMessage.Pong -> {
                 val t3 = System.currentTimeMillis()
@@ -336,20 +384,28 @@ class SyncClient {
             }
             is SyncMessage.BassSync -> {
                 android.util.Log.d("SyncClient", "🎵🎵🎵 BASS SYNC received: hasKick=${message.hasKick}, bass=${message.bass}, energy=${message.energy}")
-                // BassSync'i Flash mesajına çevir (aynı interface üzerinden işlensin)
+                // CRITICAL: SADECE KAMERA FLAŞI - ekran flash YOK!
+                // Kullanıcı gerçek kamera flaşı istiyor, ekran beyazlatma istemiyoruz
                 val flashMsg = SyncMessage.Flash(
                     startAt = message.startAt,
-                    durationMs = if (message.hasKick) 40 else 30,  // Kick daha uzun
-                    mode = FlashMode.SCREEN_AND_TORCH,  // Bass flash her zaman BOTH
+                    durationMs = if (message.hasKick) 40 else 30,  // Kick için daha uzun
+                    mode = FlashMode.TORCH_ONLY,  // 🔦 SADECE KAMERA FLAŞI!
                     color = "#FFFFFF",
                     repeatCount = 1,
                     intervalMs = 0
                 )
-                // CRITICAL: GUARANTEED emission for bass-sync
+                android.util.Log.d("SyncClient", "🔦🔦🔦 CLIENT: KAMERA FLAŞI (torch) kullanılacak - EKRAN FLASH YOK!")
+                android.util.Log.d("SyncClient", "⏰ Flash zamanlaması: startAt=${message.startAt}, current=${System.currentTimeMillis()}, delay=${message.startAt - System.currentTimeMillis()}ms")
+                
+                // CRITICAL: GUARANTEED emission - asla drop olmaz!
                 scope.launch(SupervisorJob()) {
                     _flashEvents.emit(flashMsg)
-                    android.util.Log.d("SyncClient", "✅ Bass-sync flash emitted (guaranteed)")
+                    android.util.Log.d("SyncClient", "✅ Bass-sync flash event emitted (TORCH_ONLY guaranteed)")
                 }
+            }
+            is SyncMessage.DJEffectTrigger -> {
+                android.util.Log.d("SyncClient", "🎵 DJ EFFECT TRIGGER received: effectId=${message.effectId}, playAt=${message.playAt}, volume=${message.volume}")
+                // Will be emitted to incomingMessages for ViewModel to handle
             }
             is SyncMessage.AudioChunk -> {
                 // Reduced log spam for audio chunks

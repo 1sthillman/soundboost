@@ -517,40 +517,16 @@ fun WebViewHomeScreen(
                         onVolumeChange = onVolumeChange,
                         onSensitivityChange = onSensitivityChange,
                         onToggleBoost = onToggleBoost,
-                        onThemeChanged = { themeName ->
-                            val theme = when (themeName) {
-                                "mehtap" -> com.soundboost.ui.theme.AppTheme.MEHTAP
-                                "sumi" -> com.soundboost.ui.theme.AppTheme.SUMI
-                                "aurora" -> com.soundboost.ui.theme.AppTheme.AURORA
-                                "fener" -> com.soundboost.ui.theme.AppTheme.FENER
-                                "orman" -> com.soundboost.ui.theme.AppTheme.ORMAN
-                                "eyes" -> com.soundboost.ui.theme.AppTheme.EYES
-                                "mycel" -> com.soundboost.ui.theme.AppTheme.MYCEL
-                                "reef" -> com.soundboost.ui.theme.AppTheme.REEF
-                                "monsoon" -> com.soundboost.ui.theme.AppTheme.MONSOON
-                                "murekkep" -> com.soundboost.ui.theme.AppTheme.MUREKKEP
-                                "col" -> com.soundboost.ui.theme.AppTheme.COL
-                                "divit" -> com.soundboost.ui.theme.AppTheme.DIVIT
-                                "nova" -> com.soundboost.ui.theme.AppTheme.AURORA  // Nova -> Aurora (similar star theme)
-                                else -> com.soundboost.ui.theme.AppTheme.MEHTAP  // Default
-                            }
-                            lastThemeFromKotlin = theme  // HTML'den geldiğini işaretle
-                            onThemeChanged(theme)
-                        },
-                        onModeChanged = { mode ->
-                            // Convert "dark"/"light" string to Boolean? (null = system, true = dark, false = light)
-                            val isDarkMode = when (mode) {
-                                "dark" -> true
-                                "light" -> false
-                                else -> null  // system
-                            }
-                            android.util.Log.d("WebViewHomeScreen", "Mode changed from HTML: $mode -> isDarkMode: $isDarkMode")
-                            onModeChanged(isDarkMode)
-                        },
-                        onNavigateToSettings = onNavigateToSettings,
-                        onNavigateToEqualizer = onNavigateToEqualizer,
-                        onNavigateToLanguage = onNavigateToLanguage
-                    ),
+                        onThemeChanged = onThemeChanged,
+                        onModeChanged = onModeChanged
+                    ).also { bridge ->
+                        // Set navigation callbacks separately
+                        bridge.updateNavigationCallbacks(
+                            settings = onNavigateToSettings,
+                            equalizer = onNavigateToEqualizer,
+                            language = onNavigateToLanguage
+                        )
+                    },
                     "AndroidBridge"
                 )
                 
@@ -576,43 +552,104 @@ fun WebViewHomeScreen(
 
 /**
  * JavaScript Bridge for WebView communication
+ * 
+ * SAFETY: Navigation calls use debounce to prevent rapid double-tap crashes
+ * LIFECYCLE: Callbacks are nullable and reassignable to prevent leaks after Activity recreation
  */
 class WebViewBridge(
-    private val onVolumeChange: (Int) -> Unit,
-    private val onSensitivityChange: (Int) -> Unit,
-    private val onToggleBoost: () -> Unit,
-    private val onThemeChanged: (String) -> Unit,
-    private val onModeChanged: (String) -> Unit,
-    private val onNavigateToSettings: () -> Unit,
-    private val onNavigateToEqualizer: () -> Unit,
-    private val onNavigateToLanguage: () -> Unit
+    private var onVolumeChange: ((Int) -> Unit)?,
+    private var onSensitivityChange: ((Int) -> Unit)?,
+    private var onToggleBoost: (() -> Unit)?,
+    private var onThemeChanged: ((com.soundboost.ui.theme.AppTheme) -> Unit)?,
+    private var onModeChanged: ((Boolean?) -> Unit)?
 ) {
     private val handler = android.os.Handler(android.os.Looper.getMainLooper())
     
+    // Debounce mechanism for navigation (prevent rapid double-tap crashes)
+    private var lastNavigationTime = 0L
+    private val NAVIGATION_DEBOUNCE_MS = 500L
+    
+    // LIFECYCLE-SAFE: Nullable navigation callbacks that can be reassigned/cleared
+    @Volatile
+    var onNavigateToSettings: (() -> Unit)? = null
+    
+    @Volatile
+    var onNavigateToEqualizer: (() -> Unit)? = null
+    
+    @Volatile
+    var onNavigateToLanguage: (() -> Unit)? = null
+    
     @android.webkit.JavascriptInterface
     fun onVolumeChanged(volume: Int) {
-        handler.post { onVolumeChange(volume) }
+        val callback = onVolumeChange
+        if (callback != null) {
+            handler.post { callback(volume) }
+        } else {
+            android.util.Log.w("WebViewBridge", "Volume change blocked: callback is null (Activity destroyed?)")
+        }
     }
     
     @android.webkit.JavascriptInterface
     fun onSensitivityChanged(sensitivity: Int) {
-        handler.post { onSensitivityChange(sensitivity) }
+        val callback = onSensitivityChange
+        if (callback != null) {
+            handler.post { callback(sensitivity) }
+        } else {
+            android.util.Log.w("WebViewBridge", "Sensitivity change blocked: callback is null (Activity destroyed?)")
+        }
     }
     
     @android.webkit.JavascriptInterface
     fun toggleBoost() {
-        handler.post { onToggleBoost() }
+        val callback = onToggleBoost
+        if (callback != null) {
+            handler.post { callback() }
+        } else {
+            android.util.Log.w("WebViewBridge", "Boost toggle blocked: callback is null (Activity destroyed?)")
+        }
     }
     
     @android.webkit.JavascriptInterface
     fun changeTheme(themeName: String) {
-        handler.post { onThemeChanged(themeName) }
+        val callback = onThemeChanged
+        if (callback != null) {
+            val theme = when (themeName) {
+                "mehtap" -> com.soundboost.ui.theme.AppTheme.MEHTAP
+                "fener" -> com.soundboost.ui.theme.AppTheme.FENER
+                "sumi" -> com.soundboost.ui.theme.AppTheme.SUMI
+                "monsoon" -> com.soundboost.ui.theme.AppTheme.MONSOON
+                "murekkep" -> com.soundboost.ui.theme.AppTheme.MUREKKEP
+                "mycel" -> com.soundboost.ui.theme.AppTheme.MYCEL
+                "reef" -> com.soundboost.ui.theme.AppTheme.REEF
+                "aurora" -> com.soundboost.ui.theme.AppTheme.AURORA
+                "nova" -> com.soundboost.ui.theme.AppTheme.AURORA  // Nova maps to Aurora
+                "divit" -> com.soundboost.ui.theme.AppTheme.DIVIT
+                "col" -> com.soundboost.ui.theme.AppTheme.COL
+                "orman" -> com.soundboost.ui.theme.AppTheme.ORMAN
+                "eyes" -> com.soundboost.ui.theme.AppTheme.EYES
+                else -> com.soundboost.ui.theme.AppTheme.MEHTAP
+            }
+            handler.post { callback(theme) }
+        } else {
+            android.util.Log.w("WebViewBridge", "Theme change blocked: callback is null (Activity destroyed?)")
+        }
     }
     
     @android.webkit.JavascriptInterface
     fun onModeChanged(mode: String) {
         android.util.Log.d("WebViewBridge", "Mode changed from HTML: $mode")
-        handler.post { this.onModeChanged.invoke(mode) }
+        val callback = this.onModeChanged  // Shadow warning fix
+        if (callback != null) {
+            val darkMode = when (mode) {
+                "dark" -> true
+                "light" -> false
+                "system" -> null
+                else -> null
+            }
+            handler.post { callback(darkMode) }
+        } else {
+            android.util.Log.w("WebViewBridge", "Mode change blocked: callback is null (Activity destroyed?)")
+        }
     }
     
     @android.webkit.JavascriptInterface
@@ -622,16 +659,170 @@ class WebViewBridge(
     
     @android.webkit.JavascriptInterface
     fun navigateToSettings() {
-        handler.post { onNavigateToSettings() }
+        // Debounce: Ignore if called within 500ms of last navigation
+        val now = System.currentTimeMillis()
+        if (now - lastNavigationTime < NAVIGATION_DEBOUNCE_MS) {
+            android.util.Log.w("WebViewBridge", "Navigation to settings debounced (rapid tap)")
+            return
+        }
+        lastNavigationTime = now
+        
+        val callback = onNavigateToSettings
+        if (callback != null) {
+            handler.post { callback() }
+        } else {
+            android.util.Log.w("WebViewBridge", "Navigation to settings blocked: callback is null (Activity destroyed?)")
+        }
     }
     
     @android.webkit.JavascriptInterface
     fun navigateToEqualizer() {
-        handler.post { onNavigateToEqualizer() }
+        // Debounce: Ignore if called within 500ms of last navigation
+        val now = System.currentTimeMillis()
+        if (now - lastNavigationTime < NAVIGATION_DEBOUNCE_MS) {
+            android.util.Log.w("WebViewBridge", "Navigation to equalizer debounced (rapid tap)")
+            return
+        }
+        lastNavigationTime = now
+        
+        val callback = onNavigateToEqualizer
+        if (callback != null) {
+            handler.post { callback() }
+        } else {
+            android.util.Log.w("WebViewBridge", "Navigation to equalizer blocked: callback is null (Activity destroyed?)")
+        }
     }
     
     @android.webkit.JavascriptInterface
     fun navigateToLanguage() {
-        handler.post { onNavigateToLanguage() }
+        // Debounce: Ignore if called within 500ms of last navigation
+        val now = System.currentTimeMillis()
+        if (now - lastNavigationTime < NAVIGATION_DEBOUNCE_MS) {
+            android.util.Log.w("WebViewBridge", "Navigation to language debounced (rapid tap)")
+            return
+        }
+        lastNavigationTime = now
+        
+        val callback = onNavigateToLanguage
+        if (callback != null) {
+            handler.post { callback() }
+        } else {
+            android.util.Log.w("WebViewBridge", "Navigation to language blocked: callback is null (Activity destroyed?)")
+        }
+    }
+    
+    /**
+     * Clear navigation callbacks only if they match the provided references
+     * This prevents race condition where new composition's SideEffect runs before old composition's onDispose
+     */
+    fun clearNavigationCallbacksIfMatch(
+        settings: (() -> Unit)?,
+        equalizer: (() -> Unit)?,
+        language: (() -> Unit)?
+    ) {
+        var cleared = false
+        if (onNavigateToSettings === settings && settings != null) {
+            android.util.Log.d("WebViewBridge", "🧹 Clearing settings callback (match)")
+            onNavigateToSettings = null
+            cleared = true
+        }
+        if (onNavigateToEqualizer === equalizer && equalizer != null) {
+            android.util.Log.d("WebViewBridge", "🧹 Clearing equalizer callback (match)")
+            onNavigateToEqualizer = null
+            cleared = true
+        }
+        if (onNavigateToLanguage === language && language != null) {
+            android.util.Log.d("WebViewBridge", "🧹 Clearing language callback (match)")
+            onNavigateToLanguage = null
+            cleared = true
+        }
+        if (!cleared) {
+            android.util.Log.d("WebViewBridge", "⏭️ Skipping clear - callbacks already replaced by new composition")
+        }
+    }
+    
+    /**
+     * Clear all navigation callbacks (called when Activity is destroyed)
+     */
+    fun clearNavigationCallbacks() {
+        android.util.Log.d("WebViewBridge", "🧹 Clearing navigation callbacks")
+        onNavigateToSettings = null
+        onNavigateToEqualizer = null
+        onNavigateToLanguage = null
+    }
+    
+    /**
+     * Update navigation callbacks (called when Activity is recreated)
+     */
+    fun updateNavigationCallbacks(
+        settings: () -> Unit,
+        equalizer: () -> Unit,
+        language: () -> Unit
+    ) {
+        android.util.Log.d("WebViewBridge", "🔄 Updating navigation callbacks")
+        onNavigateToSettings = settings
+        onNavigateToEqualizer = equalizer
+        onNavigateToLanguage = language
+    }
+    
+    /**
+     * Update ViewModel callbacks (called on every recomposition to prevent stale references)
+     * CRITICAL: Prevents memory leak after Activity recreation with "Don't keep activities"
+     */
+    fun updateViewModelCallbacks(
+        onVolumeChange: (Int) -> Unit,
+        onSensitivityChange: (Int) -> Unit,
+        onToggleBoost: () -> Unit,
+        onThemeChanged: (com.soundboost.ui.theme.AppTheme) -> Unit,
+        onModeChanged: (Boolean?) -> Unit
+    ) {
+        android.util.Log.d("WebViewBridge", "🔄 Updating ViewModel callbacks")
+        this.onVolumeChange = onVolumeChange
+        this.onSensitivityChange = onSensitivityChange
+        this.onToggleBoost = onToggleBoost
+        this.onThemeChanged = onThemeChanged
+        this.onModeChanged = onModeChanged
+    }
+    
+    /**
+     * Clear ViewModel callbacks only if they match the provided references
+     * This prevents race condition where new composition's SideEffect runs before old composition's onDispose
+     */
+    fun clearViewModelCallbacksIfMatch(
+        volumeChange: ((Int) -> Unit)?,
+        sensitivityChange: ((Int) -> Unit)?,
+        toggleBoost: (() -> Unit)?,
+        themeChanged: ((com.soundboost.ui.theme.AppTheme) -> Unit)?,
+        modeChanged: ((Boolean?) -> Unit)?
+    ) {
+        var cleared = false
+        if (onVolumeChange === volumeChange && volumeChange != null) {
+            android.util.Log.d("WebViewBridge", "🧹 Clearing volume callback (match)")
+            onVolumeChange = null
+            cleared = true
+        }
+        if (onSensitivityChange === sensitivityChange && sensitivityChange != null) {
+            android.util.Log.d("WebViewBridge", "🧹 Clearing sensitivity callback (match)")
+            onSensitivityChange = null
+            cleared = true
+        }
+        if (onToggleBoost === toggleBoost && toggleBoost != null) {
+            android.util.Log.d("WebViewBridge", "🧹 Clearing toggle callback (match)")
+            onToggleBoost = null
+            cleared = true
+        }
+        if (onThemeChanged === themeChanged && themeChanged != null) {
+            android.util.Log.d("WebViewBridge", "🧹 Clearing theme callback (match)")
+            onThemeChanged = null
+            cleared = true
+        }
+        if (this.onModeChanged === modeChanged && modeChanged != null) {
+            android.util.Log.d("WebViewBridge", "🧹 Clearing mode callback (match)")
+            this.onModeChanged = null
+            cleared = true
+        }
+        if (!cleared) {
+            android.util.Log.d("WebViewBridge", "⏭️ Skipping clear - ViewModel callbacks already replaced by new composition")
+        }
     }
 }

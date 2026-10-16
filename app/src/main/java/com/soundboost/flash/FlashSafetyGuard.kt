@@ -10,18 +10,33 @@ import kotlinx.coroutines.runBlocking
  * 
  * Rules:
  * 1. User MUST accept warning (hasAcceptedFlashWarning = true)
- * 2. Minimum 333ms between torch ON operations (prevent rapid flashing)
+ * 2. Minimum interval between torch ON operations (prevent rapid flashing)
+ *    - PARTY_MODE: 100ms (faster beats, controlled environment)
+ *    - NORMAL: 333ms (maximum safety)
  * 3. Torch OFF is NEVER blocked
  */
 object FlashSafetyGuard {
     private const val TAG = "FlashSafetyGuard"
-    private const val MIN_FLASH_INTERVAL_MS = 333L
+    private const val MIN_FLASH_INTERVAL_NORMAL_MS = 333L
+    private const val MIN_FLASH_INTERVAL_PARTY_MS = 100L  // Party Mode: faster beats allowed
     
     @Volatile
     private var lastTorchOnTimeMs = 0L
     
     @Volatile
     private var hasAcceptedWarningCache: Boolean? = null
+    
+    @Volatile
+    private var partyModeEnabled = false
+    
+    /**
+     * Enable Party Mode for faster flash rates (100ms vs 333ms).
+     * User must still accept warning!
+     */
+    fun setPartyMode(enabled: Boolean) {
+        partyModeEnabled = enabled
+        Log.d(TAG, "🎉 Party Mode: ${if (enabled) "ENABLED (100ms limit)" else "DISABLED (333ms limit)"}")
+    }
     
     /**
      * Check if torch ON operation is allowed.
@@ -42,11 +57,12 @@ object FlashSafetyGuard {
         }
         
         // Check 2: Minimum interval between flashes (epilepsy prevention)
+        val minInterval = if (partyModeEnabled) MIN_FLASH_INTERVAL_PARTY_MS else MIN_FLASH_INTERVAL_NORMAL_MS
         val now = System.currentTimeMillis()
         val elapsed = now - lastTorchOnTimeMs
         
-        if (elapsed < MIN_FLASH_INTERVAL_MS) {
-            Log.w(TAG, "⚠️ Torch blocked - too fast (${elapsed}ms < ${MIN_FLASH_INTERVAL_MS}ms)")
+        if (elapsed < minInterval) {
+            Log.w(TAG, "⚠️ Torch blocked - too fast (${elapsed}ms < ${minInterval}ms) [Party: $partyModeEnabled]")
             return false
         }
         
@@ -69,5 +85,6 @@ object FlashSafetyGuard {
     fun resetForTesting() {
         lastTorchOnTimeMs = 0L
         hasAcceptedWarningCache = null
+        partyModeEnabled = false
     }
 }

@@ -152,7 +152,7 @@
     <string name="share_app_title">Condividi Sound\'ST Boost</string>
     <string name="share_app_message">Condividi questa app con i tuoi amici!</string>
     <string name="share_now">Condividi Ora</string>
-    <string name="share_text">Dai un\'occhiata a Sound\'ST Boost - il miglior amplificatore di volume per Android!</string>
+    <string name="share_text">Dai un\'occhiata a Sound\'ST Boost - il miglior amplificatore di volume per Android! 🎧🔊\n\n%1$s</string>
     <string name="share_via">Condividi tramite</string>
     <string name="cancel">Annulla</string>
     <string name="rate_your_app">Valuta App</string>
@@ -293,6 +293,30 @@
     <string name="party_mode_rooms_found">%1$d stanza/e trovata/e</string>
     <string name="party_mode_join">Unisciti</string>
     <string name="party_mode_hosting">Hosting</string>
+    
+    <!-- CLIENT UI - Modern redesign strings -->
+    <string name="party_mode_client_subtitle">Sincronizzazione Musica + Flash</string>
+    <string name="party_mode_downloading">Download musica</string>
+    <string name="party_mode_complete">completo</string>
+    <string name="party_mode_ready">Pronto</string>
+    <string name="party_mode_playing">In riproduzione</string>
+    <string name="party_mode_paused">In pausa</string>
+    <string name="party_mode_waiting">In attesa</string>
+    <string name="party_mode_connecting">Connessione</string>
+    <string name="party_mode_waiting_dj_start">In attesa che il DJ inizi</string>
+    <string name="party_mode_synced">Sincronizzato</string>
+    <string name="party_mode_paused_by_dj">Messo in pausa dal DJ</string>
+    <string name="party_mode_dj_controls">Controlli DJ</string>
+    <string name="party_mode_flash_sync">Sincronizzazione Flash</string>
+    <string name="party_mode_flash_active">Sincronizzato con i beat</string>
+    <string name="party_mode_flash_inactive">Non sincronizzato con la musica</string>
+    <string name="party_mode_flash_info">Il flash della fotocamera si sincronizzerà con il ritmo</string>
+    
+    <!-- EQ Labels -->
+    <string name="eq_bass">BASSI</string>
+    <string name="eq_mid">MEDI</string>
+    <string name="eq_treble">ALTI</string>
+    <string name="dj_master_volume">VOLUME MASTER</string>
     <string name="party_mode_connected">Connesso</string>
     <string name="party_mode_connected_devices">Dispositivi Connessi</string>
 
@@ -308,7 +332,6 @@
     <string name="party_mode_trigger_flash">ATTIVA FLASH</string>
     <string name="party_mode_waiting_for_host">In attesa del comando host…</string>
     <string name="party_mode_active">Modalità Festa Attiva - %1$s</string>
-    <string name="party_mode_waiting">In attesa di dispositivi</string>
     <string name="party_mode_one_device">1 dispositivo connesso</string>
     <string name="party_mode_n_devices">%1$d dispositivi connessi</string>
     <string name="party_mode_channel_name">Modalità Festa</string>

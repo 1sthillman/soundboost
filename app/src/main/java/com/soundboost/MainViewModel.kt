@@ -37,7 +37,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     )
     
     // NEW v1.5.0: Profile Managers
-    val appProfileManager = com.soundboost.data.AppProfileManager(application)
     val bluetoothProfileManager = com.soundboost.data.BluetoothProfileManager(application)
     
     val uiState: StateFlow<BoostSettings> = prefs.settings

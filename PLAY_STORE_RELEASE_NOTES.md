@@ -1,271 +1,221 @@
 # Play Store Release Notes (Max 500 characters per language)
 
-## English (EN)
-```
-🎉 v1.5.0 - Major Update!
-
-🎊 NEW: Party Mode (BETA)
-• Sync unlimited devices on Wi-Fi
-• Flash lights pulse with bass beats
-• Screen + camera flash effects
-• Perfect for parties & gatherings
-
-🛡️ Security & Privacy Enhanced
-• WebSocket security hardening
-• Flash safety warnings (epilepsy-safe)
-• Rate limiting protection
-
-🐛 Bug Fixes
-• App Profiles: Fixed system apps showing
-• Call quality improvements
-• Full translations for all 13 languages
-
-Turn up the volume, sync the lights! 🎵✨
-```
-
-## Turkish (TR)
-```
+<tr-TR>
 🎉 v1.5.0 - Büyük Güncelleme!
 
-🎊 YENİ: Parti Modu (BETA)
-• Wi-Fi'de sınırsız cihaz senkronize edin
-• Flaşlar bas vuruşlarıyla yanıp söner
-• Ekran + kamera flaş efektleri
-• Partiler ve toplantılar için mükemmel
+🎊 YENİ: Parti Modu (DEMO)
+• Wi-Fi'de sınırsız cihaz senkronizasyonu
+• Bas vuruşlarıyla senkronize flaş efektleri
+• Ekran + kamera flaşı desteği
+• Partiler için mükemmel ışık gösterisi
 
-🛡️ Güvenlik ve Gizlilik Geliştirildi
-• WebSocket güvenlik sertleştirmesi
-• Flaş güvenlik uyarıları (epilepsi güvenli)
-• Hız sınırlama koruması
+🎵 Ses İyileştirmeleri
+• 10 bantlı ekolayzer
+• %200'e kadar ses yükseltme
+• Derin bas güçlendirme
+• Gerçek zamanlı görselleştirici
 
-🐛 Hata Düzeltmeleri
-• Uygulama Profilleri: Sistem uygulamaları düzeltildi
-• Çağrı kalitesi iyileştirmeleri
-• 13 dil için tam çeviriler
+🔐 Gizlilik & Güvenlik
+• Reklam yok, veri toplama yok
+• Flaş güvenlik uyarıları
 
 Sesi açın, ışıkları senkronize edin! 🎵✨
-```
+</tr-TR>
 
-## German (DE)
-```
-🎉 v1.5.0 - Großes Update!
-
-🎊 NEU: Party-Modus (BETA)
-• Unbegrenzte Geräte im WLAN synchronisieren
-• Blitzlichter pulsieren mit Bass-Beats
-• Bildschirm + Kamera-Blitz-Effekte
-• Perfekt für Partys & Zusammenkünfte
-
-🛡️ Sicherheit & Datenschutz verbessert
-• WebSocket-Sicherheit gehärtet
-• Blitz-Sicherheitswarnungen (epilepsiesicher)
-• Ratenbegrenzungsschutz
-
-🐛 Fehlerbehebungen
-• App-Profile: Systemapps korrigiert
-• Anrufqualität verbessert
-• Vollständige Übersetzungen für alle 13 Sprachen
-
-Lautstärke hoch, Lichter synchronisiert! 🎵✨
-```
-
-## Spanish (ES)
-```
-🎉 v1.5.0 - ¡Gran Actualización!
-
-🎊 NUEVO: Modo Fiesta (BETA)
-• Sincroniza dispositivos ilimitados en Wi-Fi
-• Flashes pulsan con ritmos de bajo
-• Efectos de flash de pantalla + cámara
-• Perfecto para fiestas y reuniones
-
-🛡️ Seguridad y Privacidad Mejoradas
-• Refuerzo de seguridad WebSocket
-• Advertencias de seguridad de flash (seguro epilepsia)
-• Protección de limitación de velocidad
-
-🐛 Correcciones de Errores
-• Perfiles de App: Apps de sistema corregidas
-• Mejoras en calidad de llamadas
-• Traducciones completas para 13 idiomas
-
-¡Sube el volumen, sincroniza las luces! 🎵✨
-```
-
-## French (FR)
-```
-🎉 v1.5.0 - Mise à Jour Majeure!
-
-🎊 NOUVEAU: Mode Fête (BETA)
-• Synchronisez des appareils illimités sur Wi-Fi
-• Les flashs pulsent avec les basses
-• Effets flash écran + caméra
-• Parfait pour fêtes et rassemblements
-
-🛡️ Sécurité et Confidentialité Renforcées
-• Durcissement sécurité WebSocket
-• Avertissements sécurité flash (sûr épilepsie)
-• Protection limitation débit
-
-🐛 Corrections de Bugs
-• Profils d'App: Apps système corrigées
-• Améliorations qualité appels
-• Traductions complètes pour 13 langues
-
-Montez le son, synchronisez les lumières! 🎵✨
-```
-
-## Russian (RU)
-```
-🎉 v1.5.0 - Крупное Обновление!
-
-🎊 НОВОЕ: Режим Вечеринки (BETA)
-• Синхронизируйте неограниченное количество устройств по Wi-Fi
-• Вспышки пульсируют с басами
-• Эффекты вспышки экрана + камеры
-• Идеально для вечеринок и встреч
-
-🛡️ Улучшена Безопасность и Конфиденциальность
-• Усиление безопасности WebSocket
-• Предупреждения о безопасности вспышек (безопасно для эпилепсии)
-• Защита ограничения скорости
-
-🐛 Исправления Ошибок
-• Профили приложений: Исправлены системные приложения
-• Улучшения качества звонков
-• Полные переводы на 13 языков
-
-Увеличьте громкость, синхронизируйте свет! 🎵✨
-```
-
-## Chinese (ZH)
-```
-🎉 v1.5.0 - 重大更新！
-
-🎊 新功能：派对模式（测试版）
-• Wi-Fi上同步无限设备
-• 闪光灯随低音节拍脉冲
-• 屏幕+相机闪光效果
-• 完美适合派对和聚会
-
-🛡️ 增强的安全性和隐私
-• WebSocket安全加固
-• 闪光安全警告（癫痫安全）
-• 速率限制保护
-
-🐛 错误修复
-• 应用配置文件：修复系统应用显示
-• 通话质量改进
-• 13种语言完整翻译
-
-提高音量，同步灯光！🎵✨
-```
-
-## Japanese (JA)
-```
-🎉 v1.5.0 - メジャーアップデート！
-
-🎊 新機能：パーティーモード（ベータ）
-• Wi-Fiで無制限のデバイスを同期
-• フラッシュライトがベースビートと連動
-• 画面+カメラフラッシュエフェクト
-• パーティーや集まりに最適
-
-🛡️ セキュリティとプライバシーの強化
-• WebSocketセキュリティ強化
-• フラッシュ安全警告（てんかん安全）
-• レート制限保護
-
-🐛 バグ修正
-• アプリプロファイル：システムアプリ修正
-• 通話品質の改善
-• 13言語の完全翻訳
-
-音量を上げ、ライトを同期！🎵✨
-```
-
-## Korean (KO)
-```
-🎉 v1.5.0 - 주요 업데이트!
-
-🎊 새로운 기능: 파티 모드 (베타)
-• Wi-Fi에서 무제한 기기 동기화
-• 플래시가 베이스 비트와 함께 펄스
-• 화면 + 카메라 플래시 효과
-• 파티와 모임에 완벽
-
-🛡️ 보안 및 개인정보 보호 강화
-• WebSocket 보안 강화
-• 플래시 안전 경고 (간질 안전)
-• 속도 제한 보호
-
-🐛 버그 수정
-• 앱 프로필: 시스템 앱 수정
-• 통화 품질 개선
-• 13개 언어 완전 번역
-
-볼륨을 높이고 조명을 동기화하세요! 🎵✨
-```
-
-## Arabic (AR)
-```
+<ar>
 🎉 الإصدار 1.5.0 - تحديث كبير!
 
-🎊 جديد: وضع الحفلة (بيتا)
+🎊 جديد: وضع الحفلة (تجريبي)
 • مزامنة أجهزة غير محدودة على Wi-Fi
-• ومضات الضوء تنبض مع نبضات الباس
-• تأثيرات فلاش الشاشة + الكاميرا
-• مثالي للحفلات والتجمعات
+• تأثيرات فلاش متزامنة مع نبضات الباس
+• دعم فلاش الشاشة + الكاميرا
+• عرض ضوئي مثالي للحفلات
 
-🛡️ تحسين الأمان والخصوصية
-• تعزيز أمان WebSocket
-• تحذيرات أمان الفلاش (آمن للصرع)
-• حماية تحديد المعدل
+🎵 تحسينات الصوت
+• معادل 10 نطاقات
+• تعزيز الصوت حتى 200%
+• تعزيز الباس العميق
+• مصور مرئي في الوقت الفعلي
 
-🐛 إصلاحات الأخطاء
-• ملفات التطبيق: إصلاح تطبيقات النظام
-• تحسينات جودة المكالمات
-• ترجمات كاملة لـ 13 لغة
+🔐 الخصوصية والأمان
+• بدون إعلانات، بدون جمع بيانات
+• تحذيرات أمان الفلاش
 
 ارفع الصوت، زامن الأضواء! 🎵✨
-```
+</ar>
 
-## Italian (IT)
-```
-🎉 v1.5.0 - Aggiornamento Importante!
+<de-DE>
+🎉 v1.5.0 - Großes Update!
 
-🎊 NUOVO: Modalità Festa (BETA)
-• Sincronizza dispositivi illimitati su Wi-Fi
-• I flash pulsano con i bassi
-• Effetti flash schermo + fotocamera
-• Perfetto per feste e riunioni
+🎊 NEU: Party-Modus (DEMO)
+• Unbegrenzte Gerätesynchronisation über Wi-Fi
+• Synchronisierte Blitzeffekte mit Bass-Beats
+• Bildschirm + Kamera-Blitz-Unterstützung
+• Perfekte Lichtshow für Partys
 
-🛡️ Sicurezza e Privacy Migliorate
-• Rafforzamento sicurezza WebSocket
-• Avvisi sicurezza flash (sicuro epilessia)
-• Protezione limitazione velocità
+🎵 Audio-Verbesserungen
+• 10-Band-Equalizer
+• Bis zu 200% Lautstärkeverstärkung
+• Tiefe Bass-Verstärkung
+• Echtzeit-Visualisierer
 
-🐛 Correzioni Bug
-• Profili App: Corrette app di sistema
-• Miglioramenti qualità chiamate
-• Traduzioni complete per 13 lingue
+🔐 Datenschutz & Sicherheit
+• Keine Werbung, keine Datenerfassung
+• Blitz-Sicherheitswarnungen
 
-Alza il volume, sincronizza le luci! 🎵✨
-```
+Lautstärke hoch, Lichter synchronisiert! 🎵✨
+</de-DE>
 
----
+<en-US>
+🎉 v1.5.0 - Major Update!
 
-## Character Count per Language
-- English: 497 ✅
-- Turkish: 499 ✅
-- German: 498 ✅
-- Spanish: 497 ✅
-- French: 492 ✅
-- Russian: 495 ✅
-- Chinese: 234 ✅ (CJK characters count less)
-- Japanese: 294 ✅
-- Korean: 283 ✅
-- Arabic: 387 ✅
-- Italian: 484 ✅
+🎊 NEW: Party Mode (DEMO)
+• Unlimited device sync over Wi-Fi
+• Synchronized flash effects with bass beats
+• Screen + camera flash support
+• Perfect light show for parties
 
-All versions are under 500 characters and optimized for Play Store display!
+🎵 Audio Enhancements
+• 10-band equalizer
+• Up to 200% volume boost
+• Deep bass enhancement
+• Real-time visualizer
+
+🔐 Privacy & Security
+• No ads, no data collection
+• Flash safety warnings
+
+Turn up the volume, sync the lights! 🎵✨
+</en-US>
+
+<es-ES>
+🎉 v1.5.0 - ¡Gran Actualización!
+
+🎊 NUEVO: Modo Fiesta (DEMO)
+• Sincronización ilimitada de dispositivos por Wi-Fi
+• Efectos de flash sincronizados con ritmos de bajo
+• Soporte de flash de pantalla + cámara
+• Espectáculo de luces perfecto para fiestas
+
+🎵 Mejoras de Audio
+• Ecualizador de 10 bandas
+• Hasta 200% de aumento de volumen
+• Mejora de graves profundos
+• Visualizador en tiempo real
+
+🔐 Privacidad y Seguridad
+• Sin anuncios, sin recopilación de datos
+• Advertencias de seguridad de flash
+
+¡Sube el volumen, sincroniza las luces! 🎵✨
+</es-ES>
+
+<fr-FR>
+🎉 v1.5.0 - Mise à Jour Majeure!
+
+🎊 NOUVEAU: Mode Fête (DEMO)
+• Synchronisation illimitée d'appareils via Wi-Fi
+• Effets flash synchronisés avec les basses
+• Support flash écran + caméra
+• Spectacle lumineux parfait pour les fêtes
+
+🎵 Améliorations Audio
+• Égaliseur 10 bandes
+• Jusqu'à 200% d'amplification du volume
+• Amélioration des basses profondes
+• Visualiseur en temps réel
+
+🔐 Confidentialité et Sécurité
+• Pas de publicités, pas de collecte de données
+• Avertissements de sécurité flash
+
+Montez le son, synchronisez les lumières! 🎵✨
+</fr-FR>
+
+<ja-JP>
+🎉 v1.5.0 - メジャーアップデート！
+
+🎊 新機能：パーティーモード（デモ）
+• Wi-Fi経由で無制限のデバイス同期
+• ベースビートと同期したフラッシュエフェクト
+• 画面+カメラフラッシュサポート
+• パーティーに最適なライトショー
+
+🎵 オーディオ強化
+• 10バンドイコライザー
+• 最大200%の音量ブースト
+• 深い低音強化
+• リアルタイムビジュアライザー
+
+🔐 プライバシーとセキュリティ
+• 広告なし、データ収集なし
+• フラッシュ安全警告
+
+音量を上げ、ライトを同期！🎵✨
+</ja-JP>
+
+<ko-KR>
+🎉 v1.5.0 - 주요 업데이트!
+
+🎊 새로운 기능: 파티 모드 (데모)
+• Wi-Fi를 통한 무제한 기기 동기화
+• 베이스 비트와 동기화된 플래시 효과
+• 화면 + 카메라 플래시 지원
+• 파티를 위한 완벽한 라이트 쇼
+
+🎵 오디오 향상
+• 10밴드 이퀄라이저
+• 최대 200% 볼륨 부스트
+• 깊은 베이스 강화
+• 실시간 비주얼라이저
+
+🔐 개인정보 보호 및 보안
+• 광고 없음, 데이터 수집 없음
+• 플래시 안전 경고
+
+볼륨을 높이고 조명을 동기화하세요! 🎵✨
+</ko-KR>
+
+<ru-RU>
+🎉 v1.5.0 - Крупное Обновление!
+
+🎊 НОВОЕ: Режим Вечеринки (ДЕМО)
+• Неограниченная синхронизация устройств по Wi-Fi
+• Синхронизированные эффекты вспышки с басами
+• Поддержка вспышки экрана + камеры
+• Идеальное световое шоу для вечеринок
+
+🎵 Улучшения Аудио
+• 10-полосный эквалайзер
+• До 200% усиления громкости
+• Глубокое усиление басов
+• Визуализатор в реальном времени
+
+🔐 Конфиденциальность и Безопасность
+• Без рекламы, без сбора данных
+• Предупреждения о безопасности вспышек
+
+Увеличьте громкость, синхронизируйте свет! 🎵✨
+</ru-RU>
+
+<zh-CN>
+🎉 v1.5.0 - 重大更新！
+
+🎊 新功能：派对模式（演示）
+• 通过Wi-Fi无限设备同步
+• 与低音节拍同步的闪光效果
+• 屏幕+相机闪光支持
+• 完美的派对灯光秀
+
+🎵 音频增强
+• 10段均衡器
+• 高达200%的音量提升
+• 深度低音增强
+• 实时可视化器
+
+🔐 隐私与安全
+• 无广告，无数据收集
+• 闪光安全警告
+
+提高音量，同步灯光！🎵✨
+</zh-CN>

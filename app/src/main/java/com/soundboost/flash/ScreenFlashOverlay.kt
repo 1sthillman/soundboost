@@ -72,6 +72,32 @@ fun ScreenFlashOverlay(
             return@LaunchedEffect
         }
         
+        // CRITICAL: Calculate synchronized delay - flash at EXACT time across all devices!
+        val targetTime = flash.startAt
+        val currentTime = System.currentTimeMillis()
+        val delayMs = targetTime - currentTime
+        
+        android.util.Log.d("ScreenFlashOverlay", "⏰ Flash sync timing:")
+        android.util.Log.d("ScreenFlashOverlay", "   - Target time: $targetTime")
+        android.util.Log.d("ScreenFlashOverlay", "   - Current time: $currentTime")
+        android.util.Log.d("ScreenFlashOverlay", "   - Delay: ${delayMs}ms")
+        
+        // Wait for synchronized start time
+        if (delayMs > 0) {
+            android.util.Log.d("ScreenFlashOverlay", "⏳ Waiting ${delayMs}ms for perfect sync...")
+            delay(delayMs)
+        } else if (delayMs < -100) {
+            // Way too late - skip
+            android.util.Log.w("ScreenFlashOverlay", "⚠️ Flash too late by ${-delayMs}ms - SKIPPING")
+            onFlashConsumed()
+            return@LaunchedEffect
+        } else if (delayMs < 0) {
+            android.util.Log.w("ScreenFlashOverlay", "⚠️ Flash ${-delayMs}ms late - executing now")
+            // Slightly late but acceptable - execute immediately
+        }
+        
+        android.util.Log.d("ScreenFlashOverlay", "💥 FLASH NOW! Synchronized!")
+        
         // CRITICAL: Set MAXIMUM screen brightness for flash visibility
         val originalBrightness = window?.attributes?.screenBrightness ?: -1f
         window?.attributes = window?.attributes?.apply {

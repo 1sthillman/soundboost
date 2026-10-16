@@ -270,32 +270,16 @@ fun WebViewHomeScreenNew(
                 addJavascriptInterface(
                     WebViewBridge(
                         onVolumeChange, onSensitivityChange, onToggleBoost,
-                        onThemeChanged = { themeName ->
-                            val theme = when (themeName) {
-                                "mehtap" -> com.soundboost.ui.theme.AppTheme.MEHTAP
-                                "sumi" -> com.soundboost.ui.theme.AppTheme.SUMI
-                                "aurora" -> com.soundboost.ui.theme.AppTheme.AURORA
-                                "eyes" -> com.soundboost.ui.theme.AppTheme.EYES
-                                "mycel" -> com.soundboost.ui.theme.AppTheme.MYCEL
-                                "reef" -> com.soundboost.ui.theme.AppTheme.REEF
-                                "monsoon" -> com.soundboost.ui.theme.AppTheme.MONSOON
-                                "murekkep" -> com.soundboost.ui.theme.AppTheme.MUREKKEP
-                                "col" -> com.soundboost.ui.theme.AppTheme.COL
-                                "divit" -> com.soundboost.ui.theme.AppTheme.DIVIT
-                                else -> com.soundboost.ui.theme.AppTheme.MEHTAP
-                            }
-                            onThemeChanged(theme)
-                        },
-                        onModeChanged = { mode ->
-                            val isDarkMode = when (mode) {
-                                "dark" -> true
-                                "light" -> false
-                                else -> null
-                            }
-                            onModeChanged(isDarkMode)
-                        },
-                        onNavigateToSettings, onNavigateToEqualizer, onNavigateToLanguage
-                    ),
+                        onThemeChanged,  // Pass directly, WebViewBridge does String→AppTheme conversion
+                        onModeChanged    // Pass directly, WebViewBridge does String→Boolean? conversion
+                    ).also { bridge ->
+                        // Set navigation callbacks separately
+                        bridge.updateNavigationCallbacks(
+                            settings = onNavigateToSettings,
+                            equalizer = onNavigateToEqualizer,
+                            language = onNavigateToLanguage
+                        )
+                    },
                     "AndroidBridge"
                 )
                 

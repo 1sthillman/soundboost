@@ -258,6 +258,30 @@
     <string name="party_mode_join_desc">Verbinde dich mit einem Host im selben Netzwerk</string>
     <string name="party_mode_scan_rooms">Nach Räumen Suchen</string>
     <string name="party_mode_room_name">Raumname</string>
+    
+    <!-- CLIENT UI - Modern redesign strings -->
+    <string name="party_mode_client_subtitle">Musik + Blitz-Synchronisation</string>
+    <string name="party_mode_downloading">Musik wird heruntergeladen</string>
+    <string name="party_mode_complete">abgeschlossen</string>
+    <string name="party_mode_ready">Bereit</string>
+    <string name="party_mode_playing">Abspielen</string>
+    <string name="party_mode_paused">Pausiert</string>
+    <string name="party_mode_waiting">Warten</string>
+    <string name="party_mode_connecting">Verbinden</string>
+    <string name="party_mode_waiting_dj_start">Warte auf DJ zum Starten</string>
+    <string name="party_mode_synced">Synchronisiert</string>
+    <string name="party_mode_paused_by_dj">Von DJ pausiert</string>
+    <string name="party_mode_dj_controls">DJ-Steuerung</string>
+    <string name="party_mode_flash_sync">Blitz-Sync</string>
+    <string name="party_mode_flash_active">Mit Beats synchronisiert</string>
+    <string name="party_mode_flash_inactive">Nicht mit Musik synchronisiert</string>
+    <string name="party_mode_flash_info">Ihr Kamerablitz wird mit dem Rhythmus synchronisiert</string>
+    
+    <!-- EQ Labels -->
+    <string name="eq_bass">BASS</string>
+    <string name="eq_mid">MITTEL</string>
+    <string name="eq_treble">HÖHEN</string>
+    <string name="dj_master_volume">MASTER-LAUTSTÄRKE</string>
     <string name="party_mode_start_room">Raum Starten</string>
     <string name="party_mode_room_active">Raum ist aktiv - andere können jetzt beitreten</string>
     <string name="party_mode_boost_auto_started">Boost-Service automatisch gestartet</string>
@@ -280,7 +304,6 @@
     <string name="party_mode_trigger_flash">BLITZ AUSLÖSEN</string>
     <string name="party_mode_waiting_for_host">Warte auf Host-Befehl…</string>
     <string name="party_mode_active">Party-Modus Aktiv - %1$s</string>
-    <string name="party_mode_waiting">Warte auf Geräte</string>
     <string name="party_mode_one_device">1 Gerät verbunden</string>
     <string name="party_mode_n_devices">%1$d Geräte verbunden</string>
     <string name="party_mode_channel_name">Party-Modus</string>
@@ -295,7 +318,7 @@
 
     <!-- Flash Warning (Epilepsy / Photosensitivity) -->
     <string name="flash_warning_title">Lichtempfindlichkeitswarnung</string>
-    <string name="flash_warning_message">Diese Funktion verwendet schnell blinkende Lichter, die bei Menschen mit lichtempfindlicher Epilepsie Anf�lle ausl�sen k�nnen.\n\nVerwenden Sie sie nicht, wenn Sie empfindlich auf blinkende Lichter reagieren.</string>
+    <string name="flash_warning_message">Diese Funktion verwendet schnell blinkende Lichter, die bei Menschen mit lichtempfindlicher Epilepsie Anf�lle ausl�sen k�nnen.\n\nVerwenden Sie sie nicht, wenn Sie empfindlich auf blinkende Lichter reagieren.</string>
     <string name="flash_warning_accept">Verstanden</string>
     <string name="flash_warning_cancel">Abbrechen</string>
 </resources>

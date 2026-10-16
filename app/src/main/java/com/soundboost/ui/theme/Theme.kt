@@ -91,9 +91,9 @@ private val LightColorScheme = lightColorScheme(
     onPrimary = Color.White,
     onSecondary = Color.White,
     onTertiary = Color.White,
-    onBackground = Color(0xFF2D2D2D),
-    onSurface = Color(0xFF2D2D2D),
-    onSurfaceVariant = Color(0xFF5D5D5D),
+    onBackground = Color(0xFF1A1A1A),  // Dark text on light background
+    onSurface = Color(0xFF1A1A1A),     // Dark text on light surface
+    onSurfaceVariant = Color(0xFF4A4A4A),  // Medium dark for secondary text
     outline = Color(0xFF8D8D8D),
     outlineVariant = Color(0xFFBDBDBD)
 )

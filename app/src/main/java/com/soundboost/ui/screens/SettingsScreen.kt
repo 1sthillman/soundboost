@@ -33,7 +33,6 @@ fun SettingsScreen(
     onShareApp: () -> Unit,
     onDarkModeChanged: (Boolean?) -> Unit,
     onOpenBackup: () -> Unit,
-    onOpenAppProfiles: () -> Unit,
     onOpenBluetoothProfiles: () -> Unit,
     onOpenPartyMode: () -> Unit,
     onBack: () -> Unit
@@ -257,23 +256,6 @@ fun SettingsScreen(
                 accentColor = themeColors.accent2,
                 surfaceColor = themeColors.surfaceElevated,
                 onClick = onOpenBackup,
-                endContent = {
-                    Icon(
-                        Icons.Default.ChevronRight,
-                        contentDescription = null,
-                        tint = themeColors.onSurfaceVariant
-                    )
-                }
-            )
-            
-            // NEW v1.5.0: Per-App Profiles
-            ModernSettingsCard(
-                title = stringResource(R.string.app_profiles_title),
-                description = stringResource(R.string.app_profiles_desc),
-                icon = Icons.Default.Apps,
-                accentColor = androidx.compose.ui.graphics.Color(0xFF9C27B0),
-                surfaceColor = themeColors.surfaceElevated,
-                onClick = onOpenAppProfiles,
                 endContent = {
                     Icon(
                         Icons.Default.ChevronRight,

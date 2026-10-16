@@ -25,10 +25,15 @@ object PersistentWebViewManager {
     private var webView: WebView? = null
     private var isInitialized = false
     private var isPageLoaded = false  // YENİ: Track if page is fully loaded
+    private var bridge: WebViewBridge? = null  // NEW: Expose bridge for callback updates
     
     // YENİ: Public accessor for onboarding
     val webViewInstance: WebView?
         get() = webView
+    
+    // NEW: Public accessor for bridge to update callbacks
+    val webViewBridge: WebViewBridge?
+        get() = bridge
     
     // YENİ: Check if WebView is ready for onboarding coordinate queries
     val isReadyForOnboarding: Boolean
@@ -49,6 +54,7 @@ object PersistentWebViewManager {
     /**
      * Initialize WebView with bridge and callbacks
      * Called once when WebView is first attached to MainActivity
+     * Navigation callbacks are nullable and updated separately via updateNavigationCallbacks()
      */
     @SuppressLint("SetJavaScriptEnabled")
     fun initialize(
@@ -57,10 +63,7 @@ object PersistentWebViewManager {
         onSensitivityChange: (Int) -> Unit,
         onToggleBoost: () -> Unit,
         onThemeChanged: (AppTheme) -> Unit,
-        onModeChanged: (Boolean?) -> Unit,
-        onNavigateToSettings: () -> Unit,
-        onNavigateToEqualizer: () -> Unit,
-        onNavigateToLanguage: () -> Unit
+        onModeChanged: (Boolean?) -> Unit
     ) {
         if (isInitialized) {
             android.util.Log.d("WebViewManager", "⚠️ Already initialized - skipping")
@@ -70,40 +73,15 @@ object PersistentWebViewManager {
         android.util.Log.d("WebViewManager", "🔧 Initializing WebView with bridge")
         val wv = getWebView(context)
         
-        // Add JavaScript interface for Kotlin ↔ HTML communication
-        wv.addJavascriptInterface(
-            WebViewBridge(
-                onVolumeChange, onSensitivityChange, onToggleBoost,
-                onThemeChanged = { themeName ->
-                    val theme = when (themeName) {
-                        "mehtap" -> AppTheme.MEHTAP
-                        "sumi" -> AppTheme.SUMI
-                        "aurora" -> AppTheme.AURORA
-                        "fener" -> AppTheme.FENER
-                        "orman" -> AppTheme.ORMAN
-                        "eyes" -> AppTheme.EYES
-                        "mycel" -> AppTheme.MYCEL
-                        "reef" -> AppTheme.REEF
-                        "monsoon" -> AppTheme.MONSOON
-                        "murekkep" -> AppTheme.MUREKKEP
-                        "col" -> AppTheme.COL
-                        "divit" -> AppTheme.DIVIT
-                        else -> AppTheme.MEHTAP
-                    }
-                    onThemeChanged(theme)
-                },
-                onModeChanged = { mode ->
-                    val isDarkMode = when (mode) {
-                        "dark" -> true
-                        "light" -> false
-                        else -> null
-                    }
-                    onModeChanged(isDarkMode)
-                },
-                onNavigateToSettings, onNavigateToEqualizer, onNavigateToLanguage
-            ),
-            "AndroidBridge"
+        // Create bridge WITHOUT navigation callbacks (they'll be set separately)
+        bridge = WebViewBridge(
+            onVolumeChange, onSensitivityChange, onToggleBoost,
+            onThemeChanged,  // Pass directly, WebViewBridge does String→AppTheme conversion
+            onModeChanged    // Pass directly, WebViewBridge does String→Boolean? conversion
         )
+        
+        // Add JavaScript interface for Kotlin ↔ HTML communication
+        wv.addJavascriptInterface(bridge!!, "AndroidBridge")
         
         // Load HTML only once
         wv.loadUrl("file:///android_asset/awwardstheme.html")
@@ -283,6 +261,8 @@ object PersistentWebViewManager {
      */
     fun destroy() {
         android.util.Log.d("WebViewManager", "💀 Destroying WebView")
+        bridge?.clearNavigationCallbacks()
+        bridge = null
         webView?.destroy()
         webView = null
         isInitialized = false

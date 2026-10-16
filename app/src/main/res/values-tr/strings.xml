@@ -267,7 +267,7 @@
     <string name="share_app_title">Sound\'ST Boost\'u Paylaşın</string>
     <string name="share_app_message">Bu uygulamayı arkadaşlarınızla paylaşın!</string>
     <string name="share_now">Şimdi Paylaş</string>
-    <string name="share_text">Sound\'ST Boost\'a göz atın - Android için en iyi ses yükseltici!</string>
+    <string name="share_text">Sound\'ST Boost\'a göz atın - Android için en iyi ses yükseltici! 🎧🔊\n\n%1$s</string>
     <string name="share_via">Şununla paylaş</string>
     <string name="cancel">İptal</string>
     <string name="rate_your_app">Uygulamayı Değerlendir</string>
@@ -361,6 +361,30 @@
     <string name="party_mode_join_desc">Aynı ağdaki bir host\'a bağlan</string>
     <string name="party_mode_scan_rooms">Odaları Tara</string>
     <string name="party_mode_room_name">Oda Adı</string>
+    
+    <!-- CLIENT UI - Modern redesign strings -->
+    <string name="party_mode_client_subtitle">Müzik + Flaş Senkronizasyonu</string>
+    <string name="party_mode_downloading">Müzik indiriliyor</string>
+    <string name="party_mode_complete">tamamlandı</string>
+    <string name="party_mode_ready">Hazır</string>
+    <string name="party_mode_playing">Çalıyor</string>
+    <string name="party_mode_paused">Duraklatıldı</string>
+    <string name="party_mode_waiting">Bekleniyor</string>
+    <string name="party_mode_connecting">Bağlanıyor</string>
+    <string name="party_mode_waiting_dj_start">DJ\'in başlatması bekleniyor</string>
+    <string name="party_mode_synced">Senkronize</string>
+    <string name="party_mode_paused_by_dj">DJ tarafından duraklatıldı</string>
+    <string name="party_mode_dj_controls">DJ Kontrolleri</string>
+    <string name="party_mode_flash_sync">Flaş Senkronizasyonu</string>
+    <string name="party_mode_flash_active">Ritimle senkronize</string>
+    <string name="party_mode_flash_inactive">Müzikle senkronize edilmedi</string>
+    <string name="party_mode_flash_info">Kamera flaşınız ritme göre senkronize yanacak</string>
+    
+    <!-- EQ Labels -->
+    <string name="eq_bass">BAS</string>
+    <string name="eq_mid">ORTA</string>
+    <string name="eq_treble">TİZ</string>
+    <string name="dj_master_volume">ANA SES</string>
     <string name="party_mode_start_room">Odayı Başlat</string>
     <string name="party_mode_room_active">Oda aktif - diğerleri şimdi katılabilir</string>
     <string name="party_mode_boost_auto_started">Boost servisi otomatik başlatıldı</string>
@@ -391,7 +415,6 @@
     <string name="party_mode_trigger_flash">FLAŞI TETİKLE</string>
     <string name="party_mode_waiting_for_host">Host komutu bekleniyor…</string>
     <string name="party_mode_active">Parti Modu Aktif - %1$s</string>
-    <string name="party_mode_waiting">Cihazlar bekleniyor</string>
     <string name="party_mode_one_device">1 cihaz bağlı</string>
     <string name="party_mode_n_devices">%1$d cihaz bağlı</string>
     <string name="party_mode_channel_name">Parti Modu</string>

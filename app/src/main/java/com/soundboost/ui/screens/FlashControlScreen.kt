@@ -38,6 +38,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.foundation.border
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.Spring
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.delay
 import com.soundboost.R
 import com.soundboost.SyncState
 import com.soundboost.SyncViewModel
@@ -135,7 +145,7 @@ fun FlashControlScreen(
             if (isHost) {
                 HostDJConsole(viewModel, themeColors)
             } else {
-                ClientWaitingScreen(roomName, themeColors)
+                ClientWaitingScreen(roomName, viewModel, themeColors)
             }
             
             ScreenFlashOverlay(
@@ -233,9 +243,18 @@ private fun HostDJConsole(
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .background(
+                Brush.verticalGradient(
+                    colors = listOf(
+                        Color(0xFF0a0a0a),
+                        Color(0xFF151515),
+                        Color(0xFF0a0a0a)
+                    )
+                )
+            )
             .verticalScroll(rememberScrollState())
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+            .padding(14.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         // DJ DECK
         DJDeckSection(viewModel, musicState, currentPlaylist, djState, themeColors)
@@ -245,6 +264,9 @@ private fun HostDJConsole(
         
         // MIXER
         DJMixerControls(viewModel, djState, musicState, themeColors)
+        
+        // DJ EFFECTS PANEL - Modern professional design
+        DJEffectsPanel(viewModel, themeColors)
         
         // BASS FLASH
         if (viewModel.isTorchSupported) {
@@ -262,54 +284,74 @@ private fun DJDeckSection(
     themeColors: com.soundboost.ui.theme.ThemeColors
 ) {
     Surface(
-        modifier = Modifier
-            .fillMaxWidth()
-            .shadow(12.dp, RoundedCornerShape(24.dp)),
-        shape = RoundedCornerShape(24.dp),
-        color = themeColors.surface
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(16.dp),
+        color = Color(0xFF1a1a1a)
     ) {
         Column(
-            modifier = Modifier.padding(20.dp),
-            verticalArrangement = Arrangement.spacedBy(20.dp)
+            modifier = Modifier
+                .background(
+                    Brush.verticalGradient(
+                        colors = listOf(
+                            Color(0xFF202020),
+                            Color(0xFF1a1a1a)
+                        )
+                    )
+                )
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(14.dp)
         ) {
-            // Track info
             val currentTrack = currentPlaylist?.currentTrack
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        currentTrack?.fileName ?: "No Track",
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 18.sp,
+                        currentTrack?.fileName ?: "NO TRACK",
+                        fontWeight = FontWeight.Black,
+                        fontSize = 16.sp,
                         maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
+                        overflow = TextOverflow.Ellipsis,
+                        color = Color.White,
+                        letterSpacing = 0.5.sp
                     )
                     Text(
                         when (musicState) {
-                            is MusicShareState.Playing -> "Playing"
-                            is MusicShareState.Paused -> "Paused"
-                            else -> "Ready"
+                            is MusicShareState.Playing -> "PLAYING"
+                            is MusicShareState.Paused -> "PAUSED"
+                            else -> "READY"
                         },
-                        fontSize = 13.sp,
-                        color = themeColors.onSurfaceVariant
+                        fontSize = 11.sp,
+                        color = when (musicState) {
+                            is MusicShareState.Playing -> Color(0xFF00E676)
+                            is MusicShareState.Paused -> Color(0xFFFFB74D)
+                            else -> Color(0xFF888888)
+                        },
+                        fontWeight = FontWeight.Black,
+                        letterSpacing = 1.sp
                     )
                 }
                 if (musicState is MusicShareState.Playing || musicState is MusicShareState.Paused) {
-                    Text(
-                        "${(djState.playbackSpeed * 100).toInt()}%",
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = if (djState.playbackSpeed != 1.0f) themeColors.accent1 else themeColors.onSurfaceVariant
-                    )
+                    Surface(
+                        shape = RoundedCornerShape(6.dp),
+                        color = if (djState.playbackSpeed != 1.0f) 
+                            themeColors.accent1.copy(alpha = 0.25f)
+                        else 
+                            Color(0xFF2a2a2a)
+                    ) {
+                        Text(
+                            "${(djState.playbackSpeed * 100).toInt()}%",
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Black,
+                            color = if (djState.playbackSpeed != 1.0f) themeColors.accent1 else Color(0xFF999999),
+                            modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp)
+                        )
+                    }
                 }
             }
-            
-            // Vinyl deck
             VinylDeck(viewModel, musicState, djState, themeColors)
-            
-            // Transport
             TransportControls(viewModel, musicState, currentPlaylist, themeColors)
         }
     }
@@ -324,164 +366,192 @@ private fun VinylDeck(
 ) {
     var rotation by remember { mutableFloatStateOf(0f) }
     var isDragging by remember { mutableStateOf(false) }
-    var lastDragX by remember { mutableFloatStateOf(0f) }
-    var lastSpeedUpdate by remember { mutableLongStateOf(0L) }
+    var scratchStartPos by remember { mutableFloatStateOf(0f) }
+    var currentScratchPos by remember { mutableFloatStateOf(0f) }
+    var lastHapticPos by remember { mutableFloatStateOf(0f) }
     val haptic = LocalHapticFeedback.current
+    val scope = rememberCoroutineScope()
     
     LaunchedEffect(musicState, djState.playbackSpeed) {
         if (musicState is MusicShareState.Playing && !isDragging) {
             while (true) {
                 kotlinx.coroutines.delay(16)
-                // CRITICAL: Rotate forward or BACKWARD based on speed
                 rotation += djState.playbackSpeed * 2f
                 if (rotation > 360f) rotation -= 360f
-                else if (rotation < -360f) rotation += 360f  // Handle reverse rotation
+                else if (rotation < -360f) rotation += 360f
             }
         }
     }
     
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .aspectRatio(1f)
-            .pointerInput(Unit) {
-                detectDragGestures(
-                    onDragStart = { 
-                        isDragging = true
-                        lastDragX = 0f
-                        lastSpeedUpdate = System.currentTimeMillis()
-                        haptic.performHapticFeedback(HapticFeedbackType.LongPress)
-                    },
-                    onDragEnd = { 
-                        isDragging = false
-                        // Reset to normal playback
-                        if (djState.playbackSpeed != 1.0f) {
-                            viewModel.djScratchSeek(0, 1.0f)
-                        }
-                        haptic.performHapticFeedback(HapticFeedbackType.LongPress)
-                    },
-                    onDrag = { change, dragAmount ->
-                        change.consume()
-                        
-                        // Rotate vinyl - BOTH directions
-                        rotation += dragAmount.x * 0.5f
-                        
-                        // CRITICAL: THROTTLE speed updates - sadece 50ms'de bir güncelle (daha responsive)
-                        val now = System.currentTimeMillis()
-                        if (now - lastSpeedUpdate < 50) {
-                            return@detectDragGestures
-                        }
-                        lastSpeedUpdate = now
-                        
-                        // PROFESSIONAL DJ SCRATCH - REAL VINYL with REVERSE!
-                        // Kullanıcı hızlı geriye çekerse -> REVERSE PLAYBACK (negative speed)
-                        val dragVelocity = dragAmount.x
-                        val speed = when {
-                            // STRONG REVERSE - Fast backward scratch
-                            dragVelocity < -15f -> -1.5f    // ◀◀ FAST REVERSE
-                            dragVelocity < -10f -> -1.0f    // ◀ REVERSE
-                            dragVelocity < -5f -> -0.5f     // ◀ SLOW REVERSE
-                            dragVelocity < -2f -> 0.3f      // Very slow forward
-                            
-                            // FORWARD - Normal/fast playback
-                            dragVelocity > 15f -> 1.8f      // ▶▶ FAST FORWARD
-                            dragVelocity > 10f -> 1.5f      // ▶ FAST
-                            dragVelocity > 5f -> 1.2f       // ▶ Slight fast
-                            dragVelocity > 2f -> 1.0f       // Normal
-                            
-                            // STOP/VERY SLOW
-                            else -> 0.1f                    // Almost stopped
-                        }
-                        
-                        // Always send - user is actively scratching
-                        viewModel.djScratchSeek(0, speed)
-                        
-                        // Haptic feedback - more responsive for scratching
-                        if (abs(dragAmount.x - lastDragX) > 20f) {
-                            haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
-                            lastDragX = dragAmount.x
-                        }
-                    }
-                )
-            },
-        contentAlignment = Alignment.Center
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        // Vinyl görselleştirme - KESİN SİYAH/DARK, MAVİ YOK!
-        Canvas(modifier = Modifier.fillMaxSize()) {
-            val center = Offset(size.width / 2f, size.height / 2f)
-            val radius = size.minDimension / 2f * 0.85f
-            
-            // Vinyl - Gradient siyah (MAVİ YOK!)
-            drawCircle(
-                brush = Brush.radialGradient(
-                    colors = listOf(
-                        Color(0xFF2a2a2a),  // Koyu gri
-                        Color(0xFF0a0a0a)   // Çok koyu siyah
-                    ),
-                    center = center,
-                    radius = radius
-                ),
-                radius = radius,
-                center = center
-            )
-            
-            rotate(rotation, center) {
-                // Grooves
-                for (i in 1..12) {
-                    val r = radius * (0.3f + i * 0.05f)
+        Text(
+            "SCRATCH VINYL",
+            fontSize = 10.sp,
+            fontWeight = FontWeight.Black,
+            color = Color(0xFF888888),
+            textAlign = TextAlign.Center,
+            letterSpacing = 1.5.sp
+        )
+        
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .aspectRatio(1f)
+                .pointerInput(Unit) {
+                    detectDragGestures(
+                        onDragStart = { offset ->
+                            isDragging = true
+                            scratchStartPos = offset.x
+                            currentScratchPos = offset.x
+                            lastHapticPos = offset.x
+                            haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                        },
+                        onDragEnd = { 
+                            isDragging = false
+                            if (djState.playbackSpeed != 1.0f) {
+                                viewModel.djScratchSeek(0, 1.0f)
+                            }
+                            haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                        },
+                        onDrag = { change, dragAmount ->
+                            change.consume()
+                            currentScratchPos += dragAmount.x
+                            
+                            val scratchDelta = currentScratchPos - scratchStartPos
+                            rotation += dragAmount.x * 0.8f
+                            
+                            val speed = when {
+                                dragAmount.x < -20f -> -2.0f
+                                dragAmount.x < -14f -> -1.6f
+                                dragAmount.x < -8f -> -1.2f
+                                dragAmount.x < -3f -> -0.6f
+                                dragAmount.x > 20f -> 2.0f
+                                dragAmount.x > 14f -> 1.8f
+                                dragAmount.x > 8f -> 1.4f
+                                dragAmount.x > 3f -> 1.1f
+                                else -> 0.05f
+                            }
+                            
+                            scope.launch {
+                                viewModel.djScratchSeek(0, speed)
+                            }
+                            
+                            if (abs(currentScratchPos - lastHapticPos) > 12f) {
+                                haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                                lastHapticPos = currentScratchPos
+                            }
+                        }
+                    )
+                },
+            contentAlignment = Alignment.Center
+        ) {
+            Canvas(modifier = Modifier.fillMaxSize()) {
+                val center = Offset(size.width / 2f, size.height / 2f)
+                val radius = size.minDimension / 2f * 0.88f
+                
+                if (isDragging) {
                     drawCircle(
-                        color = Color.White.copy(alpha = 0.05f),
-                        radius = r,
-                        center = center,
-                        style = Stroke(width = 1.dp.toPx())
+                        brush = Brush.radialGradient(
+                            colors = listOf(
+                                Color(0xFFFF3D00).copy(alpha = 0.4f),
+                                Color.Transparent
+                            ),
+                            center = center,
+                            radius = radius * 1.2f
+                        ),
+                        radius = radius * 1.2f,
+                        center = center
                     )
                 }
                 
-                // Label - neutral gri
                 drawCircle(
-                    color = Color(0xFF3a3a3a),
-                    radius = radius * 0.25f,
+                    brush = Brush.radialGradient(
+                        colors = listOf(
+                            Color(0xFF1a1a1a),
+                            Color(0xFF0a0a0a)
+                        ),
+                        center = center,
+                        radius = radius
+                    ),
+                    radius = radius,
                     center = center
                 )
                 
-                // Accent line - KIRMIZI (scratch indicator)
-                drawLine(
-                    color = if (isDragging) Color(0xFFFF5252) else Color(themeColors.accent1.value),
-                    start = center,
-                    end = Offset(center.x + radius * 0.2f, center.y),
-                    strokeWidth = if (isDragging) 4.dp.toPx() else 3.dp.toPx(),
-                    cap = StrokeCap.Round
-                )
+                rotate(rotation, center) {
+                    for (i in 1..12) {
+                        val r = radius * (0.3f + i * 0.05f)
+                        drawCircle(
+                            color = Color.White.copy(alpha = 0.03f),
+                            radius = r,
+                            center = center,
+                            style = Stroke(width = 1.dp.toPx())
+                        )
+                    }
+                    
+                    drawCircle(
+                        brush = Brush.radialGradient(
+                            colors = listOf(
+                                Color(0xFF2a2a2a),
+                                Color(0xFF1a1a1a)
+                            )
+                        ),
+                        radius = radius * 0.26f,
+                        center = center
+                    )
+                    
+                    drawLine(
+                        brush = Brush.linearGradient(
+                            colors = if (isDragging) {
+                                listOf(Color(0xFFFF3D00), Color(0xFFFF6E40))
+                            } else {
+                                listOf(themeColors.accent1.copy(alpha = 0.8f), themeColors.accent1)
+                            }
+                        ),
+                        start = center,
+                        end = Offset(center.x + radius * 0.2f, center.y),
+                        strokeWidth = if (isDragging) 6.dp.toPx() else 4.dp.toPx(),
+                        cap = StrokeCap.Round
+                    )
+                }
             }
+            
+            Icon(
+                if (musicState is MusicShareState.Playing) Icons.Default.PlayArrow else Icons.Default.Pause,
+                null,
+                tint = if (isDragging) Color(0xFFFF3D00) else Color(0xFFCCCCCC),
+                modifier = Modifier.size(if (isDragging) 42.dp else 38.dp)
+            )
         }
         
-        Icon(
-            if (musicState is MusicShareState.Playing) Icons.Default.PlayArrow else Icons.Default.Pause,
-            null,
-            tint = if (isDragging) Color(0xFFFF5252) else themeColors.accent1,
-            modifier = Modifier.size(if (isDragging) 36.dp else 32.dp)
-        )
-    }
-    
-    // Scratch feedback - REVERSE ve FORWARD göster
-    if (isDragging && djState.playbackSpeed != 1.0f) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(top = 8.dp)
-        ) {
+        if (isDragging) {
             val isReverse = djState.playbackSpeed < 0
-            Text(
-                if (isReverse) "◀◀ REVERSE SCRATCH" else if (djState.playbackSpeed > 1.0f) "SPEED ▶▶" else "▶ SLOW",
-                fontSize = 11.sp,
-                fontWeight = FontWeight.Black,
-                color = if (isReverse) Color(0xFFFF5252) else Color(0xFF00E676),
-                letterSpacing = 1.sp
-            )
-            Text(
-                "${if (isReverse) "" else "+"}${(djState.playbackSpeed * 100).toInt()}%",
-                fontSize = 10.sp,
-                color = if (isReverse) Color(0xFFFF5252) else Color(0xFF00E676)
-            )
+            Surface(
+                shape = RoundedCornerShape(8.dp),
+                color = if (isReverse) Color(0xFFFF3D00) else Color(0xFF00E676)
+            ) {
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.padding(horizontal = 14.dp, vertical = 6.dp)
+                ) {
+                    Text(
+                        if (isReverse) "◀◀" else "▶▶",
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Black,
+                        color = Color.White
+                    )
+                    Text(
+                        "${if (isReverse) "" else "+"}${(djState.playbackSpeed * 100).toInt()}%",
+                        fontSize = 12.sp,
+                        color = Color.White,
+                        fontWeight = FontWeight.Black,
+                        letterSpacing = 0.5.sp
+                    )
+                }
+            }
         }
     }
 }
@@ -493,6 +563,11 @@ private fun TransportControls(
     currentPlaylist: com.soundboost.sync.Playlist?,
     themeColors: com.soundboost.ui.theme.ThemeColors
 ) {
+    // CRITICAL: Check if all clients have downloaded music
+    val allClientsReady by viewModel.allClientsReady.collectAsState()
+    val clientDownloadStatus by viewModel.clientDownloadStatus.collectAsState()
+    val connectedDevices by viewModel.connectedDevices.collectAsState()
+    
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(10.dp)
@@ -512,32 +587,62 @@ private fun TransportControls(
             Icon(Icons.Default.SkipPrevious, null)
         }
         
-        Button(
-            onClick = {
-                when (musicState) {
-                    is MusicShareState.Playing -> viewModel.controlSharedMusic(MusicAction.PAUSE)
-                    is MusicShareState.Paused -> viewModel.controlSharedMusic(MusicAction.RESUME)
-                    is MusicShareState.Ready, is MusicShareState.Prepared -> viewModel.startSharedMusic()
-                    else -> {}
-                }
-            },
-            modifier = Modifier
-                .weight(2f)
-                .height(56.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = themeColors.accent1
-            ),
-            shape = RoundedCornerShape(16.dp),
-            enabled = musicState !is MusicShareState.Idle && musicState !is MusicShareState.Downloading
+        // MAIN PLAY/PAUSE BUTTON
+        Column(
+            modifier = Modifier.weight(2f),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Icon(
-                when (musicState) {
-                    is MusicShareState.Playing -> Icons.Default.Pause
-                    else -> Icons.Default.PlayArrow
+            Button(
+                onClick = {
+                    when (musicState) {
+                        is MusicShareState.Playing -> viewModel.controlSharedMusic(MusicAction.PAUSE)
+                        is MusicShareState.Paused -> viewModel.controlSharedMusic(MusicAction.RESUME)
+                        is MusicShareState.Ready, is MusicShareState.Prepared -> viewModel.startSharedMusic()
+                        else -> {}
+                    }
                 },
-                null,
-                modifier = Modifier.size(32.dp)
-            )
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = themeColors.accent1
+                ),
+                shape = RoundedCornerShape(16.dp),
+                // CRITICAL: Enable only when:
+                // 1. Music is ready/prepared/playing/paused (not idle/downloading)
+                // 2. ALL clients have finished downloading (allClientsReady)
+                enabled = when (musicState) {
+                    is MusicShareState.Playing, is MusicShareState.Paused -> true
+                    is MusicShareState.Ready, is MusicShareState.Prepared -> {
+                        // For START: require all clients ready
+                        allClientsReady
+                    }
+                    else -> false
+                }
+            ) {
+                Icon(
+                    when (musicState) {
+                        is MusicShareState.Playing -> Icons.Default.Pause
+                        else -> Icons.Default.PlayArrow
+                    },
+                    null,
+                    modifier = Modifier.size(32.dp)
+                )
+            }
+            
+            // CLIENT READY STATUS INDICATOR
+            if (connectedDevices.isNotEmpty() && musicState is MusicShareState.Ready) {
+                val readyCount = clientDownloadStatus.count { it.value >= 1.0f }
+                val totalClients = connectedDevices.size
+                
+                Text(
+                    if (allClientsReady) "✅ All Ready" else "⏳ $readyCount/$totalClients Ready",
+                    fontSize = 10.sp,
+                    color = if (allClientsReady) Color(0xFF00E676) else themeColors.onSurfaceVariant,
+                    fontWeight = if (allClientsReady) FontWeight.Bold else FontWeight.Normal,
+                    modifier = Modifier.padding(top = 4.dp)
+                )
+            }
         }
         
         IconButton(
@@ -584,29 +689,48 @@ private fun PlaylistCarousel(
     Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .shadow(8.dp, RoundedCornerShape(20.dp)),
+            .shadow(12.dp, RoundedCornerShape(20.dp)),
         shape = RoundedCornerShape(20.dp),
-        color = themeColors.surface
+        color = Color(0xFF1a1a1a)
     ) {
         Column(
-            modifier = Modifier.padding(16.dp),
+            modifier = Modifier
+                .background(
+                    Brush.verticalGradient(
+                        colors = listOf(
+                            Color(0xFF222222),
+                            Color(0xFF1a1a1a)
+                        )
+                    )
+                )
+                .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
                     "PLAYLIST",
-                    fontWeight = FontWeight.Bold,
+                    fontWeight = FontWeight.Black,
                     fontSize = 14.sp,
-                    letterSpacing = 1.sp
+                    letterSpacing = 1.sp,
+                    color = Color.White
                 )
-                IconButton(
+                Surface(
                     onClick = { musicFileLauncher.launch("audio/*") },
-                    modifier = Modifier.size(36.dp)
+                    shape = CircleShape,
+                    color = themeColors.accent1
                 ) {
-                    Icon(Icons.Default.Add, null, tint = themeColors.accent1)
+                    Icon(
+                        Icons.Default.Add,
+                        null,
+                        tint = Color.White,
+                        modifier = Modifier
+                            .size(36.dp)
+                            .padding(8.dp)
+                    )
                 }
             }
             
@@ -628,12 +752,18 @@ private fun PlaylistCarousel(
                     }
                 }
             } else {
-                Text(
-                    "Tap + to add tracks",
-                    fontSize = 13.sp,
-                    color = themeColors.onSurfaceVariant,
-                    modifier = Modifier.padding(vertical = 20.dp)
-                )
+                Surface(
+                    shape = RoundedCornerShape(12.dp),
+                    color = Color(0xFF2a2a2a)
+                ) {
+                    Text(
+                        "📀 Tap + to add music tracks",
+                        fontSize = 13.sp,
+                        color = Color(0xFFBBBBBB),
+                        modifier = Modifier.padding(vertical = 24.dp, horizontal = 16.dp),
+                        textAlign = TextAlign.Center
+                    )
+                }
             }
         }
     }
@@ -727,23 +857,38 @@ private fun DJMixerControls(
     Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .shadow(8.dp, RoundedCornerShape(20.dp)),
+            .shadow(12.dp, RoundedCornerShape(20.dp)),
         shape = RoundedCornerShape(20.dp),
-        color = themeColors.surface
+        color = Color(0xFF1a1a1a)
     ) {
         Column(
-            modifier = Modifier.padding(20.dp),
+            modifier = Modifier
+                .background(
+                    Brush.verticalGradient(
+                        colors = listOf(
+                            Color(0xFF222222),
+                            Color(0xFF1a1a1a)
+                        )
+                    )
+                )
+                .padding(20.dp),
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
             Text(
                 "DJ MIXER",
                 fontWeight = FontWeight.Black,
                 fontSize = 13.sp,
-                letterSpacing = 1.2.sp
+                letterSpacing = 1.2.sp,
+                color = Color.White
             )
             
             // EQ KNOBS
-            Text("EQUALIZER", fontSize = 11.sp, fontWeight = FontWeight.Bold)
+            Text(
+                "EQUALIZER",
+                fontSize = 11.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color(0xFFBBBBBB)
+            )
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
@@ -759,7 +904,7 @@ private fun DJMixerControls(
                 }
             }
             
-            HorizontalDivider(color = themeColors.onSurface.copy(alpha = 0.1f))
+            HorizontalDivider(color = Color(0xFF2a2a2a))
             
             // MASTER FADER
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -767,8 +912,18 @@ private fun DJMixerControls(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text("MASTER", fontSize = 11.sp, fontWeight = FontWeight.Bold)
-                    Text("${(djState.masterVolume * 100).toInt()}%", fontSize = 13.sp, fontWeight = FontWeight.Bold, color = themeColors.accent1)
+                    Text(
+                        "MASTER",
+                        fontSize = 11.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color(0xFFBBBBBB)
+                    )
+                    Text(
+                        "${(djState.masterVolume * 100).toInt()}%",
+                        fontSize = 13.sp,
+                        fontWeight = FontWeight.Black,
+                        color = themeColors.accent1
+                    )
                 }
                 Slider(
                     value = djState.masterVolume,
@@ -781,7 +936,8 @@ private fun DJMixerControls(
                     valueRange = 0f..1f,
                     colors = SliderDefaults.colors(
                         thumbColor = themeColors.accent1,
-                        activeTrackColor = themeColors.accent1
+                        activeTrackColor = themeColors.accent1,
+                        inactiveTrackColor = Color(0xFF2a2a2a)
                     ),
                     modifier = Modifier.height(44.dp)
                 )
@@ -990,42 +1146,636 @@ private fun BassFlashSection(
 @Composable
 private fun ClientWaitingScreen(
     roomName: String,
+    viewModel: SyncViewModel,
     themeColors: com.soundboost.ui.theme.ThemeColors
 ) {
-    Box(
+    val bassFlashEnabled by viewModel.bassFlashEnabled.collectAsState()
+    val musicState by viewModel.musicState.collectAsState()
+    val downloadProgress by viewModel.downloadProgress.collectAsState()
+    val djState by viewModel.djState.collectAsState()
+    
+    // CRITICAL: AUTO-ENABLE bass flash when CLIENT joins!
+    LaunchedEffect(Unit) {
+        if (!bassFlashEnabled && viewModel.isTorchSupported) {
+            kotlinx.coroutines.delay(1000)
+            android.util.Log.d("FlashControl", "CLIENT: Auto-enabling bass flash")
+            viewModel.toggleBassFlashSync(true)
+        }
+    }
+    
+    Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(32.dp),
-        contentAlignment = Alignment.Center
+            .verticalScroll(rememberScrollState())
+            .padding(20.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
+        // HEADER - Room name with gradient
         Surface(
-            shape = RoundedCornerShape(28.dp),
+            shape = RoundedCornerShape(24.dp),
             color = themeColors.surface,
-            modifier = Modifier.shadow(12.dp, RoundedCornerShape(28.dp))
+            modifier = Modifier
+                .fillMaxWidth()
+                .shadow(16.dp, RoundedCornerShape(24.dp))
+        ) {
+            Box(
+                modifier = Modifier
+                    .background(
+                        Brush.verticalGradient(
+                            colors = listOf(
+                                themeColors.accent1.copy(alpha = 0.15f),
+                                themeColors.surface
+                            )
+                        )
+                    )
+                    .padding(32.dp)
+            ) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(16.dp),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Icon(
+                        Icons.Default.Celebration,
+                        contentDescription = null,
+                        tint = themeColors.accent1,
+                        modifier = Modifier.size(64.dp)
+                    )
+                    Text(
+                        roomName,
+                        fontSize = 28.sp,
+                        fontWeight = FontWeight.Black,
+                        color = themeColors.onSurface,
+                        textAlign = TextAlign.Center
+                    )
+                    Text(
+                        stringResource(R.string.party_mode_client_subtitle),
+                        fontSize = 14.sp,
+                        color = themeColors.onSurfaceVariant,
+                        textAlign = TextAlign.Center
+                    )
+                }
+            }
+        }
+        
+        // MUSIC STATUS CARD - Download/Playing state
+        Surface(
+            shape = RoundedCornerShape(20.dp),
+            color = themeColors.surface,
+            modifier = Modifier
+                .fillMaxWidth()
+                .shadow(12.dp, RoundedCornerShape(20.dp))
         ) {
             Column(
-                modifier = Modifier.padding(40.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(24.dp)
+                modifier = Modifier.padding(24.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                Icon(
-                    Icons.Default.Wifi,
-                    null,
-                    tint = themeColors.accent1,
-                    modifier = Modifier.size(72.dp)
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    // Status icon with animation
+                    val animatedSize by animateDpAsState(
+                        targetValue = if (musicState is MusicShareState.Playing) 48.dp else 40.dp,
+                        label = "icon_size"
+                    )
+                    
+                    Box(
+                        modifier = Modifier
+                            .size(animatedSize)
+                            .background(
+                                when (musicState) {
+                                    is MusicShareState.Playing -> Color(0xFF00E676).copy(alpha = 0.2f)
+                                    is MusicShareState.Ready -> Color(0xFF00BCD4).copy(alpha = 0.2f)
+                                    is MusicShareState.Downloading -> themeColors.accent1.copy(alpha = 0.2f)
+                                    else -> themeColors.onSurface.copy(alpha = 0.1f)
+                                },
+                                CircleShape
+                            ),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            when (musicState) {
+                                is MusicShareState.Playing -> Icons.Default.PlayArrow
+                                is MusicShareState.Paused -> Icons.Default.Pause
+                                is MusicShareState.Downloading -> Icons.Default.Download
+                                is MusicShareState.Ready -> Icons.Default.CheckCircle
+                                else -> Icons.Default.MusicNote
+                            },
+                            contentDescription = null,
+                            tint = when (musicState) {
+                                is MusicShareState.Playing -> Color(0xFF00E676)
+                                is MusicShareState.Ready -> Color(0xFF00BCD4)
+                                is MusicShareState.Downloading -> themeColors.accent1
+                                else -> themeColors.onSurfaceVariant
+                            },
+                            modifier = Modifier.size(24.dp)
+                        )
+                    }
+                    
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(
+                            when (musicState) {
+                                is MusicShareState.Downloading -> stringResource(R.string.party_mode_downloading)
+                                is MusicShareState.Ready -> stringResource(R.string.party_mode_ready)
+                                is MusicShareState.Playing -> stringResource(R.string.party_mode_playing)
+                                is MusicShareState.Paused -> stringResource(R.string.party_mode_paused)
+                                else -> stringResource(R.string.party_mode_waiting)
+                            },
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = themeColors.onSurface
+                        )
+                        Text(
+                            when (musicState) {
+                                is MusicShareState.Downloading -> {
+                                    val progress = (downloadProgress * 100).toInt()
+                                    "$progress% ${stringResource(R.string.party_mode_complete)}"
+                                }
+                                is MusicShareState.Ready -> stringResource(R.string.party_mode_waiting_dj_start)
+                                is MusicShareState.Playing -> stringResource(R.string.party_mode_synced)
+                                is MusicShareState.Paused -> stringResource(R.string.party_mode_paused_by_dj)
+                                else -> stringResource(R.string.party_mode_connecting)
+                            },
+                            fontSize = 13.sp,
+                            color = themeColors.onSurfaceVariant
+                        )
+                    }
+                }
+                
+                // Download progress bar
+                if (musicState is MusicShareState.Downloading) {
+                    LinearProgressIndicator(
+                        progress = { downloadProgress },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(8.dp)
+                            .clip(RoundedCornerShape(4.dp)),
+                        color = themeColors.accent1,
+                        trackColor = themeColors.onSurface.copy(alpha = 0.1f)
+                    )
+                }
+            }
+        }
+        
+        // DJ MIXER PREVIEW - Show what DJ is doing
+        if (musicState is MusicShareState.Playing || musicState is MusicShareState.Paused) {
+            Surface(
+                shape = RoundedCornerShape(20.dp),
+                color = themeColors.surface,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .shadow(12.dp, RoundedCornerShape(20.dp))
+            ) {
+                Column(
+                    modifier = Modifier.padding(24.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    Text(
+                        stringResource(R.string.party_mode_dj_controls),
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = themeColors.onSurface,
+                        letterSpacing = 0.5.sp
+                    )
+                    
+                    // EQ visualization
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        EQBar(stringResource(R.string.eq_bass), djState.bass, Color(0xFFFF5252), themeColors)
+                        EQBar(stringResource(R.string.eq_mid), djState.mid, Color(0xFFFFEB3B), themeColors)
+                        EQBar(stringResource(R.string.eq_treble), djState.treble, Color(0xFF00E676), themeColors)
+                    }
+                    
+                    // Master volume
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            stringResource(R.string.dj_master_volume),
+                            fontSize = 13.sp,
+                            fontWeight = FontWeight.SemiBold,
+                            color = themeColors.onSurface
+                        )
+                        Text(
+                            "${(djState.masterVolume * 100).toInt()}%",
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = themeColors.accent1
+                        )
+                    }
+                    
+                    LinearProgressIndicator(
+                        progress = { djState.masterVolume },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(6.dp)
+                            .clip(RoundedCornerShape(3.dp)),
+                        color = themeColors.accent1,
+                        trackColor = themeColors.onSurface.copy(alpha = 0.1f)
+                    )
+                }
+            }
+        }
+        
+        // FLASH SYNC CONTROL
+        if (viewModel.isTorchSupported) {
+            Surface(
+                shape = RoundedCornerShape(20.dp),
+                color = themeColors.surface,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .shadow(12.dp, RoundedCornerShape(20.dp))
+            ) {
+                Column(
+                    modifier = Modifier.padding(24.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(12.dp)
+                        ) {
+                            Box(
+                                modifier = Modifier
+                                    .size(40.dp)
+                                    .background(
+                                        if (bassFlashEnabled) Color(0xFF00E676).copy(alpha = 0.2f)
+                                        else themeColors.onSurface.copy(alpha = 0.1f),
+                                        CircleShape
+                                    ),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Icon(
+                                    if (bassFlashEnabled) Icons.Default.FlashlightOn else Icons.Default.FlashlightOff,
+                                    contentDescription = null,
+                                    tint = if (bassFlashEnabled) Color(0xFF00E676) else themeColors.onSurfaceVariant,
+                                    modifier = Modifier.size(20.dp)
+                                )
+                            }
+                            
+                            Column {
+                                Text(
+                                    stringResource(R.string.party_mode_flash_sync),
+                                    fontSize = 15.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = themeColors.onSurface
+                                )
+                                Text(
+                                    if (bassFlashEnabled) 
+                                        stringResource(R.string.party_mode_flash_active)
+                                    else 
+                                        stringResource(R.string.party_mode_flash_inactive),
+                                    fontSize = 12.sp,
+                                    color = themeColors.onSurfaceVariant
+                                )
+                            }
+                        }
+                        
+                        Switch(
+                            checked = bassFlashEnabled,
+                            onCheckedChange = { viewModel.toggleBassFlashSync(it) },
+                            colors = SwitchDefaults.colors(
+                                checkedThumbColor = Color.White,
+                                checkedTrackColor = Color(0xFF00E676),
+                                uncheckedThumbColor = Color.White,
+                                uncheckedTrackColor = themeColors.onSurface.copy(alpha = 0.3f)
+                            )
+                        )
+                    }
+                    
+                    if (bassFlashEnabled) {
+                        HorizontalDivider(color = themeColors.onSurface.copy(alpha = 0.1f))
+                        
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(
+                                    Color(0xFF00E676).copy(alpha = 0.1f),
+                                    RoundedCornerShape(12.dp)
+                                )
+                                .padding(12.dp)
+                        ) {
+                            Icon(
+                                Icons.Default.Info,
+                                contentDescription = null,
+                                tint = Color(0xFF00E676),
+                                modifier = Modifier.size(16.dp)
+                            )
+                            Text(
+                                stringResource(R.string.party_mode_flash_info),
+                                fontSize = 11.sp,
+                                color = themeColors.onSurface,
+                                lineHeight = 16.sp
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun RowScope.EQBar(
+    label: String,
+    value: Float,
+    color: Color,
+    themeColors: com.soundboost.ui.theme.ThemeColors
+) {
+    Column(
+        modifier = Modifier.weight(1f),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        Box(
+            modifier = Modifier
+                .width(40.dp)
+                .height(120.dp)
+                .background(
+                    themeColors.onSurface.copy(alpha = 0.1f),
+                    RoundedCornerShape(20.dp)
                 )
-                Text(
-                    roomName,
-                    fontSize = 26.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = themeColors.accent1
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight(value)
+                    .align(Alignment.BottomCenter)
+                    .background(
+                        Brush.verticalGradient(
+                            colors = listOf(
+                                color.copy(alpha = 0.6f),
+                                color
+                            )
+                        ),
+                        RoundedCornerShape(20.dp)
+                    )
+            )
+        }
+        
+        Text(
+            label,
+            fontSize = 10.sp,
+            fontWeight = FontWeight.Bold,
+            color = themeColors.onSurface
+        )
+        Text(
+            "${(value * 100).toInt()}%",
+            fontSize = 9.sp,
+            color = color,
+            fontWeight = FontWeight.Bold
+        )
+    }
+}
+
+
+@Composable
+private fun DJEffectsPanel(
+    viewModel: SyncViewModel,
+    themeColors: com.soundboost.ui.theme.ThemeColors
+) {
+    val haptic = LocalHapticFeedback.current
+    
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(16.dp),
+        color = Color(0xFF0a0a0a)
+    ) {
+        Column(
+            modifier = Modifier
+                .background(
+                    Brush.verticalGradient(
+                        colors = listOf(
+                            Color(0xFF151515),
+                            Color(0xFF0a0a0a)
+                        )
+                    )
                 )
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp)
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 Text(
-                    "Waiting for DJ...",
-                    fontSize = 15.sp,
-                    color = themeColors.onSurfaceVariant
+                    "FX BANK",
+                    fontWeight = FontWeight.Black,
+                    fontSize = 13.sp,
+                    letterSpacing = 1.5.sp,
+                    color = Color.White
+                )
+                Surface(
+                    shape = RoundedCornerShape(6.dp),
+                    color = themeColors.accent1.copy(alpha = 0.2f)
+                ) {
+                    Text(
+                        "20ms SYNC",
+                        fontSize = 9.sp,
+                        fontWeight = FontWeight.Black,
+                        color = themeColors.accent1,
+                        letterSpacing = 0.5.sp,
+                        modifier = Modifier.padding(horizontal = 6.dp, vertical = 3.dp)
+                    )
+                }
+            }
+            
+            HorizontalDivider(color = Color(0xFF222222), thickness = 1.dp)
+            
+            EffectCategorySection(
+                title = "DROPS",
+                effects = com.soundboost.sync.DJEffects.getByCategory(com.soundboost.sync.EffectCategory.DROP),
+                onEffectTrigger = { effectId ->
+                    haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                    viewModel.triggerDJEffect(effectId)
+                },
+                themeColors = themeColors
+            )
+            
+            EffectCategorySection(
+                title = "RISERS",
+                effects = com.soundboost.sync.DJEffects.getByCategory(com.soundboost.sync.EffectCategory.RISER),
+                onEffectTrigger = { effectId ->
+                    haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                    viewModel.triggerDJEffect(effectId)
+                },
+                themeColors = themeColors
+            )
+            
+            EffectCategorySection(
+                title = "IMPACTS",
+                effects = com.soundboost.sync.DJEffects.getByCategory(com.soundboost.sync.EffectCategory.IMPACT),
+                onEffectTrigger = { effectId ->
+                    haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                    viewModel.triggerDJEffect(effectId)
+                },
+                themeColors = themeColors
+            )
+            
+            val vocalsAndMemes = com.soundboost.sync.DJEffects.getByCategory(com.soundboost.sync.EffectCategory.VOCAL) +
+                    com.soundboost.sync.DJEffects.getByCategory(com.soundboost.sync.EffectCategory.MEME) +
+                    com.soundboost.sync.DJEffects.getByCategory(com.soundboost.sync.EffectCategory.WEAPON)
+            
+            EffectCategorySection(
+                title = "SAMPLES",
+                effects = vocalsAndMemes,
+                onEffectTrigger = { effectId ->
+                    haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                    viewModel.triggerDJEffect(effectId)
+                },
+                themeColors = themeColors
+            )
+        }
+    }
+}
+
+@Composable
+private fun EffectCategorySection(
+    title: String,
+    effects: List<com.soundboost.sync.DJEffect>,
+    onEffectTrigger: (String) -> Unit,
+    themeColors: com.soundboost.ui.theme.ThemeColors
+) {
+    if (effects.isEmpty()) return
+    
+    Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+        Text(
+            title,
+            fontSize = 10.sp,
+            fontWeight = FontWeight.Black,
+            color = Color(0xFF666666),
+            letterSpacing = 1.2.sp
+        )
+        val rows = effects.chunked(3)
+        rows.forEach { rowEffects ->
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                rowEffects.forEach { effect ->
+                    EffectButton(
+                        effect = effect,
+                        onClick = { onEffectTrigger(effect.id) },
+                        modifier = Modifier.weight(1f)
+                    )
+                }
+                repeat(3 - rowEffects.size) {
+                    Spacer(modifier = Modifier.weight(1f))
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun EffectButton(
+    effect: com.soundboost.sync.DJEffect,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    var isPressed by remember { mutableStateOf(false) }
+    val scope = rememberCoroutineScope()
+    
+    val scale by animateFloatAsState(
+        targetValue = if (isPressed) 0.9f else 1f,
+        animationSpec = spring(
+            dampingRatio = Spring.DampingRatioMediumBouncy,
+            stiffness = Spring.StiffnessHigh
+        ),
+        label = "scale"
+    )
+    
+    val buttonColor = try {
+        androidx.compose.ui.graphics.Color(android.graphics.Color.parseColor(effect.color))
+    } catch (e: Exception) {
+        Color(0xFFFF5252)
+    }
+    
+    Surface(
+        onClick = {
+            isPressed = true
+            onClick()
+            scope.launch {
+                kotlinx.coroutines.delay(120)
+                isPressed = false
+            }
+        },
+        modifier = modifier
+            .height(52.dp)
+            .graphicsLayer {
+                scaleX = scale
+                scaleY = scale
+            },
+        shape = RoundedCornerShape(10.dp),
+        color = Color.Transparent
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(
+                    Brush.verticalGradient(
+                        colors = if (isPressed) {
+                            listOf(
+                                buttonColor.copy(alpha = 0.4f),
+                                buttonColor.copy(alpha = 0.25f)
+                            )
+                        } else {
+                            listOf(
+                                buttonColor.copy(alpha = 0.2f),
+                                buttonColor.copy(alpha = 0.08f)
+                            )
+                        }
+                    )
+                )
+                .border(
+                    width = if (isPressed) 2.dp else 1.dp,
+                    brush = Brush.verticalGradient(
+                        colors = listOf(
+                            buttonColor.copy(alpha = if (isPressed) 0.8f else 0.5f),
+                            buttonColor.copy(alpha = if (isPressed) 0.5f else 0.2f)
+                        )
+                    ),
+                    shape = RoundedCornerShape(10.dp)
+                ),
+            contentAlignment = Alignment.Center
+        ) {
+            if (isPressed) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(
+                            Brush.radialGradient(
+                                colors = listOf(
+                                    buttonColor.copy(alpha = 0.3f),
+                                    Color.Transparent
+                                )
+                            )
+                        )
                 )
             }
+            Text(
+                effect.displayName,
+                fontSize = 10.sp,
+                fontWeight = FontWeight.Black,
+                color = if (isPressed) Color.White else buttonColor.copy(alpha = 0.9f),
+                textAlign = TextAlign.Center,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                letterSpacing = 0.8.sp,
+                modifier = Modifier.padding(horizontal = 6.dp)
+            )
         }
     }
 }

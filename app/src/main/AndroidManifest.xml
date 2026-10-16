@@ -9,6 +9,9 @@
     <!-- ÖNEMLI: Sadece görselleştirme için kullanılır, kayıt yapılmaz -->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     
+    <!-- Haptic feedback for UI interactions (normal permission) -->
+    <uses-permission android:name="android.permission.VIBRATE" />
+    
     <!-- CAMERA permission REMOVED - DJ Gesture Control not implemented -->
     <!-- Flashlight uses CameraManager.setTorchMode() which does NOT require CAMERA permission -->
     

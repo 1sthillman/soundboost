@@ -64,9 +64,14 @@ class SyncServer(
             android.util.Log.w("SyncServer", "⚠️ Server already running")
             return
         }
-        android.util.Log.d("SyncServer", "🚀 Starting SCALABLE SyncServer on port $port for room: $roomName")
+        android.util.Log.d("SyncServer", "🚀 ========== STARTING SYNCSERVER ==========")
+        android.util.Log.d("SyncServer", "🚀 Port: $port")
+        android.util.Log.d("SyncServer", "🚀 Room: $roomName")
         android.util.Log.d("SyncServer", "🌐 Ready for UNLIMITED connections (tested: 1000+ devices)")
-        engine = embeddedServer(CIO, port = port) {
+        android.util.Log.d("SyncServer", "🚀 ===========================================")
+        
+        try {
+            engine = embeddedServer(CIO, port = port, host = "0.0.0.0") {  // Listen on all interfaces
             install(WebSockets) {
                 pingPeriod = Duration.ofSeconds(15)
                 timeout = Duration.ofSeconds(30)
@@ -142,8 +147,21 @@ class SyncServer(
                                     send(Frame.Text(json.encodeToString(SyncMessage.serializer(), welcomeMsg)))
                                     android.util.Log.d("SyncServer", "✅ WELCOME sent successfully!")
                                     
+                                    // CRITICAL: Late join music metadata broadcast
                                     if (roomState.playbackState != PlaybackState.IDLE) {
                                         android.util.Log.d("SyncServer", "🎵 Late join: Music playing at ${roomState.currentPosition}ms")
+                                        
+                                        // CRITICAL: Broadcast current track metadata to new client
+                                        val currentTrack = roomState.playlist.currentTrack
+                                        if (currentTrack != null) {
+                                            android.util.Log.d("SyncServer", "📡 Late join: Broadcasting metadata for ${currentTrack.fileName} to $deviceName")
+                                            
+                                            // Use _incomingMessages to notify SyncViewModel about late join
+                                            // SyncViewModel will handle metadata broadcast
+                                            val lateJoinNotification = SyncMessage.Error("LATE_JOIN:${deviceId}:${currentTrack.sessionId}")
+                                            _incomingMessages.tryEmit(deviceId to lateJoinNotification)
+                                            android.util.Log.d("SyncServer", "✅ Late join notification emitted to ViewModel")
+                                        }
                                     }
                                     
                                     updateDeviceList(deviceId, deviceName)
@@ -216,8 +234,19 @@ class SyncServer(
                     }
                 }
             }
-        }.start(wait = false)
-        android.util.Log.d("SyncServer", "✅ Server started successfully on port $port")
+        }
+        
+        android.util.Log.d("SyncServer", "🎯 Starting Ktor engine...")
+        engine?.start(wait = false)
+        android.util.Log.d("SyncServer", "✅ ========== SERVER STARTED SUCCESSFULLY ==========")
+        android.util.Log.d("SyncServer", "✅ Listening on 0.0.0.0:$port")
+        android.util.Log.d("SyncServer", "✅ WebSocket endpoint: ws://0.0.0.0:$port/sync")
+        android.util.Log.d("SyncServer", "✅ ==================================================")
+        } catch (e: Exception) {
+            android.util.Log.e("SyncServer", "❌ Failed to start server: ${e.message}", e)
+            engine = null
+            throw e
+        }
     }
 
     /** 

@@ -49,6 +49,64 @@ fun WebViewHomeScreenPersistent(
     // Track if we've done initial sync to prevent duplicates
     var hasInitialSynced by remember { mutableStateOf(false) }
     
+    // LIFECYCLE-SAFE: Track current callbacks so onDispose sees latest values after recomposition
+    val currentSettingsCallback by rememberUpdatedState(onNavigateToSettings)
+    val currentEqualizerCallback by rememberUpdatedState(onNavigateToEqualizer)
+    val currentLanguageCallback by rememberUpdatedState(onNavigateToLanguage)
+    
+    // LIFECYCLE-SAFE: Track ViewModel callbacks for clearing in onDispose
+    val currentVolumeCallback by rememberUpdatedState(onVolumeChange)
+    val currentSensitivityCallback by rememberUpdatedState(onSensitivityChange)
+    val currentToggleCallback by rememberUpdatedState(onToggleBoost)
+    val currentThemeCallback by rememberUpdatedState(onThemeChanged)
+    val currentModeCallback by rememberUpdatedState(onModeChanged)
+    
+    // LIFECYCLE-SAFE: Update ALL callbacks on every composition
+    // This ensures callbacks always point to current NavController AND ViewModel after Activity recreation
+    SideEffect {
+        PersistentWebViewManager.webViewBridge?.apply {
+            // Update navigation callbacks
+            updateNavigationCallbacks(
+                settings = onNavigateToSettings,
+                equalizer = onNavigateToEqualizer,
+                language = onNavigateToLanguage
+            )
+            // Update ViewModel callbacks (critical for rotation and "Don't keep activities")
+            updateViewModelCallbacks(
+                onVolumeChange = onVolumeChange,
+                onSensitivityChange = onSensitivityChange,
+                onToggleBoost = onToggleBoost,
+                onThemeChanged = onThemeChanged,
+                onModeChanged = onModeChanged
+            )
+        }
+    }
+    
+    // LIFECYCLE-SAFE: Clear ALL callbacks when composition leaves
+    // rememberUpdatedState ensures we compare against the latest assigned callbacks
+    DisposableEffect(Unit) {
+        android.util.Log.d("WebViewPersistent", "💚 Composition entered")
+        onDispose {
+            android.util.Log.d("WebViewPersistent", "🧹 Composition leaving - clearing ALL callbacks if match")
+            PersistentWebViewManager.webViewBridge?.apply {
+                // Clear navigation callbacks
+                clearNavigationCallbacksIfMatch(
+                    settings = currentSettingsCallback,
+                    equalizer = currentEqualizerCallback,
+                    language = currentLanguageCallback
+                )
+                // Clear ViewModel callbacks
+                clearViewModelCallbacksIfMatch(
+                    volumeChange = currentVolumeCallback,
+                    sensitivityChange = currentSensitivityCallback,
+                    toggleBoost = currentToggleCallback,
+                    themeChanged = currentThemeCallback,
+                    modeChanged = currentModeCallback
+                )
+            }
+        }
+    }
+    
     // Initialize WebView manager once
     LaunchedEffect(Unit) {
         if (!PersistentWebViewManager.isReady()) {
@@ -59,10 +117,14 @@ fun WebViewHomeScreenPersistent(
                 onSensitivityChange,
                 onToggleBoost,
                 onThemeChanged,
-                onModeChanged,
-                onNavigateToSettings,
-                onNavigateToEqualizer,
-                onNavigateToLanguage
+                onModeChanged
+            )
+            
+            // Set initial navigation callbacks
+            PersistentWebViewManager.webViewBridge?.updateNavigationCallbacks(
+                settings = onNavigateToSettings,
+                equalizer = onNavigateToEqualizer,
+                language = onNavigateToLanguage
             )
             
             // Wait for page to load

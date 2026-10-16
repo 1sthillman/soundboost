@@ -15,6 +15,8 @@ import androidx.compose.ui.platform.LocalView
 /**
  * Premium Haptic Feedback System
  * Provides rich, nuanced tactile feedback for modern Android devices
+ * 
+ * SAFETY: All vibrate calls wrapped in try-catch to prevent SecurityException crashes
  */
 class HapticManager(private val context: Context, private val view: View?) {
     
@@ -27,13 +29,36 @@ class HapticManager(private val context: Context, private val view: View?) {
     }
     
     /**
+     * Check if vibrator is available and has vibration capability
+     */
+    private fun canVibrate(): Boolean {
+        return vibrator?.hasVibrator() == true
+    }
+    
+    /**
+     * Safe vibrate wrapper - catches all exceptions to prevent crashes
+     */
+    private fun safeVibrate(block: () -> Unit) {
+        if (!canVibrate()) return
+        try {
+            block()
+        } catch (e: SecurityException) {
+            android.util.Log.w("HapticManager", "SecurityException: VIBRATE permission missing", e)
+        } catch (e: Exception) {
+            android.util.Log.w("HapticManager", "Vibration failed", e)
+        }
+    }
+    
+    /**
      * Light tap - for small UI interactions
      */
     fun lightTap() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             view?.performHapticFeedback(HapticFeedbackConstants.CLOCK_TICK)
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            vibrator?.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_TICK))
+            safeVibrate {
+                vibrator?.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_TICK))
+            }
         }
     }
     
@@ -44,7 +69,9 @@ class HapticManager(private val context: Context, private val view: View?) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             view?.performHapticFeedback(HapticFeedbackConstants.CONTEXT_CLICK)
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            vibrator?.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_CLICK))
+            safeVibrate {
+                vibrator?.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_CLICK))
+            }
         }
     }
     
@@ -55,7 +82,9 @@ class HapticManager(private val context: Context, private val view: View?) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             view?.performHapticFeedback(HapticFeedbackConstants.CONFIRM)
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            vibrator?.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_HEAVY_CLICK))
+            safeVibrate {
+                vibrator?.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_HEAVY_CLICK))
+            }
         }
     }
     
@@ -64,7 +93,9 @@ class HapticManager(private val context: Context, private val view: View?) {
      */
     fun doubleClick() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            vibrator?.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_DOUBLE_CLICK))
+            safeVibrate {
+                vibrator?.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_DOUBLE_CLICK))
+            }
         }
     }
     
@@ -73,9 +104,11 @@ class HapticManager(private val context: Context, private val view: View?) {
      */
     fun success() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val timings = longArrayOf(0, 50, 50, 50)
-            val amplitudes = intArrayOf(0, 80, 0, 120)
-            vibrator?.vibrate(VibrationEffect.createWaveform(timings, amplitudes, -1))
+            safeVibrate {
+                val timings = longArrayOf(0, 50, 50, 50)
+                val amplitudes = intArrayOf(0, 80, 0, 120)
+                vibrator?.vibrate(VibrationEffect.createWaveform(timings, amplitudes, -1))
+            }
         }
     }
     
@@ -84,9 +117,11 @@ class HapticManager(private val context: Context, private val view: View?) {
      */
     fun error() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val timings = longArrayOf(0, 80, 40, 80)
-            val amplitudes = intArrayOf(0, 150, 0, 150)
-            vibrator?.vibrate(VibrationEffect.createWaveform(timings, amplitudes, -1))
+            safeVibrate {
+                val timings = longArrayOf(0, 80, 40, 80)
+                val amplitudes = intArrayOf(0, 150, 0, 150)
+                vibrator?.vibrate(VibrationEffect.createWaveform(timings, amplitudes, -1))
+            }
         }
     }
     
@@ -95,7 +130,9 @@ class HapticManager(private val context: Context, private val view: View?) {
      */
     fun drag() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            vibrator?.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_TICK))
+            safeVibrate {
+                vibrator?.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_TICK))
+            }
         }
     }
     
@@ -104,8 +141,10 @@ class HapticManager(private val context: Context, private val view: View?) {
      */
     fun volumeChange(intensity: Float) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val amplitude = (intensity * 100).toInt().coerceIn(1, 200)
-            vibrator?.vibrate(VibrationEffect.createOneShot(15, amplitude))
+            safeVibrate {
+                val amplitude = (intensity * 100).toInt().coerceIn(1, 200)
+                vibrator?.vibrate(VibrationEffect.createOneShot(15, amplitude))
+            }
         }
     }
     
@@ -114,9 +153,11 @@ class HapticManager(private val context: Context, private val view: View?) {
      */
     fun snap() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val timings = longArrayOf(0, 25, 15, 40)
-            val amplitudes = intArrayOf(0, 100, 0, 150)
-            vibrator?.vibrate(VibrationEffect.createWaveform(timings, amplitudes, -1))
+            safeVibrate {
+                val timings = longArrayOf(0, 25, 15, 40)
+                val amplitudes = intArrayOf(0, 100, 0, 150)
+                vibrator?.vibrate(VibrationEffect.createWaveform(timings, amplitudes, -1))
+            }
         }
     }
     
@@ -125,9 +166,11 @@ class HapticManager(private val context: Context, private val view: View?) {
      */
     fun threshold() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val timings = longArrayOf(0, 40)
-            val amplitudes = intArrayOf(0, 200)
-            vibrator?.vibrate(VibrationEffect.createWaveform(timings, amplitudes, -1))
+            safeVibrate {
+                val timings = longArrayOf(0, 40)
+                val amplitudes = intArrayOf(0, 200)
+                vibrator?.vibrate(VibrationEffect.createWaveform(timings, amplitudes, -1))
+            }
         }
     }
     
@@ -136,8 +179,10 @@ class HapticManager(private val context: Context, private val view: View?) {
      */
     fun audioReactive(intensity: Float) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val amplitude = (intensity * 255).toInt().coerceIn(1, 255)
-            vibrator?.vibrate(VibrationEffect.createOneShot(50, amplitude))
+            safeVibrate {
+                val amplitude = (intensity * 255).toInt().coerceIn(1, 255)
+                vibrator?.vibrate(VibrationEffect.createOneShot(50, amplitude))
+            }
         }
     }
 }

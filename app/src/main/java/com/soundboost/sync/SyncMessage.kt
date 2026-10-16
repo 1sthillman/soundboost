@@ -320,6 +320,30 @@ sealed class SyncMessage {
         val estimatedReadyTime: Long? = null
     ) : SyncMessage()
 
+    /**
+     * BASS FLASH CONTROL - Host enables/disables bass flash sync for all clients
+     * When HOST toggles bass flash, ALL clients should also toggle
+     */
+    @Serializable
+    @SerialName("bass_flash_control")
+    data class BassFlashControl(
+        val enabled: Boolean,
+        val intensity: String = "NORMAL"  // LIGHT, NORMAL, STRONG
+    ) : SyncMessage()
+
+    /**
+     * DJ EFFECT TRIGGER - Host triggers a DJ sound effect on all devices
+     * CRITICAL: Ultra-low latency (20ms) synchronized playback
+     * Works independently of music playback
+     */
+    @Serializable
+    @SerialName("dj_effect_trigger")
+    data class DJEffectTrigger(
+        val effectId: String,       // Effect identifier (from DJEffects)
+        val playAt: Long,           // Host clock - when to play (epoch millis)
+        val volume: Float = 1.0f    // 0.0 to 1.0
+    ) : SyncMessage()
+
     @Serializable
     @SerialName("leave")
     data class Leave(val deviceId: String) : SyncMessage()

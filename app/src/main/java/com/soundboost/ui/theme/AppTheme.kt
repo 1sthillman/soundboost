@@ -54,9 +54,10 @@ data class ThemeColors(
 /**
  * Get theme colors matching awwardstheme.html CSS variables
  * Each theme has exact colors from the HTML implementation
+ * NOW SUPPORTS LIGHT MODE: When isDark=false, inverts background/surface and text colors
  */
-fun getThemeColors(theme: AppTheme, accent: ColorAccent): ThemeColors {
-    return when (theme) {
+fun getThemeColors(theme: AppTheme, accent: ColorAccent, isDark: Boolean = true): ThemeColors {
+    val darkColors = when (theme) {
         AppTheme.MEHTAP -> ThemeColors(
             primary = Color(0xFFf2b155),        // --a4 golden moonlight
             secondary = Color(0xFF4a6fa5),      // --a2 water blue
@@ -178,6 +179,21 @@ fun getThemeColors(theme: AppTheme, accent: ColorAccent): ThemeColors {
             isDark = true
         )
     }
+    
+    // LIGHT MODE ADAPTATION: Invert backgrounds and text colors
+    if (!isDark) {
+        return darkColors.copy(
+            background = Color(0xFFF5F5F5),       // Light background
+            surface = Color(0xFFFFFFFF),          // Light surface
+            onSurface = Color(0xFF1A1A1A),        // Dark text on light
+            isDark = false,
+            surfaceElevated = Color(0xFFFAFAFA),
+            onSurfaceVariant = Color(0xFF4A4A4A),
+            outline = Color(0xFFCCCCCC)
+        )
+    }
+    
+    return darkColors
 }
 
 private fun getAccentColor1(accent: ColorAccent): Color {
